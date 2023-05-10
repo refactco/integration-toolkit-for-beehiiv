@@ -166,6 +166,10 @@ class Re_Beehiiv
 
 		$admin_menus = new Re_Beehiiv_Admin_Menus();
 		$this->loader->add_action('admin_menu', $admin_menus, 'register');
+
+		$ajax_import = new \Re_Beehiiv\Ajax_Import();
+		$this->loader->add_action('wp_ajax_re_beehiiv_import', $ajax_import, 'callback');
+		$this->loader->add_action('wp_ajax_nopriv_re_beehiiv_import', $ajax_import, 'callback');
 	}
 
 	/**
