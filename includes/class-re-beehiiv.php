@@ -163,6 +163,9 @@ class Re_Beehiiv
 
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
+
+		$admin_menus = new Re_Beehiiv_Admin_Menus();
+		$this->loader->add_action('admin_menu', $admin_menus, 'register');
 	}
 
 	/**
@@ -179,10 +182,6 @@ class Re_Beehiiv
 
 		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
 		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
-
-		$admin_menus = new Re_Beehiiv_Admin_Menus();
-
-		$this->loader->add_action('admin_menu', $admin_menus, 'register');
 	}
 
 	/**
