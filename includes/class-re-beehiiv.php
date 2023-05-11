@@ -182,7 +182,8 @@ class Re_Beehiiv
 		/**
 		 * Block Hooks
 		 */
-		$this->loader->add_action( 'init', \Re_Beehiiv\Blocks\Blocks::class, 'register_all_blocks' );
+		$this->loader->add_action( 'init', \Re_Beehiiv\Blocks\Blocks::class, 'register_all_blocks',10);
+		$this->loader->add_action('init', \Re_Beehiiv\GravityForms\GravityForms::class, 'init',11);
 	}
 
 	/**
