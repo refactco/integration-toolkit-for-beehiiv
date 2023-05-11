@@ -41,16 +41,13 @@ class Posts {
 
         $response = Request_Beehiiv::get($api_key, $route);
 
-        if ($response->status_code != 200) {
+        if (is_wp_error($response)) {
             return array(
-                'error' => true,
-                'message' => 'Error while fetching posts',
-                'status_code' => $response->status_code,
-                'body' => $response->body,
+                'error' => $response->get_error_message()
             );
         }
 
-        $data = json_decode($response->body, true);
+        $data = json_decode(wp_remote_retrieve_body($response), true);
 
         return $data;
     }
