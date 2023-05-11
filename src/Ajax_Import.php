@@ -37,9 +37,6 @@ class Ajax_Import {
             exit;
         }
 
-        $content_type = ($content_type == 'both') ? array('free_web_content', 'premium_web_content') : $content_type;
-
-
         // GET ALL DATA (CACHED)
         $data = $this->get_all_data(false, $content_type);
 
@@ -56,44 +53,71 @@ class Ajax_Import {
             update_option('RE_BEEHIIV_ajax_last_check_id', $last_id);
             // GET ALL DATA (NON-CACHED)
             $data = $this->get_all_data(true);
+
+            // reset results option
+            update_option('RE_BEEHIIV_ajax_import_results', array(
+                'success' => 0,
+                'error' => 0,
+                'message' => array()
+            ));
         }
 
         $index = 0;
+        
+        // set results option
+        $results = get_option('RE_BEEHIIV_ajax_import_results', array(
+            'success' => 0,
+            'error' => 0,
+            'message' => array()
+        ));
+
         foreach ($data as $value) {
             $index++;
             if ($last_id && $last_id >= $index) continue;
-            // ACTIONS
+
             //create a post
-            $post = array(
-                'post_title' => $value['title'],
-                'post_excerpt' => $value['subtitle'],
-                'post_author' => 1,
-                'post_type' => 'post',
-                'post_category' => array($cat->term_id),
-                'post_date' => date('Y-m-d H:i:s', $value['publish_date']),
-                'post_name' => $value['slug']
-            );
-
-            if ($content_type == 'free_web_content') {
-                $post['post_content'] = $value['content']['free']['web'];
-            } else {
-                $post['post_content'] = $value['content']['premium']['web'];
-            }
-
+            $data = [
+                'post'          => [
+                    'post_title'    => $value['title'],
+                    'post_excerpt'  => $value['subtitle'],
+                    'post_author'   => 1,
+                    'post_type'     => 'post',
+                    'post_category' => array($cat->term_id),
+                    'post_date'     => date('Y-m-d H:i:s', $value['publish_date']),
+                    'post_name'     => $value['slug']
+                ],
+                'category'      => array($cat->term_id),
+                'tags'          => $value['content_tags'],
+                'meta'          => [
+                    'content_type' => $content_type,
+                    'status'       => $value['status'],
+                    'post_id' => $value['id'],
+                    'post_url' => $value['web_url']
+                ]
+            ];
 
             if ($value['status'] == 'confirmed') {
-                $post['post_status'] = 'publish';
+                $data['post']['post_status'] = 'publish';
             } else {
-                $post['post_status'] = 'draft';
+                $data['post']['post_status'] = 'draft';
             }
 
-            $post_id = wp_insert_post($post);
+            $content = $this->get_post_content($value['content'], $content_type);
+            if (!$content) {
+                $results['error']++;
+                $results['message'][] = 'Content not found - ' . $value['id'];
+                continue;
+            }
+            $data['post']['post_content'] = $content;
 
-            wp_set_post_tags($post_id, $value['content_tags'], true);
-
-            // add post meta
-            add_post_meta($post_id, 'beehive_post_id', $value['id']);
-            add_post_meta($post_id, 'beehive_post_url', $value['web_url']);
+            $data = apply_filters('RE_BEEHIIV_ajax_import_before_create_post', $data);
+            try {
+                new Create_Post($data);
+                $results['success']++;
+            } catch (\Exception $e) {
+                $results['error']++;
+                $results['message'][] = $e->getMessage();
+            }
 
             // ACTIONS
             update_option('RE_BEEHIIV_ajax_last_check_id', $index);
@@ -105,7 +129,8 @@ class Ajax_Import {
             'success' => true,
             'percent' => $percent,
             'count' => $count,
-            'last_id' => $last_id
+            'last_id' => $last_id,
+            'results' => $results,
         ]);
         exit;
     }
@@ -117,6 +142,28 @@ class Ajax_Import {
         set_transient('RE_BEEHIIV_get_all_recurly_accounts', $data, DAY_IN_SECONDS);
         update_option('RE_BEEHIIV_ajax_all_recurly_accounts', count($data));
         return $data;
+    }
+
+    private function get_post_content($content, $content_type) {
+        if ($content_type == 'premium_web_content') {
+            if (!isset($content['premium']['web'])) {
+                return false;
+            }
+            return $content['premium']['web'];
+        } else if ($content_type == 'free_web_content') {
+            if (!isset($content['free']['web'])) {
+                return false;
+            }
+            return $content['free']['web'];
+        } else {
+            if (isset($content['premium']['web'])) {
+                return $content['premium']['web'];
+            } else if (isset($content['free']['web'])) {
+                return $content['free']['web'];
+            } else {
+                return '';
+            }
+        }
     }
 
 }
