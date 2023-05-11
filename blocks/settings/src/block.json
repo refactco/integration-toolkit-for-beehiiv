@@ -1,0 +1,14 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "rebeehiiv/settings",
+	"version": "0.1.0",
+	"title": "Settings",
+	"category": "widgets",
+	"icon": "welcome-view-site",
+	"description": "Add global hooks",
+	"textdomain": "refact-newsletter",
+	"editorScript": "re-beehiiv-block-settings-editor-script",
+	"editorStyle": "re-beehiiv-block-settings-editor-style",
+	"style": "re-beehiiv-block-settings-style"
+}
