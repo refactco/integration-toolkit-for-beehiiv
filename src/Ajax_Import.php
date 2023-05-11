@@ -37,8 +37,6 @@ class Ajax_Import {
             exit;
         }
 
-        $content_type = $content_type == 'both' ? array('free_web_content', 'premium_web_content') : $content_type;
-
         // GET ALL DATA (CACHED)
         $data = $this->get_all_data(false, $content_type);
 
@@ -95,12 +93,14 @@ class Ajax_Import {
                 ]
             ];
 
+            // set post status
             if ($value['status'] == 'confirmed') {
                 $data['post']['post_status'] = 'publish';
             } else {
                 $data['post']['post_status'] = 'draft';
             }
 
+            // set content
             if ( isset($value['content']) ) {
                 $content = $this->get_post_content($value['content'], $content_type);
                 if (!$content) {
@@ -111,7 +111,13 @@ class Ajax_Import {
                 $data['post']['post_content'] = $content;
             }
 
+            // set post date
             $data['post']['post_date'] = isset($value['publish_date']) ? date('Y-m-d H:i:s', $value['publish_date']) : date('Y-m-d H:i:s', time());
+
+            // maybe set premium content
+            if ( isset($value['content']['premium']['web']) ) {
+                $data['meta']['premium_content'] = $value['content']['premium']['web'];
+            }
 
             $data = apply_filters('RE_BEEHIIV_ajax_import_before_create_post', $data);
             try {
@@ -139,10 +145,25 @@ class Ajax_Import {
         exit;
     }
 
-    public function get_all_data($force = false, $content_type = array()){
+    public function get_all_data($force = false, $content_type){
         $cached = get_transient('RE_BEEHIIV_get_all_recurly_accounts');
         if ($cached && $force == false) return $cached;
-        $data = Posts::get_all_posts($content_type);
+
+        if ($content_type == 'both') {
+
+            $data = Posts::get_all_posts('free_web_content');
+            $premium_web_content = Posts::get_all_posts('premium_web_content');
+
+            foreach ($data as $key => $value) {
+                if (isset($premium_web_content[$key]['content']['premium']['web'])) {
+                    $data[$key]['content']['premium']['web'] = $premium_web_content[$key]['content']['premium']['web'];
+                }
+            }
+
+        } else {
+            $data = Posts::get_all_posts($content_type);
+        }
+
         set_transient('RE_BEEHIIV_get_all_recurly_accounts', $data, DAY_IN_SECONDS);
         update_option('RE_BEEHIIV_ajax_all_recurly_accounts', count($data));
         return $data;
