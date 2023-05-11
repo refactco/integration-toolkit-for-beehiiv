@@ -2,32 +2,44 @@
 
 namespace Re_Beehiiv\GravityForms;
 
-use LDAP\Result;
+use MarkItDone\ESP\Src\ESP_Bridge;
 
-use function cli\err;
 
 class GravityForms
 {
+
     public static function init()
     {
-        // if (get_option('re_beehiiv_api_key') == '' || get_option('re_beehiiv_publication_id') == '' || !class_exists('MarkItDone\ESP\Src\ESP_Bridge')) {
-        //     add_action('admin_notices', [self::class, 'admin_notice']);
+        include_once ABSPATH . 'wp-admin/includes/plugin.php';
 
-        //[TODO] Check API KEY Status
-
-        // } else {
-        add_filter('gform_form_settings', [self::class, 'add_re_beehiiv_form_setting'], 10, 2);
-        add_filter('gform_pre_form_settings_save', [self::class, 'save_re_beehiiv_form_setting'], 10, 1);
-        add_action('gform_after_submission', [self::class, 'sync_to_beehiiv'], 10, 2);
-        // }
+        if (get_option('re_beehiiv_api_key') == '' || get_option('re_beehiiv_publication_id') == '' || !class_exists('MarkItDone\ESP\Src\ESP_Bridge') || !is_plugin_active('action-scheduler/action-scheduler.php')) {
+            add_action('admin_notices', [self::class, 'admin_notice']);
+        } else {
+            add_filter('gform_form_settings', [self::class, 'add_re_beehiiv_form_setting'], 10, 2);
+            add_filter('gform_pre_form_settings_save', [self::class, 'save_re_beehiiv_form_setting'], 10, 1);
+            add_action('gform_after_submission', [self::class, 'sync_to_beehiiv'], 10, 2);
+        }
     }
 
     public static function admin_notice()
     {
-        $class = 'notice notice-error';
-        $message = __('Please make sure you have entered your Beehiiv API Key and Publication ID in the settings page and that you have installed the MarkItDone ESP plugin.', 're-beehiiv');
+        if (get_option('re_beehiiv_api_key') == '') {
+            $message = 'Re/Beehiiv Plugin : API key is missing.';
+            $class = 'error';
+        } elseif (get_option('re_beehiiv_publication_id') == '') {
+            $message = 'Re/Beehiiv Plugin : Publication ID is missing.';
+            $class = 'error';
+        } elseif (!class_exists('MarkItDone\ESP\Src\ESP_Bridge')) {
+            $message = 'ESP Bridge plugin is required to run Re/Beehiiv Plugin.';
+            $class = 'error';
+        } else if (!is_plugin_active('action-scheduler/action-scheduler.php')) {
+            $message = 'Action Scheduler plugin is required to run Re/Beehiiv Plugin.';
+            $class = 'error';
+        } else {
+            return;
+        }
 
-        printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), esc_html($message));
+        printf('<div class="%1$s"><p>%2$s</p></div>', $class . ' is-dismissible', $message);
     }
 
     public static function add_re_beehiiv_form_setting($settings, $form)
@@ -85,15 +97,11 @@ class GravityForms
 
         if (isset($form['_gform_setting_enable_beehiiv_sync']) && $form['_gform_setting_enable_beehiiv_sync'] == 'enable') {
 
-            $mapped_fields = self::map_gravity_form_fields_to_beehiiv_custom_fields($entry, $form);
-            if (empty($mapped_fields)) {
-                return;
-            }
+            $bridge = new ESP_Bridge('MarkItDone\ESP\Src\Services\Beehiiv', [
+                "apiKey"        =>   get_option('re_beehiiv_api_key'),
+                "publicationId" =>   get_option('re_beehiiv_publication_id')
+            ]);
 
-            $beehiiv_api_key = get_option('re_beehiiv_api_key');
-            $beehiiv_publication_id = get_option('re_beehiiv_publication_id');
-
-            $bridge = new \MarkItDone\ESP\Src\ESP_Bridge('MarkItDone\ESP\Src\Services\Beehiiv');
 
             $final_data = [
                 [
@@ -108,27 +116,32 @@ class GravityForms
                 ]
             ];
 
-            $beehiiv_special_fields = [
-                'utm_source',
-                'utm_medium',
-                'utm_campaign',
-            ];
+            $mapped_fields = self::map_gravity_form_fields_to_beehiiv_custom_fields($entry, $form);
 
-            foreach ($mapped_fields as $key => $value) {
-                if (in_array($key, $beehiiv_special_fields)) {
-                    $final_data[] = [
-                        'type'      => 'custom',
-                        'esp_field' => $key,
-                        'value'     => $value
-                    ];
-                } else {
-                    $final_data[] = [
-                        'type'       =>  'custom',
-                        'esp_field'  =>  'CustomFields',
-                        'esp_key'    =>  $key,
-                        'value'      =>  $value,
-                        'isEmpty'    => 'clear'
-                    ];
+            if (!empty($mapped_fields)) {
+
+                $beehiiv_special_fields = [
+                    'utm_source',
+                    'utm_medium',
+                    'utm_campaign',
+                ];
+
+                foreach ($mapped_fields as $key => $value) {
+                    if (in_array($key, $beehiiv_special_fields)) {
+                        $final_data[] = [
+                            'type'      => 'custom',
+                            'esp_field' => $key,
+                            'value'     => $value
+                        ];
+                    } else {
+                        $final_data[] = [
+                            'type'       =>  'custom',
+                            'esp_field'  =>  'CustomFields',
+                            'esp_key'    =>  $key,
+                            'value'      =>  $value,
+                            'isEmpty'    => 'clear'
+                        ];
+                    }
                 }
             }
 
@@ -140,8 +153,9 @@ class GravityForms
                     'Email' => $email_field['email_field'],
                 )
             );
-
-            error_log(print_r($response, true));
+            $subscriber_id = $response['response']->data->id ?? null;
+            // add subscriber id to entry meta
+            gform_update_meta($entry['id'], 'beehiiv_subscriber_id', $subscriber_id);
         }
     }
 
