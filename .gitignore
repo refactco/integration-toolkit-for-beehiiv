@@ -13,6 +13,7 @@
 
 # Ignore everything in the root except the "wp-content" directory.
 composer.lock
+package-lock.json
 
 # Ignore everything in the "vendor" directory
 vendor

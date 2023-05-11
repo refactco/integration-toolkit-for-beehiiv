@@ -11,6 +11,8 @@ This plugin is a boilerplate for creating a WordPress plugin.
 To utilize this boilerplate, please follow these steps:
 
 Run "composer install" command in plugin directory.
+Run "cd /blocks/settings && npm install"
+Then run "npm start"
 
 ```composer install```
 

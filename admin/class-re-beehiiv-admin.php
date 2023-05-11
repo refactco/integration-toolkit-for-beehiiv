@@ -109,4 +109,22 @@ class Re_Beehiiv_Admin {
 		return $paths;
 	}
 
+	public function add_admin_menu() {
+		
+		add_submenu_page(
+			'options-general.php',
+			__( 'Re/Beehiiv Settings', 're-beehiiv' ),
+			__( 'Re/Beehiiv Settings', 're-beehiiv' ),
+			'manage_options',
+			're-beehiiv-settings',
+			[$this, 'add_settings_page']
+		);
+
+	}
+
+	public function add_settings_page()
+	{
+		require_once RE_BEEHIIV_PATH . 'admin/partials/re-beehiiv-admin-settings.php';
+	}
+
 }
