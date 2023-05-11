@@ -98,7 +98,7 @@ class Re_Beehiiv_Admin {
 
 		wp_enqueue_script( $this->re_beehiiv, plugin_dir_url( __FILE__ ) . 'js/re-beehiiv-admin.js', array( 'jquery' ), $this->version, false );
 
-		wp_localize_script( $this->re_beehiiv, 'SA_CORE', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+		wp_localize_script( $this->re_beehiiv, 'RE_BEEHIIV_CORE', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 
 	}
 
