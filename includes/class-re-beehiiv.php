@@ -125,11 +125,6 @@ class Re_Beehiiv
 		 */
 		require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-re-beehiiv-public.php';
 
-		/**
-		 * The class responsible for defining all admin menus.
-		 */
-		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-re-beehiiv-admin-menus.php';
-
 		$this->loader = new Re_Beehiiv_Loader();
 	}
 
@@ -164,7 +159,7 @@ class Re_Beehiiv
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
 
-		$admin_menus = new Re_Beehiiv_Admin_Menus();
+		$admin_menus = new \Re_Beehiiv\Admin_Menus();
 		$this->loader->add_action('admin_menu', $admin_menus, 'register');
 
 		$ajax_import = new \Re_Beehiiv\Ajax_Import();
