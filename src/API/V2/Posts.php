@@ -33,7 +33,7 @@ class Posts {
             array( 'publicationId' => get_option('re_beehiiv_publication_id') ),
             array(
                 'page' => $page,
-                'expand[]' => $expand
+                'expand' => $expand
             )
         );
 

@@ -10,7 +10,7 @@ class Ajax_Import {
 
         // Check nonce
         if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'RE_BEEHIIV_ajax_import')) {
-            echo wp_send_json([
+            wp_send_json([
                 'success' => false,
                 'message' => 'Invalid nonce'
             ]);
@@ -20,7 +20,7 @@ class Ajax_Import {
         // check category
         $cat = (isset($_POST['cat']) && $_POST['cat']) ? get_term_by('id', $_POST['cat'], 'category') : false;
         if (!$cat) {
-            echo wp_send_json([
+            wp_send_json([
                 'success' => false,
                 'message' => 'Invalid category'
             ]);
@@ -30,18 +30,20 @@ class Ajax_Import {
         // check content type
         $content_type = (isset($_POST['content_type']) && $_POST['content_type']) ? $_POST['content_type'] : false;
         if (!$content_type) {
-            echo wp_send_json([
+            wp_send_json([
                 'success' => false,
                 'message' => 'Invalid content type'
             ]);
             exit;
         }
 
+        $content_type = $content_type == 'both' ? array('free_web_content', 'premium_web_content') : $content_type;
+
         // GET ALL DATA (CACHED)
         $data = $this->get_all_data(false, $content_type);
 
         if (isset($data['error'])) {
-            echo wp_send_json($data);
+            wp_send_json($data);
             exit;
         }
 
@@ -50,10 +52,8 @@ class Ajax_Import {
         $percent = intval($last_id / $count * 100);
         if ($percent == 100) {
             $last_id = 0;
+            // reset last check id option
             update_option('RE_BEEHIIV_ajax_last_check_id', $last_id);
-            // GET ALL DATA (NON-CACHED)
-            $data = $this->get_all_data(true);
-
             // reset results option
             update_option('RE_BEEHIIV_ajax_import_results', array(
                 'success' => 0,
@@ -83,7 +83,6 @@ class Ajax_Import {
                     'post_author'   => 1,
                     'post_type'     => 'post',
                     'post_category' => array($cat->term_id),
-                    'post_date'     => date('Y-m-d H:i:s', $value['publish_date']),
                     'post_name'     => $value['slug']
                 ],
                 'category'      => array($cat->term_id),
@@ -102,13 +101,17 @@ class Ajax_Import {
                 $data['post']['post_status'] = 'draft';
             }
 
-            $content = $this->get_post_content($value['content'], $content_type);
-            if (!$content) {
-                $results['error']++;
-                $results['message'][] = 'Content not found - ' . $value['id'];
-                continue;
+            if ( isset($value['content']) ) {
+                $content = $this->get_post_content($value['content'], $content_type);
+                if (!$content) {
+                    $results['error']++;
+                    $results['message'][] = 'Content not found - ' . $value['id'];
+                    continue;
+                }
+                $data['post']['post_content'] = $content;
             }
-            $data['post']['post_content'] = $content;
+
+            $data['post']['post_date'] = isset($value['publish_date']) ? date('Y-m-d H:i:s', $value['publish_date']) : date('Y-m-d H:i:s', time());
 
             $data = apply_filters('RE_BEEHIIV_ajax_import_before_create_post', $data);
             try {
@@ -121,11 +124,12 @@ class Ajax_Import {
 
             // ACTIONS
             update_option('RE_BEEHIIV_ajax_last_check_id', $index);
+            update_option('RE_BEEHIIV_ajax_import_results', $results);
             $last_id = $index;
             break;
         }
         $percent = intval($last_id / $count * 100);
-        echo wp_send_json([
+        wp_send_json([
             'success' => true,
             'percent' => $percent,
             'count' => $count,
