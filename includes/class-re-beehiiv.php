@@ -158,6 +158,13 @@ class Re_Beehiiv
 
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
+
+		$admin_menus = new \Re_Beehiiv\Admin_Menus();
+		$this->loader->add_action('admin_menu', $admin_menus, 'register', 10);
+
+		$ajax_import = new \Re_Beehiiv\Ajax_Import();
+		$this->loader->add_action('wp_ajax_re_beehiiv_import', $ajax_import, 'callback');
+		$this->loader->add_action('wp_ajax_nopriv_re_beehiiv_import', $ajax_import, 'callback');
 	}
 
 	/**
@@ -174,6 +181,14 @@ class Re_Beehiiv
 
 		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
 		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
+
+		$this->loader->add_action('rest_api_init', \Re_Beehiiv\Blocks\Settings::class, 'register_rest_routes');
+
+		/**
+		 * Block Hooks
+		 */
+		$this->loader->add_action('init', \Re_Beehiiv\Blocks\Blocks::class, 'register_all_blocks', 10);
+		$this->loader->add_action('init', \Re_Beehiiv\GravityForms\GravityForms::class, 'init', 11);
 	}
 
 	/**

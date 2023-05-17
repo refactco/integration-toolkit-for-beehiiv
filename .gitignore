@@ -13,6 +13,7 @@
 
 # Ignore everything in the root except the "wp-content" directory.
 composer.lock
+package-lock.json
 
 # Ignore everything in the "vendor" directory
 vendor
@@ -23,3 +24,5 @@ node_modules
 # idea folder
 .idea
 .DS_Store
+
+blocks/settings/build
