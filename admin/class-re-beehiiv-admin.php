@@ -20,7 +20,8 @@
  * @subpackage Re_Beehiiv/admin
  * @author     Refact <info@refact.co>
  */
-class Re_Beehiiv_Admin {
+class Re_Beehiiv_Admin
+{
 
 	/**
 	 * The ID of this plugin.
@@ -47,11 +48,11 @@ class Re_Beehiiv_Admin {
 	 * @param      string    $re_beehiiv       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $re_beehiiv, $version ) {
+	public function __construct($re_beehiiv, $version)
+	{
 
 		$this->re_beehiiv = $re_beehiiv;
 		$this->version = $version;
-
 	}
 
 	/**
@@ -59,7 +60,8 @@ class Re_Beehiiv_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_styles() {
+	public function enqueue_styles()
+	{
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -73,8 +75,7 @@ class Re_Beehiiv_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->re_beehiiv, plugin_dir_url( __FILE__ ) . 'css/re-beehiiv-admin.css', array(), $this->version, 'all' );
-
+		wp_enqueue_style($this->re_beehiiv, plugin_dir_url(__FILE__) . 'css/re-beehiiv-admin.css', array(), $this->version, 'all');
 	}
 
 	/**
@@ -82,7 +83,8 @@ class Re_Beehiiv_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_scripts() {
+	public function enqueue_scripts()
+	{
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -96,35 +98,15 @@ class Re_Beehiiv_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->re_beehiiv, plugin_dir_url( __FILE__ ) . 'js/re-beehiiv-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script($this->re_beehiiv, plugin_dir_url(__FILE__) . 'js/re-beehiiv-admin.js', array('jquery'), $this->version, false);
 
-		wp_localize_script( $this->re_beehiiv, 'RE_BEEHIIV_CORE', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
-
+		wp_localize_script($this->re_beehiiv, 'RE_BEEHIIV_CORE', array('ajax_url' => admin_url('admin-ajax.php')));
 	}
 
 	function acf_json_load_point($paths)
-	{	
-		$paths[] = plugin_dir_path( __FILE__ ) . 'acf-json';
+	{
+		$paths[] = plugin_dir_path(__FILE__) . 'acf-json';
 
 		return $paths;
 	}
-
-	public function add_admin_menu() {
-		
-		add_submenu_page(
-			'options-general.php',
-			__( 'Re/Beehiiv Settings', 're-beehiiv' ),
-			__( 'Re/Beehiiv Settings', 're-beehiiv' ),
-			'manage_options',
-			're-beehiiv-settings',
-			[$this, 'add_settings_page']
-		);
-
-	}
-
-	public function add_settings_page()
-	{
-		require_once RE_BEEHIIV_PATH . 'admin/partials/re-beehiiv-admin-settings.php';
-	}
-
 }
