@@ -1,16 +1,20 @@
 <?php
 if (!defined('WPINC')) die;
 
-if (isset($_GET['delete']) and $_GET['delete'] == 'true') {   
-    // delete all options
-    delete_option('RE_BEEHIIV_ajax_last_check_id');
-    delete_option('RE_BEEHIIV_ajax_all_recurly_accounts');
-    delete_transient('RE_BEEHIIV_get_all_recurly_accounts');
-}
 
-$last_id = (int) get_option('RE_BEEHIIV_ajax_last_check_id', false);
-$count = (int) get_option('RE_BEEHIIV_ajax_all_recurly_accounts', 0);
-$percent=($count!=0)?intval($last_id / $count * 100):0;
+// if process is running
+$createPostProcess = new Re_Beehiiv\BackgroundProcess\CreatePost();
+
+if ($createPostProcess->is_processing()) {
+    $last_id = get_option('RE_BEEHIIV_last_check_id', false);
+    $count   = get_option('RE_BEEHIIV_manual_total_items', false);
+    $percent = intval( ( $last_id / $count) * 100);
+    echo '<script>re_beehiiv_refresh_manual_import_progress()</script>';
+} else {
+    $last_id = 0;
+    $count = 0;
+    $percent = 0;
+}
 
 ?>
 <div class="wrap">

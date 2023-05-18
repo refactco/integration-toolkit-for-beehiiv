@@ -6,7 +6,12 @@ defined( 'ABSPATH' ) || exit;
 
 class Ajax_Import {
 
+    protected $createPostProcess;
+
     public function callback() {
+
+        $this->createPostProcess = new Import\CreatePost();
+        $auto = 'manual';
 
         // Check nonce
         if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'RE_BEEHIIV_ajax_import')) {
@@ -38,117 +43,48 @@ class Ajax_Import {
         }
 
         // GET ALL DATA (CACHED)
-        $data = $this->get_all_data(false, $content_type);
+        $data = $this->get_all_data($content_type);
 
         if (isset($data['error'])) {
             wp_send_json($data);
             exit;
         }
 
-        $last_id = (int) get_option('RE_BEEHIIV_ajax_last_check_id', false);
-        $count = count($data);
-        $percent = intval($last_id / $count * 100);
-        if ($percent == 100) {
-            $last_id = 0;
-            // reset last check id option
-            update_option('RE_BEEHIIV_ajax_last_check_id', $last_id);
-            // reset results option
-            update_option('RE_BEEHIIV_ajax_import_results', array(
-                'success' => 0,
-                'error' => 0,
-                'message' => array()
-            ));
-        }
 
-        $index = 0;
-        
-        // set results option
-        $results = get_option('RE_BEEHIIV_ajax_import_results', array(
-            'success' => 0,
-            'error' => 0,
-            'message' => array()
-        ));
-
+        update_option('RE_BEEHIIV_last_check_id', 0);
+        update_option('RE_BEEHIIV_manual_percent', 0);
+        update_option('RE_BEEHIIV_manual_total_items', count($data));
         foreach ($data as $value) {
-            $index++;
-            if ($last_id && $last_id >= $index) continue;
 
-            //create a post
-            $data = [
-                'post'          => [
-                    'post_title'    => $value['title'],
-                    'post_excerpt'  => $value['subtitle'],
-                    'post_author'   => 1,
-                    'post_type'     => 'post',
-                    'post_category' => array($cat->term_id),
-                    'post_name'     => $value['slug']
-                ],
-                'category'      => array($cat->term_id),
-                'tags'          => $value['content_tags'],
-                'meta'          => [
-                    'content_type' => $content_type,
-                    'status'       => $value['status'],
-                    'post_id' => $value['id'],
-                    'post_url' => $value['web_url']
-                ]
-            ];
-
-            // set post status
-            if ($value['status'] == 'confirmed') {
-                $data['post']['post_status'] = 'publish';
-            } else {
-                $data['post']['post_status'] = 'draft';
-            }
-
-            // set content
-            if ( isset($value['content']) ) {
-                $content = $this->get_post_content($value['content'], $content_type);
-                if (!$content) {
-                    $results['error']++;
-                    $results['message'][] = 'Content not found - ' . $value['id'];
-                    continue;
-                }
-                $data['post']['post_content'] = $content;
-            }
-
-            // set post date
-            $data['post']['post_date'] = isset($value['publish_date']) ? date('Y-m-d H:i:s', $value['publish_date']) : date('Y-m-d H:i:s', time());
-
-            // maybe set premium content
-            if ( isset($value['content']['premium']['web']) ) {
-                $data['meta']['premium_content'] = $value['content']['premium']['web'];
-            }
-
+            $data = $this->prepare_beehiiv_data_for_wp($value, $cat, $content_type, $auto);
             $data = apply_filters('RE_BEEHIIV_ajax_import_before_create_post', $data);
-            try {
-                new Create_Post($data);
-                $results['success']++;
-            } catch (\Exception $e) {
-                $results['error']++;
-                $results['message'][] = $e->getMessage();
-            }
+            $this->createPostProcess->push_to_queue($data);
+            error_log('pushed to queue: ' . $value['id']);
 
-            // ACTIONS
-            update_option('RE_BEEHIIV_ajax_last_check_id', $index);
-            update_option('RE_BEEHIIV_ajax_import_results', $results);
-            $last_id = $index;
-            break;
         }
-        $percent = intval($last_id / $count * 100);
+        $this->createPostProcess->save()->dispatch();
+
         wp_send_json([
             'success' => true,
-            'percent' => $percent,
-            'count' => $count,
-            'last_id' => $last_id,
-            'results' => $results,
+            'message' => 'Import started'
         ]);
         exit;
     }
 
-    public function get_all_data($force = false, $content_type){
-        $cached = get_transient('RE_BEEHIIV_get_all_recurly_accounts');
-        if ($cached && $force == false) return $cached;
+    public function manual_import_progress() {
+        $last_id = (int) get_option('RE_BEEHIIV_last_check_id', false);
+        $count = (int) get_option('RE_BEEHIIV_manual_total_items', false);
+        $percent = intval( ( $last_id / $count) * 100);
+        wp_send_json([
+            'success' => true,
+            'percent' => $percent,
+            'last_id' => $last_id,
+            'count' => $count
+        ]);
+        exit;
+    }
 
+    public function get_all_data($content_type){
         if ($content_type == 'both') {
 
             $data = Posts::get_all_posts('free_web_content');
@@ -164,8 +100,6 @@ class Ajax_Import {
             $data = Posts::get_all_posts($content_type);
         }
 
-        set_transient('RE_BEEHIIV_get_all_recurly_accounts', $data, DAY_IN_SECONDS);
-        update_option('RE_BEEHIIV_ajax_all_recurly_accounts', count($data));
         return $data;
     }
 
@@ -189,6 +123,52 @@ class Ajax_Import {
                 return '';
             }
         }
+    }
+
+    private function prepare_beehiiv_data_for_wp( $value, $cat, $content_type, $auto ) {
+
+        //create a post
+        $data = [
+            'post'          => [
+                'post_title'    => $value['title'],
+                'post_excerpt'  => $value['subtitle'],
+                'post_author'   => 1,
+                'post_type'     => 'post',
+                'post_category' => array($cat->term_id),
+                'post_name'     => $value['slug']
+            ],
+            'category'      => array($cat->term_id),
+            'tags'          => $value['content_tags'],
+            'meta'          => [
+                'content_type' => $content_type,
+                'status'       => $value['status'],
+                'post_id' => $value['id'],
+                'post_url' => $value['web_url']
+            ],
+            'auto'          => $auto,
+        ];
+
+        // set post status
+        if ($value['status'] == 'confirmed') {
+            $data['post']['post_status'] = 'publish';
+        } else {
+            $data['post']['post_status'] = 'draft';
+        }
+
+        // set content
+        if ( isset($value['content']) ) {
+            $data['post']['post_content'] = $this->get_post_content($value['content'], $content_type);
+        }
+
+        // set post date
+        $data['post']['post_date'] = isset($value['publish_date']) ? date('Y-m-d H:i:s', $value['publish_date']) : date('Y-m-d H:i:s', time());
+
+        // maybe set premium content
+        if ( isset($value['content']['premium']['web']) ) {
+            $data['meta']['premium_content'] = $value['content']['premium']['web'];
+        }
+
+        return $data;
     }
 
 }

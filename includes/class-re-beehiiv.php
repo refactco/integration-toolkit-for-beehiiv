@@ -164,7 +164,7 @@ class Re_Beehiiv
 
 		$ajax_import = new \Re_Beehiiv\Ajax_Import();
 		$this->loader->add_action('wp_ajax_re_beehiiv_import', $ajax_import, 'callback');
-		$this->loader->add_action('wp_ajax_nopriv_re_beehiiv_import', $ajax_import, 'callback');
+		$this->loader->add_action('wp_ajax_re_beehiiv_manual_import_progress', $ajax_import, 'manual_import_progress');
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_admin_menu', 11 );
 	}
 
@@ -190,6 +190,11 @@ class Re_Beehiiv
 		 */
 		$this->loader->add_action( 'init', \Re_Beehiiv\Blocks\Blocks::class, 'register_all_blocks',10);
 		$this->loader->add_action('init', \Re_Beehiiv\GravityForms\GravityForms::class, 'init',11);
+
+		\add_filter('re_beehiiv__seconds_between_batches', function($seconds) {
+			return 1;
+		});
+		$PostCreator = new \Re_Beehiiv\BackgroundProcess\CreatePost;
 	}
 
 	/**
