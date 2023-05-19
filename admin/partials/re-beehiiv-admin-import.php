@@ -5,9 +5,10 @@ if (!defined('WPINC')) die;
 // if process is running
 $createPostProcess = new Re_Beehiiv\BackgroundProcess\CreatePost();
 $is_processing = $createPostProcess->is_processing();
+$is_paused = $createPostProcess->is_paused();
 if ( $is_processing ) {
-    $last_id = get_option('RE_BEEHIIV_last_check_id', false);
-    $count   = get_option('RE_BEEHIIV_manual_total_items', false);
+    $last_id = get_option('RE_BEEHIIV_last_check_id', 0);
+    $count   = get_option('RE_BEEHIIV_manual_total_items', 0);
     $percent = intval( ( $last_id / $count) * 100);
     echo '<script>re_beehiiv_refresh_manual_import_progress()</script>';
 } else {
@@ -123,13 +124,17 @@ var AllTaxonomyTerms = <?= json_encode($taxonomy_terms) ?>;
         </div>
         <div class="wpfac-card">
             <input type="hidden" name="RE_BEEHIIV_ajax_import-nonce" id="RE_BEEHIIV_ajax_import-nonce" value="<?= wp_create_nonce('RE_BEEHIIV_ajax_import') ?>">
-                <div class="re-beehiiv-import-running <?php if (!$is_processing) echo 'hidden' ?>">
+                <div class="re-beehiiv-import-running <?php if (!$is_processing || $is_paused) echo 'hidden' ?>">
                     <p class="description">Import is running. Please wait until it finishes.</p>
-                    <button type="button" class="button-secondary" id="re-beehiiv-pause-import">Pause</button>
-                    <button type="button" class="button-secondary" id="re-beehiiv-stop-import">Stop</button>
+                    <button type="button" class="button-secondary" id="re-beehiiv-pause-import" onclick="ChangeImportProgressStatus('pause')">Pause</button>
+                    <button type="button" class="button-secondary" id="re-beehiiv-stop-import" onclick="ChangeImportProgressStatus('stop')">Cancel</button>
                 </div>
-                <div class="re-beehiiv-import-not-running <?php if ($is_processing) echo 'hidden' ?>">
+                <div class="re-beehiiv-import-not-running <?php if ($is_processing || $is_paused) echo 'hidden' ?>">
                     <button type="button" class="button-primary <?php if ($is_processing) echo 'hidden' ?>" id="re-beehiiv-start-import">Start</button>
+                </div>
+                <div class="re-beehiiv-import-paused <?php if (!$is_paused) echo 'hidden' ?>">
+                    <button type="button" class="button-primary" id="re-beehiiv-resume-import" onclick="ChangeImportProgressStatus('resume')">Resume</button>
+                    <button type="button" class="button-secondary" id="re-beehiiv-stop-import" onclick="ChangeImportProgressStatus('cancel')">Cancel</button>
                 </div>
         </div>
     </div>

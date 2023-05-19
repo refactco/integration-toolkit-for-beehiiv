@@ -165,6 +165,7 @@ class Re_Beehiiv
 		$ajax_import = new \Re_Beehiiv\Ajax_Import();
 		$this->loader->add_action('wp_ajax_re_beehiiv_import', $ajax_import, 'callback');
 		$this->loader->add_action('wp_ajax_re_beehiiv_manual_import_progress', $ajax_import, 'manual_import_progress');
+		$this->loader->add_action('wp_ajax_re_beehiiv_change_manual_import_status', $ajax_import, 'change_manual_import_status');
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_admin_menu', 11 );
 	}
 

@@ -192,3 +192,17 @@ function UpdateTaxonomyTerms() {
 
   return true;
 }
+
+function ChangeImportProgressStatus( $new_status ) {
+
+  var data = {
+    action: 're_beehiiv_change_manual_import_status',
+    new_status: $new_status,
+  };
+
+  jQuery.post(RE_BEEHIIV_CORE.ajax_url, data, function (response) {
+    location.reload();
+  }).fail(function (xhr, textStatus, e) {
+    console.log(xhr.responseText);
+  });
+}

@@ -95,8 +95,8 @@ class Ajax_Import {
     }
 
     public function manual_import_progress() {
-        $last_id = (int) get_option('RE_BEEHIIV_last_check_id', false);
-        $count = (int) get_option('RE_BEEHIIV_manual_total_items', false);
+        $last_id = (int) get_option('RE_BEEHIIV_last_check_id', 0);
+        $count = (int) get_option('RE_BEEHIIV_manual_total_items', 0);
         $percent = intval( ( $last_id / $count) * 100);
         
         if ($percent >= 100) {
@@ -192,6 +192,32 @@ class Ajax_Import {
         }
 
         return $data;
+    }
+
+    public function change_manual_import_status() {
+        $this->createPostProcess = new BackgroundProcess\CreatePost();
+        
+        $status = isset($_POST['new_status']) ? sanitize_text_field($_POST['new_status']) : false;
+
+        if ($status == 'pause') {
+            $this->createPostProcess->pause();
+        } else if ($status == 'resume') {
+            $this->createPostProcess->resume();
+        } else if ($status == 'cancel') {
+            $this->createPostProcess->cancel();
+        } else {
+            wp_send_json([
+                'success' => false,
+                'message' => 'Invalid status'
+            ]);
+            exit;
+        }
+
+        wp_send_json([
+            'success' => true,
+            'message' => 'Import status changed'
+        ]);
+        exit;
     }
 
 }

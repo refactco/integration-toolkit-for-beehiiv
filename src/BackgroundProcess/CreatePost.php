@@ -39,6 +39,10 @@ class CreatePost extends WP_Background_Process {
 
 	protected function complete() {
 		parent::complete();
+
+        delete_option('RE_BEEHIIV_last_check_id');
+        delete_option('RE_BEEHIIV_manual_total_items');
+        delete_option('RE_BEEHIIV_manual_percent');
 	}
 
     private function create_post($data) {
