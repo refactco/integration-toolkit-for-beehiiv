@@ -189,6 +189,14 @@ class Re_Beehiiv
 		 */
 		$this->loader->add_action('init', \Re_Beehiiv\Blocks\Blocks::class, 'register_all_blocks', 10);
 		$this->loader->add_action('init', \Re_Beehiiv\GravityForms\GravityForms::class, 'init', 11);
+
+
+
+
+		/**
+		 * Profile Unsubscribe/Resubscribe
+		 */
+		$this->loader->add_action('init', \Re_Beehiiv\UserProfile\UserProfile::class, 'init', 10);
 	}
 
 	/**
