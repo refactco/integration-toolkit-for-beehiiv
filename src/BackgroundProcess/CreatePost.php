@@ -18,28 +18,28 @@ class CreatePost extends WP_Background_Process {
         }
         $last_id = (int) get_option('RE_BEEHIIV_last_check_id', false);
         update_option('RE_BEEHIIV_last_check_id', $last_id + 1);
-        
-        if (!$this->is_unique_post($data)) {
+
+        $existing_id = $this->is_unique_post($data);
+        if ($existing_id) {
+            if ($data['args']['update_existing'] == 'yes') {
+                $data['post']['ID'] = $existing_id;
+                $this->post_id = $existing_id;
+                $this->update_existing_post($data);
+            }
             return false;
         }
         
         $this->create_post($data);
         $this->add_meta($data);
         $this->add_tags($data);
-        
-        error_log('post created: ' . $this->post_id . ' - last_id: ' . $last_id + 1);
+        $this->add_taxonomies($data);
 
-		return true;
+		return false;
 	}
 
 	protected function complete() {
 		parent::complete();
-        error_log('complete');
-        delete_option('RE_BEEHIIV_last_check_id');
-        delete_option('RE_BEEHIIV_manual_total_items');
-        delete_option('RE_BEEHIIV_manual_percent');
 	}
-
 
     private function create_post($data) {
         $this->post_id = wp_insert_post($data['post']);
@@ -65,15 +65,33 @@ class CreatePost extends WP_Background_Process {
         );
         $posts = get_posts($args);
         
-        return empty($posts);
+        // return post id if exists
+        if (isset($posts[0])) {
+            return $posts[0]->ID;
+        }
+        return false;
     }
 
-    private function update_progress_bar( $last_id ) {
-        $total_items = (int) get_option('RE_BEEHIIV_manual_total_items', false);
-        $percent = intval($last_id / $total_items * 100);
+    private function add_taxonomies($data) {
+        $taxonomy = $data['args']['taxonomy'] ?? '';
+        $term = $data['args']['term'] ?? '';
 
+        if (!taxonomy_exists($taxonomy)) {
+            return false;
+        }
 
-        update_option('RE_BEEHIIV_manual_percent', $percent);
+        $term = get_term_by('id', $term, $taxonomy);
+        if ($term) {
+            wp_set_post_terms($this->post_id, $term->term_id, $taxonomy);
+        }
+
+    }
+
+    private function update_existing_post($data) {
+        wp_update_post($data['post']);
+        $this->add_meta($data);
+        $this->add_tags($data);
+        $this->add_taxonomies($data);
     }
 
 }

@@ -13,6 +13,9 @@ class Posts {
         while (true) {
 
             $data = self::get_posts_in_page($page, $content_types);
+            if (isset($data['error'])) {
+                return $data;
+            }
             $posts = array_merge($posts, $data['data']);
 
             if ($data['page'] == $data['total_pages']) {

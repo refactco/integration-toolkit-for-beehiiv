@@ -10,11 +10,11 @@ class Ajax_Import {
 
     public function callback() {
 
-        $this->createPostProcess = new Import\CreatePost();
+        $this->createPostProcess = new BackgroundProcess\CreatePost();
         $auto = 'manual';
 
         // Check nonce
-        if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'RE_BEEHIIV_ajax_import')) {
+        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field($_POST['nonce']), 'RE_BEEHIIV_ajax_import')) {
             wp_send_json([
                 'success' => false,
                 'message' => 'Invalid nonce'
@@ -22,18 +22,8 @@ class Ajax_Import {
             exit;
         }
 
-        // check category
-        $cat = (isset($_POST['cat']) && $_POST['cat']) ? get_term_by('id', $_POST['cat'], 'category') : false;
-        if (!$cat) {
-            wp_send_json([
-                'success' => false,
-                'message' => 'Invalid category'
-            ]);
-            exit;
-        }
-
         // check content type
-        $content_type = (isset($_POST['content_type']) && $_POST['content_type']) ? $_POST['content_type'] : false;
+        $content_type = isset($_POST['content_type']) ? sanitize_text_field($_POST['content_type']) : false;
         if (!$content_type) {
             wp_send_json([
                 'success' => false,
@@ -41,6 +31,30 @@ class Ajax_Import {
             ]);
             exit;
         }
+
+        // check taxonomy
+        $taxonomy = isset($_POST['taxonomy']) ? sanitize_text_field($_POST['taxonomy']) : false;
+        if (!$taxonomy) {
+            wp_send_json([
+                'success' => false,
+                'message' => 'Invalid taxonomy'
+            ]);
+            exit;
+        }
+
+        // check term
+        $term = isset($_POST['term']) ? sanitize_text_field($_POST['term']) : false;
+        if (!$term) {
+            wp_send_json([
+                'success' => false,
+                'message' => 'Invalid term'
+            ]);
+            exit;
+        }
+
+        $post_status = isset($_POST['post_status']) ? sanitize_text_field($_POST['post_status']) : 'draft';
+        $update_existing = isset($_POST['update_existing']) ? sanitize_text_field($_POST['update_existing']) : false;
+
 
         // GET ALL DATA (CACHED)
         $data = $this->get_all_data($content_type);
@@ -56,10 +70,19 @@ class Ajax_Import {
         update_option('RE_BEEHIIV_manual_total_items', count($data));
         foreach ($data as $value) {
 
-            $data = $this->prepare_beehiiv_data_for_wp($value, $cat, $content_type, $auto);
+            if ($value['status'] != 'confirmed') {
+                continue;
+            }
+
+            $data = $this->prepare_beehiiv_data_for_wp($value, $content_type, [
+                'auto' => $auto,
+                'post_status' => $post_status,
+                'update_existing' => $update_existing,
+                'taxonomy' => $taxonomy,
+                'term' => $term
+            ]);
             $data = apply_filters('RE_BEEHIIV_ajax_import_before_create_post', $data);
             $this->createPostProcess->push_to_queue($data);
-            error_log('pushed to queue: ' . $value['id']);
 
         }
         $this->createPostProcess->save()->dispatch();
@@ -75,6 +98,12 @@ class Ajax_Import {
         $last_id = (int) get_option('RE_BEEHIIV_last_check_id', false);
         $count = (int) get_option('RE_BEEHIIV_manual_total_items', false);
         $percent = intval( ( $last_id / $count) * 100);
+        
+        if ($percent >= 100) {
+            delete_option('RE_BEEHIIV_last_check_id');
+            delete_option('RE_BEEHIIV_manual_total_items');
+            delete_option('RE_BEEHIIV_manual_percent');
+        }
         wp_send_json([
             'success' => true,
             'percent' => $percent,
@@ -125,7 +154,7 @@ class Ajax_Import {
         }
     }
 
-    private function prepare_beehiiv_data_for_wp( $value, $cat, $content_type, $auto ) {
+    private function prepare_beehiiv_data_for_wp( $value, $content_type, $args = array() ) {
 
         //create a post
         $data = [
@@ -134,10 +163,9 @@ class Ajax_Import {
                 'post_excerpt'  => $value['subtitle'],
                 'post_author'   => 1,
                 'post_type'     => 'post',
-                'post_category' => array($cat->term_id),
-                'post_name'     => $value['slug']
+                'post_name'     => $value['slug'],
+                'post_status'   => $args['post_status'] ?? 'draft',
             ],
-            'category'      => array($cat->term_id),
             'tags'          => $value['content_tags'],
             'meta'          => [
                 'content_type' => $content_type,
@@ -145,15 +173,10 @@ class Ajax_Import {
                 'post_id' => $value['id'],
                 'post_url' => $value['web_url']
             ],
-            'auto'          => $auto,
+            'auto'          => $args['auto'] ?? 'manual',
+            'args'          => $args
         ];
 
-        // set post status
-        if ($value['status'] == 'confirmed') {
-            $data['post']['post_status'] = 'publish';
-        } else {
-            $data['post']['post_status'] = 'draft';
-        }
 
         // set content
         if ( isset($value['content']) ) {

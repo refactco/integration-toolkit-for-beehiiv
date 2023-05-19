@@ -196,3 +196,20 @@
 .wpfac-card {
 	margin-bottom: 12px;
 }
+
+.re-beehiiv-wrapper fieldset {
+	margin-bottom: 16px;
+}
+
+.beehiiv-toggle-section {
+	margin-bottom: 10px;
+}
+.beehiiv-toggle-section h3 {
+	cursor: pointer;
+}
+.beehiiv-toggle-section .content {
+	display: none;
+}
+.beehiiv-toggle-section.open .content {
+	display: block;
+}
