@@ -16,7 +16,7 @@ function verifyCallback(response) {
     sendRequest(response, 2);
 }
 
-function sendRequest(token, version = 3) {
+function sendRequest() {
 
     var form = activeForm;
     var inputs = form.find('input');
@@ -39,8 +39,6 @@ function sendRequest(token, version = 3) {
     data.hp_threshold   = subscribe_form_handler.hp_threshold;
     data.hp_ts   = hp_ts;
     data.hp_try  = hp_try;
-    data.g_response  = token;
-    data.recaptcha_version  = version;
 
     inputs.each(function () {
         data[this.name] = jQuery(this).val();
@@ -127,15 +125,9 @@ jQuery(document).ready(function ($) {
             clearInterval(hp_interval);
         }
 
-        // protect the submit by g-recaptcha
-        grecaptcha.ready(function() {
-            grecaptcha.execute(subscribe_form_handler.recaptcha_site_key,
-            {action: 'submit'})
-            .then(function(token) {
-                sendRequest(token, 3);
-            });
-        });
+        sendRequest();
     });
+
 
     $(document).delegate('.tdu-dym a', 'click', function(e) {
         e.preventDefault();

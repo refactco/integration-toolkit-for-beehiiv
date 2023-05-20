@@ -69,9 +69,6 @@ class ShortCode
         $source = esc_attr($source);
         $medium = esc_attr($medium);
 
-        if (!wp_script_is('subscribe_form_recaptcha', 'enqueued')) {
-            wp_enqueue_script('subscribe_form_recaptcha', 'https://www.google.com/recaptcha/api.js?render=' . GOOGLE_RECAPTCHA_SITE_KEY, [], '1.0.0', true);
-        }
 
         /**
          * Enqueue script to handle AJAX
@@ -84,8 +81,6 @@ class ShortCode
             $options = [
                 'wpnonce'       => wp_create_nonce('wp_rest'),
                 'ajax_url'       => home_url('/wp-json/ajax/v1/beehiiv_signup'),
-                'recaptcha_site_key' => GOOGLE_RECAPTCHA_SITE_KEY,
-                'recaptcha_v2_site_key' => GOOGLE_RECAPTCHA_V2_SITE_KEY,
                 'hp_threshold' => $honeypot_threshold
             ];
 
@@ -99,9 +94,9 @@ class ShortCode
           <button class="c-btn" id="subscribe-form-submit" type="submit">' . $button_text . '</button>
           <div class="subscribe-form-message"></div>
             <div class="subscribe-form-vars">
-                        <input type="hidden" class="subscribe-form-param" name="params[source]" value="' . $source . '">
-                        <input type="hidden" class="subscribe-form-param" name="params[medium]" value="' . $medium . '">
-                        <input type="hidden" class="subscribe-form-param" name="params[redirect_url]" value="' . $redirect_url . '">
+                <input type="hidden" class="subscribe-form-param" name="params[source]" value="' . $source . '">
+                <input type="hidden" class="subscribe-form-param" name="params[medium]" value="' . $medium . '">
+                <input type="hidden" class="subscribe-form-param" name="params[redirect_url]" value="' . $redirect_url . '">
             </div>
         </form>
         ';
@@ -120,24 +115,6 @@ class ShortCode
     public static function subscribe_form_submit($request)
     {
 
-        /**
-         * Check Google Recaptcha first
-         */
-        $g_response = sanitize_text_field($request->get_param('g_response'));
-
-        $recaptcha_version = intval($request->get_param('recaptcha_version'));
-
-        do_action('shortcode_after_nonce_check', $g_response);
-
-        // verify Google Recaptcha response
-        $validation = self::google_recaptcha_verify($g_response, $recaptcha_version);
-        if (!$validation['verified']) {
-            return new \WP_Error(
-                $validation['message'],
-                'Recaptcha Failed, Please solve the captcha to continue',
-                ['status' => 406]
-            );
-        }
 
         /**
          * Add honeypot trap with name
@@ -245,8 +222,6 @@ class ShortCode
             "publicationId" =>   get_option('re_beehiiv_publication_id')
         ]);
 
-        error_log(print_r($final_data, true));
-        error_log(print_r($bridge, true));
         $data = $bridge->getMappedData('1', $final_data);
 
         $result = $bridge->createOrUpdateUser(
@@ -255,8 +230,8 @@ class ShortCode
                 'Email' => $email,
             )
         );
+
         $response_code = $result['code'];
-        error_log(print_r($result, true));
 
         if (is_wp_error($result)) {
 
@@ -298,132 +273,6 @@ class ShortCode
         }
     }
 
-    public static function google_recaptcha_verify($response, $version = 3, $ip = '')
-    {
-
-        if ($version === 3) {
-            if (!defined('GOOGLE_RECAPTCHA_SECRET_KEY') || empty(GOOGLE_RECAPTCHA_SECRET_KEY)) {
-                return [
-                    'verified' => false,
-                    'message' => 'Google Recaptcha secret key is missing',
-                    'code'      => 401
-                ];
-            }
-            if (!defined('GOOGLE_RECAPTCHA_SCORE') || empty(GOOGLE_RECAPTCHA_SCORE)) {
-                return [
-                    'verified'  => false,
-                    'message'   => 'Google Recaptcha score is missing',
-                    'code'      => 401
-                ];
-            }
-        } else if ($version === 2) {
-            if (!defined('GOOGLE_RECAPTCHA_V2_SECRET_KEY') || empty(GOOGLE_RECAPTCHA_V2_SECRET_KEY)) {
-                return [
-                    'verified' => false,
-                    'message' => 'Google Recaptcha secret key is missing',
-                    'code'      => 401
-                ];
-            }
-        }
-
-        /**
-         * The response reference form Google verify endpiont
-         * and their labels
-         */
-        $g_error_reference = [
-            'missing-input-secret' => 'The secret parameter is missing.',
-            'invalid-input-secret' => 'The secret parameter is invalid or malformed.',
-            'missing-input-response' => 'The response parameter is missing.',
-            'invalid-input-response' => 'The response parameter is invalid or malformed.',
-            'bad-request' => 'The request is invalid or malformed.',
-            'timeout-or-duplicate' => 'The response is no longer valid: either is too old or has been used previously.',
-            'incorrect-captcha-sol' => "Incorrect Captcha Sol"
-        ];
-
-        $url = "https://www.google.com/recaptcha/api/siteverify";
-        /**
-         * Google recaptcha verify payload
-         *
-         * @param string $secret        the secret key Google Recaptcha V3
-         * @param string $response      the response sent by the form
-         * @param string $ip            the user's IP address (optional)
-         */
-        $data = [
-            'secret' => $version === 3 ? GOOGLE_RECAPTCHA_SECRET_KEY : GOOGLE_RECAPTCHA_V2_SECRET_KEY,
-            'response' => $response,
-        ];
-
-        if (!empty($ip)) $data['ip'] = $ip;
-
-        $args = [
-            'body'        => $data
-        ];
-
-        $wp_response     = wp_remote_post($url, $args);
-        $response_code   = wp_remote_retrieve_response_code($wp_response);
-
-        /**
-         * If request fails generally
-         */
-        if (is_wp_error($wp_response)) {
-            return [
-                'verified' => false,
-                'message'  => $wp_response->get_error_message(),
-                'code'     => $response_code
-            ];
-        } else {
-            $response_body = json_decode(wp_remote_retrieve_body($wp_response), true);
-            /**
-             * Check if the response is set
-             */
-            if ($response_body) {
-
-                /**
-                 * Check if is verified
-                 */
-                if (($version === 2 && $response_body['success']) ||
-                    ($version === 3 && $response_body['success'] && $response_body['score'] >= GOOGLE_RECAPTCHA_SCORE)
-                ) {
-
-                    return [
-                        'verified' => true,
-                        'message'  => 'Verified request',
-                        'code'     => $response_code,
-                        'score'    => isset($response_body['score']) ? $response_body['score'] : ''
-                    ];
-                } else {
-                    return [
-                        'verified' => false,
-                        'message'  => isset($response_body['error-codes']) ?
-                            (isset($g_error_reference[$response_body['error-codes'][0]]) ?
-                                $g_error_reference[$response_body['error-codes'][0]] :
-                                'Error!'
-                            ) :
-                            'Error!',
-                        'code'     => $response_code,
-                        'score'    => isset($response_body['score']) ? $response_body['score'] : -2
-                    ];
-                }
-            } else {
-                /**
-                 * Invalid response
-                 */
-                return [
-                    'verified'  => false,
-                    'message'   => 'Failed to retrieve the response.',
-                    'code'      => $response_code
-                ];
-            }
-        }
-        /**
-         * Handle unknown error
-         */
-        return [
-            'is_valid'  => false,
-            'message'   => 'Unknown error',
-            'code'      => '0'
-        ];
-    }
 
     public static function get_the_user_ip()
     {
