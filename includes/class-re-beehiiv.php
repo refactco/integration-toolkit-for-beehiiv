@@ -198,6 +198,12 @@ class Re_Beehiiv
 		 * ShortCode
 		 */
 		$this->loader->add_action('init', \Re_Beehiiv\ShortCode\ShortCode::class, 'init', 11);
+
+		/**
+		 * Profile Unsubscribe/Resubscribe
+		 */
+		$this->loader->add_action('init', \Re_Beehiiv\UserProfile\UserProfile::class, 'init', 10);
+    
 	}
 
 	/**
