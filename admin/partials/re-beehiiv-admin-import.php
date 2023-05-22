@@ -28,6 +28,7 @@ foreach ($post_types as $post_type) {
     $post_type_taxonomies = get_object_taxonomies($post_type, 'objects');
     
     foreach ($post_type_taxonomies as $taxonomy) {
+        if ($taxonomy->public != 1 || $taxonomy->hierarchical != 1) continue;
         $taxonomies[$post_type][] = [
             'name' => $taxonomy->name,
             'label' => $taxonomy->label
