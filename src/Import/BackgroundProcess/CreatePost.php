@@ -1,6 +1,6 @@
 <?php
 
-namespace Re_Beehiiv\BackgroundProcess;
+namespace Re_Beehiiv\Import\BackgroundProcess;
 use WP_Background_Process;
 
 class CreatePost extends WP_Background_Process {

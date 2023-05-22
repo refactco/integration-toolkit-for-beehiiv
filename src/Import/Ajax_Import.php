@@ -1,5 +1,5 @@
 <?php
-namespace Re_Beehiiv;
+namespace Re_Beehiiv\Import;
 use Re_Beehiiv\API\V2\Posts;
 
 defined( 'ABSPATH' ) || exit;
@@ -194,7 +194,7 @@ class Ajax_Import {
         return $data;
     }
 
-    public function change_manual_import_status() {
+    public function manual_change_import_status() {
         $this->createPostProcess = new BackgroundProcess\CreatePost();
         
         $status = isset($_POST['new_status']) ? sanitize_text_field($_POST['new_status']) : false;
@@ -218,6 +218,10 @@ class Ajax_Import {
             'message' => 'Import status changed'
         ]);
         exit;
+    }
+
+    public function seconds_between_batches( $s ) {
+        return 1;
     }
 
 }

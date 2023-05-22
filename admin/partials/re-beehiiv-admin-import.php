@@ -3,7 +3,7 @@ if (!defined('WPINC')) die;
 
 
 // if process is running
-$createPostProcess = new Re_Beehiiv\BackgroundProcess\CreatePost();
+$createPostProcess = new Re_Beehiiv\Import\BackgroundProcess\CreatePost();
 $is_processing = $createPostProcess->is_processing();
 $is_paused = $createPostProcess->is_paused();
 if ( $is_processing ) {

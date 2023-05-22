@@ -196,7 +196,7 @@ function UpdateTaxonomyTerms() {
 function ChangeImportProgressStatus( $new_status ) {
 
   var data = {
-    action: 're_beehiiv_change_manual_import_status',
+    action: 're_beehiiv_manual_change_import_status',
     new_status: $new_status,
   };
 
