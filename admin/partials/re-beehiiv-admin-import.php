@@ -6,11 +6,13 @@ if (!defined('WPINC')) die;
 $createPostProcess = new Re_Beehiiv\Import\BackgroundProcess\CreatePost();
 $is_processing = $createPostProcess->is_processing();
 $is_paused = $createPostProcess->is_paused();
-if ( $is_processing ) {
+if ( $is_processing || $is_paused ) {
     $last_id = get_option('RE_BEEHIIV_last_check_id', 0);
     $count   = get_option('RE_BEEHIIV_manual_total_items', 0);
     $percent = intval( ( $last_id / $count) * 100);
-    echo '<script>re_beehiiv_refresh_manual_import_progress()</script>';
+    if (!$is_paused) {
+        echo '<script>re_beehiiv_refresh_manual_import_progress()</script>';
+    }
 } else {
     $last_id = 0;
     $count = 0;
