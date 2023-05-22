@@ -39,6 +39,7 @@
       term: $('#re-beehiiv-taxonomy_term').val(),
       post_status: $('#re-beehiiv-post_status').val(),
       update_existing: $('#re-beehiiv-update_existing').val(),
+      exclude_draft: $('#re-beehiiv-exclude_draft').val(),
     };
 
     jQuery.post(RE_BEEHIIV_CORE.ajax_url, data, function (response) {

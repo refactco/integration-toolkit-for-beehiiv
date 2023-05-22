@@ -108,6 +108,10 @@ var AllTaxonomyTerms = <?= json_encode($taxonomy_terms) ?>;
                 </fieldset>
                 <fieldset>
                     <label>
+                        <input type="checkbox" name="re-beehiiv-exclude_draft" id="re-beehiiv-exclude_draft" value="yes"> Exclude draft posts
+                    </label>
+                    <br>
+                    <label>
                         <input type="checkbox" name="re-beehiiv-update_existing" id="re-beehiiv-update_existing" value="yes"> Update existing posts
                     </label>
                 </fieldset>

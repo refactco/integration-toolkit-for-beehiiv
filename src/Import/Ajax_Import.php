@@ -54,7 +54,7 @@ class Ajax_Import {
 
         $post_status = isset($_POST['post_status']) ? sanitize_text_field($_POST['post_status']) : 'draft';
         $update_existing = isset($_POST['update_existing']) ? sanitize_text_field($_POST['update_existing']) : false;
-
+        $exclude_draft = isset($_POST['exclude_draft']) ? sanitize_text_field($_POST['exclude_draft']) : false;
 
         // GET ALL DATA (CACHED)
         $data = $this->get_all_data($content_type);
@@ -78,9 +78,15 @@ class Ajax_Import {
                 'auto' => $auto,
                 'post_status' => $post_status,
                 'update_existing' => $update_existing,
+                'exclude_draft' => $exclude_draft,
                 'taxonomy' => $taxonomy,
                 'term' => $term
             ]);
+
+            if (!$data) {
+                continue;
+            }
+
             $data = apply_filters('RE_BEEHIIV_ajax_import_before_create_post', $data);
             $this->createPostProcess->push_to_queue($data);
 
@@ -164,7 +170,6 @@ class Ajax_Import {
                 'post_author'   => 1,
                 'post_type'     => 'post',
                 'post_name'     => $value['slug'],
-                'post_status'   => $args['post_status'] ?? 'draft',
             ],
             'tags'          => $value['content_tags'],
             'meta'          => [
@@ -176,6 +181,15 @@ class Ajax_Import {
             'auto'          => $args['auto'] ?? 'manual',
             'args'          => $args
         ];
+
+        // set post status
+        if ($value['status'] == 'confirmed') {
+            $data['post']['post_status'] = $args['post_status'] ?? 'publish';
+        } else if ($args['exclude_draft'] == 'yes') {
+            return false;
+        } else {
+            $data['post']['post_status'] = 'draft';
+        }
 
 
         // set content
