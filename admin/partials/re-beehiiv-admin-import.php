@@ -14,6 +14,9 @@ if ( $is_processing || $is_paused ) {
         echo '<script>re_beehiiv_refresh_manual_import_progress()</script>';
     }
 } else {
+    delete_option('RE_BEEHIIV_last_check_id');
+    delete_option('RE_BEEHIIV_manual_total_items');
+    delete_option('RE_BEEHIIV_manual_percent');
     $last_id = 0;
     $count = 0;
     $percent = 0;
@@ -100,12 +103,10 @@ var AllTaxonomyTerms = <?= json_encode($taxonomy_terms) ?>;
                 <label for="re-beehiiv-post_status"><strong>Post Status: </strong></label>
                 <p class="description">Select the post status you want to import the content to.</p>
                 <select name="re-beehiiv-post_status" id="re-beehiiv-post_status">
-                    <?php
-                    $post_statuses = get_post_statuses();
-                    foreach ($post_statuses as $post_status) {
-                        echo '<option value="' . $post_status . '">' . $post_status . '</option>';
-                    }
-                    ?>
+                    <option value="publish">Publish</option>
+                    <option value="draft">Draft</option>
+                    <option value="pending">Pending</option>
+                    <option value="private">Private</option>
                 </select>
                 </fieldset>
                 <fieldset>

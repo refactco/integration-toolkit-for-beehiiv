@@ -67,10 +67,11 @@ class Ajax_Import {
 
         update_option('RE_BEEHIIV_last_check_id', 0);
         update_option('RE_BEEHIIV_manual_percent', 0);
-        update_option('RE_BEEHIIV_manual_total_items', count($data));
+        $count =  count($data);
         foreach ($data as $value) {
 
-            if ($value['status'] != 'confirmed') {
+            if ($value['status'] != 'confirmed' && $exclude_draft == 'yes') {
+                $count--;
                 continue;
             }
 
@@ -84,6 +85,7 @@ class Ajax_Import {
             ]);
 
             if (!$data) {
+                $count--;
                 continue;
             }
 
@@ -91,6 +93,7 @@ class Ajax_Import {
             $this->createPostProcess->push_to_queue($data);
 
         }
+        update_option('RE_BEEHIIV_manual_total_items', $count);
         $this->createPostProcess->save()->dispatch();
 
         wp_send_json([
