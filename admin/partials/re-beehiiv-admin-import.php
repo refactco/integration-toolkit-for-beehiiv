@@ -1,27 +1,12 @@
 <?php
 if (!defined('WPINC')) die;
 
-
-// if process is running
-$createPostProcess = new Re_Beehiiv\Import\BackgroundProcess\CreatePost();
-$is_processing = $createPostProcess->is_processing();
-$is_paused = $createPostProcess->is_paused();
-if ( $is_processing || $is_paused ) {
-    $last_id = get_option('RE_BEEHIIV_last_check_id', 0);
-    $count   = get_option('RE_BEEHIIV_manual_total_items', 0);
-    $percent = intval( ( $last_id / $count) * 100);
-    if (!$is_paused) {
-        echo '<script>re_beehiiv_refresh_manual_import_progress()</script>';
+if ($tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : false) {
+    if ($tab == 'auto-import') {
+        include_once RE_BEEHIIV_PATH . 'admin/partials/re-beehiiv-admin-auto-import.php';
+        return;
     }
-} else {
-    delete_option('RE_BEEHIIV_last_check_id');
-    delete_option('RE_BEEHIIV_manual_total_items');
-    delete_option('RE_BEEHIIV_manual_percent');
-    $last_id = 0;
-    $count = 0;
-    $percent = 0;
 }
-
 
 // get all taxonomies based on post type
 $post_types = get_post_types( array(
@@ -58,9 +43,15 @@ var AllTaxonomies = <?= json_encode($taxonomies) ?>;
 var AllTaxonomyTerms = <?= json_encode($taxonomy_terms) ?>;
 </script>
 <div class="wrap">
-    <h1>Re Beehiiv - Import</h1>
+    <h1>Re Beehiiv - Manual Import</h1>
     
     <div class="re-beehiiv-wrapper">
+        <div class="re-beehiiv-tabs">
+            <nav class="nav-tab-wrapper">
+                <a class="nav-tab nav-tab-active" data-tab="re-beehiiv-import" id="re-beehiiv-import-tab" href="<?= admin_url('admin.php?page=re-beehiiv-import') ?>">Manual Import</a>
+                <a class="nav-tab" data-tab="re-beehiiv-auto-import" id="re-beehiiv-auto-import-tab" href="<?= admin_url('admin.php?page=re-beehiiv-import&tab=auto-import') ?>">Auto Import</a>
+            </nav>
+        </div>
         <!-- Select: Content Type -->
         <fieldset>
             <label for="re-beehiiv-content_type"><strong>Content Type: </strong></label>
@@ -120,30 +111,14 @@ var AllTaxonomyTerms = <?= json_encode($taxonomy_terms) ?>;
                 </fieldset>
             </div>
         </div>
-
-        <div id="re-beehiiv-progress">
-            <div class="cssProgress">
-                <div class="progress3">
-                    <div class="cssProgress-bar cssProgress-success" style="width: <?= $percent ?>%;">
-                        <span class="cssProgress-label">(<?= $last_id ?> / <?= $count ?>) <?= $percent ?>%</span>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="wpfac-card">
             <input type="hidden" name="RE_BEEHIIV_ajax_import-nonce" id="RE_BEEHIIV_ajax_import-nonce" value="<?= wp_create_nonce('RE_BEEHIIV_ajax_import') ?>">
-                <div class="re-beehiiv-import-running <?php if (!$is_processing || $is_paused) echo 'hidden' ?>">
-                    <p class="description">Import is running. Please wait until it finishes.</p>
-                    <button type="button" class="button-secondary" id="re-beehiiv-pause-import" onclick="ChangeImportProgressStatus('pause')">Pause</button>
-                    <button type="button" class="button-secondary" id="re-beehiiv-stop-import" onclick="ChangeImportProgressStatus('stop')">Cancel</button>
-                </div>
-                <div class="re-beehiiv-import-not-running <?php if ($is_processing || $is_paused) echo 'hidden' ?>">
-                    <button type="button" class="button-primary <?php if ($is_processing) echo 'hidden' ?>" id="re-beehiiv-start-import">Start</button>
-                </div>
-                <div class="re-beehiiv-import-paused <?php if (!$is_paused) echo 'hidden' ?>">
-                    <button type="button" class="button-primary" id="re-beehiiv-resume-import" onclick="ChangeImportProgressStatus('resume')">Resume</button>
-                    <button type="button" class="button-secondary" id="re-beehiiv-stop-import" onclick="ChangeImportProgressStatus('cancel')">Cancel</button>
-                </div>
+            <div class="hidden re-beehiiv-import-running">
+                <p class="description">Import is running. Please wait until it finishes.</p>
+           </div>
+            <div class="re-beehiiv-import-not-running">
+                <button type="button" class="button-primary" id="re-beehiiv-start-import">Start</button>
+            </div>
         </div>
     </div>
 </div>

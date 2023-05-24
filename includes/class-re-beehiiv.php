@@ -1,4 +1,5 @@
 <?php
+use Re_Beehiiv\Import\Queue;
 
 /**
  * The file that defines the core plugin class
@@ -80,6 +81,7 @@ class Re_Beehiiv
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
+		$this->run_import();
 	}
 
 	/**
@@ -125,6 +127,10 @@ class Re_Beehiiv
 		 */
 		require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-re-beehiiv-public.php';
 
+		if (!$this->is_action_scheduler_plugin_active()) {
+			require_once plugin_dir_path(dirname(__FILE__)) . 'vendor/woocommerce/action-scheduler/action-scheduler.php';
+		}
+
 		$this->loader = new Re_Beehiiv_Loader();
 	}
 
@@ -163,10 +169,11 @@ class Re_Beehiiv
 		$this->loader->add_action('admin_menu', $admin_menus, 'register', 10);
 
 		$ajax_import = new \Re_Beehiiv\Import\Ajax_Import();
-		$this->loader->add_action('wp_ajax_re_beehiiv_import', $ajax_import, 'callback');
-		$this->loader->add_action('wp_ajax_re_beehiiv_manual_import_progress', $ajax_import, 'manual_import_progress');
-		$this->loader->add_action('wp_ajax_re_beehiiv_manual_change_import_status', $ajax_import, 'manual_change_import_status');
-		$this->loader->add_filter('re_beehiiv__seconds_between_batches', $ajax_import, 'seconds_between_batches', 10, 1);
+		$this->loader->add_action('wp_ajax_re_beehiiv_start_manual_import', $ajax_import, 'callback');
+		$this->loader->add_action('admin_notices', $ajax_import, 'register_progress_notice');
+
+		$import = new \Re_Beehiiv\Import\Import_Table();
+		$this->loader->add_action('init', $import, 'create_custom_table', 10);
 		
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_admin_menu', 11 );
 	}
@@ -194,7 +201,6 @@ class Re_Beehiiv
 		$this->loader->add_action( 'init', \Re_Beehiiv\Blocks\Blocks::class, 'register_all_blocks',10);
 		$this->loader->add_action('init', \Re_Beehiiv\GravityForms\GravityForms::class, 'init',11);
 
-		$PostCreator = new \Re_Beehiiv\Import\BackgroundProcess\CreatePost;
 	}
 
 	/**
@@ -239,5 +245,16 @@ class Re_Beehiiv
 	public function get_version()
 	{
 		return $this->version;
+	}
+
+	public function is_action_scheduler_plugin_active()
+	{
+		$active_plugins = get_option('active_plugins');
+		return in_array('action-scheduler/action-scheduler.php', $active_plugins);
+	}
+
+	public function run_import() {
+		$queue = new Queue();
+        $queue->queueHandler();
 	}
 }

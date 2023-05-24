@@ -6,11 +6,13 @@ defined( 'ABSPATH' ) || exit;
 
 class Ajax_Import {
 
-    protected $createPostProcess;
+    protected $queue;
 
     public function callback() {
 
-        $this->createPostProcess = new BackgroundProcess\CreatePost();
+        $this->queue = new Queue();
+        $this->queue->setTimestamp(Queue::TIMESTAMP_2_MIN);
+
         $auto = 'manual';
 
         // Check nonce
@@ -64,14 +66,11 @@ class Ajax_Import {
             exit;
         }
 
-
-        update_option('RE_BEEHIIV_last_check_id', 0);
-        update_option('RE_BEEHIIV_manual_percent', 0);
-        $count =  count($data);
+        $group_name = 'manual_import_' . time();
+        set_transient('RE_BEEHIIV_manual_import_group', $group_name, 60 * 60 * 24);
         foreach ($data as $value) {
 
             if ($value['status'] != 'confirmed' && $exclude_draft == 'yes') {
-                $count--;
                 continue;
             }
 
@@ -85,39 +84,24 @@ class Ajax_Import {
             ]);
 
             if (!$data) {
-                $count--;
                 continue;
             }
 
             $data = apply_filters('RE_BEEHIIV_ajax_import_before_create_post', $data);
-            $this->createPostProcess->push_to_queue($data);
+
+            Import_Table::insert_custom_table_row($data['meta']['post_id'], $data, 'pending');
+
+            $req['group'] = $group_name;
+            $req['args'] = array(
+                'id' => $data['meta']['post_id']
+            );
+
+            $this->queue->addToQueue($req);
 
         }
-        update_option('RE_BEEHIIV_manual_total_items', $count);
-        $this->createPostProcess->save()->dispatch();
-
         wp_send_json([
             'success' => true,
             'message' => 'Import started'
-        ]);
-        exit;
-    }
-
-    public function manual_import_progress() {
-        $last_id = (int) get_option('RE_BEEHIIV_last_check_id', 0);
-        $count = (int) get_option('RE_BEEHIIV_manual_total_items', 0);
-        $percent = intval( ( $last_id / $count) * 100);
-        
-        if ($percent >= 100) {
-            delete_option('RE_BEEHIIV_last_check_id');
-            delete_option('RE_BEEHIIV_manual_total_items');
-            delete_option('RE_BEEHIIV_manual_percent');
-        }
-        wp_send_json([
-            'success' => true,
-            'percent' => $percent,
-            'last_id' => $last_id,
-            'count' => $count
         ]);
         exit;
     }
@@ -211,34 +195,37 @@ class Ajax_Import {
         return $data;
     }
 
-    public function manual_change_import_status() {
-        $this->createPostProcess = new BackgroundProcess\CreatePost();
-        
-        $status = isset($_POST['new_status']) ? sanitize_text_field($_POST['new_status']) : false;
+    public static function register_progress_notice() {
 
-        if ($status == 'pause') {
-            $this->createPostProcess->pause();
-        } else if ($status == 'resume') {
-            $this->createPostProcess->resume();
-        } else if ($status == 'cancel') {
-            $this->createPostProcess->cancel();
-        } else {
-            wp_send_json([
-                'success' => false,
-                'message' => 'Invalid status'
-            ]);
-            exit;
+        $group_name = get_transient('RE_BEEHIIV_manual_import_group');
+
+        if (empty($group_name)) {
+            return;
         }
 
-        wp_send_json([
-            'success' => true,
-            'message' => 'Import status changed'
-        ]);
-        exit;
-    }
+        $Queue = new Queue();
+        $complete_actions = $Queue->get_manual_actions($group_name, 'complete');
+        $all_actions = $Queue->get_manual_actions($group_name);
 
-    public function seconds_between_batches( $s ) {
-        return 1;
+        if (empty($all_actions)) {
+            delete_transient('RE_BEEHIIV_manual_import_group');
+            return;
+        }
+        if (count($complete_actions) == count($all_actions)) {
+            echo "<div class='notice notice-success is-dismissible' id='re_beehiiv_progress_notice'>";
+            echo "<p>Importing posts from Re Beehiiv is complete.</p>";
+            echo "<button type='button' class='notice-dismiss'><span class='screen-reader-text'>Dismiss this notice.</span></button>";
+            echo "</div>";
+            delete_transient('RE_BEEHIIV_manual_import_group');
+            return;
+        }
+
+        // notice with progress bar
+        echo "<div class='notice notice-info' id='re_beehiiv_progress_notice'>";
+        echo "<p>Importing posts from Beehiiv is in progress. Be patient, this may take a while.";
+        echo "<strong> Progress: " . count($complete_actions) . " / " . count($all_actions) . "</strong></p>";
+        echo "</div>";
+        return;
     }
 
 }

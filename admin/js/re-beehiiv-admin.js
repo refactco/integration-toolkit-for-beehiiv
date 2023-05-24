@@ -28,23 +28,22 @@
    * Although scripts in the WordPress core, Plugins and Themes may be
    * practising this, we should strive to set a better example in our own work.
    */
-  function re_beehiiv_refresh_request() {
+  function re_beehiiv_start_manual_import() {
 
     var data = {
-      action: 're_beehiiv_import',
+      action: 're_beehiiv_start_manual_import',
       nonce: $('#RE_BEEHIIV_ajax_import-nonce').val(),
       content_type: $('#re-beehiiv-content_type').val(),
       post_type: $('#re-beehiiv-post_type').val(),
       taxonomy: $('#re-beehiiv-taxonomy').val(),
       term: $('#re-beehiiv-taxonomy_term').val(),
       post_status: $('#re-beehiiv-post_status').val(),
-      update_existing: $('#re-beehiiv-update_existing').val(),
-      exclude_draft: $('#re-beehiiv-exclude_draft').val(),
+      update_existing: $('#re-beehiiv-update_existing') ? 'yes' : 'no',
+      exclude_draft: $('#re-beehiiv-exclude_draft').is(':checked') ? 'yes' : 'no',
     };
 
     jQuery.post(RE_BEEHIIV_CORE.ajax_url, data, function (response) {
-      re_beehiiv_refresh_manual_import_progress();
-
+      
     }, 'json').fail(function (xhr, textStatus, e) {
       console.log(xhr.responseText);
     });
@@ -67,11 +66,9 @@
         return false;
       }
 
-      var progressbar = $('#re-beehiiv-progress').find('.cssProgress-bar');
-      progressbar.addClass('cssProgress-active');
       $(this).hide();
       $('.re-beehiiv-import-running').show();
-      re_beehiiv_refresh_request();
+      re_beehiiv_start_manual_import();
     });
 
     $('#re-beehiiv-post_type').on('change', function() {
@@ -137,32 +134,6 @@
   });
 })(jQuery);
 
-function re_beehiiv_refresh_manual_import_progress() {
-
-  var data = {
-    action: 're_beehiiv_manual_import_progress',
-  };
-  jQuery.post(RE_BEEHIIV_CORE.ajax_url, data, function (response) {
-    var progressbar = jQuery('#re-beehiiv-progress').find('.cssProgress-bar');
-    var percent = parseInt(response.percent);
-    var last_id = parseInt(response.last_id);
-    var count = parseInt(response.count);
-    var text = '(' + last_id + ' / ' + count + ') ' + percent + '%';
-    progressbar.css({ 'width': percent + '%' });
-    progressbar.find('.cssProgress-label').text(text);
-    if (percent < 100) {
-      setTimeout(re_beehiiv_refresh_manual_import_progress, 2000);
-    }
-    if (percent == 100) {
-      progressbar.removeClass('cssProgress-active');
-      jQuery('.re-beehiiv-import-running').hide();
-    }
-
-  }).fail(function (xhr, textStatus, e) {
-    console.log(xhr.responseText);
-  });
-}
-
 function toggleSection(el) {
   el.parentNode.classList.toggle('open');
 }
@@ -192,18 +163,4 @@ function UpdateTaxonomyTerms() {
   jQuery('#re-beehiiv-taxonomy_term').html(html);
 
   return true;
-}
-
-function ChangeImportProgressStatus( $new_status ) {
-
-  var data = {
-    action: 're_beehiiv_manual_change_import_status',
-    new_status: $new_status,
-  };
-
-  jQuery.post(RE_BEEHIIV_CORE.ajax_url, data, function (response) {
-    location.reload();
-  }).fail(function (xhr, textStatus, e) {
-    console.log(xhr.responseText);
-  });
 }
