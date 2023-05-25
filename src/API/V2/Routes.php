@@ -1,8 +1,7 @@
 <?php
-
 namespace Re_Beehiiv\API\V2;
 
-defined('ABSPATH') || exit;
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Routes
@@ -12,17 +11,14 @@ defined('ABSPATH') || exit;
  * @package    Re_Beehiiv
  * @subpackage Re_Beehiiv/API/V2
  */
-class Routes
-{
+class Routes {
 
     const BASE_URL      = 'https://api.beehiiv.com/v2';
     const BASE_MOCK_URL = 'https://stoplight.io/mocks/beehiiv/v2/104190750';
-
+    
     const POSTS_INDEX   = '/publications/publicationId/posts';
     const POSTS_SHOW    = '/publications/publicationId/posts/postId';
     const POSTS_DESTROY = '/publications/publicationId/posts/postId';
-
-    const SUBSCRIPTIONS_INDEX   = '/publications/publicationId/subscriptions';
 
 
     /**
@@ -34,16 +30,16 @@ class Routes
      * 
      * @example $route = Routes::build_route( Routes::POSTS_INDEX, array( 'publicationId' => 1 ) );
      */
-    public static function build_route(string $route, array $params = null, array $query_params = null)
+    public static function build_route( string $route, array $params = null, array $query_params = null )
     {
-        if (!$params) {
+        if ( !$params ) {
             return $route;
         }
 
-        $route = str_replace(array_keys($params), array_values($params), $route);
+        $route = str_replace( array_keys( $params ), array_values( $params ), $route );
 
-        if (!empty($query_params)) {
-            $route .= '?' . http_build_query($query_params);
+        if ( !empty( $query_params ) ) {
+            $route .= '?' . http_build_query( $query_params );
         }
 
         return $route;
@@ -55,10 +51,9 @@ class Routes
      * This method return the base url for the API based on the environment
      * @return string
      */
-    public static function get_base_url()
-    {
-
-        if (defined('BEEHIIV_API_MOCK') && BEEHIIV_API_MOCK) {
+    public static function get_base_url() {
+        
+        if ( defined( 'BEEHIIV_API_MOCK' ) && BEEHIIV_API_MOCK ) {
             return self::BASE_MOCK_URL;
         }
 
