@@ -8,79 +8,150 @@ class Ajax_Import {
 
     protected $queue;
 
-    public function callback() {
+    public function callback($args = []) {
+
+        if (isset($args['auto']) && $args['auto'] === 'auto') {
+            $form_data = $args;
+        } else {
+            $form_data = $this->get_form_validated_data();
+        }
+
+        if (isset($form_data['error'])) {
+            if (isset($form_data['auto']) && $form_data['auto'] === 'auto') {
+                return;
+            }
+            wp_send_json($form_data);
+            exit;
+        }
 
         $this->queue = new Queue();
         $this->queue->setTimestamp(Queue::TIMESTAMP_2_MIN);
 
-        $auto = 'manual';
-
-        // Check nonce
-        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field($_POST['nonce']), 'RE_BEEHIIV_ajax_import')) {
-            wp_send_json([
-                'success' => false,
-                'message' => 'Invalid nonce'
-            ]);
-            exit;
-        }
-
-        // check content type
-        $content_type = isset($_POST['content_type']) ? sanitize_text_field($_POST['content_type']) : false;
-        if (!$content_type) {
-            wp_send_json([
-                'success' => false,
-                'message' => 'Invalid content type'
-            ]);
-            exit;
-        }
-
-        // check taxonomy
-        $taxonomy = isset($_POST['taxonomy']) ? sanitize_text_field($_POST['taxonomy']) : false;
-        if (!$taxonomy) {
-            wp_send_json([
-                'success' => false,
-                'message' => 'Invalid taxonomy'
-            ]);
-            exit;
-        }
-
-        // check term
-        $term = isset($_POST['term']) ? sanitize_text_field($_POST['term']) : false;
-        if (!$term) {
-            wp_send_json([
-                'success' => false,
-                'message' => 'Invalid term'
-            ]);
-            exit;
-        }
-
-        $post_status = isset($_POST['post_status']) ? sanitize_text_field($_POST['post_status']) : 'draft';
-        $update_existing = isset($_POST['update_existing']) ? sanitize_text_field($_POST['update_existing']) : false;
-        $exclude_draft = isset($_POST['exclude_draft']) ? sanitize_text_field($_POST['exclude_draft']) : false;
+        
 
         // GET ALL DATA (CACHED)
-        $data = $this->get_all_data($content_type);
+        $data = $this->get_all_data($form_data['content_type']);
 
         if (isset($data['error'])) {
+            if (isset($form_data['auto']) && $form_data['auto'] === 'auto') {
+                return;
+            }
             wp_send_json($data);
             exit;
         }
 
-        $group_name = 'manual_import_' . time();
+        if (isset($form_data['auto']) && $form_data['auto'] === 'auto') {
+            $group_name = 'auto_import' . time();
+        } else {
+            $group_name = 'manual_import_' . time();
+        }
+
         set_transient('RE_BEEHIIV_manual_import_group', $group_name, 60 * 60 * 24);
+        $this->push_to_queue($data, [
+            'auto' => 'manual',
+            'post_status' => $form_data['post_status'],
+            'update_existing' => $form_data['update_existing'],
+            'exclude_draft' => $form_data['exclude_draft'],
+            'taxonomy' => $form_data['taxonomy'],
+            'term' => $form_data['term'],
+            'group' => $group_name,
+            'content_type' => $form_data['content_type'],
+        ]);
+
+        if (isset($form_data['auto']) && $form_data['auto'] === 'auto') {
+            return true;
+        }
+        
+        wp_send_json([
+            'success' => true,
+            'message' => 'Import started'
+        ]);
+        exit;
+    }
+
+    public function auto_import_callback() {
+            
+            $form_data = $this->get_form_validated_data();
+
+            
+            if (isset($form_data['error'])) {
+                wp_send_json($form_data);
+                exit;
+            }
+            $form_data['cron_time'] = isset($_POST['cron_time']) ? sanitize_text_field($_POST['cron_time']) : false;
+    
+            $this->queue = new Queue();
+            $this->queue->setTimestamp(Queue::TIMESTAMP_2_MIN);
+    
+            $auto = 'auto';
+    
+            $group_name = 'auto_recurring_import' . time();
+
+            $req['group'] = $group_name;
+            $req['args'] = array(
+                'auto' => $auto,
+            );
+            $req['args'] = array_merge($req['args'], $form_data);
+
+            $this->queue->addRecurrenceTask($req);
+            
+            wp_send_json([
+                'success' => true,
+                'message' => 'Cron job scheduled'
+            ]);
+            exit;
+    }
+
+    public function get_form_validated_data() {
+        $nonce = isset($_POST['nonce']) ? sanitize_text_field($_POST['nonce']) : false;
+
+        if (!wp_verify_nonce($nonce, 'RE_BEEHIIV_ajax_import')) {
+            return [
+                'error' => true,
+                'message' => 'Invalid nonce'
+            ];
+        }
+
+        $content_type = isset($_POST['content_type']) ? sanitize_text_field($_POST['content_type']) : false;
+        $post_status = isset($_POST['post_status']) ? sanitize_text_field($_POST['post_status']) : false;
+        $update_existing = isset($_POST['update_existing']) ? sanitize_text_field($_POST['update_existing']) : false;
+        $exclude_draft = isset($_POST['exclude_draft']) ? sanitize_text_field($_POST['exclude_draft']) : false;
+        $taxonomy = isset($_POST['taxonomy']) ? sanitize_text_field($_POST['taxonomy']) : false;
+        $term = isset($_POST['term']) ? sanitize_text_field($_POST['term']) : false;
+
+        if (!$nonce || !$content_type || !$post_status || !$update_existing || !$exclude_draft || !$taxonomy || !$term) {
+            return [
+                'error' => true,
+                'message' => 'Invalid data'
+            ];
+        }
+
+        return [
+            'nonce' => $nonce,
+            'content_type' => $content_type,
+            'post_status' => $post_status,
+            'update_existing' => $update_existing,
+            'exclude_draft' => $exclude_draft,
+            'taxonomy' => $taxonomy,
+            'term' => $term
+        ];
+    }
+
+    public function push_to_queue($data, $args) {
+
         foreach ($data as $value) {
 
-            if ($value['status'] != 'confirmed' && $exclude_draft == 'yes') {
+            if ($value['status'] != 'confirmed' && $args['exclude_draft'] == 'yes') {
                 continue;
             }
 
-            $data = $this->prepare_beehiiv_data_for_wp($value, $content_type, [
-                'auto' => $auto,
-                'post_status' => $post_status,
-                'update_existing' => $update_existing,
-                'exclude_draft' => $exclude_draft,
-                'taxonomy' => $taxonomy,
-                'term' => $term
+            $data = $this->prepare_beehiiv_data_for_wp($value, $args['content_type'], [
+                'auto' => $args['auto'],
+                'post_status' => $args['post_status'],
+                'update_existing' => $args['update_existing'],
+                'exclude_draft' => $args['exclude_draft'],
+                'taxonomy' => $args['taxonomy'],
+                'term' => $args['term']
             ]);
 
             if (!$data) {
@@ -91,19 +162,17 @@ class Ajax_Import {
 
             Import_Table::insert_custom_table_row($data['meta']['post_id'], $data, 'pending');
 
-            $req['group'] = $group_name;
+            $req['group'] = $args['group'];
             $req['args'] = array(
                 'id' => $data['meta']['post_id']
             );
 
             $this->queue->addToQueue($req);
 
+
         }
-        wp_send_json([
-            'success' => true,
-            'message' => 'Import started'
-        ]);
-        exit;
+
+        return true;
     }
 
     public function get_all_data($content_type){

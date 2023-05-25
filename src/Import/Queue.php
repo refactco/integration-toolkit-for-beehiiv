@@ -8,6 +8,7 @@ class Queue {
     const TIMESTAMP_30_MIN = 1800;
     const TIMESTAMP_1_HOUR = 3600;
     const TIMESTAMP_2_HOUR = 7200;
+    const TIMESTAMP_12_HOUR = 43200;
     const TIMESTAMP_1_DAY  = 86400;
     const TIMESTAMP_7_DAY  = 604800;
     const MAX_RETRY_COUNT  = 3;
@@ -26,10 +27,40 @@ class Queue {
             as_schedule_single_action(time() + $this->timestamp, $this->action, $request, $request['group']);
         }
     }
+    public function addRecurrenceTask($request)
+    {
+        $cron_time = $request['cron_time'];
+        $timestamp = $this->getTimestamp($cron_time);
+        if (as_has_scheduled_action($this->action, $request, $request['group']) === false) {
+            as_schedule_recurring_action(time() + $timestamp, $timestamp, $this->action, $request, $request['group']);
+        }
+    }
+
+    public function getTimestamp($cron_time)
+    {
+        switch ($cron_time) {
+            case 'hourly':
+                return self::TIMESTAMP_1_HOUR;
+            case 'twicedaily':
+                return self::TIMESTAMP_12_HOUR;
+            case 'daily':
+                return self::TIMESTAMP_1_DAY;
+            case 'weekly':
+                return self::TIMESTAMP_7_DAY;
+            default:
+                return self::TIMESTAMP_1_HOUR;
+        }
+    }
 
 
     public function queueCallback($group_name, $args)
     {
+
+        if (isset($args['auto']) && $args['auto'] === 'auto') {
+            $this->autoImportCallback($group_name, $args);
+            return;
+        }
+
         $requestKey = $this->getRequestKey($args['id']);
         $retryCount = get_transient($requestKey);
         if ($retryCount === false || $retryCount < self::MAX_RETRY_COUNT) {
@@ -41,6 +72,11 @@ class Queue {
                 delete_transient($requestKey);
             }
         }
+    }
+
+    public function autoImportCallback($group_name, $args)
+    {
+        (new Ajax_Import())->callback($args);
     }
 
     public function queueHandler()

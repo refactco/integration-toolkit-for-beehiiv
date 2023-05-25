@@ -49,20 +49,47 @@
     });
   }
 
+  function re_beehiiv_start_auto_import() {
+    var data = {
+      action: 're_beehiiv_start_auto_import',
+      nonce: $('#RE_BEEHIIV_ajax_import-nonce').val(),
+      content_type: $('#re-beehiiv-content_type').val(),
+      post_type: $('#re-beehiiv-post_type').val(),
+      taxonomy: $('#re-beehiiv-taxonomy').val(),
+      term: $('#re-beehiiv-taxonomy_term').val(),
+      post_status: $('#re-beehiiv-post_status').val(),
+      update_existing: $('#re-beehiiv-update_existing') ? 'yes' : 'no',
+      exclude_draft: $('#re-beehiiv-exclude_draft').is(':checked') ? 'yes' : 'no',
+      cron_time: $('#re-beehiiv-cron_time').val(),
+    };
+
+    jQuery.post(RE_BEEHIIV_CORE.ajax_url, data, function (response) {
+      
+    }, 'json').fail(function (xhr, textStatus, e) {
+      console.log(xhr.responseText);
+    });
+  }
+
+  function check_required_fields() {
+    let post_type = $('#re-beehiiv-post_type').val();
+    let taxonomy = $('#re-beehiiv-taxonomy').val();
+    let taxonomy_term = $('#re-beehiiv-taxonomy_term').val();
+    let content_type = $('#re-beehiiv-content_type').val();
+
+    let data = [post_type, content_type, taxonomy, taxonomy_term];
+    if (data.includes(null) || data.includes(undefined) || data.includes('') || data.includes('0')) {
+      alert('Please select all the required fields.');
+      return false;
+    }
+
+    return true;
+  }
+
 
   jQuery(document).ready(function ($) {
     $('#re-beehiiv-start-import').on('click', function () {
 
-      // Validate the form
-      let post_type = $('#re-beehiiv-post_type').val();
-      let taxonomy = $('#re-beehiiv-taxonomy').val();
-      let taxonomy_term = $('#re-beehiiv-taxonomy_term').val();
-      let content_type = $('#re-beehiiv-content_type').val();
-
-      // refactor the last if statement
-      let data = [post_type, content_type, taxonomy, taxonomy_term];
-      if (data.includes(null) || data.includes(undefined) || data.includes('') || data.includes('0')) {
-        alert('Please select all the required fields.');
+      if (!check_required_fields()) {
         return false;
       }
 
@@ -70,6 +97,17 @@
       $('.re-beehiiv-import-running').show();
       re_beehiiv_start_manual_import();
     });
+
+    $('#re-beehiiv-auto-import').on('click', function () {
+        
+        if (!check_required_fields()) {
+          return false;
+        }
+  
+        $(this).hide();
+        $('.re-beehiiv-import-running').show();
+        re_beehiiv_start_auto_import();
+    })
 
     $('#re-beehiiv-post_type').on('change', function() {
       let post_type = $(this).val();

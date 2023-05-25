@@ -170,6 +170,7 @@ class Re_Beehiiv
 
 		$ajax_import = new \Re_Beehiiv\Import\Ajax_Import();
 		$this->loader->add_action('wp_ajax_re_beehiiv_start_manual_import', $ajax_import, 'callback');
+		$this->loader->add_action('wp_ajax_re_beehiiv_start_auto_import', $ajax_import, 'auto_import_callback');
 		$this->loader->add_action('admin_notices', $ajax_import, 'register_progress_notice');
 
 		$import = new \Re_Beehiiv\Import\Import_Table();
