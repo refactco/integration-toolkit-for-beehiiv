@@ -177,6 +177,11 @@ class Re_Beehiiv
 		$this->loader->add_action('init', $import, 'create_custom_table', 10);
 		
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_admin_menu', 11 );
+
+		$Canonical_URL = new \Re_Beehiiv\Canonical_URL();
+		$this->loader->add_action('plugins_loaded', $Canonical_URL,'register_hook');
+
+
 	}
 
 	/**
