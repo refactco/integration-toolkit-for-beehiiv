@@ -20,7 +20,8 @@
  * @subpackage Re_Beehiiv/includes
  * @author     Refact <info@refact.co>
  */
-class Re_Beehiiv_Activator {
+class Re_Beehiiv_Activator
+{
 
 	/**
 	 * Short Description. (use period)
@@ -29,8 +30,7 @@ class Re_Beehiiv_Activator {
 	 *
 	 * @since    1.0.0
 	 */
-	public static function activate() {
-
+	public static function activate()
+	{
 	}
-
 }

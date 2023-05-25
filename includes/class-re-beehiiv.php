@@ -188,15 +188,22 @@ class Re_Beehiiv
 		 * Block Hooks
 		 */
 		$this->loader->add_action('init', \Re_Beehiiv\Blocks\Blocks::class, 'register_all_blocks', 10);
+
+		/**
+		 * Integrations with Gravity Forms
+		 */
 		$this->loader->add_action('init', \Re_Beehiiv\GravityForms\GravityForms::class, 'init', 11);
 
-
-
+		/**
+		 * ShortCode
+		 */
+		$this->loader->add_action('init', \Re_Beehiiv\ShortCode\ShortCode::class, 'init', 11);
 
 		/**
 		 * Profile Unsubscribe/Resubscribe
 		 */
 		$this->loader->add_action('init', \Re_Beehiiv\UserProfile\UserProfile::class, 'init', 10);
+    
 	}
 
 	/**
