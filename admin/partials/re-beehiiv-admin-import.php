@@ -1,6 +1,6 @@
 <?php
 if (!defined('WPINC')) die;
-
+$is_running = get_transient('RE_BEEHIIV_manual_import_running');
 if ($tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : false) {
     if ($tab == 'auto-import') {
         include_once RE_BEEHIIV_PATH . 'admin/partials/re-beehiiv-admin-auto-import.php';
@@ -104,21 +104,28 @@ var AllTaxonomyTerms = <?= json_encode($taxonomy_terms) ?>;
                     <label>
                         <input type="checkbox" name="re-beehiiv-exclude_draft" id="re-beehiiv-exclude_draft" value="yes"> Exclude draft posts
                     </label>
-                    <br>
+                    <p class="description">If checked, posts with draft status in Beehiiv will not be imported.</p>
                     <label>
                         <input type="checkbox" name="re-beehiiv-update_existing" id="re-beehiiv-update_existing" value="yes"> Update existing posts
                     </label>
+                    <p class="description">If checked, posts that have been imported before will be updated.</p>
                 </fieldset>
             </div>
         </div>
         <div class="wpfac-card">
             <input type="hidden" name="RE_BEEHIIV_ajax_import-nonce" id="RE_BEEHIIV_ajax_import-nonce" value="<?= wp_create_nonce('RE_BEEHIIV_ajax_import') ?>">
-            <div class="hidden re-beehiiv-import-running">
-                <p class="description">Import is running. Please wait until it finishes.</p>
+            <?php if ($is_running == true) { ?>
+            <div class="re-beehiiv-import-running">
+                <p class="description">Import is running. Please wait until it finishes. You can't start another import while this one is running.</p>
            </div>
+            <?php } else { ?>
             <div class="re-beehiiv-import-not-running">
                 <button type="button" class="button-primary" id="re-beehiiv-start-import">Start</button>
             </div>
+            <div class="hidden re-beehiiv-import-running">
+                <p class="description">Import is running. Please wait until it finishes.</p>
+           </div>
+            <?php } ?>
         </div>
     </div>
 </div>

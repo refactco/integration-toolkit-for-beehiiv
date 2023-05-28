@@ -108,10 +108,11 @@ var AllTaxonomyTerms = <?= json_encode($taxonomy_terms) ?>;
                     <label>
                         <input type="checkbox" name="re-beehiiv-exclude_draft" id="re-beehiiv-exclude_draft" value="yes"> Exclude draft posts
                     </label>
-                    <br>
+                    <p class="description">If checked, posts with draft status in Beehiiv will not be imported.</p>
                     <label>
                         <input type="checkbox" name="re-beehiiv-update_existing" id="re-beehiiv-update_existing" value="yes"> Update existing posts
                     </label>
+                    <p class="description">If checked, posts that have been imported before will be updated.</p>
                 </fieldset>
             </div>
         </div>
