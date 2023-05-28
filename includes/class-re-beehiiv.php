@@ -172,9 +172,6 @@ class Re_Beehiiv
 		$this->loader->add_action('wp_ajax_re_beehiiv_start_manual_import', $ajax_import, 'callback');
 		$this->loader->add_action('wp_ajax_re_beehiiv_start_auto_import', $ajax_import, 'auto_import_callback');
 		$this->loader->add_action('admin_notices', $ajax_import, 'register_progress_notice');
-
-		$import = new \Re_Beehiiv\Import\Import_Table();
-		$this->loader->add_action('init', $import, 'create_custom_table', 10);
 		
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_admin_menu', 11 );
 
