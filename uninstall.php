@@ -29,3 +29,5 @@
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
+
+\Re_Beehiiv\Import\Import_Table::delete_table();
