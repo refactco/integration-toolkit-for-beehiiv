@@ -64,7 +64,7 @@
     };
 
     jQuery.post(RE_BEEHIIV_CORE.ajax_url, data, function (response) {
-      
+
     }, 'json').fail(function (xhr, textStatus, e) {
       console.log(xhr.responseText);
     });
@@ -96,6 +96,7 @@
       $(this).hide();
       $('.re-beehiiv-import-running').show();
       re_beehiiv_start_manual_import();
+      location.reload();
     });
 
     $('#re-beehiiv-auto-import').on('click', function () {
@@ -107,6 +108,7 @@
         $(this).hide();
         $('.re-beehiiv-import-running').show();
         re_beehiiv_start_auto_import();
+        location.reload();
     })
 
     $('#re-beehiiv-post_type').on('change', function() {
