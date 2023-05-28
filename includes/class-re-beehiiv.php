@@ -260,4 +260,8 @@ class Re_Beehiiv
 		$queue = new Queue();
         $queue->queueHandler();
 	}
+
+	public static function is_plugin_activated() : bool {
+		return !empty(get_option( 're_beehiiv_publication_id' )) && !empty(get_option( 're_beehiiv_api_key' ));
+	}
 }
