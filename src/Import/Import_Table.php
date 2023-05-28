@@ -11,7 +11,7 @@ class Import_Table {
      *
      * @return void
      */
-    public static function create_custom_table() : void {
+    public static function create_table() : void {
         global $wpdb;
         $table_name = $wpdb->prefix . self::TABLE_NAME;
         $charset_collate = $wpdb->get_charset_collate();
@@ -22,7 +22,9 @@ class Import_Table {
             status varchar(255) NOT NULL,
             UNIQUE KEY id (id)
         ) $charset_collate;";
-        $wpdb->query($sql);
+        
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        dbDelta($sql);
     }
 
     /**
@@ -30,7 +32,7 @@ class Import_Table {
      *
      * @return void
      */
-    public static function delete_custom_table() : void {
+    public static function delete_table() : void {
         global $wpdb;
         $table_name = $wpdb->prefix . self::TABLE_NAME;
         $sql = "DROP TABLE IF EXISTS $table_name";
@@ -77,19 +79,18 @@ class Import_Table {
      * @param string $key_name
      * @return array|false
      */
-    public static function get_custom_table_row(string $key_name) : object|false {
+    public static function get_custom_table_row(string $key_name) : array|false {
         global $wpdb;
         $table_name = $wpdb->prefix . self::TABLE_NAME;
-        $sql = "SELECT * FROM $table_name WHERE key_name = '$key_name'";
+        $sql = "SELECT * FROM $table_name WHERE key_name = '%s'";
+        $sql = $wpdb->prepare($sql, $key_name);
         $result = $wpdb->get_results($sql);
-        
 
         if (!$result) {
             return false;
         }
-        $result[0]->key_value = json_decode($result[0]->key_value, true);
 
-        return $result[0];
+        return $result;
     }
 
     /**
@@ -101,7 +102,8 @@ class Import_Table {
     public static function delete_custom_table_row( string $key_name ) : void {
         global $wpdb;
         $table_name = $wpdb->prefix . self::TABLE_NAME;
-        $sql = "DELETE FROM $table_name WHERE key_name = '$key_name'";
+        $sql = "DELETE FROM $table_name WHERE key_name = '%s'";
+        $sql = $wpdb->prepare($sql, $key_name);
         $wpdb->query($sql);
     }
 }

@@ -16,7 +16,13 @@ class Create_Post {
     public function __construct( $req ) {
         $data = Import_Table::get_custom_table_row($req['id']);
 
-        $this->data = $data->key_value;
+        if (!$data) {
+            $this->data = false;
+            return;
+        }
+
+        $data[0]->key_value = json_decode($data[0]->key_value, true);
+        $this->data = $data[0]->key_value;
     }
 
     /**
