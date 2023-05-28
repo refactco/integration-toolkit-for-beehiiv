@@ -4,6 +4,7 @@ namespace Re_Beehiiv\Import;
 
 class Queue {
     // Constants
+    const TIMESTAMP_4_SEC = 4;
     const TIMESTAMP_2_MIN = 2 * MINUTE_IN_SECONDS;
     const TIMESTAMP_30_MIN = 1800;
     const TIMESTAMP_1_HOUR = 3600;
@@ -16,20 +17,17 @@ class Queue {
     private $action = 'bulk_import';
     private $timestamp = MINUTE_IN_SECONDS;
 
-    public function setTimestamp($timestamp)
+    public function addToQueue($request, $group_name, $time_stamp)
     {
-        $this->timestamp = $timestamp;
-    }
+        $this->timestamp = $time_stamp;
 
-    public function addToQueue($request)
-    {
-        if (as_has_scheduled_action($this->action, $request, $request['group']) === false) {
-            as_schedule_single_action(time() + $this->timestamp, $this->action, $request, $request['group']);
+        if (as_has_scheduled_action($this->action, $request, $group_name) === false) {
+            as_schedule_single_action(time() + $this->timestamp, $this->action, $request, $group_name);
         }
     }
     public function addRecurrenceTask($request)
     {
-        $cron_time = $request['cron_time'];
+        $cron_time = $request['args']['cron_time'];
         $timestamp = $this->getTimestamp($cron_time);
         if (as_has_scheduled_action($this->action, $request, $request['group']) === false) {
             as_schedule_recurring_action(time() + $timestamp, $timestamp, $this->action, $request, $request['group']);
