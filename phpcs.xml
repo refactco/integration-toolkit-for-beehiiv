@@ -6,6 +6,8 @@
 	<exclude-pattern>*.min.js</exclude-pattern>
 	<arg name="basepath" value="."/>
 	<arg name="parallel" value="8"/>
+	<arg name="extensions" value="php"/>
+
 
 
 	<!--
@@ -34,6 +36,8 @@
 		-->
 		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
 		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
+		<exclude name="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound" />
+		<exclude name="WordPress.PHP.YodaConditions.NotYoda" />
 
 		<exclude name="Squiz.Commenting.FunctionComment.ParamCommentFullStop" />
 		<exclude name="Squiz.Commenting.FunctionComment.MissingParamComment" />

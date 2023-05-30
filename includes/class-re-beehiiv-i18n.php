@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Define the internationalization functionality
  *
@@ -24,7 +23,7 @@
  * @subpackage Re_Beehiiv/includes
  * @author     Refact<info@redact.co>
  */
-class Re_Beehiiv_i18n {
+class Re_Beehiiv_I18n {
 
 
 	/**
