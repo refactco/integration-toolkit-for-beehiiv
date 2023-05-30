@@ -188,12 +188,6 @@ class Re_Beehiiv
 		 * Block Hooks
 		 */
 		$this->loader->add_action('init', \Re_Beehiiv\Blocks\Blocks::class, 'register_all_blocks', 10);
-
-
-		/**
-		 * Profile Unsubscribe/Resubscribe
-		 */
-		$this->loader->add_action('init', \Re_Beehiiv\UserProfile\UserProfile::class, 'init', 10);
 	}
 
 	/**
