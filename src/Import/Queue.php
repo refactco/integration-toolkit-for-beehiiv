@@ -25,7 +25,7 @@ class Queue {
 	 *
 	 * @var string
 	 */
-	private $action    = 'bulk_import';
+	private $action = 're_beehiiv_bulk_import';
 
 	/**
 	 * Timestamp
@@ -102,7 +102,7 @@ class Queue {
 		$request_key = $this->get_request_key( $args['id'] );
 		$retry_count = get_transient( $request_key );
 		if ( $retry_count === false || $retry_count < self::MAX_RETRY_COUNT ) {
-			$res = ( new Create_Post( $args ) )->process();
+			$res = ( new Create_Post( $args, $group_name ) )->process();
 			if ( $res['success'] === false ) {
 				$retry_count = $retry_count === false ? 1 : $retry_count + 1;
 				set_transient( $request_key, $retry_count, self::TIMESTAMP_2_MIN );

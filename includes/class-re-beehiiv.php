@@ -165,6 +165,7 @@ class Re_Beehiiv {
 		$this->loader->add_action( 'wp_ajax_re_beehiiv_start_manual_import', $ajax_import, 'callback' );
 		$this->loader->add_action( 'wp_ajax_re_beehiiv_start_auto_import', $ajax_import, 'auto_import_callback' );
 		$this->loader->add_action( 'admin_notices', $ajax_import, 'register_progress_notice' );
+		$this->loader->add_filter( 'heartbeat_settings', $ajax_import, 'change_heartbeat_while_process_is_running' );
 
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_admin_menu', 11 );
 

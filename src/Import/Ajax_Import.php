@@ -214,8 +214,7 @@ class Ajax_Import {
 
 			$data = apply_filters( 're_beehiiv_ajax_import_before_create_post', $data );
 
-			Import_Table::insert_custom_table_row( $data['meta']['post_id'], $data, 'pending' );
-
+			Import_Table::insert_custom_table_row( $data['meta']['post_id'], $data, $args['group'], 'pending' );
 			$req['group'] = $args['group'];
 			$req['args']  = array(
 				'id' => $data['meta']['post_id'],
@@ -401,6 +400,23 @@ class Ajax_Import {
 		echo '<p>Importing posts from Beehiiv is in progress. Be patient, this may take a while.';
 		echo '<strong> Progress: ' . count( $complete_actions ) . ' / ' . count( $all_actions ) . '</strong></p>';
 		echo '</div>';
+	}
+
+	/**
+	 * Change heartbeat interval while manual import is running
+	 * Filter: heartbeat_settings
+	 *
+	 * @param array $settings
+	 * @return array
+	 */
+	public function change_heartbeat_while_process_is_running( $settings ) {
+		$is_running = get_transient( 'RE_BEEHIIV_manual_import_running' );
+
+		if ( $is_running ) {
+			$settings['interval'] = 10;
+		}
+
+		return $settings;
 	}
 
 }

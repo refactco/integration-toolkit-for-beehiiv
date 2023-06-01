@@ -29,8 +29,8 @@ class Create_Post {
 	 *
 	 * @param array $req
 	 */
-	public function __construct( $req ) {
-		$data = Import_Table::get_custom_table_row( $req['id'] );
+	public function __construct( $req, $group_name ) {
+		$data = Import_Table::get_custom_table_row( $req['id'], $group_name );
 
 		if ( ! $data ) {
 			$this->data = false;

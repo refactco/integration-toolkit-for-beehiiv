@@ -22,12 +22,13 @@ class Import_Table {
 		$table_name      = $wpdb->prefix . self::TABLE_NAME;
 		$charset_collate = $wpdb->get_charset_collate();
 		$sql             = "CREATE TABLE IF NOT EXISTS $table_name (
-            id mediumint(9) NOT NULL AUTO_INCREMENT,
-            key_name varchar(255) NOT NULL,
-            key_value longtext NOT NULL,
-            status varchar(255) NOT NULL,
-            UNIQUE KEY id (id)
-        ) $charset_collate;";
+			id int(11) NOT NULL AUTO_INCREMENT,
+			key_name varchar(255) NOT NULL,
+			key_value longtext NOT NULL,
+			group_name varchar(255) NOT NULL,
+			status varchar(255) NOT NULL,
+			PRIMARY KEY  (id)
+		) $charset_collate;";
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
@@ -41,7 +42,7 @@ class Import_Table {
 	public static function delete_table() : void {
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
-		$sql        = "DROP TABLE IF EXISTS $table_name";
+		$sql        = esc_sql( "DROP TABLE IF EXISTS {$table_name}" );
 		$wpdb->query( $sql );
 	}
 
@@ -53,7 +54,7 @@ class Import_Table {
 	public static function delete_custom_table_rows() : void {
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
-		$sql        = "DELETE FROM $table_name";
+		$sql        = esc_sql( "DELETE FROM {$table_name}" );
 		$wpdb->query( $sql );
 	}
 
@@ -65,7 +66,7 @@ class Import_Table {
 	 * @param string $status
 	 * @return void
 	 */
-	public static function insert_custom_table_row( string $key_name, array $key_value, string $status ) : void {
+	public static function insert_custom_table_row( string $key_name, array $key_value, string $group_name, string $status ) : void {
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
 		$key_value  = wp_json_encode( $key_value );
@@ -74,9 +75,16 @@ class Import_Table {
 			array(
 				'key_name'  => sanitize_text_field( $key_name ),
 				'key_value' => sanitize_text_field( $key_value ),
+				'group_name' => sanitize_text_field( $group_name ),
 				'status'    => sanitize_text_field( $status ),
 			)
 		);
+
+		$err = $wpdb->last_error;
+
+		if ( $err ) {
+			error_log( $err );
+		}
 	}
 
 	/**
@@ -84,12 +92,11 @@ class Import_Table {
 	 *
 	 * @param string $key_name
 	 */
-	public static function get_custom_table_row( string $key_name ) {
+	public static function get_custom_table_row( string $key_name, string $group_name ) {
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
 		$key_name   = sanitize_text_field( $key_name );
-		$sql        = "SELECT * FROM $table_name WHERE key_name = '%s'";
-		$sql        = $wpdb->prepare( $sql, $key_name );
+		$sql        = $wpdb->prepare( "SELECT * FROM {$table_name} WHERE key_name = '%s' AND group_name = '%s'", $key_name, $group_name );
 		$result     = $wpdb->get_results( $sql );
 
 		if ( ! $result ) {
@@ -109,8 +116,7 @@ class Import_Table {
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
 		$key_name   = sanitize_text_field( $key_name );
-		$sql        = "DELETE FROM $table_name WHERE key_name = '%s'";
-		$sql        = $wpdb->prepare( $sql, $key_name );
+		$sql        = $wpdb->prepare( "DELETE FROM {$table_name} WHERE key_name = '%s'", $key_name );
 		$wpdb->query( $sql );
 	}
 }
