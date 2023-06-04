@@ -5,9 +5,32 @@
  * @package Re_Beehiiv
  */
 
+use Re_Beehiiv\Import\Manage_Actions;
+
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+
+$args = Manage_Actions::get_auto_action_args();
+$is_auto_action_exist = ! empty( $args ) ? true : false;
+
+if ( $is_auto_action_exist ) {
+	$args = reset( $args );
+}
+
+$default_args = array(
+	'auto'	=> 'auto',
+	'content_type' => 'free_web_content',
+	'post_status' => 'publish',
+	'update_existing' => 'no',
+	'exclude_draft'	=> 'no',
+	'taxonomy'	=> '0',
+	'term'	=> '0',
+	'cron_time'	=> '0',
+	'post_type'	=> '0',
+);
+
+$args = wp_parse_args( $args, $default_args );
 
 
 // get all taxonomies based on post type
@@ -61,15 +84,36 @@ var AllTaxonomyTerms = <?php echo wp_json_encode( $taxonomy_terms ); ?>;
 				<a class="nav-tab nav-tab-active" data-tab="re-beehiiv-auto-import" id="re-beehiiv-auto-import-tab" href="<?php echo esc_url( admin_url( 'admin.php?page=re-beehiiv-import&tab=auto-import' ) ); ?>">Auto Import</a>
 			</nav>
 		</div>
+		<?php if ( $is_auto_action_exist ) : 
+			// get term by term id
+			$term = get_term( $args['term'], $args['taxonomy'] );
+			?>
+			<div class="current_auto_import">
+				<p> Current Auto Import will run <strong><?php echo esc_html( $args['cron_time'] ); ?></strong> and will import to <strong><?php echo esc_html( $args['post_type'] ); ?></strong> post type and <strong><?php echo esc_html( $args['taxonomy'] ); ?></strong> taxonomy with <strong><?php echo esc_html( $term->name ); ?></strong> term. The default post status is <strong><?php echo esc_html( $args['post_status'] ); ?></strong>. Draft posts will <strong><?php echo $args['exclude_draft'] === 'yes' ? 'not be' : ' be'; ?></strong> imported and the Existing posts will <strong><?php echo $args['update_existing'] === 'yes' ? ' be' : 'not be'; ?></strong> updated. You can change the settings below.</p>
+			</div>
+		<?php endif; ?>
 		<!-- set cron time -->
 		<fieldset>
 			<label for="re-beehiiv-cron_time"><strong>Cron Time: </strong></label>
 			<p class="description">How often do you want to run the cron job?</p>
 			<select name="re-beehiiv-cron_time" id="re-beehiiv-cron_time" required>
-				<option value="hourly">Hourly</option>
-				<option value="twicedaily">Twice Daily</option>
-				<option value="daily">Daily</option>
-				<option value="weekly">Weekly</option>
+				<?php
+				$cron_times = array(
+					'hourly'      => 'Hourly',
+					'twicedaily'  => 'Twice Daily',
+					'daily'       => 'Daily',
+					'weekly'      => 'Weekly',
+				);
+
+				foreach ( $cron_times as $cron_time => $cron_time_label ) {
+					$selected = '';
+					if ( $cron_time === $args['cron_time'] ) {
+						$selected = 'selected';
+					}
+					echo '<option value="' . esc_attr( $cron_time ) . '" ' . esc_attr( $selected ) . '>' . esc_html( $cron_time_label ) . '</option>';
+				}
+				
+				?>
 			</select>
 		</fieldset>
 		<!-- Select: Content Type -->
@@ -77,9 +121,22 @@ var AllTaxonomyTerms = <?php echo wp_json_encode( $taxonomy_terms ); ?>;
 			<label for="re-beehiiv-content_type"><strong>Content Type: </strong></label>
 			<p class="description">What kind of content do you want to import?</p>
 			<select name="re-beehiiv-content_type" id="re-beehiiv-content_type">
-				<option value="free_web_content">Free</option>
-				<option value="premium_web_content">Premium</option>
-				<option value="both">Both</option>
+				<?php
+				$content_types = array(
+					'free_web_content' => 'Free Web Content',
+					'premium_web_content' => 'Premium Web Content',
+					'both' => 'Both',
+				);
+
+				foreach ( $content_types as $content_type => $content_type_label ) {
+					$selected = '';
+					if ( $content_type === $args['content_type'] ) {
+						$selected = 'selected';
+					}
+					echo '<option value="' . esc_attr( $content_type ) . '" ' . esc_attr( $selected ) . '>' . esc_html( $content_type_label ) . '</option>';
+				}
+
+				?>
 			</select>
 		</fieldset>
 
@@ -93,17 +150,49 @@ var AllTaxonomyTerms = <?php echo wp_json_encode( $taxonomy_terms ); ?>;
 					if ( $re_post_type === 'attachment' ) {
 						continue;
 					}
-					echo '<option value="' . esc_attr( $re_post_type ) . '">' . esc_html( $re_post_type ) . '</option>';
+					$selected = '';
+					if ( $re_post_type === $args['post_type'] ) {
+						$selected = 'selected';
+					}
+					echo '<option value="' . esc_attr( $re_post_type ) . '" ' . esc_attr( $selected ) . '>' . esc_html( $re_post_type ) . '</option>';
 				}
 				?>
 			</select>
 			<select name="re-beehiiv-taxonomy" id="re-beehiiv-taxonomy">
-				<option value="0">Select Post Type First</option>
+				<?php 
+				if ( !empty( $args['post_type']) && $args['taxonomy'] !== '0' ) {
+					foreach ( $taxonomies[ $args['post_type'] ] as $re_taxonomy ) {
+						$selected = '';
+						if ( $re_taxonomy['name'] === $args['taxonomy'] ) {
+							$selected = 'selected';
+						}
+						echo '<option value="' . esc_attr( $re_taxonomy['name'] ) . '" ' . esc_attr( $selected ) . '>' . esc_html( $re_taxonomy['label'] ) . '</option>';
+					}
+				} else {
+					echo '<option value="0">Select Post Type First</option>';
+				}
+				?>
 			</select>
 			<div id="re-beehiiv-taxonomy_terms">
 				<p>Choose a term below.</p>
 				<select name="re-beehiiv-taxonomy_term" id="re-beehiiv-taxonomy_term">
-					<option value="0">Select Term</option>
+					<?php
+					if ( !empty( $args['post_type']) && $args['taxonomy'] !== '0' && $args['term'] !== '0' ) {
+
+						$selected_terms = $taxonomy_terms[ $args['post_type'] ][ $args['taxonomy'] ];
+
+						foreach ( $selected_terms as $selected_term ) {
+							$selected = '';
+							if ( $selected_term->term_id == $args['term'] ) {
+								$selected = 'selected';
+							}
+							echo '<option value="' . esc_attr( $selected_term->term_id ) . '" ' . esc_attr( $selected ) . '>' . esc_html( $selected_term->name ) . '</option>';
+						}
+					} else {
+						echo '<option value="0">Select Taxonomy First</option>';
+					}
+
+					?>
 				</select>
 			</div>
 		</fieldset>
@@ -116,19 +205,32 @@ var AllTaxonomyTerms = <?php echo wp_json_encode( $taxonomy_terms ); ?>;
 				<label for="re-beehiiv-post_status"><strong>Post Status: </strong></label>
 				<p class="description">Select the post status you want to import the content to.</p>
 				<select name="re-beehiiv-post_status" id="re-beehiiv-post_status">
-					<option value="publish">Publish</option>
-					<option value="draft">Draft</option>
-					<option value="pending">Pending</option>
-					<option value="private">Private</option>
+					<?php
+					$post_statuses = array(
+						'publish' => 'Publish',
+						'draft' => 'Draft',
+						'pending' => 'Pending',
+						'private' => 'Private',
+					);
+
+					foreach ( $post_statuses as $post_status => $post_status_label ) {
+						$selected = '';
+						if ( $post_status === $args['post_status'] ) {
+							$selected = 'selected';
+						}
+						echo '<option value="' . esc_attr( $post_status ) . '" ' . esc_attr( $selected ) . '>' . esc_html( $post_status_label ) . '</option>';
+					}
+
+					?>
 				</select>
 				</fieldset>
 				<fieldset>
 					<label>
-						<input type="checkbox" name="re-beehiiv-exclude_draft" id="re-beehiiv-exclude_draft" value="yes"> Exclude draft posts
+						<input type="checkbox" name="re-beehiiv-exclude_draft" id="re-beehiiv-exclude_draft" value="yes" <?php checked( $args['exclude_draft'], 'yes' ); ?>> Exclude Draft Posts
 					</label>
 					<p class="description">If checked, posts with draft status in Beehiiv will not be imported.</p>
 					<label>
-						<input type="checkbox" name="re-beehiiv-update_existing" id="re-beehiiv-update_existing" value="yes"> Update existing posts
+						<input type="checkbox" name="re-beehiiv-update_existing" id="re-beehiiv-update_existing" value="yes" <?php checked( $args['update_existing'], 'yes' ); ?>> Update Existing Posts
 					</label>
 					<p class="description">If checked, posts that have been imported before will be updated.</p>
 				</fieldset>
@@ -140,7 +242,7 @@ var AllTaxonomyTerms = <?php echo wp_json_encode( $taxonomy_terms ); ?>;
 				<p class="description">Import is running. Please wait until it finishes.</p>
 			</div>
 			<div class="re-beehiiv-import-not-running">
-				<button type="button" class="button-primary" id="re-beehiiv-auto-import">Start</button>
+				<button type="button" class="button-primary" id="re-beehiiv-auto-import">Save</button>
 			</div>
 		</div>
 	</div>

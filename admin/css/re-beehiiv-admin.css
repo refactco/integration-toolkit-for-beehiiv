@@ -55,3 +55,7 @@
 .beehiiv-toggle-section.open .content {
 	display: block;
 }
+
+.re-beehiiv-tabs {
+    padding-bottom: 10px;
+}

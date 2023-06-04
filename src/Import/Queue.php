@@ -138,29 +138,4 @@ class Queue {
 	public function get_request_key( $request ) {
 		return 're_beehiiv_' . md5( wp_json_encode( $request ) );
 	}
-
-
-	/**
-	 * Get all scheduled actions for a given group and status
-	 *
-	 * @param string $group
-	 * @param string $status
-	 * @return array
-	 */
-	public function get_manual_actions( $group = '', $status = '' ) {
-
-		$args = array(
-			'hook'     => $this->action,
-			'group'    => $group ? $group : '',
-			'per_page' => -1,
-		);
-
-		if ( $status ) {
-			$args['status'] = $status;
-		}
-
-		$actions = as_get_scheduled_actions( $args );
-
-		return $actions;
-	}
 }

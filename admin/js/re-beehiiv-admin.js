@@ -38,7 +38,7 @@
       taxonomy: $('#re-beehiiv-taxonomy').val(),
       term: $('#re-beehiiv-taxonomy_term').val(),
       post_status: $('#re-beehiiv-post_status').val(),
-      update_existing: $('#re-beehiiv-update_existing') ? 'yes' : 'no',
+      update_existing: $('#re-beehiiv-update_existing').is(':checked') ? 'yes' : 'no',
       exclude_draft: $('#re-beehiiv-exclude_draft').is(':checked') ? 'yes' : 'no',
     };
 
@@ -58,7 +58,7 @@
       taxonomy: $('#re-beehiiv-taxonomy').val(),
       term: $('#re-beehiiv-taxonomy_term').val(),
       post_status: $('#re-beehiiv-post_status').val(),
-      update_existing: $('#re-beehiiv-update_existing') ? 'yes' : 'no',
+      update_existing: $('#re-beehiiv-update_existing').is(':checked') ? 'yes' : 'no',
       exclude_draft: $('#re-beehiiv-exclude_draft').is(':checked') ? 'yes' : 'no',
       cron_time: $('#re-beehiiv-cron_time').val(),
     };
@@ -96,7 +96,11 @@
       $(this).hide();
       $('.re-beehiiv-import-running').show();
       re_beehiiv_start_manual_import();
-      location.reload();
+      let url = new URL(window.location.href);
+      let params = new URLSearchParams(url.search);
+      params.set('status', 'started');
+      url.search = params.toString();
+      window.location.href = url.toString();
     });
 
     $('#re-beehiiv-auto-import').on('click', function () {

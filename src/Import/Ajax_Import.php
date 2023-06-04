@@ -118,8 +118,10 @@ class Ajax_Import {
 		$form_data['cron_time'] = isset( $_POST['cron_time'] ) ? sanitize_text_field( $_POST['cron_time'] ) : false; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 		$auto = 'auto';
+		
+		Manage_Actions::remove_auto_actions();
 
-		$group_name = 'auto_recurring_import' . time();
+		$group_name = 'auto_recurring_import';
 
 		$req['group'] = $group_name;
 		$req['args']  = array(
@@ -159,8 +161,9 @@ class Ajax_Import {
 		$exclude_draft   = isset( $_POST['exclude_draft'] ) ? sanitize_text_field( $_POST['exclude_draft'] ) : false;
 		$taxonomy        = isset( $_POST['taxonomy'] ) ? sanitize_text_field( $_POST['taxonomy'] ) : false;
 		$term            = isset( $_POST['term'] ) ? sanitize_text_field( $_POST['term'] ) : false;
+		$post_type       = isset( $_POST['post_type'] ) ? sanitize_text_field( $_POST['post_type'] ) : false;
 
-		if ( ! $nonce || ! $content_type || ! $post_status || ! $update_existing || ! $exclude_draft || ! $taxonomy || ! $term ) {
+		if ( ! $nonce || ! $content_type || ! $post_status || ! $update_existing || ! $exclude_draft || ! $taxonomy || ! $term || ! $post_type ) {
 			return array(
 				'error'   => true,
 				'message' => 'Invalid data',
@@ -171,6 +174,7 @@ class Ajax_Import {
 			'nonce'           => $nonce,
 			'content_type'    => $content_type,
 			'post_status'     => $post_status,
+			'post_type'       => $post_type,
 			'update_existing' => $update_existing,
 			'exclude_draft'   => $exclude_draft,
 			'taxonomy'        => $taxonomy,
@@ -355,8 +359,8 @@ class Ajax_Import {
 			return;
 		}
 
-		$complete_actions = $this->get_queue()->get_manual_actions( $group_name, 'complete' );
-		$all_actions      = $this->get_queue()->get_manual_actions( $group_name );
+		$complete_actions = Manage_Actions::get_actions( $group_name, 'complete' );
+		$all_actions      = Manage_Actions::get_actions( $group_name );
 
 		if ( empty( $all_actions ) ) {
 			delete_transient( 'RE_BEEHIIV_manual_import_group' );
@@ -373,7 +377,7 @@ class Ajax_Import {
 			return;
 		}
 
-		$failed_actions = $this->get_queue()->get_manual_actions( $group_name, 'failed' );
+		$failed_actions = Manage_Actions::get_actions( $group_name, 'failed' );
 
 		if ( count( $failed_actions ) === count( $all_actions ) ) {
 			echo "<div class='notice notice-error is-dismissible' id='re_beehiiv_progress_notice'>";
