@@ -189,11 +189,13 @@ class Re_Beehiiv {
 
 		$this->loader->add_action( 'rest_api_init', \Re_Beehiiv\Blocks\Settings::class, 'register_rest_routes' );
 
+
+		$this->loader->add_action('rest_api_init', \Re_Beehiiv\Blocks\Settings::class, 'register_rest_routes');
+
 		/**
 		 * Block Hooks
 		 */
-		$this->loader->add_action( 'init', \Re_Beehiiv\Blocks\Blocks::class, 'register_all_blocks', 10 );
-		$this->loader->add_action( 'init', \Re_Beehiiv\GravityForms\GravityForms::class, 'init', 11 );
+		$this->loader->add_action('init', \Re_Beehiiv\Blocks\Blocks::class, 'register_all_blocks', 10);
 
 	}
 

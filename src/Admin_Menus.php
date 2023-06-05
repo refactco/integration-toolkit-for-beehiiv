@@ -1,10 +1,12 @@
 <?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName
+
 namespace Re_Beehiiv;
 
 /**
  * This class is responsible for registering and loading the admin menus
  */
-class Admin_Menus {
+class Admin_Menus
+{
 
 	/**
 	 * Register the admin menus
@@ -22,10 +24,18 @@ class Admin_Menus {
 			'dashicons-admin-generic',
 			75
 		);
-
+    
+    	add_submenu_page(
+			're-beehiiv',
+			'Re Beehiiv - Settings',
+			'Settings',
+			'manage_options',
+			're-beehiiv-settings',
+			[$this, 'add_settings_page']
+		);
 	}
-
-	/**
+  
+  /**
 	 * Load the import page
 	 *
 	 * @return void
@@ -51,5 +61,13 @@ class Admin_Menus {
 			<?php
 		}
 	}
+
+
+	public function add_settings_page()
+	{
+		require_once RE_BEEHIIV_PATH . 'admin/partials/re-beehiiv-admin-settings.php';
+	}
+        
+
 
 }
