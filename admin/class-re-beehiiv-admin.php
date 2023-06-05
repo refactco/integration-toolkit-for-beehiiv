@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -52,7 +51,9 @@ class Re_Beehiiv_Admin
 	{
 
 		$this->re_beehiiv = $re_beehiiv;
+
 		$this->version = $version;
+
 	}
 
 	/**
@@ -102,11 +103,39 @@ class Re_Beehiiv_Admin
 
 		wp_localize_script($this->re_beehiiv, 'RE_BEEHIIV_CORE', array('ajax_url' => admin_url('admin-ajax.php')));
 	}
-
-	function acf_json_load_point($paths)
-	{
-		$paths[] = plugin_dir_path(__FILE__) . 'acf-json';
+  
+	/**
+	 * Setup ACF JSON save point
+	 *
+	 * @param string $paths
+	 */
+	public function acf_json_load_point( $paths ) {
+		$paths[] = plugin_dir_path( __FILE__ ) . 'acf-json';
 
 		return $paths;
 	}
+
+	/**
+	 * Setup Admin Menu
+	 */
+	public function add_admin_menu() {
+
+		add_submenu_page(
+			'options-general.php',
+			__( 'Re/Beehiiv Settings', 're-beehiiv' ),
+			__( 'Re/Beehiiv Settings', 're-beehiiv' ),
+			'manage_options',
+			're-beehiiv-settings',
+			array( $this, 'add_settings_page' )
+		);
+
+	}
+
+	/**
+	 * Setup settings page
+	 */
+	public function add_settings_page() {
+		require_once RE_BEEHIIV_PATH . 'admin/partials/re-beehiiv-admin-settings.php';
+	}
+
 }

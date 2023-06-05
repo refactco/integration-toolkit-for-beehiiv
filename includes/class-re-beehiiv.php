@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The file that defines the core plugin class
  *
@@ -12,6 +11,8 @@
  * @package    Re_Beehiiv
  * @subpackage Re_Beehiiv/includes
  */
+
+use Re_Beehiiv\Import\Queue;
 
 /**
  * The core plugin class.
@@ -27,8 +28,8 @@
  * @subpackage Re_Beehiiv/includes
  * @author     Refact <info@refact.co>
  */
-class Re_Beehiiv
-{
+class Re_Beehiiv {
+
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -67,9 +68,8 @@ class Re_Beehiiv
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct()
-	{
-		if (defined('RE_BEEHIIV_CORE_VERSION')) {
+	public function __construct() {
+		if ( defined( 'RE_BEEHIIV_CORE_VERSION' ) ) {
 			$this->version = RE_BEEHIIV_CORE_VERSION;
 		} else {
 			$this->version = '1.0.0';
@@ -80,6 +80,7 @@ class Re_Beehiiv
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
+		$this->run_import();
 	}
 
 	/**
@@ -88,7 +89,7 @@ class Re_Beehiiv
 	 * Include the following files that make up the plugin:
 	 *
 	 * - Re_Beehiiv_Loader. Orchestrates the hooks of the plugin.
-	 * - Re_Beehiiv_i18n. Defines internationalization functionality.
+	 * - Re_Beehiiv_I18n. Defines internationalization functionality.
 	 * - Re_Beehiiv_Admin. Defines all hooks for the admin area.
 	 * - Re_Beehiiv_Public. Defines all hooks for the public side of the site.
 	 *
@@ -98,32 +99,33 @@ class Re_Beehiiv
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function load_dependencies()
-	{
-
+	private function load_dependencies() {
 		/**
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-re-beehiiv-loader.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-re-beehiiv-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-re-beehiiv-i18n.php';
-
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-re-beehiiv-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-re-beehiiv-admin.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-re-beehiiv-admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-re-beehiiv-public.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-re-beehiiv-public.php';
+
+		if ( ! $this->is_action_scheduler_plugin_active() ) {
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/woocommerce/action-scheduler/action-scheduler.php';
+		}
 
 		$this->loader = new Re_Beehiiv_Loader();
 	}
@@ -131,18 +133,16 @@ class Re_Beehiiv
 	/**
 	 * Define the locale for this plugin for internationalization.
 	 *
-	 * Uses the Re_Beehiiv_i18n class in order to set the domain and to register the hook
+	 * Uses the Re_Beehiiv_I18n class in order to set the domain and to register the hook
 	 * with WordPress.
 	 *
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function set_locale()
-	{
+	private function set_locale() {
+		$plugin_i18n = new Re_Beehiiv_I18n();
 
-		$plugin_i18n = new Re_Beehiiv_i18n();
-
-		$this->loader->add_action('plugins_loaded', $plugin_i18n, 'load_plugin_textdomain');
+		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 	}
 
 	/**
@@ -152,19 +152,26 @@ class Re_Beehiiv
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function define_admin_hooks()
-	{
-		$plugin_admin = new Re_Beehiiv_Admin($this->get_re_beehiiv(), $this->get_version());
+	private function define_admin_hooks() {
+		$plugin_admin = new Re_Beehiiv_Admin( $this->get_re_beehiiv(), $this->get_version() );
 
-		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
-		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
 		$admin_menus = new \Re_Beehiiv\Admin_Menus();
-		$this->loader->add_action('admin_menu', $admin_menus, 'register', 10);
+		$this->loader->add_action( 'admin_menu', $admin_menus, 'register', 10 );
 
-		$ajax_import = new \Re_Beehiiv\Ajax_Import();
-		$this->loader->add_action('wp_ajax_re_beehiiv_import', $ajax_import, 'callback');
-		$this->loader->add_action('wp_ajax_nopriv_re_beehiiv_import', $ajax_import, 'callback');
+		$ajax_import = new \Re_Beehiiv\Import\Ajax_Import();
+		$this->loader->add_action( 'wp_ajax_re_beehiiv_start_manual_import', $ajax_import, 'callback' );
+		$this->loader->add_action( 'wp_ajax_re_beehiiv_start_auto_import', $ajax_import, 'auto_import_callback' );
+		$this->loader->add_action( 'admin_notices', $ajax_import, 'register_progress_notice' );
+		$this->loader->add_filter( 'heartbeat_settings', $ajax_import, 'change_heartbeat_while_process_is_running' );
+
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_admin_menu', 11 );
+
+		$canonical_url = new \Re_Beehiiv\Canonical_URL();
+		$this->loader->add_action( 'plugins_loaded', $canonical_url, 'register_hook' );
+
 	}
 
 	/**
@@ -174,13 +181,14 @@ class Re_Beehiiv
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function define_public_hooks()
-	{
+	private function define_public_hooks() {
+		$plugin_public = new Re_Beehiiv_Public( $this->get_re_beehiiv(), $this->get_version() );
 
-		$plugin_public = new Re_Beehiiv_Public($this->get_re_beehiiv(), $this->get_version());
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
-		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
-		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
+		$this->loader->add_action( 'rest_api_init', \Re_Beehiiv\Blocks\Settings::class, 'register_rest_routes' );
+
 
 		$this->loader->add_action('rest_api_init', \Re_Beehiiv\Blocks\Settings::class, 'register_rest_routes');
 
@@ -188,6 +196,7 @@ class Re_Beehiiv
 		 * Block Hooks
 		 */
 		$this->loader->add_action('init', \Re_Beehiiv\Blocks\Blocks::class, 'register_all_blocks', 10);
+
 	}
 
 	/**
@@ -195,8 +204,7 @@ class Re_Beehiiv
 	 *
 	 * @since    1.0.0
 	 */
-	public function run()
-	{
+	public function run() {
 		$this->loader->run();
 	}
 
@@ -207,8 +215,7 @@ class Re_Beehiiv
 	 * @since     1.0.0
 	 * @return    string    The name of the plugin.
 	 */
-	public function get_re_beehiiv()
-	{
+	public function get_re_beehiiv() {
 		return $this->re_beehiiv;
 	}
 
@@ -218,8 +225,7 @@ class Re_Beehiiv
 	 * @since     1.0.0
 	 * @return    Re_Beehiiv_Loader    Orchestrates the hooks of the plugin.
 	 */
-	public function get_loader()
-	{
+	public function get_loader() {
 		return $this->loader;
 	}
 
@@ -229,8 +235,34 @@ class Re_Beehiiv
 	 * @since     1.0.0
 	 * @return    string    The version number of the plugin.
 	 */
-	public function get_version()
-	{
+	public function get_version() {
 		return $this->version;
+	}
+
+	/**
+	 * Check if Action Scheduler plugin is active.
+	 *
+	 * @return bool
+	 */
+	public function is_action_scheduler_plugin_active() {
+		$active_plugins = get_option( 'active_plugins' );
+		return in_array( 'action-scheduler/action-scheduler.php', $active_plugins );
+	}
+
+	/**
+	 * Run the import.
+	 */
+	public function run_import() {
+		$queue = new Queue();
+		$queue->queue_handler();
+	}
+
+	/**
+	 * Check if api key and publication id are set.
+	 *
+	 * @return bool
+	 */
+	public static function is_plugin_activated() : bool {
+		return ! empty( get_option( 're_beehiiv_publication_id' ) ) && ! empty( get_option( 're_beehiiv_api_key' ) );
 	}
 }

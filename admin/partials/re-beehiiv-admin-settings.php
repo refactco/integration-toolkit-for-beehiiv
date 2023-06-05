@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Provide a admin area view for the plugin
  *
@@ -11,6 +10,7 @@
  * @package    Re_Beehiiv
  * @subpackage Re_Beehiiv/admin/templates
  */
+
 ?>
 
 <div id="re-beehiiv-settings"></div>

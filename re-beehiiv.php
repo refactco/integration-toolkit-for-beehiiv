@@ -19,18 +19,17 @@ if (!defined('WPINC')) {
 //Load Plugin File autoload
 include_once dirname(__FILE__) . '/vendor/autoload.php';
 
-/**
- * Currently plugin version.
- * Start at version 1.0.0 and use SemVer - https://semver.org
- * Rename this for your plugin and update it as you release new versions.
- */
-define('RE_BEEHIIV_VERSION', '1.0.0');
+if ( ! defined( 'RE_BEEHIIV_CORE_VERSION' ) ) {
+	define( 'RE_BEEHIIV_CORE_VERSION', '1.0.0' );
+}
 
 if(!defined('RE_BEEHIIV_URL'))
 	define('RE_BEEHIIV_URL', plugin_dir_url(__FILE__));
 
 if(!defined('RE_BEEHIIV_PATH'))
 	define('RE_BEEHIIV_PATH', plugin_dir_path(__FILE__));
+
+
 
 /**
  * The code that runs during plugin activation.
