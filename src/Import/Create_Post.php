@@ -57,7 +57,9 @@ class Create_Post {
 
 		$existing_id = $this->is_unique_post();
 		if ( $existing_id ) {
-			if ( $this->data['args']['update_existing'] === 'yes' ) {
+
+			$import_method = $this->data['args']['form_data']['import_method'];
+			if ( 'update' === $import_method || 'new_and_update' === $import_method ) {
 				$this->data['post']['ID'] = $existing_id;
 				$this->post_id            = $existing_id;
 				$this->update_existing_post();
@@ -72,7 +74,9 @@ class Create_Post {
 
 		$this->create_post();
 		$this->add_meta();
-		$this->add_tags();
+		if ( isset( $this->data['args']['form_data']['post_tags'] ) && $this->data['args']['form_data']['post_tags'] == '1' ) {
+			$this->add_tags();
+		}
 		$this->add_taxonomies();
 		return $this->complete();
 	}

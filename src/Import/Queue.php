@@ -119,7 +119,7 @@ class Queue {
 	 * @param array $args
 	 */
 	public function auto_import_callback( $group_name, $args ) {
-		( new Ajax_Import() )->callback( $args );
+		( new Import() )->run_auto_import( $args );
 	}
 
 	/**

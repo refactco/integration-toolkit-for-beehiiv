@@ -167,11 +167,11 @@ class Re_Beehiiv
 		$admin_menus = new \Re_Beehiiv\Admin_Menus();
 		$this->loader->add_action('admin_menu', $admin_menus, 'register', 10);
 
-		$ajax_import = new \Re_Beehiiv\Import\Ajax_Import();
-		$this->loader->add_action('wp_ajax_re_beehiiv_start_manual_import', $ajax_import, 'callback');
-		$this->loader->add_action('wp_ajax_re_beehiiv_start_auto_import', $ajax_import, 'auto_import_callback');
-		$this->loader->add_action('admin_notices', $ajax_import, 'register_progress_notice');
-		$this->loader->add_filter('heartbeat_settings', $ajax_import, 'change_heartbeat_while_process_is_running');
+		$import = new \Re_Beehiiv\Import\Import();
+		$this->loader->add_action('admin_notices', $import, 'register_progress_notice');
+		$this->loader->add_filter('heartbeat_settings', $import, 'change_heartbeat_while_process_is_running');
+		$this->loader->add_action('admin_post_re_beehiiv_manual_import', $import, 'maybe_start_manual_import');
+		$this->loader->add_action('admin_post_re_beehiiv_auto_import', $import, 'maybe_register_auto_import');
 
 		$canonical_url = new \Re_Beehiiv\Canonical_URL();
 		$this->loader->add_action('plugins_loaded', $canonical_url, 'register_hook');

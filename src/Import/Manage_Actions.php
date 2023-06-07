@@ -61,5 +61,12 @@ class Manage_Actions extends ActionScheduler_Action {
 			as_unschedule_all_actions( $action->hook, $action->args, $action->args['group'] );
 		}
 
+		$actions = self::get_actions( 'auto_recurring_import_task' );
+
+		foreach ( $actions as $action ) {
+			as_unschedule_action( $action->hook, $action->args, $action->args['group'] );
+			as_unschedule_all_actions( $action->hook, $action->args, $action->args['group'] );
+		}
+
 	}
 }
