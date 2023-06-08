@@ -338,7 +338,8 @@ var AllTaxonomyTerms = <?php echo json_encode( $taxonomy_terms ); ?>;
 			if ( $disabled ) {
 				echo '<p>It is not possible to initiate another manual import while the current one is still in progress. refresh the page to update the status.</p>';
 			}
-			submit_button( 'Start Import', 'primary components-button is-primary', 're-beehiiv-start-import', false, $disabled );
+			$submit_text = $is_auto ? 'Save' : 'Start Import';
+			submit_button( $submit_text, 'primary components-button is-primary', 're-beehiiv-start-import', false, $disabled );
 			?>
 		</form>
 	</div>

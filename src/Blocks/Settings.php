@@ -47,11 +47,6 @@ class Settings
 
 	public static function register_rest_routes()
 	{
-		register_rest_route( 'rebeehiiv/v1','/test_api', array(
-			'methods' 	=> 'POST',
-			'callback' 	=>  [__CLASS__, 'test_api'] ,
-			'permission_callback' => [__CLASS__, 'permissions_check']
-		) );
 
 		register_rest_route( 'rebeehiiv/v1','/disconnect_api', array(
 			'methods' 	=> 'POST',
@@ -64,23 +59,6 @@ class Settings
 			'callback' 	=>  [__CLASS__, 'save_settings'] ,
 			'permission_callback' => [__CLASS__, 'permissions_check']
 		) );
-	}
-
-	public static function test_api($req)
-	{
-		$status = true;
-
-		if ($status) {
-			return array(
-				'success' => $status,
-				'message' => "Success"
-			);
-		} else {
-			return array(
-				'success' => $status,
-				'message' => 'Error'
-			);
-		}
 	}
 
 	public static function disconnect_api($req)

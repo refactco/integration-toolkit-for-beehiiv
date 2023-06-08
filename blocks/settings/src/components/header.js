@@ -25,9 +25,6 @@ const Header = (props) => {
       </div>
 
       <div className="re-beehiiv-settings-header__links">
-        <a href="https://refact.co" target="_blank" rel="noopener noreferrer">
-          Documentation
-        </a>
       </div>
     </div>
   );

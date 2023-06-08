@@ -21,28 +21,6 @@ const Tabs = (props) => {
   const [status, setStatus] = useState(re_beehiiv_settings.api_status);
   const [onSaveMessage, setOnSaveMessage] = useState("");
 
-  const testAPI = () => {
-    setLoading(true);
-
-    apiFetch({
-      path: "/rebeehiiv/v1/test_api",
-      method: "POST",
-      data: { apiKey: apiKey, publicationId: publicationId },
-    })
-      .then((response) => {
-        if (!response.success) {
-          setLoading(false);
-        } else {
-          setStatus(true);
-        }
-
-        setOnSaveMessage(response.message);
-      })
-      .catch((error) => {
-        setLoading(false);
-        console.log(error);
-      });
-  };
 
   const saveSettings = () => {
     const settings = {
@@ -113,7 +91,7 @@ const Tabs = (props) => {
       >
         <Panel>
           <PanelBody
-            title="ESP Settings"
+            title="Beehive Credentials"
             initialOpen={true}
             buttonProps={{ disabled: !status }}
           >
@@ -121,12 +99,14 @@ const Tabs = (props) => {
             <PanelRow>
               <Grid columns={1} style={{ width: "100%" }}>
                 <InputControl
-                  help="Please enter your API key"
+                  type="password"
+                  help="Please enter your API key here"
                   label="API Key"
                   onChange={(value) => setApiKey(value)}
                   value={apiKey}
                 />
                 <InputControl
+                  type="password"
                   help="Please enter your publication ID"
                   label="Publication ID"
                   onChange={(value) => setPublicationId(value)}
@@ -146,14 +126,6 @@ const Tabs = (props) => {
           >
             Save Settings
           </Button>
-          <Button
-            style={{ marginRight: "1em" }}
-            variant="secondary"
-            onClick={() => testAPI()}
-            disabled={status}
-          >
-            Test
-          </Button>
           {status && (
             <Button
               style={{ marginRight: "1em" }}
@@ -163,7 +135,7 @@ const Tabs = (props) => {
               Disconnect
             </Button>
           )}
-          <a href="#" target="_blank">
+          <a href="https://app.beehiiv.com/settings/integrations" target="_blank">
             Get your API key
           </a>
           
