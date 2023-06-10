@@ -198,11 +198,6 @@ function check_required_fields() {
       name: 'Post status',
       type: 'radio'
     },
-    {
-      id: 're-beehiiv-import_interval',
-      name: 'Import interval',
-      type: 'select'
-    },
   ];
 
   $notice_list = jQuery('#re-beehiiv-import--notices');

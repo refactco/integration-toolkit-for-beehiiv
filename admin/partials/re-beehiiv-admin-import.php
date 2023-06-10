@@ -69,7 +69,7 @@ $default_args = array(
 	'post_status' 		=> 'publish',
 	'import_method'		=> 'new_and_update',
 	'import_interval'	=> '12',
-	'cron_time'	=> '0',
+	'cron_time'	=> '1',
 );
 $is_auto_action_exist = false;
 if ($is_auto) {
@@ -277,55 +277,13 @@ var AllTaxonomyTerms = <?php echo json_encode( $taxonomy_terms ); ?>;
 								<?php
 							}
 							?>
-							<p class="description">How do you want the data to enter WordPress?</p>
-						</fieldset>
-						<fieldset>
-							<!-- interval between each import -->
-							<label for="re-beehiiv-import_interval" class="d-block"><strong>Import Interval </strong></label>
-							<select name="re-beehiiv-import_interval" id="re-beehiiv-import_interval" required>
-								<?php
-								$import_intervals = array(
-									'4'	 => '4 Seconds',
-									'8'  => '8 Seconds',
-									'12' => '12 Seconds',
-									'16' => '16 Seconds',
-									'20' => '20 Seconds',
-									'30' => '30 Seconds',
-									'60' => '60 Seconds',
-								);
-
-								foreach ( $import_intervals as $import_interval => $import_interval_name ) {
-									$selected = ( (int)$default_args['import_interval'] === $import_interval ) ? 'selected' : '';
-									echo '<option value="' . esc_attr( $import_interval ) . '" ' . esc_attr( $selected ) . '>' . esc_html( $import_interval_name ) . '</option>';
-								}
-
-								?>
-							</select>
-							<p class="description">Select the interval between each import. The default is 12 seconds. If you are importing a large number of items or your server is slow, you may want to increase this value.</p>
+							<p class="description">Choose the desired action for importing data using this form. Options include importing new items only, updating existing items only, or performing both actions simultaneously.</p>
 						</fieldset>
 						<?php if ($is_auto) : ?>
 							<fieldset>
-								<label for="re-beehiiv-cron_time" class="d-block"><strong>Cron Time </strong></label>
-								<select name="re-beehiiv-cron_time" id="re-beehiiv-cron_time" required>
-									<?php
-									$cron_times = array(
-										'hourly'      => 'Hourly',
-										'twicedaily'  => 'Twice Daily',
-										'daily'       => 'Daily',
-										'weekly'      => 'Weekly',
-									);
-
-									foreach ( $cron_times as $cron_time => $cron_time_label ) {
-										$selected = '';
-										if ( $cron_time === $default_args['cron_time'] ) {
-											$selected = 'selected';
-										}
-										echo '<option value="' . esc_attr( $cron_time ) . '" ' . esc_attr( $selected ) . '>' . esc_html( $cron_time_label ) . '</option>';
-									}
-									
-									?>
-								</select>
-									<p class="description"></p>
+								<label for="re-beehiiv-cron_time" class="d-block"><strong>Import Schedule </strong></label>
+								<input type="number" name="re-beehiiv-cron_time" id="re-beehiiv-cron_time" value="<?php echo esc_attr( $default_args['cron_time'] ); ?>" min="1" required>
+									<p class="description">This field allows you to set the schedule for automatic imports from Beehiiv. Enter the number of hours between each import, for example, '6' for an import every 6 hours.</p>
 							</fieldset>
 						<?php endif; ?>
 					</div>

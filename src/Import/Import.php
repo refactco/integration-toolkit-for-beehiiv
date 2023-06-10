@@ -53,10 +53,6 @@ class Import {
 			'required' => true,
 		),
 		array(
-			'name'     => 'import_interval',
-			'required' => true,
-		),
-		array(
 			'name'     => 'cron_time',
 			'required' => false,
 		)
@@ -243,7 +239,8 @@ class Import {
 	 */
 	public function maybe_push_to_queue( $data, $args ) {
 
-		$import_interval = $args['form_data']['import_interval'];
+		$import_interval_s = apply_filters( 're_beehiiv_import_interval', 10 );
+		$import_interval = $import_interval_s;
 		$import_method   = $args['form_data']['import_method'];
 		$args['group']	 = 'auto_recurring_import' === $args['group'] ? 'auto_recurring_import_task' : $args['group'];
 
@@ -288,7 +285,7 @@ class Import {
 			);
 
 			$this->get_queue()->push_to_queue( $req, $args['group'], $import_interval );
-			$import_interval += $args['form_data']['import_interval'];
+			$import_interval += $import_interval_s;
 		}
 
 		return true;
