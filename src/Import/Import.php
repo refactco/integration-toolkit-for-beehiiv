@@ -257,7 +257,7 @@ class Import {
 	 */
 	public function maybe_push_to_queue( $data, $args ) {
 
-		$import_interval_s = apply_filters( 're_beehiiv_import_interval', 10 );
+		$import_interval_s = apply_filters( 're_beehiiv_import_interval', 5 );
 		$import_interval = $import_interval_s;
 		$import_method   = $args['form_data']['import_method'];
 		$args['group']	 = 'auto_recurring_import' === $args['group'] ? 'auto_recurring_import_task' : $args['group'];
@@ -485,7 +485,7 @@ class Import {
 			add_action( 're_beehiiv_admin_notices', function() {
 				?>
 				<div class="re-beehiiv-import--notice">
-					<h4>Importing posts from Re Beehiiv is complete.</h4>
+					<h4 class="mb-0">Importing posts from Re Beehiiv is complete.</h4>
 					<p class="description"></p>
 				</div>
 				<?php

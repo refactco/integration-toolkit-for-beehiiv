@@ -151,7 +151,7 @@
       // update_progress_bar every 5 seconds until response.complete equals to response.all
       setInterval(function () {
         update_progress_bar();
-      } , 10000);
+      } , 5000);
     }
     
   });

@@ -116,6 +116,10 @@
     padding-right: 1rem;
 }
 
+.mb-0 {
+    margin-bottom: 0;
+}
+
 .re-beehiiv-import-fields h2:first-child {
     margin-top: 0;
 }

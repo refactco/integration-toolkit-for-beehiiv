@@ -52,7 +52,7 @@ class Posts {
 	 * @param int $page
 	 * @param array $expand
 	 */
-	public static function get_posts_in_page( $page = 1, $expand = array() ) {
+	public static function get_posts_in_page( $page = 1, $expand = '' ) {
 
 		$route = Routes::build_route(
 			Routes::POSTS_INDEX,
