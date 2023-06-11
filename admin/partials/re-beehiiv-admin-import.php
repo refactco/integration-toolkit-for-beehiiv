@@ -96,7 +96,7 @@ if ( $is_auto_action_exist ) {
 			<?php
 	} );
 }
-
+$import_title = $is_auto ? __( 'Auto Import', 're-beehiiv' ) : __( 'Manual Import', 're-beehiiv' );
 ?>
 <script>
 var AllTaxonomies = <?php echo json_encode( $taxonomies ); ?>;
@@ -107,7 +107,7 @@ var AllTaxonomyTerms = <?php echo json_encode( $taxonomy_terms ); ?>;
 
 	<?php require_once 'components/header.php'; ?>
 	<div class="re-beehiiv-heading">
-		<h1>Re/Beehiiv - Manual Import</h1>
+		<h1><?php echo sprintf( __( 'Re/Beehiiv - %s', 're-beehiiv' ), $import_title ); ?></h1>
 		<p>Perform the import operation manually</p>
 	</div>
 
