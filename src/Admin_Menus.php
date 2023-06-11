@@ -17,8 +17,8 @@ class Admin_Menus
 	{
 
 		add_menu_page(
-			'Re Beehiiv',
-			'Re Beehiiv',
+			'Re/Beehiiv',
+			'Re/Beehiiv',
 			'manage_options',
 			're-beehiiv-import',
 			array($this, 'load_page_import'),
@@ -31,7 +31,7 @@ class Admin_Menus
 
 		add_submenu_page(
 			're-beehiiv-import',
-			'Re Beehiiv - Settings',
+			'Re/Beehiiv - Settings',
 			'Settings',
 			'manage_options',
 			're-beehiiv-settings',
