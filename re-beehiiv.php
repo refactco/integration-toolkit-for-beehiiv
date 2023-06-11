@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name:       Re-Beehiiv
+ * Plugin Name:       Re/Beehiiv
  * Plugin URI:        https://refact.co/
  * Description:       integrates WP with Beehive, making it easy to sync subscriptions and streamline your email marketing campaigns.
  * Version:           1.0.0
