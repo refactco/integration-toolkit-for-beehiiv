@@ -25,15 +25,29 @@ class Create_Post {
 	protected $data;
 
 	/**
+	 * Logger instance
+	 *
+	 * @var Logger
+	 */
+	protected $logger;
+
+	/**
 	 * Create_Post constructor.
 	 *
 	 * @param array $req
 	 */
 	public function __construct( $req, $group_name ) {
+		$this->logger = new Logger( $group_name );
 		$data = Import_Table::get_custom_table_row( $req['id'], $group_name );
 
 		if ( ! $data ) {
 			$this->data = false;
+			$this->logger->log(
+				array(
+					'message' => 'No data found',
+					'status'  => 'error',
+				)
+			);
 			return;
 		}
 
@@ -63,7 +77,27 @@ class Create_Post {
 				$this->data['post']['ID'] = $existing_id;
 				$this->post_id            = $existing_id;
 				$this->update_existing_post();
+
+				$this->logger->log(
+					array(
+						'message' => $this->data['meta']['post_id'] . ' - <a href="' . get_edit_post_link( $existing_id ) . '" target="_blank">#' . $existing_id . '</a> updated',
+						'status'  => 'success',
+					)
+				);
+
+				return array(
+					'success' => true,
+					'message' => 'Post updated',
+				);
 			} else {
+
+				$this->logger->log(
+					array(
+						'message' => $this->data['meta']['post_id'] . ' - <a href="' . get_edit_post_link( $existing_id ) . '" target="_blank">#' . $existing_id . '</a> skipped',
+						'status'  => 'skipped',
+					)
+				);
+
 				$this->complete();
 				return array(
 					'success' => true,
@@ -78,6 +112,14 @@ class Create_Post {
 			$this->add_tags();
 		}
 		$this->add_taxonomies();
+
+		$this->logger->log(
+			array(
+				'message' => $this->data['meta']['post_id'] . ' - <a href="' . get_edit_post_link( $this->post_id ) . '" target="_blank">#' . $this->post_id . '</a> created',
+				'status'  => 'success',
+			)
+		);
+
 		return $this->complete();
 	}
 

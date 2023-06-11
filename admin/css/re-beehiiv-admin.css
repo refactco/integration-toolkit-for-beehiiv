@@ -2,7 +2,7 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
- .wpfac-stats{
+.wpfac-stats {
     padding: 0;
     margin: 0;
     list-style: none;
@@ -12,7 +12,7 @@
     text-align: left;
 }
 
-.wpfac-stats li{
+.wpfac-stats li {
     display: inline-block;
     width: 200px;
     background-color: #fff;
@@ -23,12 +23,13 @@
     text-align: center;
 }
 
-.wpfac-stats li b{
+.wpfac-stats li b {
     display: block;
     font-size: 20px;
     margin-bottom: 20px;
 }
-.wpfac-stats li span{
+
+.wpfac-stats li span {
     display: block;
     color: seagreen;
     font-size: 20px;
@@ -36,29 +37,33 @@
 }
 
 .wpfac-card {
-	margin-bottom: 12px;
+    margin-bottom: 12px;
 }
 
 .re-beehiiv-wrapper fieldset {
-	margin-bottom: 16px;
+    margin-bottom: 16px;
 }
 
 .beehiiv-toggle-section {
-	margin-bottom: 10px;
+    margin-bottom: 10px;
 }
+
 .beehiiv-toggle-section h3 {
-	cursor: pointer;
+    cursor: pointer;
 }
+
 .beehiiv-toggle-section .content {
-	display: none;
+    display: none;
 }
+
 .beehiiv-toggle-section.open .content {
-	display: block;
+    display: block;
 }
 
 .re-beehiiv-wrap {
     margin-inline-end: 1rem;
 }
+
 .re-beehiiv-wrapper {
     background: #fff;
     padding: 16px;
@@ -145,10 +150,34 @@ input#re-beehiiv-start-import:disabled {
     padding: 20px 16px;
     border-radius: 3px;
     margin-bottom: 16px;
+    position: relative;
+}
+
+.re-beehiiv-button-secondary {
+    cursor: pointer;
+    padding: 4px 10px;
+    background-color: transparent;
+    box-shadow: none;
+    border: solid #767676;
+    border-radius: 3px;
+    color: #232323;
+    transition: all 0.1s ease-in-out;
+    text-decoration: none;
+}
+
+.re-beehiiv-button-secondary:hover {
+    background-color: #767676;
+    color: #fff;
+}
+
+.re-beehiiv-import--notice .re-beehiiv-button-cancel {
+    top: 20px;
+    right: 16px;
+    position: absolute;
 }
 
 .re-beehiiv-import--notice h4 {
-    margin: 0;
+    margin: 0 0 16px;
 }
 
 .re-beehiiv-import--notice .description {
@@ -207,7 +236,7 @@ input#re-beehiiv-start-import:disabled {
 
 .re-beehiiv-import-fields--step--content {
     display: none;
-    padding: 0 20px ;
+    padding: 0 20px;
 }
 
 .re-beehiiv-import-fields--step.active .re-beehiiv-import-fields--step--content {
@@ -217,3 +246,87 @@ input#re-beehiiv-start-import:disabled {
 .re-beehiiv-import-fields select {
     min-width: 150px;
 }
+
+/* Progress Bar Start */
+
+:root {
+    --bar-color: #003233;
+    --body-color: #222;
+    --text-color: rgb(29, 17, 17);
+    --bar-wrap-back-color: #cccccc;
+}
+
+.status-info {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.bar-wrap {
+    padding: 6px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    border-radius: 100px;
+    background-color: var(--bar-wrap-back-color);
+}
+
+.bar {
+    width: 0%;
+    height: 12px;
+    transition: width .15s ease-out;
+    background-color: var(--bar-color);
+    border-radius: 100px;
+    box-shadow: inset -1px -1px 10px rgb(0 0 0 / .5);
+}
+
+.percentage {
+    align-self: center;
+    font-size: 1rem;
+    color: #fff;
+    position: absolute;
+    top: 18px;
+}
+
+/* Progress Bar End */
+/* Results Log Box Start */
+/* with scroll bar */
+.result-log {
+    height: 90px;
+    overflow: auto;
+    padding: 10px;
+    margin-top: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.log {
+    border-radius: 3px;
+    background-color: #e6e6e6;
+    color: #1e1e1e;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.result-log .log-item {
+    margin-bottom: 4px;
+}
+
+.log-item__status {
+    background: #cdcdcd;
+    padding: 3px 6px;
+    border-radius: 10px;
+    font-size: 10px;
+}
+
+.log-item__status--success {
+    background: #abe2e0;
+}
+
+.log-item__status--error {
+    background: #ffcaca;
+}
+
+.log-item__status--running {
+    background: #a5c8ff;
+}
+/* Results Log Box End */

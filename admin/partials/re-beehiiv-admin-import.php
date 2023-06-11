@@ -119,16 +119,17 @@ var AllTaxonomyTerms = <?php echo json_encode( $taxonomy_terms ); ?>;
 	</div>
 
 	<div class="re-beehiiv-wrapper">
-		<form method="post" action="<?php echo admin_url('admin-post.php') ?>" id="re-beehiiv-import-form" class="re-beehiiv-import-form">
-			<div class="re-beehiiv-import--notices" id="re-beehiiv-import--notices">
-				<div class="hidden re-beehiiv-import--notice re-beehiiv-import--notice-error">
-					<h4>Please fix the following errors:</h4>
-					<ul>
-					</ul>
-				</div>
-				<?php do_action( 're_beehiiv_admin_notices' ); ?>
-				<!-- convert notice above to new format -->
+		<div class="re-beehiiv-import--notices" id="re-beehiiv-import--notices">
+			<div class="hidden re-beehiiv-import--notice re-beehiiv-import--notice-error">
+				<h4>Please fix the following errors:</h4>
+				<ul>
+				</ul>
 			</div>
+			<?php do_action( 're_beehiiv_admin_notices' ); ?>
+			<!-- convert notice above to new format -->
+		</div>
+		<?php if ( $is_auto || !$is_running ) : ?>
+		<form method="post" action="<?php echo admin_url('admin-post.php') ?>" id="re-beehiiv-import-form" class="re-beehiiv-import-form">
 			<div class="re-beehiiv-import-fields">
 				<div class="re-beehiiv-import-fields--step import-fields--step1 <?php echo !$is_auto_action_exist ? 'active' : '' ?>">
 					<h2 class="re-beehiiv-import-fields--step--title">Step 1: Select Content from Beehiiv</h2>
@@ -300,5 +301,6 @@ var AllTaxonomyTerms = <?php echo json_encode( $taxonomy_terms ); ?>;
 			submit_button( $submit_text, 'primary components-button is-primary', 're-beehiiv-start-import', false, $disabled );
 			?>
 		</form>
+		<?php endif; ?>
 	</div>
 </div>

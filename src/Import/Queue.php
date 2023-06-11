@@ -57,31 +57,9 @@ class Queue {
 	 */
 	public function add_recurrence_task( $request ) {
 		$cron_time = $request['args']['cron_time'];
-		$timestamp = $this->get_timestamp( $cron_time );
+		$timestamp = $cron_time * self::TIMESTAMP_1_HOUR;
 		if ( as_has_scheduled_action( $this->action, $request, $request['group'] ) === false ) {
 			as_schedule_recurring_action( time() + $timestamp, $timestamp, $this->action, $request, $request['group'] );
-		}
-	}
-
-	/**
-	 * Get the timestamp
-	 * Used for auto import
-	 *
-	 * @param string $cron_time
-	 * @return int
-	 */
-	public function get_timestamp( $cron_time ) {
-		switch ( $cron_time ) {
-			case 'hourly':
-				return self::TIMESTAMP_1_HOUR;
-			case 'twicedaily':
-				return self::TIMESTAMP_12_HOUR;
-			case 'daily':
-				return self::TIMESTAMP_1_DAY;
-			case 'weekly':
-				return self::TIMESTAMP_7_DAY;
-			default:
-				return self::TIMESTAMP_1_HOUR;
 		}
 	}
 

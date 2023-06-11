@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Header Component
  *

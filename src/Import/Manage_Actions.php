@@ -69,4 +69,16 @@ class Manage_Actions extends ActionScheduler_Action {
 		}
 
 	}
+
+	/**
+	 * Remove all scheduled actions of a given group
+	 *
+	 * @return void
+	 */
+	public static function remove_actions( $group ) {
+		$actions = self::get_actions( $group );
+		foreach ( $actions as $action ) {
+			as_unschedule_all_actions( $action->hook, $action->args, $action->args['group'] );
+		}
+	}
 }
