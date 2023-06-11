@@ -193,8 +193,8 @@ class Create_Post {
 	 * @return bool
 	 */
 	private function add_taxonomies() {
-		$taxonomy = $this->data['args']['taxonomy'] ?? '';
-		$term     = $this->data['args']['term'] ?? '';
+		$taxonomy = $this->data['args']['form_data']['taxonomy'] ?? '';
+		$term     = $this->data['args']['form_data']['taxonomy_term'] ?? '';
 
 		if ( ! taxonomy_exists( $taxonomy ) ) {
 			return false;
