@@ -270,7 +270,7 @@ class Import {
 				// check if the post already exists
 				if ( $this->is_unique_post( $value['id'] ) ) {
 					$logger->log( array(
-						'message' => $value['id'] . ' is already exists',
+						'message' => $value['id'] . ' - ' . $value['title'] . ' is already exists',
 						'status' => 'skipped',
 					) );
 					continue;
@@ -279,7 +279,7 @@ class Import {
 				// check if the post already exists
 				if ( ! $this->is_unique_post( $value['id'] ) ) {
 					$logger->log( array(
-						'message' => $value['id'] . ' is not exists',
+						'message' => $value['id'] . ' - ' . $value['title'] . ' is not exists',
 						'status' => 'skipped',
 					) );
 					continue;
@@ -289,7 +289,7 @@ class Import {
 			// Maybe skip the post based on beehiiv status
 			if ( ! in_array( $value['status'], $args['form_data']['beehiiv-status'], true ) ) {
 				$logger->log( array(
-					'message' => $value['id'] . ' is not in selected status',
+					'message' => $value['id'] . ' - ' . $value['title'] . ' is not in selected status',
 					'status' => 'skipped',
 				) );
 				continue;

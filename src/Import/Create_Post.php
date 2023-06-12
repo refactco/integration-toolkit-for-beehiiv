@@ -80,7 +80,7 @@ class Create_Post {
 
 				$this->logger->log(
 					array(
-						'message' => $this->data['meta']['post_id'] . ' - <a href="' . get_edit_post_link( $existing_id ) . '" target="_blank">#' . $existing_id . '</a> updated',
+						'message' => $this->data['meta']['post_id'] . ' - <a href="' . get_edit_post_link( $existing_id ) . '" target="_blank">#' . $existing_id . ' - ' . $this->data['post']['post_title'] . '</a> updated',
 						'status'  => 'success',
 					)
 				);
@@ -93,7 +93,7 @@ class Create_Post {
 
 				$this->logger->log(
 					array(
-						'message' => $this->data['meta']['post_id'] . ' - <a href="' . get_edit_post_link( $existing_id ) . '" target="_blank">#' . $existing_id . '</a> skipped',
+						'message' => $this->data['meta']['post_id'] . ' - <a href="' . get_edit_post_link( $existing_id ) . '" target="_blank">#' . $existing_id . ' - ' . $this->data['post']['post_title'] . '</a> skipped',
 						'status'  => 'skipped',
 					)
 				);
@@ -115,7 +115,7 @@ class Create_Post {
 
 		$this->logger->log(
 			array(
-				'message' => $this->data['meta']['post_id'] . ' - <a href="' . get_edit_post_link( $this->post_id ) . '" target="_blank">#' . $this->post_id . '</a> created',
+				'message' => $this->data['meta']['post_id'] . ' - <a href="' . get_edit_post_link( $this->post_id ) . '" target="_blank">#' . $this->post_id . ' - ' . $this->data['post']['post_title'] . '</a> created',
 				'status'  => 'success',
 			)
 		);
