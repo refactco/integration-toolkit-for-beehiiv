@@ -330,6 +330,17 @@ function update_progress_bar() {
       let total = response.all;
       let solved = response.complete + response.failed;
 
+      if (total === -1) {
+        // no post to import
+        // refresh the page
+        // add a query string to the url then refresh to new url
+
+        let url = new URL(window.location.href);
+        url.searchParams.set("notice", "nothing_to_import");
+        
+        location.href = url.href;
+      }
+
       const ruleOfThree = (num1, num2) => {
         const proportion = (num2 * 100) / num1;
         return Math.round(proportion * 10) / 10;

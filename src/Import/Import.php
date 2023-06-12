@@ -154,7 +154,7 @@ class Import {
 			'status' => 'success',
 		) );
 
-		$this->maybe_push_to_queue(
+		$is_anything_added = $this->maybe_push_to_queue(
 			$data,
 			array(
 				'auto'            => 'manual',
@@ -163,7 +163,7 @@ class Import {
 			)
 		);
 
-		return true;
+		return $is_anything_added;
 	}
 
 	public function maybe_register_auto_import() {
@@ -260,6 +260,8 @@ class Import {
 		$args['group']	 = 'auto_recurring_import' === $args['group'] ? 'auto_recurring_import_task' : $args['group'];
 		$logger = new Logger( $args['group'] );
 
+		$is_added_to_queue = false;
+
 		foreach ( $data as $value ) {
 			if ( ! $value ) {
 				continue;
@@ -306,8 +308,18 @@ class Import {
 				'id' => $value['id'],
 			);
 
+			$is_added_to_queue = true;
+
 			$this->get_queue()->push_to_queue( $req, $args['group'], $import_interval );
 			$import_interval += $import_interval_s;
+		}
+
+		if ( ! $is_added_to_queue ) {
+			$logger->log( array(
+				'message' => 'No posts are pushed to queue',
+				'status' => 'success',
+			) );
+			return false;
 		}
 
 		$logger->log( array(
@@ -462,6 +474,15 @@ class Import {
 					<?php
 				});
 				return;
+			} else if ( isset( $_GET['notice'] ) && sanitize_text_field( $_GET['notice'] === 'nothing_to_import' ) ) {
+				add_action( 're_beehiiv_admin_notices', function() use ( $group_name ) {
+					?>
+					<div class="re-beehiiv-import--notice re-beehiiv-import--notice-error">
+						<h4>Import Failed</h4>
+						<span class="description">Data Fetched from Beehiiv successfully but there is nothing to import based on your settings.</span>
+					</div>
+					<?php
+				});
 			}
 
 			return;
@@ -497,23 +518,19 @@ class Import {
 				return;
 			}
 
-			delete_transient( 'RE_BEEHIIV_manual_import_group' );
-			delete_transient( 'RE_BEEHIIV_manual_import_running' );
-			( new Logger( $group_name ) )->clear_log();
+			$this->remove_import_transient();
 			return;
 		}
 		if ( count( $complete_actions ) === count( $all_actions ) ) {
 			add_action( 're_beehiiv_admin_notices', function() {
 				?>
-				<div class="re-beehiiv-import--notice">
+				<div class="re-beehiiv-import--notice re-beehiiv-import--notice-success">
 					<h4 class="mb-0">Importing posts from Re Beehiiv is complete.</h4>
 					<p class="description"></p>
 				</div>
 				<?php
 			});
-			delete_transient( 'RE_BEEHIIV_manual_import_group' );
-			delete_transient( 'RE_BEEHIIV_manual_import_running' );
-			( new Logger( $group_name ) )->clear_log();
+			$this->remove_import_transient();
 			return;
 		}
 
@@ -528,9 +545,7 @@ class Import {
 				</div>
 				<?php
 			});
-			delete_transient( 'RE_BEEHIIV_manual_import_group' );
-			delete_transient( 'RE_BEEHIIV_manual_import_running' );
-			( new Logger( $group_name ) )->clear_log();
+			$this->remove_import_transient();
 			return;
 		}
 
@@ -543,9 +558,7 @@ class Import {
 				</div>
 				<?php
 			});
-			delete_transient( 'RE_BEEHIIV_manual_import_group' );
-			delete_transient( 'RE_BEEHIIV_manual_import_running' );
-			( new Logger( $group_name ) )->clear_log();
+			$this->remove_import_transient();
 			return;
 		}
 
@@ -611,7 +624,13 @@ class Import {
 		$is_running = get_transient( 'RE_BEEHIIV_manual_import_running' );
 
 		if ( ! $group_name || ! $is_running ) {
-			return;
+			wp_send_json(
+				array(
+					'complete' => -1,
+					'all'      => -1,
+					'failed'   => -1,
+				)
+			);
 		}
 
 		$all_actions      = Manage_Actions::get_actions( $group_name );
@@ -644,7 +663,12 @@ class Import {
 
 			delete_transient( 'RE_BEEHIIV_manual_import_group_data' );
 
-			$this->start_import( $form_data, $group_name );
+			$is_anything_added = $this->start_import( $form_data, $group_name );
+
+			if ( ! $is_anything_added ) {
+				$this->remove_import_transient();
+				return;
+			}
 
 			$all_actions = Manage_Actions::get_actions( $group_name );
 		}
@@ -679,12 +703,18 @@ class Import {
 
 		Manage_Actions::remove_actions( $group_name );
 
-		delete_transient( 'RE_BEEHIIV_manual_import_group' );
-		delete_transient( 'RE_BEEHIIV_manual_import_running' );
-		( new Logger( $group_name ) )->clear_log();
+		$this->remove_import_transient();
 
 
 		wp_redirect( admin_url( 'admin.php?page=re-beehiiv-import' ) );
+	}
+
+	private function remove_import_transient() {
+		$group_name = get_transient( 'RE_BEEHIIV_manual_import_group' );
+		delete_transient( 'RE_BEEHIIV_manual_import_group' );
+		delete_transient( 'RE_BEEHIIV_manual_import_running' );
+		delete_transient( 'RE_BEEHIIV_manual_import_group_data' );
+		( new Logger( $group_name ) )->clear_log();
 	}
 
 }
