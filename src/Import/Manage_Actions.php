@@ -1,8 +1,16 @@
 <?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
 
 namespace Re_Beehiiv\Import;
+
 use ActionScheduler_Action;
 
+/**
+ * Class Manage_Actions
+ * This class is responsible for managing scheduled actions
+ * This class extends ActionScheduler_Action class because we need to use private data of ActionScheduler_Action class
+ *
+ * @package Re_Beehiiv\Import
+ */
 class Manage_Actions extends ActionScheduler_Action {
 
 	/**
@@ -10,7 +18,7 @@ class Manage_Actions extends ActionScheduler_Action {
 	 *
 	 * @return array
 	 */
-	public static function get_auto_action_args( ) {
+	public static function get_auto_action_args() {
 
 		$actions = self::get_actions( 'auto_recurring_import', 'pending' );
 
@@ -53,7 +61,7 @@ class Manage_Actions extends ActionScheduler_Action {
 	 * @return void
 	 */
 	public static function remove_auto_actions() {
-		
+
 		$actions = self::get_actions( 'auto_recurring_import' );
 
 		foreach ( $actions as $action ) {
@@ -73,6 +81,7 @@ class Manage_Actions extends ActionScheduler_Action {
 	/**
 	 * Remove all scheduled actions of a given group
 	 *
+	 * @param string $group
 	 * @return void
 	 */
 	public static function remove_actions( $group ) {

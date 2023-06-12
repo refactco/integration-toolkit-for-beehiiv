@@ -1,34 +1,5 @@
 (function ($) {
   "use strict";
-
-  /**
-   * All of the code for your admin-facing JavaScript source
-   * should reside in this file.
-   *
-   * Note: It has been assumed you will write jQuery code here, so the
-   * $ function reference has been prepared for usage within the scope
-   * of this function.
-   *
-   * This enables you to define handlers, for when the DOM is ready:
-   *
-   * $(function() {
-   *
-   * });
-   *
-   * When the window is loaded:
-   *
-   * $( window ).load(function() {
-   *
-   * });
-   *
-   * ...and/or other possibilities.
-   *
-   * Ideally, it is not considered best practise to attach more than a
-   * single DOM-ready or window-load handler for a particular page.
-   * Although scripts in the WordPress core, Plugins and Themes may be
-   * practising this, we should strive to set a better example in our own work.
-   */
-
   jQuery(document).ready(function ($) {
     $("#re-beehiiv-auto-import").on("click", function () {
       if (!check_required_fields()) {
@@ -63,7 +34,7 @@
 
       let taxonomies = AllTaxonomies[post_type];
 
-      // if taxomies is empty
+      // if taxonomies is empty
       if (taxonomies == null || taxonomies == "") {
         // hide the taxonomy and taxonomy term select
         $("#re-beehiiv-taxonomy").addClass("hidden");
@@ -320,6 +291,7 @@ function update_progress_bar() {
     type: "POST",
     data: {
       action: "re_beehiiv_progress_bar_data",
+      nonce: RE_BEEHIIV_CORE.progress_bar_nonce,
     },
     success: function (response) {
       const percentageTag = document.querySelector(".percentage");

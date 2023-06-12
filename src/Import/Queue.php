@@ -96,7 +96,7 @@ class Queue {
 	 * @param string $group_name
 	 * @param array $args
 	 */
-	public function auto_import_callback( $group_name, $args ) {
+	public function auto_import_callback( $group_name, $args ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundBeforeLastUsed
 		( new Import() )->run_auto_import( $args );
 	}
 

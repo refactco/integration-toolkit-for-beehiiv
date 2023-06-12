@@ -35,10 +35,11 @@ class Create_Post {
 	 * Create_Post constructor.
 	 *
 	 * @param array $req
+	 * @param string $group_name
 	 */
-	public function __construct( $req, $group_name ) {
+	public function __construct( $req, string $group_name ) {
 		$this->logger = new Logger( $group_name );
-		$data = Import_Table::get_custom_table_row( $req['id'], $group_name );
+		$data         = Import_Table::get_custom_table_row( $req['id'], $group_name );
 
 		if ( ! $data ) {
 			$this->data = false;
@@ -108,7 +109,7 @@ class Create_Post {
 
 		$this->create_post();
 		$this->add_meta();
-		if ( isset( $this->data['args']['form_data']['post_tags'] ) && $this->data['args']['form_data']['post_tags'] == '1' ) {
+		if ( isset( $this->data['args']['form_data']['post_tags'] ) && $this->data['args']['form_data']['post_tags'] == '1' ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 			$this->add_tags();
 		}
 		$this->add_taxonomies();

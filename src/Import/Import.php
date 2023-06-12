@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
 class Import {
 
 	const FIELD_PREFIX = 're-beehiiv-';
-	const FIELDS = array(
+	const FIELDS       = array(
 		array(
 			'name'     => 'content_type',
 			'required' => true,
@@ -55,7 +55,7 @@ class Import {
 		array(
 			'name'     => 'cron_time',
 			'required' => false,
-		)
+		),
 	);
 
 	/**
@@ -75,8 +75,16 @@ class Import {
 		return $this->queue;
 	}
 
+	/**
+	 * Maybe start manual import
+	 * This method checks if the user has started a manual import and if so, it starts it
+	 * It also checks and validates the data from the form
+	 * If the data is not valid, it will show an error message
+	 *
+	 * @return void
+	 */
 	public function maybe_start_manual_import() {
-		
+
 		if ( ! isset( $_POST['action'] ) || 're_beehiiv_manual_import' !== $_POST['action'] ) {
 			return;
 		}
@@ -90,21 +98,33 @@ class Import {
 
 		if ( isset( $form_data['error'] ) ) {
 			// show the error message
-			add_action( 're_beehiiv_admin_notices', function () use ( $form_data ) {
-				?>
+			add_action(
+				're_beehiiv_admin_notices',
+				function () use ( $form_data ) {
+					?>
 				<div class="notice notice-error">
 					<p><?php echo esc_html( $form_data['error'] ); ?></p>
 				</div>
-				<?php
-			} );
+					<?php
+				}
+			);
 			return;
 		}
-		
+
 		$this->run_manual_import( $form_data );
 	}
 
+	/**
+	 * Run manual import
+	 * This method starts the manual import
+	 * It sets bunch of transients to show the user the import is running
+	 * It also redirects the user to the import page
+	 *
+	 * @param array $form_data The data from the form
+	 * @return void
+	 */
 	private function run_manual_import( $form_data ) {
-	
+
 		$group_name = 'manual_import_' . time();
 		// set an transient to show the user the import is running
 		set_transient( 'RE_BEEHIIV_manual_import_running', true, 60 * 60 * 24 );
@@ -117,55 +137,85 @@ class Import {
 		exit;
 	}
 
+	/**
+	 * Run auto import
+	 * This method used to start the import action for the auto import
+	 *
+	 * @param array $form_data The data from the form
+	 * @return void
+	 */
 	public function run_auto_import( $form_data ) {
-		$this->start_import( $form_data, 'auto_recurring_import');
+		$this->start_import( $form_data, 'auto_recurring_import' );
 	}
 
+	/**
+	 * Start import
+	 * This method will Fetch the data from the API and push it to the queue
+	 *
+	 * @param array $form_data The data from the form
+	 * @param string $group_name The group name of the import
+	 * @return bool
+	 */
 	private function start_import( $form_data, $group_name ) {
 
 		$logger = new Logger( $group_name );
-		$logger->log( array(
-			'message' => 'Import started',
-			'status' => 'running',
-		) );
+		$logger->log(
+			array(
+				'message' => 'Import started',
+				'status'  => 'running',
+			)
+		);
 
 		// get the data from the API
 		$data = $this->get_all_data( $form_data['content_type'] );
 		if ( ! $data ) {
 			// show the error message
-			add_action( 're_beehiiv_admin_notices', function () {
-				?>
+			add_action(
+				're_beehiiv_admin_notices',
+				function () {
+					?>
 				<div class="notice notice-error">
 					<p><?php esc_html_e( 'No data found', 're-beehiiv' ); ?></p>
 				</div>
-				<?php
-			} );
+					<?php
+				}
+			);
 
-			$logger->log( array(
-				'message' => 'No data found',
-				'status' => 'error',
-			) );
+			$logger->log(
+				array(
+					'message' => 'No data found',
+					'status'  => 'error',
+				)
+			);
 
 			return false;
 		}
 
-		$logger->log( array(
-			'message' => 'Data fetched',
-			'status' => 'success',
-		) );
+		$logger->log(
+			array(
+				'message' => 'Data fetched',
+				'status'  => 'success',
+			)
+		);
 
 		$is_anything_added = $this->maybe_push_to_queue(
 			$data,
 			array(
-				'auto'            => 'manual',
-				'form_data'       => $form_data,
-				'group'           => $group_name,
+				'auto'      => 'manual',
+				'form_data' => $form_data,
+				'group'     => $group_name,
 			)
 		);
 
 		return $is_anything_added;
 	}
 
+	/**
+	 * Maybe register auto import
+	 * This method checks the data of the auto import form and if it's valid, it will call the register_auto_import method
+	 *
+	 * @return void
+	 */
 	public function maybe_register_auto_import() {
 		if ( ! isset( $_POST['action'] ) || 're_beehiiv_auto_import' !== $_POST['action'] ) {
 			return;
@@ -180,19 +230,29 @@ class Import {
 
 		if ( isset( $form_data['error'] ) ) {
 			// show the error message
-			add_action( 're_beehiiv_admin_notices', function () use ( $form_data ) {
-				?>
+			add_action(
+				're_beehiiv_admin_notices',
+				function () use ( $form_data ) {
+					?>
 				<div class="notice notice-error">
 					<p><?php echo esc_html( $form_data['error'] ); ?></p>
 				</div>
-				<?php
-			} );
+					<?php
+				}
+			);
 			return;
 		}
 
 		$this->register_auto_import( $form_data );
 	}
 
+	/**
+	 * Register auto import
+	 * This method used schedule the auto import
+	 *
+	 * @param array $form_data The data from the form
+	 * @return void
+	 */
 	private function register_auto_import( array $form_data ) {
 
 		Manage_Actions::remove_auto_actions();
@@ -213,21 +273,22 @@ class Import {
 
 	/**
 	 * Validate the form data
+	 * Verifying nonce should be done before calling this method
 	 *
 	 * @return array
 	 */
 	private function get_form_validated_data() {
-		
+
 		$form_data = array();
 
 		foreach ( self::FIELDS as $field ) {
 			$field_name = self::FIELD_PREFIX . $field['name'];
 
-			if ( !isset( $_POST[ $field_name ] ) ) {
+			if ( ! isset( $_POST[ $field_name ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 				continue;
 			}
 
-			if ( $field['required'] && (!isset($_POST[$field_name]) ||  empty($_POST[$field_name])) ) {
+			if ( $field['required'] && ( ! isset( $_POST[ $field_name ] ) || empty( $_POST[ $field_name ] ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 				return array(
 					'error'   => true,
@@ -235,10 +296,10 @@ class Import {
 				);
 			}
 
-			if ( is_array( $_POST[ $field_name ] ) ) {
-				$form_data[ $field['name'] ] = array_map( 'sanitize_text_field', $_POST[ $field_name ] );
+			if ( is_array( $_POST[ $field_name ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+				$form_data[ $field['name'] ] = array_map( 'sanitize_text_field', $_POST[ $field_name ] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			} else {
-				$form_data[ $field['name'] ] = sanitize_text_field( $_POST[ $field_name ] );
+				$form_data[ $field['name'] ] = sanitize_text_field( $_POST[ $field_name ] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			}
 		}
 
@@ -255,10 +316,10 @@ class Import {
 	public function maybe_push_to_queue( $data, $args ) {
 
 		$import_interval_s = apply_filters( 're_beehiiv_import_interval', 5 );
-		$import_interval = $import_interval_s;
-		$import_method   = $args['form_data']['import_method'];
-		$args['group']	 = 'auto_recurring_import' === $args['group'] ? 'auto_recurring_import_task' : $args['group'];
-		$logger = new Logger( $args['group'] );
+		$import_interval   = $import_interval_s;
+		$import_method     = $args['form_data']['import_method'];
+		$args['group']     = 'auto_recurring_import' === $args['group'] ? 'auto_recurring_import_task' : $args['group'];
+		$logger            = new Logger( $args['group'] );
 
 		$is_added_to_queue = false;
 
@@ -271,36 +332,47 @@ class Import {
 			if ( $import_method === 'new' ) {
 				// check if the post already exists
 				if ( $this->is_unique_post( $value['id'] ) ) {
-					$logger->log( array(
-						'message' => $value['id'] . ' - ' . $value['title'] . ' is already exists',
-						'status' => 'skipped',
-					) );
+					$logger->log(
+						array(
+							'message' => $value['id'] . ' - ' . $value['title'] . ' is already exists',
+							'status'  => 'skipped',
+						)
+					);
 					continue;
 				}
 			} elseif ( $import_method === 'update' ) {
 				// check if the post already exists
 				if ( ! $this->is_unique_post( $value['id'] ) ) {
-					$logger->log( array(
-						'message' => $value['id'] . ' - ' . $value['title'] . ' is not exists',
-						'status' => 'skipped',
-					) );
+					$logger->log(
+						array(
+							'message' => $value['id'] . ' - ' . $value['title'] . ' is not exists',
+							'status'  => 'skipped',
+						)
+					);
 					continue;
 				}
 			}
 
 			// Maybe skip the post based on beehiiv status
 			if ( ! in_array( $value['status'], $args['form_data']['beehiiv-status'], true ) ) {
-				$logger->log( array(
-					'message' => $value['id'] . ' - ' . $value['title'] . ' is not in selected status',
-					'status' => 'skipped',
-				) );
+				$logger->log(
+					array(
+						'message' => $value['id'] . ' - ' . $value['title'] . ' is not in selected status',
+						'status'  => 'skipped',
+					)
+				);
 				continue;
 			}
 
-			$data = apply_filters( 're_beehiiv_import_before_create_post', $this->prepare_beehiiv_data_for_wp(
+			$data = apply_filters(
+				're_beehiiv_import_before_create_post',
+				$this->prepare_beehiiv_data_for_wp(
+					$value,
+					$args
+				),
 				$value,
 				$args
-			), $value, $args );
+			);
 
 			Import_Table::insert_custom_table_row( $value['id'], $data, $args['group'], 'pending' );
 			$req['group'] = $args['group'];
@@ -315,17 +387,21 @@ class Import {
 		}
 
 		if ( ! $is_added_to_queue ) {
-			$logger->log( array(
-				'message' => 'No posts are pushed to queue',
-				'status' => 'success',
-			) );
+			$logger->log(
+				array(
+					'message' => 'No posts are pushed to queue',
+					'status'  => 'success',
+				)
+			);
 			return false;
 		}
 
-		$logger->log( array(
-			'message' => 'All posts are pushed to queue. The queue will end in about ' . $import_interval . ' seconds',
-			'status' => 'success',
-		) );
+		$logger->log(
+			array(
+				'message' => 'All posts are pushed to queue. The queue will end in about ' . $import_interval . ' seconds',
+				'status'  => 'success',
+			)
+		);
 
 		return true;
 	}
@@ -353,13 +429,16 @@ class Import {
 
 		if ( isset( $data['error'] ) ) {
 			// show the error message
-			add_action( 're_beehiiv_admin_notices', function () use ( $data ) {
-				?>
+			add_action(
+				're_beehiiv_admin_notices',
+				function () use ( $data ) {
+					?>
 				<div class="notice notice-error">
 					<p><?php echo esc_html( $data['error'] ); ?></p>
 				</div>
-				<?php
-			} );
+					<?php
+				}
+			);
 			return array();
 		}
 
@@ -426,7 +505,7 @@ class Import {
 
 		// set post author
 		if ( isset( $args['form_data']['post_author'] ) ) {
-			$data['post']['post_author'] = (int)$args['form_data']['post_author'];
+			$data['post']['post_author'] = (int) $args['form_data']['post_author'];
 		}
 
 		// set post date
@@ -444,8 +523,8 @@ class Import {
 	 * Add notice for manual import
 	 */
 	public function register_progress_notice() {
-		
-		if ( isset( $_REQUEST['page'] ) && sanitize_text_field( $_REQUEST['page'] ) === 're-beehiiv-import' && isset( $_REQUEST['tab'] ) && sanitize_text_field( $_REQUEST['tab'] ) === 'auto-import' ) {
+
+		if ( isset( $_REQUEST['page'] ) && sanitize_text_field( $_REQUEST['page'] ) === 're-beehiiv-import' && isset( $_REQUEST['tab'] ) && sanitize_text_field( $_REQUEST['tab'] ) === 'auto-import' ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
 		}
 
@@ -455,34 +534,40 @@ class Import {
 		if ( empty( $group_name ) ) {
 
 			if ( $is_running ) {
-				add_action( 're_beehiiv_admin_notices', function() use ( $group_name ) {
-					$cancel_nonce = wp_create_nonce( 're_beehiiv_cancel_import' );
-					$cancel_url = add_query_arg(
-						 array(
-							'page' => 're-beehiiv-import',
-							'cancel' => $group_name,
-							'nonce' => $cancel_nonce,
-						),
-						admin_url( 'admin.php' )
-					);
-					?>
+				add_action(
+					're_beehiiv_admin_notices',
+					function() use ( $group_name ) {
+						$cancel_nonce = wp_create_nonce( 're_beehiiv_cancel_import' );
+						$cancel_url   = add_query_arg(
+							array(
+								'page'   => 're-beehiiv-import',
+								'cancel' => $group_name,
+								'nonce'  => $cancel_nonce,
+							),
+							admin_url( 'admin.php' )
+						);
+						?>
 					<div class="re-beehiiv-import--notice">
 						<h4>Importing posts from Beehiiv</h4>
 						<span class="description">Importing posts from Beehiiv is in progress. Be patient, this may take a while.</span>
 						<a class="re-beehiiv-button-secondary re-beehiiv-button-cancel" id="re-beehiiv-import--cancel" href="<?php echo esc_url( $cancel_url ); ?>">Cancel</a>
 					</div>
-					<?php
-				});
+						<?php
+					}
+				);
 				return;
-			} else if ( isset( $_GET['notice'] ) && sanitize_text_field( $_GET['notice'] === 'nothing_to_import' ) ) {
-				add_action( 're_beehiiv_admin_notices', function() use ( $group_name ) {
-					?>
+			} elseif ( isset( $_GET['notice'] ) && sanitize_text_field( $_GET['notice'] === 'nothing_to_import' ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				add_action(
+					're_beehiiv_admin_notices',
+					function() use ( $group_name ) {
+						?>
 					<div class="re-beehiiv-import--notice re-beehiiv-import--notice-error">
 						<h4>Import Failed</h4>
 						<span class="description">Data Fetched from Beehiiv successfully but there is nothing to import based on your settings.</span>
 					</div>
-					<?php
-				});
+						<?php
+					}
+				);
 			}
 
 			return;
@@ -495,26 +580,29 @@ class Import {
 
 		if ( empty( $all_actions ) ) {
 
-			if ( !empty( get_transient( 'RE_BEEHIIV_manual_import_group_data' ) ) ) {
-				add_action( 're_beehiiv_admin_notices', function() use ( $complete_actions, $all_actions, $group_name ) {
-					$cancel_nonce = wp_create_nonce( 're_beehiiv_cancel_import' );
-					$cancel_url = add_query_arg(
+			if ( ! empty( get_transient( 'RE_BEEHIIV_manual_import_group_data' ) ) ) {
+				add_action(
+					're_beehiiv_admin_notices',
+					function() use ( $complete_actions, $all_actions, $group_name ) {
+						$cancel_nonce = wp_create_nonce( 're_beehiiv_cancel_import' );
+						$cancel_url   = add_query_arg(
 							array(
-							'page' => 're-beehiiv-import',
-							'cancel' => $group_name,
-							'nonce' => $cancel_nonce,
-						),
-						admin_url( 'admin.php' )
-					);
-					?>
+								'page'   => 're-beehiiv-import',
+								'cancel' => $group_name,
+								'nonce'  => $cancel_nonce,
+							),
+							admin_url( 'admin.php' )
+						);
+						?>
 					<div class="re-beehiiv-import--notice">
 						<h4>Importing posts from Beehiiv is in progress.</h4>
-						<p class="description">The import process is currently running in the background. You may proceed with your work and close this page, but please be patient and wait until it is complete. It is not possible to initiate another manual import while the current one is still in progress.<br><strong> Progress: <span class="number" id="imported_count"><?php echo count( $complete_actions ) . '</span> / <span class="number" id="total_count">' . count( $all_actions ) ?></span></strong></p>
+						<p class="description">The import process is currently running in the background. You may proceed with your work and close this page, but please be patient and wait until it is complete. It is not possible to initiate another manual import while the current one is still in progress.<br><strong> Progress: <span class="number" id="imported_count"><?php echo count( $complete_actions ) . '</span> / <span class="number" id="total_count">' . count( $all_actions ); ?></span></strong></p>
 						<a class="re-beehiiv-button-secondary re-beehiiv-button-cancel" id="re-beehiiv-import--cancel" href="<?php echo esc_url( $cancel_url ); ?>">Cancel</a>
 						<?php require_once RE_BEEHIIV_PATH . 'admin/partials/components/progressbar.php'; ?>
 					</div>
-					<?php
-				});
+						<?php
+					}
+				);
 				return;
 			}
 
@@ -522,14 +610,17 @@ class Import {
 			return;
 		}
 		if ( count( $complete_actions ) === count( $all_actions ) ) {
-			add_action( 're_beehiiv_admin_notices', function() {
-				?>
+			add_action(
+				're_beehiiv_admin_notices',
+				function() {
+					?>
 				<div class="re-beehiiv-import--notice re-beehiiv-import--notice-success">
 					<h4 class="mb-0">Importing posts from Re Beehiiv is complete.</h4>
 					<p class="description"></p>
 				</div>
-				<?php
-			});
+					<?php
+				}
+			);
 			$this->remove_import_transient();
 			return;
 		}
@@ -537,51 +628,60 @@ class Import {
 		$failed_actions = Manage_Actions::get_actions( $group_name, 'failed' );
 
 		if ( count( $failed_actions ) === count( $all_actions ) ) {
-			add_action( 're_beehiiv_admin_notices', function() {
-				?>
+			add_action(
+				're_beehiiv_admin_notices',
+				function() {
+					?>
 				<div class="re-beehiiv-import--notice">
 					<h4>Importing posts from Re Beehiiv has failed.</h4>
 					<p class="description">Check beehiiv credentials or contact plugin author.</p>
 				</div>
-				<?php
-			});
+					<?php
+				}
+			);
 			$this->remove_import_transient();
 			return;
 		}
 
 		if ( count( $failed_actions ) + count( $complete_actions ) === count( $all_actions ) ) {
-			add_action( 're_beehiiv_admin_notices', function() use ( $failed_actions, $all_actions ) {
-				?>
+			add_action(
+				're_beehiiv_admin_notices',
+				function() use ( $failed_actions, $all_actions ) {
+					?>
 				<div class="re-beehiiv-import--notice">
 					<h4>Importing posts from Re Beehiiv is complete, but some posts failed to import.</h4>
 					<p class="description"><?php echo 'Failed posts: ' . count( $failed_actions ) . '/' . count( $all_actions ); ?></p>
 				</div>
-				<?php
-			});
+					<?php
+				}
+			);
 			$this->remove_import_transient();
 			return;
 		}
 
 		// notice with progress bar
-		add_action( 're_beehiiv_admin_notices', function() use ( $complete_actions, $all_actions, $group_name ) {
-			$cancel_nonce = wp_create_nonce( 're_beehiiv_cancel_import' );
-			$cancel_url = add_query_arg(
+		add_action(
+			're_beehiiv_admin_notices',
+			function() use ( $complete_actions, $all_actions, $group_name ) {
+				$cancel_nonce = wp_create_nonce( 're_beehiiv_cancel_import' );
+				$cancel_url   = add_query_arg(
 					array(
-					'page' => 're-beehiiv-import',
-					'cancel' => $group_name,
-					'nonce' => $cancel_nonce,
-				),
-				admin_url( 'admin.php' )
-			);
-			?>
+						'page'   => 're-beehiiv-import',
+						'cancel' => $group_name,
+						'nonce'  => $cancel_nonce,
+					),
+					admin_url( 'admin.php' )
+				);
+				?>
 			<div class="re-beehiiv-import--notice">
 				<h4>Importing posts from Beehiiv is in progress.</h4>
-				<p class="description">The import process is currently running in the background. You may proceed with your work and close this page, but please be patient and wait until it is complete. It is not possible to initiate another manual import while the current one is still in progress.<br><strong> Progress: <span class="number" id="imported_count"><?php echo count( $complete_actions ) . '</span> / <span class="number" id="total_count">' . count( $all_actions ) ?></span></strong></p>
+				<p class="description">The import process is currently running in the background. You may proceed with your work and close this page, but please be patient and wait until it is complete. It is not possible to initiate another manual import while the current one is still in progress.<br><strong> Progress: <span class="number" id="imported_count"><?php echo count( $complete_actions ) . '</span> / <span class="number" id="total_count">' . count( $all_actions ); ?></span></strong></p>
 				<a class="re-beehiiv-button-secondary re-beehiiv-button-cancel" id="re-beehiiv-import--cancel" href="<?php echo esc_url( $cancel_url ); ?>">Cancel</a>
 				<?php require_once RE_BEEHIIV_PATH . 'admin/partials/components/progressbar.php'; ?>
 			</div>
-			<?php
-		});
+				<?php
+			}
+		);
 	}
 
 	/**
@@ -601,6 +701,11 @@ class Import {
 		return $settings;
 	}
 
+	/**
+	 * Check if post is unique
+	 *
+	 * @param int $post_id post id on beehiiv
+	 */
 	public function is_unique_post( $post_id ) {
 		$args  = array(
 			'meta_key'       => 're_beehiiv_post_id',
@@ -618,7 +723,21 @@ class Import {
 		return false;
 	}
 
+	/**
+	 * Get progress bar data
+	 * In the first call, it will start the fetching process
+	 * then it will return the progress bar data
+	 * Ajax: re_beehiiv_progress_bar_data
+	 *
+	 * @return void
+	 */
 	public function get_progress_bar_data() {
+
+		// verify nonce
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'progress_bar_nonce' ) ) {
+			wp_send_json_error( 'Invalid nonce' );
+			exit;
+		}
 
 		$group_name = get_transient( 'RE_BEEHIIV_manual_import_group' );
 		$is_running = get_transient( 'RE_BEEHIIV_manual_import_running' );
@@ -633,7 +752,7 @@ class Import {
 			);
 		}
 
-		$all_actions      = Manage_Actions::get_actions( $group_name );
+		$all_actions = Manage_Actions::get_actions( $group_name );
 
 		if ( ! $all_actions ) {
 			$form_data = get_transient( 'RE_BEEHIIV_manual_import_group_data' );
@@ -643,7 +762,7 @@ class Import {
 				$logger = new Logger( $group_name );
 				$logger->log(
 					array(
-						'status'    => 'running',
+						'status'  => 'running',
 						'message' => 'Waiting for Beehiiv API response',
 					)
 				);
@@ -655,14 +774,13 @@ class Import {
 						'complete' => 0,
 						'all'      => 0,
 						'failed'   => 0,
-						'logs' => $logs,
+						'logs'     => $logs,
 					)
 				);
-				
+
 			}
 
 			delete_transient( 'RE_BEEHIIV_manual_import_group_data' );
-
 			$is_anything_added = $this->start_import( $form_data, $group_name );
 
 			if ( ! $is_anything_added ) {
@@ -674,7 +792,7 @@ class Import {
 		}
 
 		$complete_actions = Manage_Actions::get_actions( $group_name, 'complete' );
-		$logs			  = ( new Logger( $group_name ) )->get_logs();
+		$logs             = ( new Logger( $group_name ) )->get_logs();
 
 		$failed_actions = Manage_Actions::get_actions( $group_name, 'failed' );
 
@@ -689,6 +807,12 @@ class Import {
 		exit;
 	}
 
+	/**
+	 * Maybe cancel import
+	 * If cancel button is clicked, it will remove all related actions and redirect to import page
+	 *
+	 * @return void
+	 */
 	public function maybe_cancel_import() {
 		if ( ! isset( $_GET['cancel'] ) || ! isset( $_GET['nonce'] ) ) {
 			return;
@@ -705,16 +829,23 @@ class Import {
 
 		$this->remove_import_transient();
 
-
-		wp_redirect( admin_url( 'admin.php?page=re-beehiiv-import' ) );
+		wp_safe_redirect( admin_url( 'admin.php?page=re-beehiiv-import' ) );
 	}
 
+	/**
+	 * Remove all related transients and actions
+	 * This function will be called when import is finished or canceled
+	 * It will remove all related transients and actions and clear the log
+	 *
+	 * @return void
+	 */
 	private function remove_import_transient() {
 		$group_name = get_transient( 'RE_BEEHIIV_manual_import_group' );
 		delete_transient( 'RE_BEEHIIV_manual_import_group' );
 		delete_transient( 'RE_BEEHIIV_manual_import_running' );
 		delete_transient( 'RE_BEEHIIV_manual_import_group_data' );
 		( new Logger( $group_name ) )->clear_log();
+		Import_Table::delete_row_by_group( $group_name );
 	}
 
 }

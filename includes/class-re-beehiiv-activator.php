@@ -19,8 +19,8 @@
  * @subpackage Re_Beehiiv/includes
  * @author     Refact <info@refact.co>
  */
-class Re_Beehiiv_Activator
-{
+class Re_Beehiiv_Activator {
+
 
 	/**
 	 * Short Description. (use period)
