@@ -15,8 +15,8 @@ class Admin_Menus {
 	 */
 	public function register() {
 		add_menu_page(
-			'Re/Beehiiv',
-			'Re/Beehiiv',
+			__( 'Re/Beehiiv', 're-beehiiv' ),
+			__( 'Re/Beehiiv', 're-beehiiv' ),
 			'manage_options',
 			're-beehiiv-import',
 			array( $this, 'load_page_import' ),
@@ -28,7 +28,7 @@ class Admin_Menus {
 
 		add_submenu_page(
 			're-beehiiv-import',
-			'Re/Beehiiv - Settings',
+			__( 'Re/Beehiiv - Import', 're-beehiiv' ),
 			'Settings',
 			'manage_options',
 			're-beehiiv-settings',

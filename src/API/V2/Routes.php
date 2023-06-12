@@ -2,7 +2,7 @@
 
 namespace Re_Beehiiv\API\V2;
 
-defined('ABSPATH') || exit;
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Routes
@@ -12,8 +12,7 @@ defined('ABSPATH') || exit;
  * @package    Re_Beehiiv
  * @subpackage Re_Beehiiv/API/V2
  */
-class Routes
-{
+class Routes {
 
 	const BASE_URL      = 'https://api.beehiiv.com/v2';
 	const BASE_MOCK_URL = 'https://stoplight.io/mocks/beehiiv/v2/104190750';

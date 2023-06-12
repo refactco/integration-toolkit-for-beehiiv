@@ -292,7 +292,11 @@ class Import {
 
 				return array(
 					'error'   => true,
-					'message' => $field['name'] . ' is required',
+					'message' => sprintf(
+						// Translators: %s is a placeholder for the field label. This text is displayed when a required field is left blank.
+						__( '%s is required', 're-beehiiv' ),
+						$field['label']
+					),
 				);
 			}
 
@@ -334,7 +338,8 @@ class Import {
 				if ( $this->is_unique_post( $value['id'] ) ) {
 					$logger->log(
 						array(
-							'message' => $value['id'] . ' - ' . $value['title'] . ' is already exists',
+							// Translators: %1$s is a placeholder for the post ID, %2$s is a placeholder for the post title.
+							'message' => sprintf( __( '%1$s - %2$s is already exists', 're-beehiiv' ), $value['id'], $value['title'] ),
 							'status'  => 'skipped',
 						)
 					);
@@ -345,7 +350,8 @@ class Import {
 				if ( ! $this->is_unique_post( $value['id'] ) ) {
 					$logger->log(
 						array(
-							'message' => $value['id'] . ' - ' . $value['title'] . ' is not exists',
+							// Translators: %1$s is a placeholder for the post ID, %2$s is a placeholder for the post title.
+							'message' => sprintf( __( '%1$s - %2$s is not exists', 're-beehiiv' ), $value['id'], $value['title'] ),
 							'status'  => 'skipped',
 						)
 					);
@@ -357,7 +363,8 @@ class Import {
 			if ( ! in_array( $value['status'], $args['form_data']['beehiiv-status'], true ) ) {
 				$logger->log(
 					array(
-						'message' => $value['id'] . ' - ' . $value['title'] . ' is not in selected status',
+						// Translators: %1$s is a placeholder for the post ID, %2$s is a placeholder for the post title.
+						'message' => sprintf( __( '%1$s - %2$s is not in selected status', 're-beehiiv' ), $value['id'], $value['title'] ),
 						'status'  => 'skipped',
 					)
 				);
@@ -389,7 +396,7 @@ class Import {
 		if ( ! $is_added_to_queue ) {
 			$logger->log(
 				array(
-					'message' => 'No posts are pushed to queue',
+					'message' => __( 'No posts are pushed to queue', 're-beehiiv' ),
 					'status'  => 'success',
 				)
 			);
@@ -398,7 +405,8 @@ class Import {
 
 		$logger->log(
 			array(
-				'message' => 'All posts are pushed to queue. The queue will end in about ' . $import_interval . ' seconds',
+				// Translators: %d is a placeholder for the import interval.
+				'message' => sprintf( __( 'All posts are pushed to queue. The queue will end in about %d seconds', 're-beehiiv' ), $import_interval ),
 				'status'  => 'success',
 			)
 		);
@@ -536,21 +544,11 @@ class Import {
 			if ( $is_running ) {
 				add_action(
 					're_beehiiv_admin_notices',
-					function() use ( $group_name ) {
-						$cancel_nonce = wp_create_nonce( 're_beehiiv_cancel_import' );
-						$cancel_url   = add_query_arg(
-							array(
-								'page'   => 're-beehiiv-import',
-								'cancel' => $group_name,
-								'nonce'  => $cancel_nonce,
-							),
-							admin_url( 'admin.php' )
-						);
+					function() {
 						?>
 					<div class="re-beehiiv-import--notice">
-						<h4>Importing posts from Beehiiv</h4>
-						<span class="description">Importing posts from Beehiiv is in progress. Be patient, this may take a while.</span>
-						<a class="re-beehiiv-button-secondary re-beehiiv-button-cancel" id="re-beehiiv-import--cancel" href="<?php echo esc_url( $cancel_url ); ?>">Cancel</a>
+						<h4><?php esc_html_e( 'Importing posts from Beehiiv', 're-beehiiv' ); ?></h4>
+						<span class="description"><?php esc_html_e( 'Importing posts from Beehiiv is in progress. Be patient, this may take a while.', 're-beehiiv' ); ?></span>
 					</div>
 						<?php
 					}
@@ -562,7 +560,7 @@ class Import {
 					function() {
 						?>
 					<div class="re-beehiiv-import--notice re-beehiiv-import--notice-error">
-						<h4 class="mb-0">Import Failed</h4>
+						<h4 class="mb-0"><?php esc_html_e( 'Import Failed', 're-beehiiv' ); ?></h4>
 					</div>
 						<?php
 					}
@@ -594,9 +592,10 @@ class Import {
 						);
 						?>
 					<div class="re-beehiiv-import--notice">
-						<h4>Importing posts from Beehiiv is in progress.</h4>
-						<p class="description">The import process is currently running in the background. You may proceed with your work and close this page, but please be patient and wait until it is complete. It is not possible to initiate another manual import while the current one is still in progress.<br><strong> Progress: <span class="number" id="imported_count"><?php echo count( $complete_actions ) . '</span> / <span class="number" id="total_count">' . count( $all_actions ); ?></span></strong></p>
-						<a class="re-beehiiv-button-secondary re-beehiiv-button-cancel" id="re-beehiiv-import--cancel" href="<?php echo esc_url( $cancel_url ); ?>">Cancel</a>
+						<h4><?php esc_html_e( 'Importing posts from Beehiiv is in progress.', 're-beehiiv' ); ?></h4>
+						<p class="description"><?php esc_html_e( 'The import process is currently running in the background. You may proceed with your work and close this page, but please be patient and wait until it is complete. It is not possible to initiate another manual import while the current one is still in progress.', 're-beehiiv' ); ?>
+						<br><strong><?php esc_html_e( 'Progress: ', 're-beehiiv' ); ?><span class="number" id="imported_count"><?php echo count( $complete_actions ) . '</span> / <span class="number" id="total_count">' . count( $all_actions ); ?></span></strong></p>
+						<a class="re-beehiiv-button-secondary re-beehiiv-button-cancel" id="re-beehiiv-import--cancel" href="<?php echo esc_url( $cancel_url ); ?>"><?php esc_html_e( 'Cancel', 're-beehiiv' ); ?></a>
 						<?php require_once RE_BEEHIIV_PATH . 'admin/partials/components/progressbar.php'; ?>
 					</div>
 						<?php
@@ -614,7 +613,7 @@ class Import {
 				function() {
 					?>
 				<div class="re-beehiiv-import--notice re-beehiiv-import--notice-success">
-					<h4 class="mb-0">Importing posts from Re Beehiiv is complete.</h4>
+					<h4 class="mb-0"><?php esc_html_e( 'Importing posts from Re Beehiiv is complete.', 're-beehiiv' ); ?></h4>
 					<p class="description"></p>
 				</div>
 					<?php
@@ -632,8 +631,10 @@ class Import {
 				function() {
 					?>
 				<div class="re-beehiiv-import--notice">
-					<h4>Importing posts from Re Beehiiv has failed.</h4>
-					<p class="description">Check beehiiv credentials or contact plugin author.</p>
+					<h4><?php esc_html_e( 'Importing posts from Re Beehiiv has failed.', 're-beehiiv' ); ?></h4>
+					<p class="description">
+						<?php esc_html_e( 'Check beehiiv credentials or contact plugin author.', 're-beehiiv' ); ?>
+					</p>
 				</div>
 					<?php
 				}
@@ -648,8 +649,12 @@ class Import {
 				function() use ( $failed_actions, $all_actions ) {
 					?>
 				<div class="re-beehiiv-import--notice">
-					<h4>Importing posts from Re Beehiiv is complete, but some posts failed to import.</h4>
-					<p class="description"><?php echo 'Failed posts: ' . count( $failed_actions ) . '/' . count( $all_actions ); ?></p>
+					<h4><?php esc_html_e( 'Importing posts from Re Beehiiv is complete, but some posts failed to import.', 're-beehiiv' ); ?></h4>
+					<p class="description">
+						<?php
+						// translators: %1$d is number of failed posts, %2$d is number of all posts
+						sprintf( esc_html__( 'Failed posts: %1$d/%2$d', 're-beehiiv' ), count( $failed_actions ), count( $all_actions ) );
+						?>
 				</div>
 					<?php
 				}
@@ -673,9 +678,10 @@ class Import {
 				);
 				?>
 			<div class="re-beehiiv-import--notice">
-				<h4>Importing posts from Beehiiv is in progress.</h4>
-				<p class="description">The import process is currently running in the background. You may proceed with your work and close this page, but please be patient and wait until it is complete. It is not possible to initiate another manual import while the current one is still in progress.<br><strong> Progress: <span class="number" id="imported_count"><?php echo count( $complete_actions ) . '</span> / <span class="number" id="total_count">' . count( $all_actions ); ?></span></strong></p>
-				<a class="re-beehiiv-button-secondary re-beehiiv-button-cancel" id="re-beehiiv-import--cancel" href="<?php echo esc_url( $cancel_url ); ?>">Cancel</a>
+				<h4><?php esc_html_e( 'Importing posts from Beehiiv is in progress.', 're-beehiiv' ); ?></h4>
+				<p class="description"><?php esc_html_e( 'The import process is currently running in the background. You may proceed with your work and close this page, but please be patient and wait until it is complete. It is not possible to initiate another manual import while the current one is still in progress.', 're-beehiiv' ); ?>
+				<br><strong><?php esc_html_e( 'Progress: ', 're-beehiiv' ); ?><span class="number" id="imported_count"><?php echo count( $complete_actions ) . '</span> / <span class="number" id="total_count">' . count( $all_actions ); ?></span></strong></p>
+				<a class="re-beehiiv-button-secondary re-beehiiv-button-cancel" id="re-beehiiv-import--cancel" href="<?php echo esc_url( $cancel_url ); ?>"><?php esc_html_e( 'Cancel', 're-beehiiv' ); ?></a>
 				<?php require_once RE_BEEHIIV_PATH . 'admin/partials/components/progressbar.php'; ?>
 			</div>
 				<?php
@@ -762,7 +768,7 @@ class Import {
 				$logger->log(
 					array(
 						'status'  => 'running',
-						'message' => 'Waiting for Beehiiv API response',
+						'message' => __( 'Waiting for Beehiiv API response', 're-beehiiv' ),
 					)
 				);
 

@@ -87,8 +87,13 @@ if ( $is_auto_action_exist ) {
 			$is_existing_item_update = $args['import_method'] !== 'new';
 			?>
 			<div class="re-beehiiv-import--notice">
-				<h4>Auto Import is set</h4>
-				<p class="description">Current Auto Import will run <strong><?php echo esc_html( $args['cron_time'] ); ?></strong> and will import to <strong><?php echo esc_html( $args['post_type'] ); ?></strong> post type and <strong><?php echo esc_html( $args['taxonomy'] ); ?></strong> taxonomy with <strong><?php echo esc_html( $term->name ); ?></strong> term. The default post status is <strong><?php echo esc_html( $args['post_status'] ); ?></strong>. The new items will <strong><?php $is_new_item_add === true ? esc_html_e( 'be', 're-beehiiv' ) : esc_html_e( 'not be', 're-beehiiv' ); ?></strong> imported and the Existing posts will <strong><?php $is_existing_item_update === true ? esc_html_e( 'be', 're-beehiiv' ) : esc_html_e( 'not be', 're-beehiiv' ); ?></strong> updated. You can change the settings below.</p>
+				<h4><?php esc_html_e( 'Auto Import is set', 're-beehiiv' ); ?></h4>
+				<p class="description">
+					<?php
+					// Translators: %1$s: cron time, %2$s: post type, %3$s: taxonomy, %4$s: term name, %5$s: post status, %6$s: new item add, %7$s: existing item update.
+					echo sprintf( esc_html__( 'Current Auto Import is set to run every %1$s hours. and will import to %2$s post type and %3$s taxonomy with %4$s term. The default post status is %5$s. The new items will %6$s imported and the Existing posts will %7$s updated. You can change the settings below.', 're-beehiiv' ), '<strong>' . esc_html( $args['cron_time'] ) . '</strong>', '<strong>' . esc_html( $args['post_type'] ) . '</strong>', '<strong>' . esc_html( $args['taxonomy'] ) . '</strong>', '<strong>' . esc_html( $term->name ) . '</strong>', '<strong>' . esc_html( $args['post_status'] ) . '</strong>', '<strong>' . ( $is_new_item_add === true ? esc_html__( 'be', 're-beehiiv' ) : esc_html__( 'not be', 're-beehiiv' ) ) . '</strong>', '<strong>' . ( $is_existing_item_update === true ? esc_html__( 'be', 're-beehiiv' ) : esc_html__( 'not be', 're-beehiiv' ) ) . '</strong>' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+					?>
+				</p>
 			</div>
 			<?php
 		}
@@ -116,15 +121,15 @@ var AllTaxonomyTerms = <?php echo wp_json_encode( $taxonomy_terms ); ?>;
 
 	<div class="re-beehiiv-tabs">
 		<nav class="nav-tab-wrapper">
-			<a class="re-nav-tab <?php echo $is_auto ? '' : 're-nav-tab-active'; ?>" data-tab="re-beehiiv-import" id="re-beehiiv-import-tab" href="<?php echo esc_url( admin_url( 'admin.php?page=re-beehiiv-import' ) ); ?>">Manual Import</a>
-			<a class="re-nav-tab <?php echo $is_auto ? 're-nav-tab-active' : ''; ?>" data-tab="re-beehiiv-auto-import" id="re-beehiiv-auto-import-tab" href="<?php echo esc_url( admin_url( 'admin.php?page=re-beehiiv-import&tab=auto-import' ) ); ?>">Auto Import</a>
+			<a class="re-nav-tab <?php echo $is_auto ? '' : 're-nav-tab-active'; ?>" data-tab="re-beehiiv-import" id="re-beehiiv-import-tab" href="<?php echo esc_url( admin_url( 'admin.php?page=re-beehiiv-import' ) ); ?>"><?php esc_html_e( 'Manual Import', 're-beehiiv' ); ?></a>
+			<a class="re-nav-tab <?php echo $is_auto ? 're-nav-tab-active' : ''; ?>" data-tab="re-beehiiv-auto-import" id="re-beehiiv-auto-import-tab" href="<?php echo esc_url( admin_url( 'admin.php?page=re-beehiiv-import&tab=auto-import' ) ); ?>"><?php esc_html_e( 'Auto Import', 're-beehiiv' ); ?></a>
 		</nav>
 	</div>
 
 	<div class="re-beehiiv-wrapper">
 		<div class="re-beehiiv-import--notices" id="re-beehiiv-import--notices">
 			<div class="hidden re-beehiiv-import--notice re-beehiiv-import--notice-error">
-				<h4>Please fix the following errors:</h4>
+				<h4><?php esc_html_e( 'Please fix the following errors:', 're-beehiiv' ); ?></h4>
 				<ul>
 				</ul>
 			</div>
@@ -135,14 +140,14 @@ var AllTaxonomyTerms = <?php echo wp_json_encode( $taxonomy_terms ); ?>;
 		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" id="re-beehiiv-import-form" class="re-beehiiv-import-form">
 			<div class="re-beehiiv-import-fields">
 				<div class="re-beehiiv-import-fields--step import-fields--step1 <?php echo ! $is_auto_action_exist ? 'active' : ''; ?>">
-					<h2 class="re-beehiiv-import-fields--step--title">Step 1: Select Content from Beehiiv</h2>
+					<h2 class="re-beehiiv-import-fields--step--title"><?php esc_html_e( 'Step 1: Select Content Type', 're-beehiiv' ); ?></h2>
 					<div class="re-beehiiv-import-fields--step--content">
 						<fieldset>
-							<label for="re-beehiiv-content_type" class="pr-2"><strong>Content Type </strong></label>
+							<label for="re-beehiiv-content_type" class="pr-2"><strong><?php esc_html_e( 'Content Type', 're-beehiiv' ); ?></strong></label>
 							<?php
 							$content_types = array(
-								'free_web_content'    => 'Free',
-								'premium_web_content' => 'Premium',
+								'free_web_content'    => __( 'Free', 're-beehiiv' ),
+								'premium_web_content' => __( 'Premium', 're-beehiiv' ),
 							);
 
 							foreach ( $content_types as $content_type => $label ) {
@@ -158,16 +163,16 @@ var AllTaxonomyTerms = <?php echo wp_json_encode( $taxonomy_terms ); ?>;
 								<?php
 							}
 							?>
-							<p class="description">What kind of content do you want to import?</p>
+							<p class="description"><?php esc_html_e( 'What kind of content do you want to import?', 're-beehiiv' ); ?></p>
 						</fieldset>
 
 						<fieldset>
-							<label for="re-beehiiv-beehiiv-status[]" class="pr-2"><strong>Post Status on Beehiiv </strong></label>
+							<label for="re-beehiiv-beehiiv-status[]" class="pr-2"><strong><?php esc_html_e( 'Post Status on Beehiiv', 're-beehiiv' ); ?></strong></label>
 							<?php
 							$beehiiv_statuses = array(
-								'confirmed' => 'Published',
-								'archived'  => 'Archived',
-								'draft'     => 'Draft',
+								'confirmed' => __( 'Published', 're-beehiiv' ),
+								'archived'  => __( 'Archived', 're-beehiiv' ),
+								'draft'     => __( 'Draft', 're-beehiiv' ),
 							);
 
 							foreach ( $beehiiv_statuses as $beehiiv_status => $label ) {
@@ -183,17 +188,17 @@ var AllTaxonomyTerms = <?php echo wp_json_encode( $taxonomy_terms ); ?>;
 								<?php
 							}
 							?>
-							<p class="description">Select the status of the content you want to import.</p>
+							<p class="description"><?php esc_html_e( 'Select the status of the content you want to import.', 're-beehiiv' ); ?></p>
 						</fieldset>
 					</div>
 				</div>
 				<div class="re-beehiiv-import-fields--step import-fields--step2">
-					<h2 class="re-beehiiv-import-fields--step--title">Step 2: Setup Post type and attributes</h2>
+					<h2 class="re-beehiiv-import-fields--step--title"><?php esc_html_e( 'Step 2: Setup Post type and attributes', 're-beehiiv' ); ?></h2>
 					<div class="re-beehiiv-import-fields--step--content">
 						<fieldset>
-							<label class="d-block" for="re-beehiiv-post_type"><strong>Select Post Type and Taxonomy</strong></label>
+							<label class="d-block" for="re-beehiiv-post_type"><strong><?php esc_html_e( 'Select Post Type and Taxonomy', 're-beehiiv' ); ?></strong></label>
 							<select name="re-beehiiv-post_type" id="re-beehiiv-post_type" required>
-								<option value="0">Select Post Type</option>
+								<option value="0"><?php esc_html_e( 'Select Post Type', 're-beehiiv' ); ?></option>
 								<?php
 								foreach ( $post_types as $re_post_type ) {
 									if ( $re_post_type === 'attachment' ) {
@@ -204,17 +209,17 @@ var AllTaxonomyTerms = <?php echo wp_json_encode( $taxonomy_terms ); ?>;
 								?>
 							</select>
 							<select name="re-beehiiv-taxonomy" id="re-beehiiv-taxonomy" class="hidden re-beehiiv-taxonomy" required>
-								<option value="0">Select Post Type First</option>
+								<option value="0"><?php esc_html_e( 'Select Post Type First', 're-beehiiv' ); ?></option>
 							</select>
 							<select name="re-beehiiv-taxonomy_term" id="re-beehiiv-taxonomy_term" class="hidden re-beehiiv-taxonomy_term" required>
-								<option value="0">Select Term</option>
+								<option value="0"><?php esc_html_e( 'Select Term', 're-beehiiv' ); ?></option>
 							</select>
-							<p class="description">Select the post type and taxonomy you want to import the content to.</p>
+							<p class="description"><?php esc_html_e( 'Select the post type and taxonomy you want to import the content to.', 're-beehiiv' ); ?></p>
 						</fieldset>
 						<fieldset>
-							<label for="re-beehiiv-post_author" class="d-block"><strong>Post Author </strong></label>
+							<label for="re-beehiiv-post_author" class="d-block"><strong><?php esc_html_e( 'Post Author', 're-beehiiv' ); ?></strong></label>
 							<select name="re-beehiiv-post_author" id="re-beehiiv-post_author" required>
-								<option value="0">Select Author</option>
+								<option value="0"><?php esc_html_e( 'Select Author', 're-beehiiv' ); ?></option>
 								<?php
 								$authors = get_users( array( 'role__in' => array( 'author', 'editor', 'administrator' ) ) );
 								foreach ( $authors as $author ) {
@@ -222,23 +227,23 @@ var AllTaxonomyTerms = <?php echo wp_json_encode( $taxonomy_terms ); ?>;
 								}
 								?>
 							</select>
-							<p class="description">The posts being imported will be assigned to this user.</p>
+							<p class="description"><?php esc_html_e( 'The posts being imported will be assigned to this user.', 're-beehiiv' ); ?></p>
 						</fieldset>
 						<fieldset>
-							<label for="re-beehiiv-post_tags"><strong>Post Tags </strong></label>
+							<label for="re-beehiiv-post_tags"><strong><?php esc_html_e( 'Post Tags', 're-beehiiv' ); ?>
 							<label class="pr-2 d-block">
-								<input type="checkbox" name="re-beehiiv-post_tags" id="re-beehiiv-post_tags" value="1" <?php echo ( '1' === $default_args['post_tags'] ) ? 'checked' : ''; ?>> Import Tags
+								<input type="checkbox" name="re-beehiiv-post_tags" id="re-beehiiv-post_tags" value="1" <?php echo ( '1' === $default_args['post_tags'] ) ? 'checked' : ''; ?>> <?php esc_html_e( 'Import Tags', 're-beehiiv' ); ?>
 							</label>
-							<p class="description">If checked, the tags will be imported as post tags.</p>
+							<p class="description"><?php esc_html_e( 'If checked, the tags will be imported as post tags.', 're-beehiiv' ); ?></p>
 						</fieldset>
 						<fieldset>
-							<label for="re-beehiiv-post_status"><strong>Post Status </strong></label>
+							<label for="re-beehiiv-post_status"><strong><?php esc_html_e( 'Post Status', 're-beehiiv' ); ?></strong></label>
 							<?php
 							$post_statuses = array(
-								'publish' => 'Publish',
-								'draft'   => 'Draft',
-								'pending' => 'Pending',
-								'private' => 'Private',
+								'publish' => __( 'Publish', 're-beehiiv' ),
+								'draft'   => __( 'Draft', 're-beehiiv' ),
+								'pending' => __( 'Pending', 're-beehiiv' ),
+								'private' => __( 'Private', 're-beehiiv' ),
 							);
 
 							foreach ( $post_statuses as $post_status => $post_status_name ) {
@@ -252,20 +257,20 @@ var AllTaxonomyTerms = <?php echo wp_json_encode( $taxonomy_terms ); ?>;
 								echo '</label>';
 							}
 							?>
-							<p class="description">Select the post status you want to import the content to.</p>
+							<p class="description"><?php esc_html_e( 'Select the post status for the imported posts.', 're-beehiiv' ); ?></p>
 						</fieldset>
 					</div>
 				</div>
 				<div class="re-beehiiv-import-fields--step import-fields--step3">
-					<h2 class="re-beehiiv-import-fields--step--title">Step 3: Import Options</h2>
+					<h2 class="re-beehiiv-import-fields--step--title"><?php esc_html_e( 'Step 3: Import Options', 're-beehiiv' ); ?></h2>
 					<div class="re-beehiiv-import-fields--step--content">
 						<fieldset>
-							<label for="re-beehiiv-import_method"><strong>Import Method </strong></label>
+							<label for="re-beehiiv-import_method"><strong><?php esc_html_e( 'Import Method', 're-beehiiv' ); ?></strong></label>
 							<?php
 							$import_methods = array(
-								'new'            => 'Import New Items',
-								'update'         => 'Update Existing Items',
-								'new_and_update' => 'Import New Items and Update Existing',
+								'new'            => __( 'Import New Items Only', 're-beehiiv' ),
+								'update'         => __( 'Update Existing Items Only', 're-beehiiv' ),
+								'new_and_update' => __( 'Import New Items and Update Existing', 're-beehiiv' ),
 							);
 
 							foreach ( $import_methods as $import_method => $label ) {
@@ -281,13 +286,13 @@ var AllTaxonomyTerms = <?php echo wp_json_encode( $taxonomy_terms ); ?>;
 								<?php
 							}
 							?>
-							<p class="description">Choose the desired action for importing data using this form. Options include importing new items only, updating existing items only, or performing both actions simultaneously.</p>
+							<p class="description"><?php esc_html_e( 'Choose the desired action for importing data using this form. Options include importing new items only, updating existing items only, or performing both actions simultaneously.', 're-beehiiv' ); ?></p>
 						</fieldset>
 						<?php if ( $is_auto ) : ?>
 							<fieldset>
-								<label for="re-beehiiv-cron_time" class="d-block"><strong>Import Schedule </strong></label>
+								<label for="re-beehiiv-cron_time" class="d-block"><strong><?php esc_html_e( 'Import Schedule', 're-beehiiv' ); ?></strong></label>
 								<input type="number" name="re-beehiiv-cron_time" id="re-beehiiv-cron_time" value="<?php echo esc_attr( $default_args['cron_time'] ); ?>" min="1" required>
-									<p class="description">This field allows you to set the schedule for automatic imports from Beehiiv. Enter the number of hours between each import, for example, '6' for an import every 6 hours.</p>
+									<p class="description"><?php esc_html_e( "This field allows you to set the schedule for automatic imports from Beehiiv. Enter the number of hours between each import, for example, '6' for an import every 6 hours.", 're-beehiiv' ); ?></p>
 							</fieldset>
 						<?php endif; ?>
 					</div>
@@ -298,9 +303,11 @@ var AllTaxonomyTerms = <?php echo wp_json_encode( $taxonomy_terms ); ?>;
 			<?php
 			$disabled = $is_running && ! $is_auto ? 'disabled' : '';
 			if ( $disabled ) {
-				echo '<p>It is not possible to initiate another manual import while the current one is still in progress. refresh the page to update the status.</p>';
+				echo '<p>';
+				esc_html_e( 'It is not possible to initiate another manual import while the current one is still in progress. refresh the page to update the status.', 're-beehiiv' );
+				echo '</p>';
 			}
-			$submit_text = $is_auto ? 'Save' : 'Start Import';
+			$submit_text = $is_auto ? __( 'Save', 're-beehiiv' ) : __( 'Start Import', 're-beehiiv' );
 			submit_button( $submit_text, 'primary components-button is-primary', 're-beehiiv-start-import', false, $disabled );
 			?>
 		</form>

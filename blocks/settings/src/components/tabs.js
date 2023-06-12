@@ -1,5 +1,6 @@
 import { useState } from "@wordpress/element";
 import apiFetch from "@wordpress/api-fetch";
+import { __ } from "@wordpress/i18n";
 
 import {
   __experimentalInputControl as InputControl,
@@ -91,24 +92,26 @@ const Tabs = (props) => {
       >
         <Panel>
           <PanelBody
-            title="Beehive Credentials"
+            title={__("Beehive Credentials")}
             initialOpen={true}
             buttonProps={{ disabled: !status }}
           >
-            <PanelRow>Enter your credentials</PanelRow>
+            <PanelRow>
+              {__('Enter your credentials')}
+            </PanelRow>
             <PanelRow>
               <Grid columns={1} style={{ width: "100%" }}>
                 <InputControl
                   type="password"
-                  help="Please enter your API key here"
-                  label="API Key"
+                  help={__("Please enter your API key")}
+                  label={__("API Key")}
                   onChange={(value) => setApiKey(value)}
                   value={apiKey}
                 />
                 <InputControl
                   type="password"
-                  help="Please enter your publication ID"
-                  label="Publication ID"
+                  help={__("Please enter your publication ID")}
+                  label={__("Publication ID")}
                   onChange={(value) => setPublicationId(value)}
                   value={publicationId}
                 />
@@ -124,7 +127,7 @@ const Tabs = (props) => {
             isBusy={saving}
             disabled={!status}
           >
-            Save Settings
+            {__('Save Settings')}
           </Button>
           {status && (
             <Button
@@ -132,11 +135,11 @@ const Tabs = (props) => {
               isDestructive
               onClick={() => removeAPIKey()}
             >
-              Disconnect
+              {__("Disconnect")}
             </Button>
           )}
           <a href="https://app.beehiiv.com/settings/integrations" target="_blank">
-            Get your API key
+            {__("Get your API key")}
           </a>
           
         </div>

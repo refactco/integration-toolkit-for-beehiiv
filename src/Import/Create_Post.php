@@ -45,7 +45,7 @@ class Create_Post {
 			$this->data = false;
 			$this->logger->log(
 				array(
-					'message' => 'No data found',
+					'message' => __( 'No data found', 're-beehiiv' ),
 					'status'  => 'error',
 				)
 			);
@@ -66,7 +66,7 @@ class Create_Post {
 		if ( ! $this->data || ! isset( $this->data['meta']['post_id'] ) ) {
 			return array(
 				'success' => false,
-				'message' => 'No data found',
+				'message' => __( 'No data found', 're-beehiiv' ),
 			);
 		}
 
@@ -81,7 +81,7 @@ class Create_Post {
 
 				$this->logger->log(
 					array(
-						'message' => $this->data['meta']['post_id'] . ' - <a href="' . get_edit_post_link( $existing_id ) . '" target="_blank">#' . $existing_id . ' - ' . $this->data['post']['post_title'] . '</a> updated',
+						'message' => $this->data['meta']['post_id'] . ' - <a href="' . get_edit_post_link( $existing_id ) . '" target="_blank">#' . $existing_id . ' - ' . $this->data['post']['post_title'] . '</a> ' . __( 'updated', 're-beehiiv' ),
 						'status'  => 'success',
 					)
 				);
@@ -94,7 +94,7 @@ class Create_Post {
 
 				$this->logger->log(
 					array(
-						'message' => $this->data['meta']['post_id'] . ' - <a href="' . get_edit_post_link( $existing_id ) . '" target="_blank">#' . $existing_id . ' - ' . $this->data['post']['post_title'] . '</a> skipped',
+						'message' => $this->data['meta']['post_id'] . ' - <a href="' . get_edit_post_link( $existing_id ) . '" target="_blank">#' . $existing_id . ' - ' . $this->data['post']['post_title'] . '</a> ' . __( 'skipped', 're-beehiiv' ),
 						'status'  => 'skipped',
 					)
 				);
@@ -102,7 +102,7 @@ class Create_Post {
 				$this->complete();
 				return array(
 					'success' => true,
-					'message' => 'Post already exists',
+					'message' => __( 'Post already exists', 're-beehiiv' ),
 				);
 			}
 		}
@@ -116,7 +116,7 @@ class Create_Post {
 
 		$this->logger->log(
 			array(
-				'message' => $this->data['meta']['post_id'] . ' - <a href="' . get_edit_post_link( $this->post_id ) . '" target="_blank">#' . $this->post_id . ' - ' . $this->data['post']['post_title'] . '</a> created',
+				'message' => $this->data['meta']['post_id'] . ' - <a href="' . get_edit_post_link( $this->post_id ) . '" target="_blank">#' . $this->post_id . ' - ' . $this->data['post']['post_title'] . '</a> ' . __( 'created', 're-beehiiv' ),
 				'status'  => 'success',
 			)
 		);
@@ -134,7 +134,7 @@ class Create_Post {
 
 		return array(
 			'success' => true,
-			'message' => 'Post created',
+			'message' => __( 'Post created', 're-beehiiv' ),
 		);
 	}
 

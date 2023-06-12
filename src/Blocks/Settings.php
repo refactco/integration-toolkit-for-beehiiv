@@ -94,7 +94,7 @@ class Settings {
 
 		return array(
 			'success' => true,
-			'message' => 'Disconnected',
+			'message' => __( 'disconnected', 're-beehiiv' ),
 		);
 	}
 
@@ -112,7 +112,7 @@ class Settings {
 		if ( empty( $api_key ) || empty( $publication_id ) ) {
 			return array(
 				'success' => false,
-				'message' => 'Please fill all fields',
+				'message' => __( 'Please fill all fields', 're-beehiiv' ),
 			);
 		}
 
@@ -122,7 +122,7 @@ class Settings {
 
 		return array(
 			'success' => true,
-			'message' => 'Settings saved',
+			'message' => __( 'Settings saved', 're-beehiiv' ),
 		);
 	}
 
