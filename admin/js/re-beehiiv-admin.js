@@ -22,10 +22,10 @@
         post_type == "0"
       ) {
         $("#re-beehiiv-taxonomy").html(
-          '<option value="0">Select taxonomy</option>'
+          `<option value="0">${RE_BEEHIIV_CORE.strings.select_taxonomy}</option>`
         );
         $("#re-beehiiv-taxonomy_term").html(
-          '<option value="0">Select taxonomy term</option>'
+          `<option value="0">${RE_BEEHIIV_CORE.strings.select_term}</option>`
         );
         $("#re-beehiiv-taxonomy").addClass("hidden");
         $("#re-beehiiv-taxonomy_term").addClass("hidden");
@@ -46,7 +46,7 @@
       $("#re-beehiiv-taxonomy").removeClass("hidden");
 
       // populate the taxonomy select
-      let html = '<option value="0">Select taxonomy</option>';
+      let html = `<option value="0">${RE_BEEHIIV_CORE.strings.select_taxonomy}</option>`;
 
       for (let i = 0; i < taxonomies.length; i++) {
         html +=
@@ -70,7 +70,7 @@
         taxonomy == "0"
       ) {
         $("#re-beehiiv-taxonomy_term").html(
-          '<option value="0">Select taxonomy term</option>'
+          `<option value="0">${RE_BEEHIIV_CORE.strings.select_term}</option>`
         );
         $("#re-beehiiv-taxonomy_term").addClass("hidden");
         return false;
@@ -88,7 +88,7 @@
       $("#re-beehiiv-taxonomy_term").removeClass("hidden");
 
       // populate the taxonomy select
-      let html = '<option value="0">Select taxonomy term</option>';
+      let html = `<option value="0">${RE_BEEHIIV_CORE.strings.select_term}</option>`;
 
       UpdateTaxonomyTerms();
     });
@@ -104,7 +104,6 @@
       this.submit();
     });
 
-    // .re-beehiiv-import-fields--step is selector of accordion
     $(".re-beehiiv-import-fields--step--title").on("click", function () {
       // hide all accordion content
       $(".re-beehiiv-import-fields--step-content").hide();
@@ -119,7 +118,6 @@
     // Progress bar
     const bar = document.querySelector(".bar");
     if (bar) {
-      // update_progress_bar every 5 seconds until response.complete equals to response.all
       setInterval(function () {
         update_progress_bar();
       } , 5000);
@@ -130,7 +128,7 @@
 
 function UpdateTaxonomyTerms() {
   jQuery("#re-beehiiv-taxonomy_term").html(
-    '<option value="0">Select taxonomy term</option>'
+    `<option value="0">${RE_BEEHIIV_CORE.strings.select_term}</option>`
   );
 
   let post_type = jQuery("#re-beehiiv-post_type").val();
@@ -155,7 +153,7 @@ function UpdateTaxonomyTerms() {
     return false;
   }
 
-  let html = '<option value="0">Select taxonomy term</option>';
+  let html = `<option value="0">${RE_BEEHIIV_CORE.strings.select_term}</option>`;
 
   for (let i = 0; i < Terms.length; i++) {
     html +=
@@ -171,42 +169,42 @@ function check_required_fields() {
   $list_of_required_fields = [
     {
       id: "re-beehiiv-content_type[]",
-      name: "Content type",
+      name: RE_BEEHIIV_CORE.strings.labels.content_type,
       type: "checkbox",
     },
     {
       id: "re-beehiiv-beehiiv-status[]",
-      name: "Post status on Beehiiv",
+      name: RE_BEEHIIV_CORE.strings.labels.beehiiv_status,
       type: "checkbox",
     },
     {
       id: "re-beehiiv-post_type",
-      name: "Post type",
+      name: RE_BEEHIIV_CORE.strings.labels.post_type,
       type: "select",
     },
     {
       id: "re-beehiiv-taxonomy",
-      name: "Taxonomy",
+      name: RE_BEEHIIV_CORE.strings.labels.taxonomy,
       type: "select",
     },
     {
       id: "re-beehiiv-taxonomy_term",
-      name: "Taxonomy term",
+      name: RE_BEEHIIV_CORE.strings.labels.taxonomy_term,
       type: "select",
     },
     {
       id: "re-beehiiv-post_author",
-      name: "Post Author",
+      name: RE_BEEHIIV_CORE.strings.labels.post_author,
       type: "select",
     },
     {
       id: "re-beehiiv-import_method",
-      name: "Import method",
+      name: RE_BEEHIIV_CORE.strings.labels.import_method,
       type: "radio",
     },
     {
       id: "re-beehiiv-post_status",
-      name: "Post status",
+      name: RE_BEEHIIV_CORE.strings.labels.post_status,
       type: "radio",
     },
   ];
@@ -220,7 +218,7 @@ function check_required_fields() {
       $has_error = true;
       $notice_list
         .find("ul")
-        .append("<li>" + field.name + " is a required field</li>");
+        .append("<li>" + RE_BEEHIIV_CORE.strings.required_fields.replace("{{field_name}}", field.name) + "</li>");
     }
   });
 

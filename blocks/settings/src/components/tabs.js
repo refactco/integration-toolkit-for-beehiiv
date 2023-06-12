@@ -92,26 +92,26 @@ const Tabs = (props) => {
       >
         <Panel>
           <PanelBody
-            title={__("Beehive Credentials")}
+            title={__("Beehive Credentials", 're-beehiiv')}
             initialOpen={true}
             buttonProps={{ disabled: !status }}
           >
             <PanelRow>
-              {__('Enter your credentials')}
+              {__('Enter your credentials', 're-beehiiv')}
             </PanelRow>
             <PanelRow>
               <Grid columns={1} style={{ width: "100%" }}>
                 <InputControl
                   type="password"
-                  help={__("Please enter your API key")}
-                  label={__("API Key")}
+                  help={__("Please enter your API key", 're-beehiiv')}
+                  label={__("API Key", 're-beehiiv')}
                   onChange={(value) => setApiKey(value)}
                   value={apiKey}
                 />
                 <InputControl
                   type="password"
-                  help={__("Please enter your publication ID")}
-                  label={__("Publication ID")}
+                  help={__("Please enter your publication ID", 're-beehiiv')}
+                  label={__("Publication ID", 're-beehiiv')}
                   onChange={(value) => setPublicationId(value)}
                   value={publicationId}
                 />
@@ -127,7 +127,7 @@ const Tabs = (props) => {
             isBusy={saving}
             disabled={!status}
           >
-            {__('Save Settings')}
+            {__('Save Settings', 're-beehiiv')}
           </Button>
           {status && (
             <Button
@@ -135,11 +135,11 @@ const Tabs = (props) => {
               isDestructive
               onClick={() => removeAPIKey()}
             >
-              {__("Disconnect")}
+              {__("Disconnect", 're-beehiiv')}
             </Button>
           )}
           <a href="https://app.beehiiv.com/settings/integrations" target="_blank">
-            {__("Get your API key")}
+            {__("Get your API key", 're-beehiiv')}
           </a>
           
         </div>

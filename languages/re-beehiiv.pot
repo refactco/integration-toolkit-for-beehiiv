@@ -1,0 +1,442 @@
+# Copyright (C) 2023 Refact.co
+# This file is distributed under the GPL-2.0+.
+msgid ""
+msgstr ""
+"Project-Id-Version: Re/Beehiiv 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/Re-Beehiiv\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2023-06-12T17:20:55+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.7.1\n"
+"X-Domain: re-beehiiv\n"
+
+#. Plugin Name of the plugin
+#: src/Admin_Menus.php:18
+#: src/Admin_Menus.php:19
+msgid "Re/Beehiiv"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://refact.co/"
+msgstr ""
+
+#. Description of the plugin
+msgid "integrates WP with Beehive, making it easy to sync subscriptions and streamline your email marketing campaigns."
+msgstr ""
+
+#. Author of the plugin
+msgid "Refact.co"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://refact.co"
+msgstr ""
+
+#: admin/class-re-beehiiv-admin.php:105
+msgid "Select taxonomy"
+msgstr ""
+
+#: admin/class-re-beehiiv-admin.php:106
+msgid "Select taxonomy term"
+msgstr ""
+
+#: admin/class-re-beehiiv-admin.php:108
+#: admin/partials/re-beehiiv-admin-import.php:146
+msgid "Content Type"
+msgstr ""
+
+#: admin/class-re-beehiiv-admin.php:109
+msgid "Post status on Beehiiv"
+msgstr ""
+
+#: admin/class-re-beehiiv-admin.php:110
+msgid "Post Type"
+msgstr ""
+
+#: admin/class-re-beehiiv-admin.php:111
+msgid "Taxonomy"
+msgstr ""
+
+#: admin/class-re-beehiiv-admin.php:112
+msgid "Taxonomy Term"
+msgstr ""
+
+#: admin/class-re-beehiiv-admin.php:113
+#: admin/partials/re-beehiiv-admin-import.php:220
+msgid "Post Author"
+msgstr ""
+
+#: admin/class-re-beehiiv-admin.php:114
+#: admin/partials/re-beehiiv-admin-import.php:268
+msgid "Import Method"
+msgstr ""
+
+#: admin/class-re-beehiiv-admin.php:115
+#: admin/partials/re-beehiiv-admin-import.php:240
+msgid "Post Status"
+msgstr ""
+
+#. Translators: {{field_name}} is a required field name and should not be translated.
+#: admin/class-re-beehiiv-admin.php:118
+msgid "{{field_name}}  is a required field"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:90
+msgid "Auto Import is set"
+msgstr ""
+
+#. Translators: %1$s: cron time, %2$s: post type, %3$s: taxonomy, %4$s: term name, %5$s: post status, %6$s: new item add, %7$s: existing item update.
+#: admin/partials/re-beehiiv-admin-import.php:94
+msgid "Current Auto Import is set to run every %1$s hours. and will import to %2$s post type and %3$s taxonomy with %4$s term. The default post status is %5$s. The new items will %6$s imported and the Existing posts will %7$s updated. You can change the settings below."
+msgstr ""
+
+#. Translators: %1$s: cron time, %2$s: post type, %3$s: taxonomy, %4$s: term name, %5$s: post status, %6$s: new item add, %7$s: existing item update.
+#: admin/partials/re-beehiiv-admin-import.php:94
+msgid "be"
+msgstr ""
+
+#. Translators: %1$s: cron time, %2$s: post type, %3$s: taxonomy, %4$s: term name, %5$s: post status, %6$s: new item add, %7$s: existing item update.
+#: admin/partials/re-beehiiv-admin-import.php:94
+msgid "not be"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:102
+#: admin/partials/re-beehiiv-admin-import.php:125
+msgid "Auto Import"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:102
+#: admin/partials/re-beehiiv-admin-import.php:124
+msgid "Manual Import"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:115
+msgid "Re/Beehiiv - "
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:119
+msgid "Perform the import operation manually"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:132
+msgid "Please fix the following errors:"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:143
+msgid "Step 1: Select Content Type"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:149
+msgid "Free"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:150
+msgid "Premium"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:166
+msgid "What kind of content do you want to import?"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:170
+msgid "Post Status on Beehiiv"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:173
+msgid "Published"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:174
+msgid "Archived"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:175
+#: admin/partials/re-beehiiv-admin-import.php:244
+msgid "Draft"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:191
+msgid "Select the status of the content you want to import."
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:196
+msgid "Step 2: Setup Post type and attributes"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:199
+msgid "Select Post Type and Taxonomy"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:201
+msgid "Select Post Type"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:212
+msgid "Select Post Type First"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:215
+msgid "Select Term"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:217
+msgid "Select the post type and taxonomy you want to import the content to."
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:222
+msgid "Select Author"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:230
+msgid "The posts being imported will be assigned to this user."
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:233
+msgid "Post Tags"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:235
+msgid "Import Tags"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:237
+msgid "If checked, the tags will be imported as post tags."
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:243
+msgid "Publish"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:245
+msgid "Pending"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:246
+msgid "Private"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:260
+msgid "Select the post status for the imported posts."
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:265
+msgid "Step 3: Import Options"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:271
+msgid "Import New Items Only"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:272
+msgid "Update Existing Items Only"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:273
+msgid "Import New Items and Update Existing"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:289
+msgid "Choose the desired action for importing data using this form. Options include importing new items only, updating existing items only, or performing both actions simultaneously."
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:293
+msgid "Import Schedule"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:295
+msgid "This field allows you to set the schedule for automatic imports from Beehiiv. Enter the number of hours between each import, for example, '6' for an import every 6 hours."
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:307
+msgid "It is not possible to initiate another manual import while the current one is still in progress. refresh the page to update the status."
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:310
+msgid "Save"
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:310
+msgid "Start Import"
+msgstr ""
+
+#: src/Admin_Menus.php:31
+msgid "Re/Beehiiv - Import"
+msgstr ""
+
+#: src/Admin_Menus.php:60
+msgid "Re Beehiiv is not activated. Please activate the plugin first."
+msgstr ""
+
+#: src/Blocks/Settings.php:97
+msgid "disconnected"
+msgstr ""
+
+#: src/Blocks/Settings.php:115
+msgid "Please fill all fields"
+msgstr ""
+
+#: src/Blocks/Settings.php:125
+msgid "Settings saved"
+msgstr ""
+
+#: src/Import/Create_Post.php:48
+#: src/Import/Create_Post.php:69
+#: src/Import/Import.php:178
+msgid "No data found"
+msgstr ""
+
+#: src/Import/Create_Post.php:84
+msgid "updated"
+msgstr ""
+
+#: src/Import/Create_Post.php:97
+msgid "skipped"
+msgstr ""
+
+#: src/Import/Create_Post.php:105
+msgid "Post already exists"
+msgstr ""
+
+#: src/Import/Create_Post.php:119
+msgid "created"
+msgstr ""
+
+#: src/Import/Create_Post.php:137
+msgid "Post created"
+msgstr ""
+
+#. Translators: %s is a placeholder for the field label. This text is displayed when a required field is left blank.
+#: src/Import/Import.php:297
+msgid "%s is required"
+msgstr ""
+
+#. Translators: %1$s is a placeholder for the post ID, %2$s is a placeholder for the post title.
+#: src/Import/Import.php:342
+msgid "%1$s - %2$s is already exists"
+msgstr ""
+
+#. Translators: %1$s is a placeholder for the post ID, %2$s is a placeholder for the post title.
+#: src/Import/Import.php:354
+msgid "%1$s - %2$s is not exists"
+msgstr ""
+
+#. Translators: %1$s is a placeholder for the post ID, %2$s is a placeholder for the post title.
+#: src/Import/Import.php:367
+msgid "%1$s - %2$s is not in selected status"
+msgstr ""
+
+#: src/Import/Import.php:399
+msgid "No posts are pushed to queue"
+msgstr ""
+
+#. Translators: %d is a placeholder for the import interval.
+#: src/Import/Import.php:409
+msgid "All posts are pushed to queue. The queue will end in about %d seconds"
+msgstr ""
+
+#: src/Import/Import.php:550
+msgid "Importing posts from Beehiiv"
+msgstr ""
+
+#: src/Import/Import.php:551
+msgid "Importing posts from Beehiiv is in progress. Be patient, this may take a while."
+msgstr ""
+
+#: src/Import/Import.php:563
+msgid "Import Failed"
+msgstr ""
+
+#: src/Import/Import.php:595
+#: src/Import/Import.php:681
+msgid "Importing posts from Beehiiv is in progress."
+msgstr ""
+
+#: src/Import/Import.php:596
+#: src/Import/Import.php:682
+msgid "The import process is currently running in the background. You may proceed with your work and close this page, but please be patient and wait until it is complete. It is not possible to initiate another manual import while the current one is still in progress."
+msgstr ""
+
+#: src/Import/Import.php:597
+#: src/Import/Import.php:683
+msgid "Progress: "
+msgstr ""
+
+#: src/Import/Import.php:598
+#: src/Import/Import.php:684
+msgid "Cancel"
+msgstr ""
+
+#: src/Import/Import.php:616
+msgid "Importing posts from Re Beehiiv is complete."
+msgstr ""
+
+#: src/Import/Import.php:634
+msgid "Importing posts from Re Beehiiv has failed."
+msgstr ""
+
+#: src/Import/Import.php:636
+msgid "Check beehiiv credentials or contact plugin author."
+msgstr ""
+
+#: src/Import/Import.php:652
+msgid "Importing posts from Re Beehiiv is complete, but some posts failed to import."
+msgstr ""
+
+#. translators: %1$d is number of failed posts, %2$d is number of all posts
+#: src/Import/Import.php:656
+msgid "Failed posts: %1$d/%2$d"
+msgstr ""
+
+#: src/Import/Import.php:771
+msgid "Waiting for Beehiiv API response"
+msgstr ""
+
+#: blocks/settings/src/components/tabs.js:95
+msgid "Beehive Credentials"
+msgstr ""
+
+#: blocks/settings/src/components/tabs.js:100
+msgid "Enter your credentials"
+msgstr ""
+
+#: blocks/settings/src/components/tabs.js:106
+msgid "Please enter your API key"
+msgstr ""
+
+#: blocks/settings/src/components/tabs.js:107
+msgid "API Key"
+msgstr ""
+
+#: blocks/settings/src/components/tabs.js:113
+msgid "Please enter your publication ID"
+msgstr ""
+
+#: blocks/settings/src/components/tabs.js:114
+msgid "Publication ID"
+msgstr ""
+
+#: blocks/settings/src/components/tabs.js:130
+msgid "Save Settings"
+msgstr ""
+
+#: blocks/settings/src/components/tabs.js:138
+msgid "Disconnect"
+msgstr ""
+
+#: blocks/settings/src/components/tabs.js:142
+msgid "Get your API key"
+msgstr ""
+
+#: blocks/settings/src/block.json
+msgctxt "block title"
+msgid "Settings"
+msgstr ""
+
+#: blocks/settings/src/block.json
+msgctxt "block description"
+msgid "Add global hooks"
+msgstr ""

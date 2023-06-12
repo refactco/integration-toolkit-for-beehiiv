@@ -101,6 +101,22 @@ class Re_Beehiiv_Admin {
 			array(
 				'ajax_url'           => admin_url( 'admin-ajax.php' ),
 				'progress_bar_nonce' => wp_create_nonce( 'progress_bar_nonce' ),
+				'strings'            => array(
+					'select_taxonomy' => __( 'Select taxonomy', 're-beehiiv' ),
+					'select_term'     => __( 'Select taxonomy term', 're-beehiiv' ),
+					'labels'          => array(
+						'content_type'   => __( 'Content Type', 're-beehiiv' ),
+						'beehiiv_status' => __( 'Post status on Beehiiv', 're-beehiiv' ),
+						'post_type'      => __( 'Post Type', 're-beehiiv' ),
+						'taxonomy'       => __( 'Taxonomy', 're-beehiiv' ),
+						'taxonomy_term'  => __( 'Taxonomy Term', 're-beehiiv' ),
+						'post_author'    => __( 'Post Author', 're-beehiiv' ),
+						'import_method'  => __( 'Import Method', 're-beehiiv' ),
+						'post_status'    => __( 'Post Status', 're-beehiiv' ),
+					),
+					// Translators: {{field_name}} is a required field name and should not be translated.
+					'required_fields' => __( '{{field_name}}  is a required field', 're-beehiiv' ),
+				),
 			)
 		);
 	}
