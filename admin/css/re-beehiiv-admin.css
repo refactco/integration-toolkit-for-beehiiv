@@ -117,7 +117,7 @@
 }
 
 .mb-0 {
-    margin-bottom: 0;
+    margin-bottom: 0 !important;
 }
 
 .re-beehiiv-import-fields h2:first-child {

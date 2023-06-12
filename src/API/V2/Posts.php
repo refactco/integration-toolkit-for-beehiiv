@@ -50,7 +50,7 @@ class Posts {
 	 * If the page is not specified, it will return the posts of the first page
 	 *
 	 * @param int $page
-	 * @param array $expand
+	 * @param string $expand
 	 */
 	public static function get_posts_in_page( $page = 1, $expand = '' ) {
 

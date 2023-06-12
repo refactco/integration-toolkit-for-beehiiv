@@ -105,15 +105,16 @@ class Import {
 
 	private function run_manual_import( $form_data ) {
 	
+		$group_name = 'manual_import_' . time();
 		// set an transient to show the user the import is running
 		set_transient( 'RE_BEEHIIV_manual_import_running', true, 60 * 60 * 24 );
-
-		$group_name = 'manual_import_' . time();
-		$this->start_import( $form_data, $group_name);
+		set_transient( 'RE_BEEHIIV_manual_import_group', $group_name, 60 * 60 * 24 );
+		set_transient( 'RE_BEEHIIV_manual_import_group_data', $form_data, 60 * 60 * 24 );
 
 		// redirect to import page
 		wp_safe_redirect( admin_url( 'admin.php?page=re-beehiiv-import' ) );
 
+		exit;
 	}
 
 	public function run_auto_import( $form_data ) {
@@ -152,10 +153,6 @@ class Import {
 			'message' => 'Data fetched',
 			'status' => 'success',
 		) );
-
-		if ( 'auto_recurring_import' !== $group_name ) {
-			set_transient( 'RE_BEEHIIV_manual_import_group', $group_name, 60 * 60 * 24 );
-		}
 
 		$this->maybe_push_to_queue(
 			$data,
@@ -476,6 +473,30 @@ class Import {
 		$all_actions      = Manage_Actions::get_actions( $group_name );
 
 		if ( empty( $all_actions ) ) {
+
+			if ( !empty( get_transient( 'RE_BEEHIIV_manual_import_group_data' ) ) ) {
+				add_action( 're_beehiiv_admin_notices', function() use ( $complete_actions, $all_actions, $group_name ) {
+					$cancel_nonce = wp_create_nonce( 're_beehiiv_cancel_import' );
+					$cancel_url = add_query_arg(
+							array(
+							'page' => 're-beehiiv-import',
+							'cancel' => $group_name,
+							'nonce' => $cancel_nonce,
+						),
+						admin_url( 'admin.php' )
+					);
+					?>
+					<div class="re-beehiiv-import--notice">
+						<h4>Importing posts from Beehiiv is in progress.</h4>
+						<p class="description">The import process is currently running in the background. You may proceed with your work and close this page, but please be patient and wait until it is complete. It is not possible to initiate another manual import while the current one is still in progress.<br><strong> Progress: <span class="number" id="imported_count"><?php echo count( $complete_actions ) . '</span> / <span class="number" id="total_count">' . count( $all_actions ) ?></span></strong></p>
+						<a class="re-beehiiv-button-secondary re-beehiiv-button-cancel" id="re-beehiiv-import--cancel" href="<?php echo esc_url( $cancel_url ); ?>">Cancel</a>
+						<?php require_once RE_BEEHIIV_PATH . 'admin/partials/components/progressbar.php'; ?>
+					</div>
+					<?php
+				});
+				return;
+			}
+
 			delete_transient( 'RE_BEEHIIV_manual_import_group' );
 			delete_transient( 'RE_BEEHIIV_manual_import_running' );
 			( new Logger( $group_name ) )->clear_log();
@@ -593,8 +614,42 @@ class Import {
 			return;
 		}
 
-		$complete_actions = Manage_Actions::get_actions( $group_name, 'complete' );
 		$all_actions      = Manage_Actions::get_actions( $group_name );
+
+		if ( ! $all_actions ) {
+			$form_data = get_transient( 'RE_BEEHIIV_manual_import_group_data' );
+
+			if ( ! $form_data ) {
+
+				$logger = new Logger( $group_name );
+				$logger->log(
+					array(
+						'status'    => 'running',
+						'message' => 'Waiting for Beehiiv API response',
+					)
+				);
+
+				$logs = $logger->get_logs();
+
+				wp_send_json(
+					array(
+						'complete' => 0,
+						'all'      => 0,
+						'failed'   => 0,
+						'logs' => $logs,
+					)
+				);
+				
+			}
+
+			delete_transient( 'RE_BEEHIIV_manual_import_group_data' );
+
+			$this->start_import( $form_data, $group_name );
+
+			$all_actions = Manage_Actions::get_actions( $group_name );
+		}
+
+		$complete_actions = Manage_Actions::get_actions( $group_name, 'complete' );
 		$logs			  = ( new Logger( $group_name ) )->get_logs();
 
 		$failed_actions = Manage_Actions::get_actions( $group_name, 'failed' );

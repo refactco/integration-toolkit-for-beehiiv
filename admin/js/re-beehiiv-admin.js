@@ -356,7 +356,7 @@ function update_progress_bar() {
       updateBarLength();
       updateText();
 
-      if (solved == total) {
+      if (total !== 0 && total === solved) {
         // refresh the page
         location.reload();
       }

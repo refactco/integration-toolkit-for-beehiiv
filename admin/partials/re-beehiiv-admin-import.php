@@ -12,12 +12,6 @@ if ( ! defined( 'WPINC' ) ) {
 }
 $group_name = get_transient( 'RE_BEEHIIV_manual_import_group' );
 $is_running = get_transient( 'RE_BEEHIIV_manual_import_running' );
-if (!$is_running && isset($_GET['status'])) {
-	$status = sanitize_text_field($_GET['status']);
-	if ( $status === 'started' ) {
-		$is_running = true;
-	}
-}
 
 $re_tab     = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : false; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 $is_auto = $re_tab === 'auto-import';
