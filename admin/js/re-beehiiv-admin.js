@@ -354,7 +354,7 @@ function update_logs_box( logs ) {
 
   logs.forEach((log) => {
     let status = log.status.charAt(0).toUpperCase() + log.status.slice(1);
-    let time = new Date(log.time * 1000).toISOString().substr(11, 8);
+    let time = log.time.split(" ")[1];
     logBox.append(`<div class="log-item"><span class="log-item__time">[${time}] </span><span class="log-item__status log-item__status--${log.status}">${status}</span> <span class="log-item__message">${log.message}</span></div>`);
   });
 
