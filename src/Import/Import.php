@@ -559,11 +559,10 @@ class Import {
 			} elseif ( isset( $_GET['notice'] ) && sanitize_text_field( $_GET['notice'] === 'nothing_to_import' ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 				add_action(
 					're_beehiiv_admin_notices',
-					function() use ( $group_name ) {
+					function() {
 						?>
 					<div class="re-beehiiv-import--notice re-beehiiv-import--notice-error">
-						<h4>Import Failed</h4>
-						<span class="description">Data Fetched from Beehiiv successfully but there is nothing to import based on your settings.</span>
+						<h4 class="mb-0">Import Failed</h4>
 					</div>
 						<?php
 					}
