@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-06-12T17:20:55+00:00\n"
+"POT-Creation-Date: 2023-06-14T09:39:56+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: re-beehiiv\n"
@@ -83,6 +83,14 @@ msgstr ""
 #. Translators: {{field_name}} is a required field name and should not be translated.
 #: admin/class-re-beehiiv-admin.php:118
 msgid "{{field_name}}  is a required field"
+msgstr ""
+
+#: admin/partials/components/progressbar.php:31
+msgid "Running"
+msgstr ""
+
+#: admin/partials/components/progressbar.php:32
+msgid "Please wait..."
 msgstr ""
 
 #: admin/partials/re-beehiiv-admin-import.php:90
@@ -347,51 +355,63 @@ msgid "Importing posts from Beehiiv is in progress. Be patient, this may take a 
 msgstr ""
 
 #: src/Import/Import.php:563
-msgid "Import Failed"
+msgid "Import Complete"
 msgstr ""
 
-#: src/Import/Import.php:595
-#: src/Import/Import.php:681
+#: src/Import/Import.php:564
+msgid "Data Fetched from Beehiiv successfully but there is nothing new to import based on your settings."
+msgstr ""
+
+#: src/Import/Import.php:575
+msgid "Import Canceled"
+msgstr ""
+
+#: src/Import/Import.php:576
+msgid "Importing posts from Beehiiv has been canceled."
+msgstr ""
+
+#: src/Import/Import.php:608
+#: src/Import/Import.php:694
 msgid "Importing posts from Beehiiv is in progress."
 msgstr ""
 
-#: src/Import/Import.php:596
-#: src/Import/Import.php:682
+#: src/Import/Import.php:609
+#: src/Import/Import.php:695
 msgid "The import process is currently running in the background. You may proceed with your work and close this page, but please be patient and wait until it is complete. It is not possible to initiate another manual import while the current one is still in progress."
 msgstr ""
 
-#: src/Import/Import.php:597
-#: src/Import/Import.php:683
+#: src/Import/Import.php:610
+#: src/Import/Import.php:696
 msgid "Progress: "
 msgstr ""
 
-#: src/Import/Import.php:598
-#: src/Import/Import.php:684
+#: src/Import/Import.php:611
+#: src/Import/Import.php:697
 msgid "Cancel"
 msgstr ""
 
-#: src/Import/Import.php:616
+#: src/Import/Import.php:629
 msgid "Importing posts from Re Beehiiv is complete."
 msgstr ""
 
-#: src/Import/Import.php:634
+#: src/Import/Import.php:647
 msgid "Importing posts from Re Beehiiv has failed."
 msgstr ""
 
-#: src/Import/Import.php:636
+#: src/Import/Import.php:649
 msgid "Check beehiiv credentials or contact plugin author."
 msgstr ""
 
-#: src/Import/Import.php:652
+#: src/Import/Import.php:665
 msgid "Importing posts from Re Beehiiv is complete, but some posts failed to import."
 msgstr ""
 
 #. translators: %1$d is number of failed posts, %2$d is number of all posts
-#: src/Import/Import.php:656
+#: src/Import/Import.php:669
 msgid "Failed posts: %1$d/%2$d"
 msgstr ""
 
-#: src/Import/Import.php:771
+#: src/Import/Import.php:770
 msgid "Waiting for Beehiiv API response"
 msgstr ""
 
