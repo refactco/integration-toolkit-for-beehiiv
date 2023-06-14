@@ -23,8 +23,13 @@ if ( empty( $all_actions ) ) {
 	<span class="percentage"><?php echo esc_html( $percentage ); ?>%</span>
 </div>
 <!-- result log box with scroll -->
-<h4 class="hidden result-log--title">Result Log</h4>
-<div class="hidden result-log">
+<h4 class="result-log--title">Result Log</h4>
+<div class="result-log">
 	<div class="log" id="log">
+		<div class="log-item">
+			<span class="log-item__time">[<?php echo esc_html( current_time( 'H:i:s' ) ); ?>]</span>
+			<span class="log-item__status log-item__status--running"><?php esc_html_e( 'Running', 're-beehiiv' ); ?></span>
+			<span class="log-item__message"><?php esc_html_e( 'Please wait...', 're-beehiiv' ); ?></span>
+		</div>
 	</div>
 </div>

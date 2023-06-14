@@ -149,7 +149,6 @@ class Re_Beehiiv {
 		$import = new \Re_Beehiiv\Import\Import();
 		$this->loader->add_action( 'wp_ajax_re_beehiiv_progress_bar_data', $import, 'get_progress_bar_data' );
 		$this->loader->add_action( 'admin_notices', $import, 'register_progress_notice' );
-		$this->loader->add_filter( 'heartbeat_settings', $import, 'change_heartbeat_while_process_is_running' );
 		$this->loader->add_action( 'admin_post_re_beehiiv_manual_import', $import, 'maybe_start_manual_import' );
 		$this->loader->add_action( 'admin_post_re_beehiiv_auto_import', $import, 'maybe_register_auto_import' );
 

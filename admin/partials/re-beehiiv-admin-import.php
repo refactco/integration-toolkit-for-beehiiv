@@ -230,7 +230,7 @@ var AllTaxonomyTerms = <?php echo wp_json_encode( $taxonomy_terms ); ?>;
 							<p class="description"><?php esc_html_e( 'The posts being imported will be assigned to this user.', 're-beehiiv' ); ?></p>
 						</fieldset>
 						<fieldset>
-							<label for="re-beehiiv-post_tags"><strong><?php esc_html_e( 'Post Tags', 're-beehiiv' ); ?>
+							<label for="re-beehiiv-post_tags"><strong><?php esc_html_e( 'Post Tags', 're-beehiiv' ); ?></strong></label>
 							<label class="pr-2 d-block">
 								<input type="checkbox" name="re-beehiiv-post_tags" id="re-beehiiv-post_tags" value="1" <?php echo ( '1' === $default_args['post_tags'] ) ? 'checked' : ''; ?>> <?php esc_html_e( 'Import Tags', 're-beehiiv' ); ?>
 							</label>

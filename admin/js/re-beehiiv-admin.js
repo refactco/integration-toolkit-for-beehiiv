@@ -115,12 +115,14 @@
       $(this).next().show();
     });
 
+    $("#re-beehiiv-import--cancel").on("click", function () {
+      is_cancelled = true;
+    });
+
     // Progress bar
     const bar = document.querySelector(".bar");
     if (bar) {
-      setInterval(function () {
-        update_progress_bar();
-      } , 5000);
+      update_progress_bar();
     }
     
   });
@@ -280,7 +282,7 @@ function validateInput($input_name, $input_type) {
 
   return true;
 }
-
+var is_cancelled = false;
 // progress bar update
 function update_progress_bar() {
   // ajax call to get the progress
@@ -292,6 +294,14 @@ function update_progress_bar() {
       nonce: RE_BEEHIIV_CORE.progress_bar_nonce,
     },
     success: function (response) {
+      if (response === "" || typeof response !== "object") {
+        update_progress_bar();
+      }
+
+      if (is_cancelled) {
+        return;
+      }
+
       const percentageTag = document.querySelector(".percentage");
       const totalTag = document.querySelector("#total_count");
       const solvedTag = document.querySelector("#imported_count");
@@ -300,7 +310,7 @@ function update_progress_bar() {
       let total = response.all;
       let solved = response.complete + response.failed;
 
-      if (total === -1) {
+      if (response.status === 'nothing_to_import') {
         // no post to import
         // refresh the page
         // add a query string to the url then refresh to new url
@@ -309,6 +319,7 @@ function update_progress_bar() {
         url.searchParams.set("notice", "nothing_to_import");
         
         location.href = url.href;
+        return;
       }
 
       const ruleOfThree = (num1, num2) => {
@@ -341,6 +352,8 @@ function update_progress_bar() {
         // refresh the page
         location.reload();
       }
+
+      setTimeout(update_progress_bar, 2000);
     },
   });
 }

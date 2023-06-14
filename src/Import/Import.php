@@ -559,8 +559,21 @@ class Import {
 					're_beehiiv_admin_notices',
 					function() {
 						?>
-					<div class="re-beehiiv-import--notice re-beehiiv-import--notice-error">
-						<h4 class="mb-0"><?php esc_html_e( 'Import Failed', 're-beehiiv' ); ?></h4>
+					<div class="re-beehiiv-import--notice re-beehiiv-import--notice--success">
+						<h4><?php esc_html_e( 'Import Complete', 're-beehiiv' ); ?></h4>
+						<span class="description"><?php esc_html_e( 'Data Fetched from Beehiiv successfully but there is nothing new to import based on your settings.', 're-beehiiv' ); ?></span>
+					</div>
+						<?php
+					}
+				);
+			} elseif ( isset( $_GET['notice'] ) && sanitize_text_field( $_GET['notice'] === 'import_canceled' ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				add_action(
+					're_beehiiv_admin_notices',
+					function() {
+						?>
+					<div class="re-beehiiv-import--notice">
+						<h4><?php esc_html_e( 'Import Canceled', 're-beehiiv' ); ?></h4>
+						<span class="description"><?php esc_html_e( 'Importing posts from Beehiiv has been canceled.', 're-beehiiv' ); ?></span>
 					</div>
 						<?php
 					}
@@ -690,23 +703,6 @@ class Import {
 	}
 
 	/**
-	 * Change heartbeat interval while manual import is running
-	 * Filter: heartbeat_settings
-	 *
-	 * @param array $settings
-	 * @return array
-	 */
-	public function change_heartbeat_while_process_is_running( $settings ) {
-		$is_running = get_transient( 'RE_BEEHIIV_manual_import_running' );
-
-		if ( $is_running ) {
-			$settings['interval'] = 10;
-		}
-
-		return $settings;
-	}
-
-	/**
 	 * Check if post is unique
 	 *
 	 * @param int $post_id post id on beehiiv
@@ -753,13 +749,16 @@ class Import {
 					'complete' => -1,
 					'all'      => -1,
 					'failed'   => -1,
+					'status'   => 'nothing_to_import',
 				)
 			);
+			wp_die();
 		}
 
 		$all_actions = Manage_Actions::get_actions( $group_name );
 
 		if ( ! $all_actions ) {
+
 			$form_data = get_transient( 'RE_BEEHIIV_manual_import_group_data' );
 
 			if ( ! $form_data ) {
@@ -779,9 +778,11 @@ class Import {
 						'complete' => 0,
 						'all'      => 0,
 						'failed'   => 0,
+						'status'   => 'waiting_for_api_response',
 						'logs'     => $logs,
 					)
 				);
+				wp_die();
 
 			}
 
@@ -790,7 +791,7 @@ class Import {
 
 			if ( ! $is_anything_added ) {
 				$this->remove_import_transient();
-				return;
+				wp_die();
 			}
 
 			$all_actions = Manage_Actions::get_actions( $group_name );
@@ -809,7 +810,7 @@ class Import {
 		);
 
 		wp_send_json( $progress );
-		exit;
+		wp_die();
 	}
 
 	/**
@@ -834,7 +835,9 @@ class Import {
 
 		$this->remove_import_transient();
 
-		wp_safe_redirect( admin_url( 'admin.php?page=re-beehiiv-import' ) );
+		wp_safe_redirect( admin_url( 'admin.php?page=re-beehiiv-import&notice=import_canceled' ) );
+
+		exit;
 	}
 
 	/**
