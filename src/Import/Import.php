@@ -30,15 +30,15 @@ class Import {
 		),
 		array(
 			'name'     => 'taxonomy',
-			'required' => true,
+			'required' => false,
 		),
 		array(
 			'name'     => 'taxonomy_term',
-			'required' => true,
+			'required' => false,
 		),
 		array(
 			'name'     => 'post_author',
-			'required' => true,
+			'required' => false,
 		),
 		array(
 			'name'     => 'post_tags',

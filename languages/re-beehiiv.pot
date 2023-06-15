@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-06-15T12:04:30+00:00\n"
+"POT-Creation-Date: 2023-06-15T12:38:22+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: re-beehiiv\n"
@@ -45,7 +45,7 @@ msgid "Select taxonomy term"
 msgstr ""
 
 #: admin/class-re-beehiiv-admin.php:108
-#: admin/partials/re-beehiiv-admin-import.php:155
+#: admin/partials/re-beehiiv-admin-import.php:163
 msgid "Content Type"
 msgstr ""
 
@@ -66,17 +66,17 @@ msgid "Taxonomy Term"
 msgstr ""
 
 #: admin/class-re-beehiiv-admin.php:113
-#: admin/partials/re-beehiiv-admin-import.php:229
+#: admin/partials/re-beehiiv-admin-import.php:237
 msgid "Post Author"
 msgstr ""
 
 #: admin/class-re-beehiiv-admin.php:114
-#: admin/partials/re-beehiiv-admin-import.php:277
+#: admin/partials/re-beehiiv-admin-import.php:285
 msgid "Import Method"
 msgstr ""
 
 #: admin/class-re-beehiiv-admin.php:115
-#: admin/partials/re-beehiiv-admin-import.php:249
+#: admin/partials/re-beehiiv-admin-import.php:257
 msgid "Post Status"
 msgstr ""
 
@@ -93,191 +93,200 @@ msgstr ""
 msgid "Please wait..."
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:89
+#: admin/partials/re-beehiiv-admin-import.php:92
 msgid "Auto Import is set"
 msgstr ""
 
 #. Translators: %1$s: cron time, %2$s: post type, %3$s: taxonomy, %4$s: term name, %5$s: post status, %6$s: new item add, %7$s: existing item update.
-#: admin/partials/re-beehiiv-admin-import.php:93
+#: admin/partials/re-beehiiv-admin-import.php:97
 msgid "Current Auto Import is set to run every \"%1$s\" hours and will import to \"%2$s\" post type and \"%3$s\" taxonomy with \"%4$s\" term. The default post status is \"%5$s\". The new items will \"%6$s\" imported and the Existing posts will \"%7$s\" updated. You can modify these settings below to customize the automatic import process to your needs."
 msgstr ""
 
 #. Translators: %1$s: cron time, %2$s: post type, %3$s: taxonomy, %4$s: term name, %5$s: post status, %6$s: new item add, %7$s: existing item update.
-#: admin/partials/re-beehiiv-admin-import.php:93
+#. Translators: %1$s: cron time, %2$s: post type, %3$s: post status, %4$s: new item add, %5$s: existing item update.
+#: admin/partials/re-beehiiv-admin-import.php:97
+#: admin/partials/re-beehiiv-admin-import.php:100
 msgid "be"
 msgstr ""
 
 #. Translators: %1$s: cron time, %2$s: post type, %3$s: taxonomy, %4$s: term name, %5$s: post status, %6$s: new item add, %7$s: existing item update.
-#: admin/partials/re-beehiiv-admin-import.php:93
+#. Translators: %1$s: cron time, %2$s: post type, %3$s: post status, %4$s: new item add, %5$s: existing item update.
+#: admin/partials/re-beehiiv-admin-import.php:97
+#: admin/partials/re-beehiiv-admin-import.php:100
 msgid "not be"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:101
-#: admin/partials/re-beehiiv-admin-import.php:134
+#. Translators: %1$s: cron time, %2$s: post type, %3$s: post status, %4$s: new item add, %5$s: existing item update.
+#: admin/partials/re-beehiiv-admin-import.php:100
+msgid "Current Auto Import is set to run every \"%1$s\" hours and will import to \"%2$s\" post type. The default post status is \"%3$s\". The new items will \"%4$s\" imported and the Existing posts will \"%5$s\" updated. You can modify these settings below to customize the automatic import process to your needs."
+msgstr ""
+
+#: admin/partials/re-beehiiv-admin-import.php:109
+#: admin/partials/re-beehiiv-admin-import.php:142
 msgid "Auto Import"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:101
-#: admin/partials/re-beehiiv-admin-import.php:133
+#: admin/partials/re-beehiiv-admin-import.php:109
+#: admin/partials/re-beehiiv-admin-import.php:141
 msgid "Manual Import"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:114
+#: admin/partials/re-beehiiv-admin-import.php:122
 msgid "Re/Beehiiv - "
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:121
+#: admin/partials/re-beehiiv-admin-import.php:129
 msgid "Automatically import content from Beehiiv to your WordPress site"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:125
+#: admin/partials/re-beehiiv-admin-import.php:133
 msgid "Manually import content from Beehiiv to your WordPress site"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:141
+#: admin/partials/re-beehiiv-admin-import.php:149
 msgid "Please fix the following errors:"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:152
+#: admin/partials/re-beehiiv-admin-import.php:160
 msgid "Step1: Choose data from Beehiiv"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:158
+#: admin/partials/re-beehiiv-admin-import.php:166
 msgid "Free"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:159
+#: admin/partials/re-beehiiv-admin-import.php:167
 msgid "Premium"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:175
+#: admin/partials/re-beehiiv-admin-import.php:183
 msgid "Select the type of content you want to import."
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:179
+#: admin/partials/re-beehiiv-admin-import.php:187
 msgid "Post Status on Beehiiv"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:182
+#: admin/partials/re-beehiiv-admin-import.php:190
 msgid "Published"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:183
+#: admin/partials/re-beehiiv-admin-import.php:191
 msgid "Archived"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:184
-#: admin/partials/re-beehiiv-admin-import.php:253
+#: admin/partials/re-beehiiv-admin-import.php:192
+#: admin/partials/re-beehiiv-admin-import.php:261
 msgid "Draft"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:200
+#: admin/partials/re-beehiiv-admin-import.php:208
 msgid "Choose the status of the content you want to import from Beehiiv."
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:205
+#: admin/partials/re-beehiiv-admin-import.php:213
 msgid "Step 2: Insert data to WordPress"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:208
+#: admin/partials/re-beehiiv-admin-import.php:216
 msgid "Select Post Type and Taxonomy"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:210
+#: admin/partials/re-beehiiv-admin-import.php:218
 msgid "Select Post Type"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:221
+#: admin/partials/re-beehiiv-admin-import.php:229
 msgid "Select Post Type First"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:224
+#: admin/partials/re-beehiiv-admin-import.php:232
 msgid "Select Term"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:226
+#: admin/partials/re-beehiiv-admin-import.php:234
 msgid "Choose the post type and taxonomy for the imported content."
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:231
+#: admin/partials/re-beehiiv-admin-import.php:239
 msgid "Select Author"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:239
+#: admin/partials/re-beehiiv-admin-import.php:247
 msgid "Assign the imported posts to a specific user."
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:242
+#: admin/partials/re-beehiiv-admin-import.php:250
 msgid "Post Tags"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:244
+#: admin/partials/re-beehiiv-admin-import.php:252
 msgid "Import Tags"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:246
+#: admin/partials/re-beehiiv-admin-import.php:254
 msgid "If checked, the tags will be imported as post tags."
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:252
+#: admin/partials/re-beehiiv-admin-import.php:260
 msgid "Publish"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:254
+#: admin/partials/re-beehiiv-admin-import.php:262
 msgid "Pending"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:255
+#: admin/partials/re-beehiiv-admin-import.php:263
 msgid "Private"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:269
+#: admin/partials/re-beehiiv-admin-import.php:277
 msgid "Set the post status for the imported content in WordPress."
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:274
+#: admin/partials/re-beehiiv-admin-import.php:282
 msgid "Step3: Define Import Options"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:280
+#: admin/partials/re-beehiiv-admin-import.php:288
 msgid "Import New Items Only"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:281
+#: admin/partials/re-beehiiv-admin-import.php:289
 msgid "Update Existing Items Only"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:282
+#: admin/partials/re-beehiiv-admin-import.php:290
 msgid "Import New Items and Update Existing"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:298
+#: admin/partials/re-beehiiv-admin-import.php:306
 msgid "Choose the desired action for importing data. Options include importing new items only, updating existing items only, or performing both actions simultaneously."
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:302
+#: admin/partials/re-beehiiv-admin-import.php:310
 msgid "Import Schedule"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:303
+#: admin/partials/re-beehiiv-admin-import.php:311
 msgid "Enter interval in hours"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:304
+#: admin/partials/re-beehiiv-admin-import.php:312
 msgid "Set the frequency of automatic imports from Beehiiv by specifying the time interval between each import in hours. For example, if you want to import content from Beehiiv at regular intervals, enter the desired time interval in hours in the field."
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:316
+#: admin/partials/re-beehiiv-admin-import.php:324
 msgid "It is not possible to initiate another manual import while the current one is still in progress. refresh the page to update the status."
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:319
+#: admin/partials/re-beehiiv-admin-import.php:327
 #: blocks/settings/build/index.js:1
 #: blocks/settings/src/components/tabs.js:132
 msgid "Save"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:319
+#: admin/partials/re-beehiiv-admin-import.php:327
 msgid "Start Import"
 msgstr ""
 
@@ -482,7 +491,11 @@ msgid "Settings"
 msgstr ""
 
 #: blocks/settings/build/block.json
-#: blocks/settings/src/block.json
 msgctxt "block description"
 msgid "Add global hooks"
+msgstr ""
+
+#: blocks/settings/src/block.json
+msgctxt "block description"
+msgid "This block is used to display the settings of the plugin."
 msgstr ""
