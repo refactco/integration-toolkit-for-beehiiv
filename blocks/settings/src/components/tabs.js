@@ -97,21 +97,23 @@ const Tabs = (props) => {
             buttonProps={{ disabled: !status }}
           >
             <PanelRow>
-              {__('Enter your credentials', 're-beehiiv')}
+              {__('To get started, you need to enter your Beehiiv API key and publication ID. This allow us to import posts from Beehiiv to your WordPress site.', 're-beehiiv')}
             </PanelRow>
             <PanelRow>
               <Grid columns={1} style={{ width: "100%" }}>
                 <InputControl
                   type="password"
-                  help={__("Please enter your API key", 're-beehiiv')}
+                  help={__("The API key provided by Beehiiv. This unique key authenticates your account and enables data transfer between Beehiiv and your WordPress site.", 're-beehiiv')}
                   label={__("API Key", 're-beehiiv')}
                   onChange={(value) => setApiKey(value)}
+                  placeholder={__("Enter your API key", 're-beehiiv')}
                   value={apiKey}
                 />
                 <InputControl
                   type="password"
-                  help={__("Please enter your publication ID", 're-beehiiv')}
+                  help={__("The unique publication ID associated with your Beehiiv account. This ID helps us identify the specific content to import from Beehiiv to your WordPress site.", 're-beehiiv')}
                   label={__("Publication ID", 're-beehiiv')}
+                  placeholder={__("Enter your publication ID", 're-beehiiv')}
                   onChange={(value) => setPublicationId(value)}
                   value={publicationId}
                 />
@@ -127,7 +129,7 @@ const Tabs = (props) => {
             isBusy={saving}
             disabled={!status}
           >
-            {__('Save Settings', 're-beehiiv')}
+            {__('Save', 're-beehiiv')}
           </Button>
           {status && (
             <Button
