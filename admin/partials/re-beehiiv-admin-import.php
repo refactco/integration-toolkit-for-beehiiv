@@ -256,14 +256,15 @@ var AllTaxonomyTerms = <?php echo wp_json_encode( $taxonomy_terms ); ?>;
 						<fieldset>
 							<label for="re-beehiiv-post_status"><strong><?php esc_html_e( 'Post Status', 're-beehiiv' ); ?></strong></label>
 							<?php
-							$post_statuses = array(
-								'publish' => __( 'Publish', 're-beehiiv' ),
-								'draft'   => __( 'Draft', 're-beehiiv' ),
-								'pending' => __( 'Pending', 're-beehiiv' ),
-								'private' => __( 'Private', 're-beehiiv' ),
-							);
+							// Get post statuses from WordPress.
+							$post_statuses = get_post_stati( array( 'show_in_admin_all_list' => true ), 'objects' );
+							// Filter post statuses.
 
-							foreach ( $post_statuses as $post_status => $post_status_name ) {
+							foreach ( $post_statuses as $post_status => $post_status_object ) {
+								if ( 'future' === $post_status ) {
+									continue;
+								}
+								$post_status_name = $post_status_object->label;
 								if ( is_array( $default_args['post_status'] ) ) {
 									$checked = in_array( $post_status, $default_args['post_status'], true ) ? 'checked' : '';
 								} else {
