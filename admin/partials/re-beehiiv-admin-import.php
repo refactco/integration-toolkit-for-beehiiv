@@ -22,20 +22,23 @@ $is_auto = $re_tab === 'auto-import';
 $post_types = get_post_types(
 	array(
 		'public' => true,
-	)
+	),
+	'objects'
 );
+
+
 $taxonomies = array();
 foreach ( $post_types as $re_post_type ) {
-	if ( $re_post_type === 'attachment' ) {
+	if ( $re_post_type->name === 'attachment' ) {
 		continue;
 	}
-	$post_type_taxonomies = get_object_taxonomies( $re_post_type, 'objects' );
+	$post_type_taxonomies = get_object_taxonomies( $re_post_type->name, 'objects' );
 
 	foreach ( $post_type_taxonomies as $re_taxonomy ) {
 		if ( $re_taxonomy->public != 1 || $re_taxonomy->hierarchical != 1 ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 			continue;
 		}
-		$taxonomies[ $re_post_type ][] = array(
+		$taxonomies[ $re_post_type->name ][] = array(
 			'name'  => $re_taxonomy->name,
 			'label' => $re_taxonomy->label,
 		);
@@ -218,10 +221,10 @@ var AllTaxonomyTerms = <?php echo wp_json_encode( $taxonomy_terms ); ?>;
 								<option value="0"><?php esc_html_e( 'Select Post Type', 're-beehiiv' ); ?></option>
 								<?php
 								foreach ( $post_types as $re_post_type ) {
-									if ( $re_post_type === 'attachment' ) {
+									if ( $re_post_type->name === 'attachment' ) {
 										continue;
 									}
-									echo '<option value="' . esc_attr( $re_post_type ) . '">' . esc_html( $re_post_type ) . '</option>';
+									echo '<option value="' . esc_attr( $re_post_type->name ) . '">' . esc_html( $re_post_type->labels->singular_name ) . '</option>';
 								}
 								?>
 							</select>

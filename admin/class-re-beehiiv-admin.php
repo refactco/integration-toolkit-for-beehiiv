@@ -110,7 +110,7 @@ class Re_Beehiiv_Admin {
 						'post_type'      => __( 'Post Type', 're-beehiiv' ),
 						'taxonomy'       => __( 'Taxonomy', 're-beehiiv' ),
 						'taxonomy_term'  => __( 'Taxonomy Term', 're-beehiiv' ),
-						'post_author'    => __( 'Post Author', 're-beehiiv' ),
+						'post_author'    => __( 'Content Author', 're-beehiiv' ),
 						'import_method'  => __( 'Import Method', 're-beehiiv' ),
 						'post_status'    => __( 'Post Status', 're-beehiiv' ),
 					),
