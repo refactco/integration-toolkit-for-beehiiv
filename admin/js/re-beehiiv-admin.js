@@ -185,6 +185,11 @@ function check_required_fields() {
       type: "select",
     },
     {
+      id: "re-beehiiv-post_author",
+      name: RE_BEEHIIV_CORE.strings.labels.post_author,
+      type: "select",
+    },
+    {
       id: "re-beehiiv-import_method",
       name: RE_BEEHIIV_CORE.strings.labels.import_method,
       type: "radio",

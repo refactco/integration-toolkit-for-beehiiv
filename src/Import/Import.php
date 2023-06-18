@@ -38,7 +38,7 @@ class Import {
 		),
 		array(
 			'name'     => 'post_author',
-			'required' => false,
+			'required' => true,
 		),
 		array(
 			'name'     => 'post_tags',

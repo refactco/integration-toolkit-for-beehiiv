@@ -33,7 +33,7 @@ class Posts {
 			}
 			$posts = array_merge( $posts, $data['data'] );
 
-			if ( $data['page'] === 2 ) {
+			if ( $data['page'] === $data['page'] ) {
 				break;
 			}
 
