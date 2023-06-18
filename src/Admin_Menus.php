@@ -20,11 +20,20 @@ class Admin_Menus {
 			'manage_options',
 			're-beehiiv-import',
 			array( $this, 'load_page_import' ),
-			'dashicons-admin-generic',
+			'dashicons-welcome-write-blog',
 			75
 		);
 
 		// add submenu page
+
+		add_submenu_page(
+			're-beehiiv-import',
+			__( 'Re/Beehiiv - Import', 're-beehiiv' ),
+			__( 'Import Content', 're-beehiiv' ),
+			'manage_options',
+			're-beehiiv-import',
+			array( $this, 'load_page_import' )
+		);
 
 		add_submenu_page(
 			're-beehiiv-import',
