@@ -11,8 +11,9 @@ if ( ! defined( 'WPINC' ) ) {
 if ( empty( $all_actions ) ) {
 	$percentage = 0;
 } else {
-	$percentage = ( count( $complete_actions ) / count( $all_actions ) ) * 100;
+	$percentage = ( count( $complete_actions ) / count( $all_actions ) ) * 95;
 	$percentage = number_format( (float) $percentage, 2, '.', '' );
+	$percentage += 5; // Add 5 to the calculated percentage because the data fetching takes some time.
 }
 
 ?>
@@ -23,7 +24,7 @@ if ( empty( $all_actions ) ) {
 	<span class="percentage"><?php echo esc_html( $percentage ); ?>%</span>
 </div>
 <!-- result log box with scroll -->
-<h4 class="result-log--title">Result Log</h4>
+<h4 class="result-log--title"><?php esc_html_e( 'Log\'s', 're-beehiiv' ); ?></h4>
 <div class="result-log">
 	<div class="log" id="log">
 		<div class="log-item">

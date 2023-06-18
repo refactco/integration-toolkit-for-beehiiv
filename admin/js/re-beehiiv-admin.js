@@ -313,8 +313,11 @@ function update_progress_bar() {
       }
 
       const ruleOfThree = (num1, num2) => {
-        const proportion = (num2 * 100) / num1;
-        return Math.round(proportion * 10) / 10;
+        const proportion = (num2 * 95) / num1;
+        let percentage = Math.round(proportion * 10) / 10;
+        percentage += 5;
+
+        return percentage;
       };
 
       const updateBarLength = () => {

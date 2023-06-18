@@ -81,7 +81,7 @@ class Create_Post {
 
 				$this->logger->log(
 					array(
-						'message' => $this->data['meta']['post_id'] . ' - <a href="' . get_edit_post_link( $existing_id ) . '" target="_blank">#' . $existing_id . ' - ' . $this->data['post']['post_title'] . '</a> ' . __( 'updated', 're-beehiiv' ),
+						'message' => $this->data['meta']['post_id'] . ' - <a href="' . $this->get_edit_post_link() . '" target="_blank">#' . $existing_id . ' - ' . $this->data['post']['post_title'] . '</a> ' . __( 'updated', 're-beehiiv' ),
 						'status'  => 'success',
 					)
 				);
@@ -94,7 +94,7 @@ class Create_Post {
 
 				$this->logger->log(
 					array(
-						'message' => $this->data['meta']['post_id'] . ' - <a href="' . get_edit_post_link( $existing_id ) . '" target="_blank">#' . $existing_id . ' - ' . $this->data['post']['post_title'] . '</a> ' . __( 'skipped', 're-beehiiv' ),
+						'message' => $this->data['meta']['post_id'] . ' - <a href="' . $this->get_edit_post_link() . '" target="_blank">#' . $existing_id . ' - ' . $this->data['post']['post_title'] . '</a> ' . __( 'skipped', 're-beehiiv' ),
 						'status'  => 'skipped',
 					)
 				);
@@ -116,7 +116,7 @@ class Create_Post {
 
 		$this->logger->log(
 			array(
-				'message' => $this->data['meta']['post_id'] . ' - <a href="' . get_edit_post_link( $this->post_id ) . '" target="_blank">#' . $this->post_id . ' - ' . $this->data['post']['post_title'] . '</a> ' . __( 'created', 're-beehiiv' ),
+				'message' => $this->data['meta']['post_id'] . ' - <a href="' . $this->get_edit_post_link() . '" target="_blank">#' . $this->post_id . ' - ' . $this->data['post']['post_title'] . '</a> ' . __( 'created', 're-beehiiv' ),
 				'status'  => 'success',
 			)
 		);
@@ -220,6 +220,21 @@ class Create_Post {
 		$this->add_meta();
 		$this->add_tags();
 		$this->add_taxonomies();
+	}
+
+	/**
+	 * Get edit post link
+	 *
+	 * @return string
+	 */
+	private function get_edit_post_link() {
+		$edit_post_link = get_edit_post_link( $this->post_id );
+
+		if ( ! $edit_post_link ) {
+			$edit_post_link = admin_url( 'post.php?post=' . $this->post_id . '&action=edit' );
+		}
+
+		return $edit_post_link;
 	}
 
 }

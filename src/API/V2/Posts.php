@@ -33,7 +33,7 @@ class Posts {
 			}
 			$posts = array_merge( $posts, $data['data'] );
 
-			if ( $data['page'] === $data['page'] ) {
+			if ( $data['page'] === $data['total_pages'] ) {
 				break;
 			}
 
@@ -59,6 +59,7 @@ class Posts {
 			array( 'publicationId' => get_option( 're_beehiiv_publication_id' ) ),
 			array(
 				'page'   => $page,
+				'limit'	 => 50,
 				'expand' => $expand,
 			)
 		);

@@ -283,7 +283,7 @@ var AllTaxonomyTerms = <?php echo wp_json_encode( $taxonomy_terms ); ?>;
 					</div>
 				</div>
 				<div class="re-beehiiv-import-fields--step import-fields--step3">
-					<h2 class="re-beehiiv-import-fields--step--title"><?php esc_html_e( 'Step3: Define Import Options', 're-beehiiv' ); ?></h2>
+					<h2 class="re-beehiiv-import-fields--step--title"><?php esc_html_e( 'Step3: Import Options', 're-beehiiv' ); ?></h2>
 					<div class="re-beehiiv-import-fields--step--content">
 						<fieldset>
 							<label for="re-beehiiv-import_method"><strong><?php esc_html_e( 'Import Method', 're-beehiiv' ); ?></strong></label>
