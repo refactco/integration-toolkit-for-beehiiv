@@ -35,7 +35,7 @@ foreach ( $post_types as $re_post_type ) {
 	$post_type_taxonomies = get_object_taxonomies( $re_post_type->name, 'objects' );
 
 	foreach ( $post_type_taxonomies as $re_taxonomy ) {
-		if ( $re_taxonomy->public != 1 || $re_taxonomy->hierarchical != 1 ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+		if ( $re_taxonomy->public != 1 || $re_taxonomy->name === 'post_format' ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 			continue;
 		}
 		$taxonomies[ $re_post_type->name ][] = array(
