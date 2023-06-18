@@ -70,7 +70,10 @@
     border-bottom-right-radius: 3px;
     border-bottom-left-radius: 3px;
     border: 1px solid #ccc;
-    border-top: none;
+}
+
+.border-t-0 {
+    border-top: 0 !important;
 }
 
 .nav-tab-wrapper {
@@ -124,29 +127,49 @@
     margin-top: 0;
 }
 
+.mt-0 {
+    margin-top: 0;
+}
+
 .d-block {
     display: block;
 }
 
-input#re-beehiiv-start-import {
-    background-color: #003233;
-    border-color: #005c5e;
+.re-beehiiv-settings-disconnect {
+    transition: all 0.3s ease-in-out;
+    padding: 10px 32px !important;
+    height: auto !important;
+    border-radius: 3px !important;
+    text-align: center !important;
+    line-height: 2.15384615;
+    display: inline-block;
+}
+
+input#re-beehiiv-start-import,
+.re-beehiiv-settings-save {
+    background-color: #003233 !important;
+    border-color: #005c5e !important;
     transition: all 0.3s ease-in-out;
     min-width: 200px;
-    color: #fff;
-    padding: 10px 16px;
-    height: auto;
-    border-radius: 3px;
+    color: #fff !important;
+    padding: 10px 16px !important;
+    height: auto !important;
+    border-radius: 3px !important;
+    text-align: center !important;
+    line-height: 2.15384615;
+    display: inline-block;
 }
 
-input#re-beehiiv-start-import:hover {
-    background-color: #005c5e;
-    border-color: #005c5e;
+input#re-beehiiv-start-import:hover,
+.re-beehiiv-settings-save:hover {
+    background-color: #005c5e !important;
+    border-color: #005c5e !important;
 }
 
-input#re-beehiiv-start-import:disabled {
-    background-color: #ccc;
-    border-color: #ccc;
+input#re-beehiiv-start-import:disabled,
+.re-beehiiv-settings-save:disabled {
+    background-color: #ccc !important;
+    border-color: #ccc  !important;
 }
 
 .re-beehiiv-import--notice {

@@ -106,7 +106,7 @@ if ( $is_auto_action_exist ) {
 		}
 	);
 }
-$import_title = $is_auto ? __( 'Auto Import', 're-beehiiv' ) : __( 'Manual Import', 're-beehiiv' );
+$import_title = $is_auto ? __( 'Auto', 're-beehiiv' ) : __( 'Manual', 're-beehiiv' );
 ?>
 <script>
 var AllTaxonomies = <?php echo wp_json_encode( $taxonomies ); ?>;
@@ -119,8 +119,8 @@ var AllTaxonomyTerms = <?php echo wp_json_encode( $taxonomy_terms ); ?>;
 	<div class="re-beehiiv-heading">
 		<h1>
 		<?php
-		esc_html_e( 'Re/Beehiiv - ', 're-beehiiv' );
-		echo esc_html( $import_title );
+		esc_html_e( 'Import Content', 're-beehiiv' );
+		echo ' - ' . esc_html( $import_title );
 		?>
 		</h1>
 		<?php
@@ -143,7 +143,7 @@ var AllTaxonomyTerms = <?php echo wp_json_encode( $taxonomy_terms ); ?>;
 		</nav>
 	</div>
 
-	<div class="re-beehiiv-wrapper">
+	<div class="re-beehiiv-wrapper border-t-0">
 		<div class="re-beehiiv-import--notices" id="re-beehiiv-import--notices">
 			<div class="hidden re-beehiiv-import--notice re-beehiiv-import--notice-error">
 				<h4><?php esc_html_e( 'Please fix the following errors:', 're-beehiiv' ); ?></h4>
@@ -234,7 +234,7 @@ var AllTaxonomyTerms = <?php echo wp_json_encode( $taxonomy_terms ); ?>;
 							<p class="description"><?php esc_html_e( 'Choose the post type and taxonomy for the imported content.', 're-beehiiv' ); ?></p>
 						</fieldset>
 						<fieldset>
-							<label for="re-beehiiv-post_author" class="d-block"><strong><?php esc_html_e( 'Post Author', 're-beehiiv' ); ?></strong></label>
+							<label for="re-beehiiv-post_author" class="d-block"><strong><?php esc_html_e( 'Content author', 're-beehiiv' ); ?></strong></label>
 							<select name="re-beehiiv-post_author" id="re-beehiiv-post_author" required>
 								<option value="0"><?php esc_html_e( 'Select Author', 're-beehiiv' ); ?></option>
 								<?php

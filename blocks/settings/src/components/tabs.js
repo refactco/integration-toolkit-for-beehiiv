@@ -27,7 +27,7 @@ const Tabs = (props) => {
     const settings = {
       apiKey: apiKey,
       publicationId: publicationId,
-      status: status,
+      status: 'connected'
     };
 
     setSaving(true);
@@ -37,9 +37,11 @@ const Tabs = (props) => {
       data: settings,
     })
       .then((response) => {
+        console.log(response);
         if (!response.success) {
           setSaving(false);
         } else {
+          setStatus('connected');
           setSaving(false);
         }
 
@@ -72,8 +74,26 @@ const Tabs = (props) => {
         console.log(error);
       });
   };
+  console.log(re_beehiiv_settings);
+  console.log(status);
   return (
-    <div className="re-beehiiv-settings-tabs" key="settings-tabs">
+    <>
+    <div className="re-beehiiv-heading">
+      <h1>
+        Settings
+      </h1>
+			<p>
+        {__('Connect your Beehiiv account to import your content to WordPress.', 're-beehiiv')}
+      </p>
+	  </div>
+    <div className="re-beehiiv-tabs">
+      <nav className="nav-tab-wrapper">
+        <a className="re-nav-tab re-nav-tab-active" data-tab="re-beehiiv-credentials" href="#">
+          { __('Beehiiv Credentials', 're-beehiiv') }
+        </a>
+      </nav>
+    </div>
+    <div className="re-beehiiv-settings-tabs re-beehiiv-wrapper" key="settings-tabs">
       <div className="re-beehiiv-settings-tabs-menu" key="settings-tabs"></div>
       {onSaveMessage && (
         <Snackbar
@@ -85,25 +105,11 @@ const Tabs = (props) => {
           {onSaveMessage}
         </Snackbar>
       )}
-
-      <div
-        className="re-beehiiv-settings-tabs-contents"
-        key="settings-tabs-content"
-      >
-        <Panel>
-          <PanelBody
-            title={__("Beehive Credentials", 're-beehiiv')}
-            initialOpen={true}
-            buttonProps={{ disabled: !status }}
-          >
-            <PanelRow>
-              {__('To get started, you need to enter your Beehiiv API key and publication ID. This allow us to import posts from Beehiiv to your WordPress site.', 're-beehiiv')}
-            </PanelRow>
-            <PanelRow>
+            <PanelRow className="mt-0">
               <Grid columns={1} style={{ width: "100%" }}>
                 <InputControl
                   type="password"
-                  help={__("The API key provided by Beehiiv. This unique key authenticates your account and enables data transfer between Beehiiv and your WordPress site.", 're-beehiiv')}
+                  help={__("The API key provided by Beehiiv.", 're-beehiiv')}
                   label={__("API Key", 're-beehiiv')}
                   onChange={(value) => setApiKey(value)}
                   placeholder={__("Enter your API key", 're-beehiiv')}
@@ -111,7 +117,7 @@ const Tabs = (props) => {
                 />
                 <InputControl
                   type="password"
-                  help={__("The unique publication ID associated with your Beehiiv account. This ID helps us identify the specific content to import from Beehiiv to your WordPress site.", 're-beehiiv')}
+                  help={__("The unique publication ID associated with your Beehiiv account.", 're-beehiiv')}
                   label={__("Publication ID", 're-beehiiv')}
                   placeholder={__("Enter your publication ID", 're-beehiiv')}
                   onChange={(value) => setPublicationId(value)}
@@ -119,15 +125,14 @@ const Tabs = (props) => {
                 />
               </Grid>
             </PanelRow>
-          </PanelBody>
-        </Panel>
         <div className="re-beehiiv-settings-tabs-contents-actions">
-        <Button
+          <Button
             isPrimary
             style={{ marginRight: "1em" }}
             onClick={() => saveSettings()}
             isBusy={saving}
-            disabled={!status}
+            disabled={status == 'connected'}
+            className="re-beehiiv-settings-save"
           >
             {__('Save', 're-beehiiv')}
           </Button>
@@ -136,6 +141,7 @@ const Tabs = (props) => {
               style={{ marginRight: "1em" }}
               isDestructive
               onClick={() => removeAPIKey()}
+              className="re-beehiiv-settings-disconnect"
             >
               {__("Disconnect", 're-beehiiv')}
             </Button>
@@ -145,8 +151,8 @@ const Tabs = (props) => {
           </a>
           
         </div>
-      </div>
     </div>
+    </>
   );
 };
 
