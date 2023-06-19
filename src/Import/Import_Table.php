@@ -78,12 +78,11 @@ class Import_Table {
 	public static function insert_custom_table_row( string $key_name, array $key_value, string $group_name, string $status ) : void {
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
-		$key_value  = wp_json_encode( $key_value );
 		$wpdb->insert(
 			$table_name,
 			array(
 				'key_name'   => sanitize_text_field( $key_name ),
-				'key_value'  => sanitize_text_field( $key_value ),
+				'key_value'  => wp_json_encode( $key_value ),
 				'group_name' => sanitize_text_field( $group_name ),
 				'status'     => sanitize_text_field( $status ),
 			)
@@ -99,12 +98,11 @@ class Import_Table {
 	public static function get_custom_table_row( string $key_name, string $group_name ) {
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
-		$key_name   = sanitize_text_field( $key_name );
 		$result     = $wpdb->get_results(
 			$wpdb->prepare( // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber
 				'SELECT * FROM %i WHERE key_name = %s AND group_name = %s', // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnsupportedPlaceholder
 				$table_name,
-				$key_name,
+				sanitize_text_field( $key_name ),
 				$group_name
 			),
 		);

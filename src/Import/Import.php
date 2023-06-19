@@ -511,7 +511,6 @@ class Import {
 			$content = $this->get_post_content( $value['content'], $args['form_data']['content_type'] );
 			$data['post']['post_content'] = $this->filter_unnecessary_content( $content );
 		}
-		error_log( print_r( $data['post']['post_content'], true ) );
 
 		// set post author
 		if ( isset( $args['form_data']['post_author'] ) ) {

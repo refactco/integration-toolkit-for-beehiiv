@@ -57,7 +57,7 @@ class Queue {
 	 */
 	public function add_recurrence_task( $request ) {
 		$cron_time = $request['args']['cron_time'];
-		$timestamp = $cron_time * self::TIMESTAMP_1_HOUR;
+		$timestamp = (int) $cron_time * self::TIMESTAMP_1_HOUR;
 		if ( as_has_scheduled_action( $this->action, $request, $request['group'] ) === false ) {
 			as_schedule_recurring_action( time() + $timestamp, $timestamp, $this->action, $request, $request['group'] );
 		}

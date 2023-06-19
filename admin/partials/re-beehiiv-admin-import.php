@@ -66,7 +66,7 @@ $default_args         = array(
 	'post_tags'       => '1',
 	'post_status'     => 'publish',
 	'import_method'   => 'new_and_update',
-	'import_interval' => '12',
+	'cron_time'       => '1',
 );
 $is_auto_action_exist = false;
 if ( $is_auto ) {
@@ -95,7 +95,7 @@ if ( $is_auto_action_exist ) {
 				<h4><?php esc_html_e( 'Auto Import is set', 're-beehiiv' ); ?></h4>
 				<p class="description">
 					<?php
-					if ( $term ) {
+					if ( !$term instanceof WP_Error ) {
 						// Translators: %1$s: cron time, %2$s: post type, %3$s: taxonomy, %4$s: term name, %5$s: post status, %6$s: new item add, %7$s: existing item update.
 						echo sprintf( esc_html__( 'Current Auto Import is set to run every "%1$s" hours and will import to "%2$s" post type and "%3$s" taxonomy with "%4$s" term. The default post status is "%5$s". The new items will "%6$s" imported and the Existing posts will "%7$s" updated. You can modify these settings below to customize the automatic import process to your needs.', 're-beehiiv' ), '<strong>' . esc_html( $args['cron_time'] ) . '</strong>', '<strong>' . esc_html( $args['post_type'] ) . '</strong>', '<strong>' . esc_html( $args['taxonomy'] ) . '</strong>', '<strong>' . esc_html( $term->name ) . '</strong>', '<strong>' . esc_html( $args['post_status'] ) . '</strong>', '<strong>' . ( $is_new_item_add === true ? esc_html__( 'be', 're-beehiiv' ) : esc_html__( 'not be', 're-beehiiv' ) ) . '</strong>', '<strong>' . ( $is_existing_item_update === true ? esc_html__( 'be', 're-beehiiv' ) : esc_html__( 'not be', 're-beehiiv' ) ) . '</strong>' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
 					} else {

@@ -220,6 +220,8 @@ class Create_Post {
 		$this->add_meta();
 		$this->add_tags();
 		$this->add_taxonomies();
+
+		Import_Table::delete_custom_table_row( $this->data['meta']['post_id'] );
 	}
 
 	/**
