@@ -508,8 +508,10 @@ class Import {
 
 		// set content
 		if ( isset( $value['content'] ) ) {
-			$data['post']['post_content'] = $this->get_post_content( $value['content'], $args['form_data']['content_type'] );
+			$content = $this->get_post_content( $value['content'], $args['form_data']['content_type'] );
+			$data['post']['post_content'] = $this->filter_unnecessary_content( $content );
 		}
+		error_log( print_r( $data['post']['post_content'], true ) );
 
 		// set post author
 		if ( isset( $args['form_data']['post_author'] ) ) {
@@ -854,6 +856,21 @@ class Import {
 		delete_transient( 'RE_BEEHIIV_manual_import_group_data' );
 		( new Logger( $group_name ) )->clear_log();
 		Import_Table::delete_row_by_group( $group_name );
+	}
+
+	/**
+	 * Remove unnecessary content from html
+	 * This function will remove unnecessary content from html
+	 * It will remove html, head, body, style, class attributes and doctype
+	 * It will also remove all inline styles
+	 *
+	 * @param string $content
+	 * @return string
+	 */
+	private function filter_unnecessary_content( $content ) {
+		$pattern = '/<!DOCTYPE.*?>|<head>.*?<\/head>|<body.*?>|<\/body>|style=[\'"].*?[\'"]|<style.*?<\/style>|class=[\'"][^\'"]*[\'"]|<html.*?>|<\/html>/s';
+
+		return preg_replace( $pattern, '', $content );
 	}
 
 }
