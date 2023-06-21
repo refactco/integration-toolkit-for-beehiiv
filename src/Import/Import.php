@@ -49,8 +49,16 @@ class Import {
 			'required' => true,
 		),
 		array(
-			'name'     => 'post_status',
-			'required' => true,
+			'name'     => 'post_status--confirmed',
+			'required' => false,
+		),
+		array(
+			'name'     => 'post_status--draft',
+			'required' => false,
+		),
+		array(
+			'name'     => 'post_status--archived',
+			'required' => false,
 		),
 		array(
 			'name'     => 'cron_time',
@@ -300,6 +308,12 @@ class Import {
 				);
 			}
 
+			$n = explode( '--', $field['name'] );
+			if ( $n[0] === 'post_status' ) {
+				$form_data['post_status'][ $n[1] ] = sanitize_text_field( $_POST[ $field_name ] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+				continue;
+			}
+
 			if ( is_array( $_POST[ $field_name ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 				$form_data[ $field['name'] ] = array_map( 'sanitize_text_field', $_POST[ $field_name ] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			} else {
@@ -403,10 +417,17 @@ class Import {
 			return false;
 		}
 
+		if ( $import_interval >= 60 ) {
+			// Translators: %d is a placeholder for the import interval.
+			$log = sprintf( __( 'All posts are pushed to queue. The queue will end in about %d minutes', 're-beehiiv' ), $import_interval / 60 );
+		} else {
+			// Translators: %d is a placeholder for the import interval.
+			$log = sprintf( __( 'All posts are pushed to queue. The queue will end in about %d seconds', 're-beehiiv' ), $import_interval );
+		}
+
 		$logger->log(
 			array(
-				// Translators: %d is a placeholder for the import interval.
-				'message' => sprintf( __( 'All posts are pushed to queue. The queue will end in about %d minutes', 're-beehiiv' ), $import_interval / 60 ),
+				'message' => $log,
 				'status'  => 'success',
 			)
 		);
@@ -500,15 +521,15 @@ class Import {
 		);
 
 		// set post status
-		if ( $value['status'] === 'confirmed' ) {
-			$data['post']['post_status'] = $args['form_data']['post_status'];
-		} else {
+		if ( ! isset( $args['form_data']['post_status'][ $value['status'] ] ) ) {
 			$data['post']['post_status'] = 'draft';
+		} else {
+			$data['post']['post_status'] = $args['form_data']['post_status'][ $value['status'] ];
 		}
 
 		// set content
 		if ( isset( $value['content'] ) ) {
-			$content = $this->get_post_content( $value['content'], $args['form_data']['content_type'] );
+			$content                      = $this->get_post_content( $value['content'], $args['form_data']['content_type'] );
 			$data['post']['post_content'] = $this->filter_unnecessary_content( $content );
 		}
 
@@ -799,9 +820,23 @@ class Import {
 		}
 
 		$complete_actions = Manage_Actions::get_actions( $group_name, 'complete' );
-		$logs             = ( new Logger( $group_name ) )->get_logs();
+		$failed_actions   = Manage_Actions::get_actions( $group_name, 'failed' );
 
-		$failed_actions = Manage_Actions::get_actions( $group_name, 'failed' );
+		$logger = ( new Logger( $group_name ) );
+		if ( count( $complete_actions ) + count( $failed_actions ) === count( $all_actions ) ) {
+			$logger->log(
+				array(
+					'status'  => 'success',
+					'message' => sprintf(
+						// translators: %1$d: number of imported posts, %2$d: number of failed posts
+						__( 'Import completed successfully. %1$d posts imported and %2$d posts failed. Now you can close this window.', 're-beehiiv' ),
+						count( $complete_actions ),
+						count( $failed_actions )
+					),
+				)
+			);
+		}
+		$logs = $logger->get_logs();
 
 		$progress = array(
 			'complete' => count( $complete_actions ),

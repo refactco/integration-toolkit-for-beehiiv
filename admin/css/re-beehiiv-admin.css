@@ -123,6 +123,10 @@
     margin-bottom: 0 !important;
 }
 
+.mb-2 {
+    margin-bottom: 0.5rem !important;
+}
+
 .re-beehiiv-import-fields h2:first-child {
     margin-top: 0;
 }
@@ -201,6 +205,13 @@ input#re-beehiiv-start-import:disabled,
     top: 20px;
     right: 16px;
     position: absolute;
+}
+
+.re-beehiiv-import--notice .re-beehiiv-button-cancel:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    background-color: transparent !important;
+    color: #232323;
 }
 
 .re-beehiiv-import--notice h4 {
@@ -357,3 +368,14 @@ input#re-beehiiv-start-import:disabled,
     background: #a5c8ff;
 }
 /* Results Log Box End */
+
+.re-beehiiv-post_status--fields div label {
+    display: inline-block !important;
+    min-width: 80px;
+    margin-bottom: 0 !important;
+}
+
+.re-beehiiv-post_status--field {
+    display: flex;
+    align-items: center;
+}

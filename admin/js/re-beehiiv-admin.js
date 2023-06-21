@@ -119,12 +119,25 @@
       is_cancelled = true;
     });
 
+    const $cancel_button = $("#re-beehiiv-import--cancel");
+    if ($cancel_button) {
+      $cancel_button.hide();
+    }
+
     // Progress bar
     const bar = document.querySelector(".bar");
     if (bar) {
       update_progress_bar();
     }
-    
+
+    trigger_update_post_statuses();
+
+    const $beehiiv_status = document.querySelectorAll('input[name="re-beehiiv-beehiiv-status[]"]');
+    $beehiiv_status.forEach(function(i) {
+      i.addEventListener('change', function() {
+        trigger_update_post_statuses();
+      });
+    })
   });
 })(jQuery);
 
@@ -195,9 +208,14 @@ function check_required_fields() {
       type: "radio",
     },
     {
-      id: "re-beehiiv-post_status",
-      name: RE_BEEHIIV_CORE.strings.labels.post_status,
-      type: "radio",
+      id: "re-beehiiv-taxonomy",
+      name: RE_BEEHIIV_CORE.strings.labels.taxonomy,
+      type: "select",
+    },
+    {
+      id: "re-beehiiv-taxonomy_term",
+      name: RE_BEEHIIV_CORE.strings.labels.taxonomy_term,
+      type: "select",
     },
   ];
 
@@ -205,14 +223,43 @@ function check_required_fields() {
   $has_error = false;
   $notice_list.find("ul").html("");
 
+  let $input, $input_value;
+  let $tax_flag = false;
   $list_of_required_fields.forEach(function (field) {
-    if (!validateInput(field.id, field.type)) {
+    if ( field.id == "re-beehiiv-taxonomy_term" ) {
+      $input = jQuery(`#re-beehiiv-taxonomy`);
+      $input_value = $input.val();
+      if ( $input_value == null ||
+        $input_value == undefined ||
+        $input_value == "" ||
+        $input_value == "0") {
+        $tax_flag = false;
+      } else {
+        $input = jQuery(`#re-beehiiv-taxonomy_term`);
+        $input_value = $input.val();
+        if ( $input_value == null ||
+          $input_value == undefined ||
+          $input_value == "" ||
+          $input_value == "0") {
+          $tax_flag = true;
+        }
+      }
+    }
+
+    if ($tax_flag || !validateInput(field.id, field.type)) {
       $has_error = true;
       $notice_list
         .find("ul")
         .append("<li>" + RE_BEEHIIV_CORE.strings.required_fields.replace("{{field_name}}", field.name) + "</li>");
     }
   });
+
+  if (!validatePostStatuses()) {
+    $has_error = true;
+    $notice_list
+      .find("ul")
+      .append("<li>" + 'Select post status for each beehiiv status' + "</li>");
+  }
 
   if ($has_error) {
     $notice_list
@@ -237,9 +284,15 @@ function check_required_fields() {
 }
 
 function validateInput($input_name, $input_type) {
-  switch ($input_type) {
+  let $input, $input_value;
+
+  if ($input_name == 're-beehiiv-taxonomy' || $input_name == 're-beehiiv-taxonomy_term') {
+    return true;
+  }
+
+  switch ($input_type) {      
     case "select":
-      let $input = jQuery(`#${$input_name}`);
+      $input = jQuery(`#${$input_name}`);
       $input_value = $input.val();
       if (
         $input_value == null ||
@@ -322,6 +375,11 @@ function update_progress_bar() {
 
       const updateBarLength = () => {
         const percentage = ruleOfThree(total, solved);
+
+        if (percentage > 0) {
+          jQuery("#re-beehiiv-import--cancel").show();
+        }
+
         bar.style.width = percentage + "%";
       };
 
@@ -336,14 +394,12 @@ function update_progress_bar() {
 
       update_logs_box(response.logs);
 
-      console.log(response);
-
       updateBarLength();
       updateText();
 
       if (total !== 0 && total === solved) {
-        // refresh the page
-        location.reload();
+        jQuery("#re-beehiiv-import--cancel").hide();
+        return;
       }
 
       setTimeout(update_progress_bar, 2000);
@@ -366,4 +422,69 @@ function update_logs_box( logs ) {
 
   resultBox.removeClass("hidden");
   jQuery(".result-log--title").removeClass("hidden");
+}
+
+function trigger_update_post_statuses() {
+  const $wrapper = jQuery(".re-beehiiv-post_status--fields");
+  const beehiiv_status = [];
+
+  jQuery(`input[name='re-beehiiv-beehiiv-status[]']:checked`).each(function () {
+    beehiiv_status.push(jQuery(this).val());
+  });
+
+  $wrapper.html("");
+
+  if (!beehiiv_status.length > 0) {
+    $wrapper.html("<p>Please select at least one status for selecting beehiiv posts.</p>");
+    return;
+  }
+
+  // Update $wrapper with the new fields
+  beehiiv_status.forEach((status) => {
+
+    // Create the field using AllPostStatuses variable. this variable has multiple status with name and label. add dropdown for each status with AllPostStatuses values
+    let label = status.charAt(0).toUpperCase() + status.slice(1);
+
+    if (label === 'Confirmed') {
+      label = 'Published'
+    }
+
+    $wrapper.append(`
+      <div class="re-beehiiv-post_status--field mb-2">
+        <label for="re-beehiiv-post_status--${status}">${label}: </label>
+        <select name="re-beehiiv-post_status--${status}" id="re-beehiiv-post_status--${status}">
+          <option value="0">Select a status</option>
+          ${AllPostStatuses.map((option) => {
+            return `<option value="${option.name}">${option.label}</option>`;
+          }
+        )}
+        </select>
+      </div>
+    `);
+  });
+}
+
+function validatePostStatuses() {
+  const $wrapper = jQuery(".re-beehiiv-post_status--fields");
+  const beehiiv_status = [];
+
+  jQuery(`input[name='re-beehiiv-beehiiv-status[]']:checked`).each(function () {
+    beehiiv_status.push(jQuery(this).val());
+  });
+
+  if (!beehiiv_status.length > 0) {
+    return false;
+  }
+
+  let isValid = true;
+
+  beehiiv_status.forEach((status) => {
+    const $select = jQuery(`#re-beehiiv-post_status--${status}`);
+
+    if ($select.val() == "0") {
+      isValid = false;
+    }
+  });
+
+  return isValid;
 }
