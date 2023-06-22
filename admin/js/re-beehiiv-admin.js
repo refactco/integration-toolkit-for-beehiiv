@@ -178,24 +178,51 @@
     })
 
 
-    // onchange event for all fields in list_of_required_fields
-    list_of_required_fields.forEach(function (item) {
+    if (document.getElementsByClassName('re-beehiiv-import-fields').length > 0) {
+      list_of_required_fields.forEach(function (item) {
 
-      if (item.type == "checkbox" || item.type == "radio") {
-        const $checkbox = document.querySelectorAll(
-          'input[name="' + item.id + '"]'
-        );
-        $checkbox.forEach(function (i) {
-          i.addEventListener("change", function () {
-            const parentFieldset = i.closest("fieldset");
+        if (item.type == "checkbox" || item.type == "radio") {
+          const $checkbox = document.querySelectorAll(
+            'input[name="' + item.id + '"]'
+          );
+          $checkbox.forEach(function (i) {
+            i.addEventListener("change", function () {
+              const parentFieldset = i.closest("fieldset");
+              if (parentFieldset.classList.contains("has-error")) {
+                let is_valid = validateInput(item.id, item.type);
+                if (!is_valid) {
+                  return ;
+                }
+                parentFieldset.classList.remove("has-error");
+                const parentStep = jQuery(parentFieldset.closest(".re-beehiiv-import-fields--step"));
+                const parentStepTitle = parentStep.find(".re-beehiiv-import-fields--step--title");
+                let countOfErrorsInStep = parentStepTitle.attr("data-error-count");
+                countOfErrorsInStep = parseInt(countOfErrorsInStep) - 1;
+                parentStepTitle.attr("data-error-count", countOfErrorsInStep);
+                
+                if (countOfErrorsInStep == 0) {
+                  parentStep.removeClass("has-error");
+                  parentStepTitle.removeClass("has-error");
+                }
+              }
+            });
+          });
+        } else if (item.type == "select") {
+          const $select = document.getElementById(item.id);
+          $select.addEventListener("change", function () {
+            const parentFieldset = $select.closest("fieldset");
             if (parentFieldset.classList.contains("has-error")) {
               let is_valid = validateInput(item.id, item.type);
               if (!is_valid) {
                 return ;
               }
+
               parentFieldset.classList.remove("has-error");
+
               const parentStep = jQuery(parentFieldset.closest(".re-beehiiv-import-fields--step"));
               const parentStepTitle = parentStep.find(".re-beehiiv-import-fields--step--title");
+
+              
               let countOfErrorsInStep = parentStepTitle.attr("data-error-count");
               countOfErrorsInStep = parseInt(countOfErrorsInStep) - 1;
               parentStepTitle.attr("data-error-count", countOfErrorsInStep);
@@ -206,36 +233,10 @@
               }
             }
           });
-        });
-      } else if (item.type == "select") {
-        const $select = document.getElementById(item.id);
-        $select.addEventListener("change", function () {
-          const parentFieldset = $select.closest("fieldset");
-          if (parentFieldset.classList.contains("has-error")) {
-            let is_valid = validateInput(item.id, item.type);
-            if (!is_valid) {
-              return ;
-            }
+        }
 
-            parentFieldset.classList.remove("has-error");
-
-            const parentStep = jQuery(parentFieldset.closest(".re-beehiiv-import-fields--step"));
-            const parentStepTitle = parentStep.find(".re-beehiiv-import-fields--step--title");
-
-            
-            let countOfErrorsInStep = parentStepTitle.attr("data-error-count");
-            countOfErrorsInStep = parseInt(countOfErrorsInStep) - 1;
-            parentStepTitle.attr("data-error-count", countOfErrorsInStep);
-            
-            if (countOfErrorsInStep == 0) {
-              parentStep.removeClass("has-error");
-              parentStepTitle.removeClass("has-error");
-            }
-          }
-        });
-      }
-
-    });
+      });
+    }
 
   });
 })(jQuery);
