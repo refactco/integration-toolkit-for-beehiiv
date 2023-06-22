@@ -96,6 +96,10 @@
     $("#re-beehiiv-import-form").on("submit", function (e) {
       e.preventDefault();
 
+      document.querySelectorAll('.re-beehiiv-import-fields--step--title' ).forEach(function(i) {
+        i.setAttribute('data-error-count', 0);
+      });
+
       if (!check_required_fields()) {
         return false;
       }
@@ -132,12 +136,107 @@
 
     trigger_update_post_statuses();
 
+
+    const $post_status_selects = [
+      're-beehiiv-post_status--confirmed',
+      're-beehiiv-post_status--draft',
+      're-beehiiv-post_status--archived',
+    ]
     const $beehiiv_status = document.querySelectorAll('input[name="re-beehiiv-beehiiv-status[]"]');
     $beehiiv_status.forEach(function(i) {
       i.addEventListener('change', function() {
         trigger_update_post_statuses();
+        $post_status_selects.forEach(function(i) {
+          const $post_status_select = document.getElementById(i);
+          if ($post_status_select) {
+            $post_status_select.addEventListener('change', function() {
+              const parentFieldset = $post_status_select.closest("fieldset");
+              if (parentFieldset && parentFieldset.classList.contains("has-error")) {
+                let is_valid = validateInput($post_status_select.id, $post_status_select.type);
+                if (!is_valid) {
+                  return ;
+                }
+        
+                parentFieldset.classList.remove("has-error");
+        
+                const parentStep = jQuery(parentFieldset.closest(".re-beehiiv-import-fields--step"));
+                const parentStepTitle = parentStep.find(".re-beehiiv-import-fields--step--title");
+        
+                let countOfErrorsInStep = parentStepTitle.attr("data-error-count");
+                countOfErrorsInStep = parseInt(countOfErrorsInStep) - 1;
+                parentStepTitle.attr("data-error-count", countOfErrorsInStep);
+        
+                if (countOfErrorsInStep == 0) {
+                  parentStep.removeClass("has-error");
+                  parentStepTitle.removeClass("has-error");
+                }
+              }
+            });
+          }
+        })
       });
     })
+
+
+    // onchange event for all fields in list_of_required_fields
+    list_of_required_fields.forEach(function (item) {
+
+      if (item.type == "checkbox" || item.type == "radio") {
+        const $checkbox = document.querySelectorAll(
+          'input[name="' + item.id + '"]'
+        );
+        $checkbox.forEach(function (i) {
+          i.addEventListener("change", function () {
+            const parentFieldset = i.closest("fieldset");
+            if (parentFieldset.classList.contains("has-error")) {
+              let is_valid = validateInput(item.id, item.type);
+              if (!is_valid) {
+                return ;
+              }
+              parentFieldset.classList.remove("has-error");
+              const parentStep = jQuery(parentFieldset.closest(".re-beehiiv-import-fields--step"));
+              const parentStepTitle = parentStep.find(".re-beehiiv-import-fields--step--title");
+              let countOfErrorsInStep = parentStepTitle.attr("data-error-count");
+              countOfErrorsInStep = parseInt(countOfErrorsInStep) - 1;
+              parentStepTitle.attr("data-error-count", countOfErrorsInStep);
+              
+              if (countOfErrorsInStep == 0) {
+                parentStep.removeClass("has-error");
+                parentStepTitle.removeClass("has-error");
+              }
+            }
+          });
+        });
+      } else if (item.type == "select") {
+        const $select = document.getElementById(item.id);
+        $select.addEventListener("change", function () {
+          const parentFieldset = $select.closest("fieldset");
+          if (parentFieldset.classList.contains("has-error")) {
+            let is_valid = validateInput(item.id, item.type);
+            if (!is_valid) {
+              return ;
+            }
+
+            parentFieldset.classList.remove("has-error");
+
+            const parentStep = jQuery(parentFieldset.closest(".re-beehiiv-import-fields--step"));
+            const parentStepTitle = parentStep.find(".re-beehiiv-import-fields--step--title");
+
+            
+            let countOfErrorsInStep = parentStepTitle.attr("data-error-count");
+            countOfErrorsInStep = parseInt(countOfErrorsInStep) - 1;
+            parentStepTitle.attr("data-error-count", countOfErrorsInStep);
+            
+            if (countOfErrorsInStep == 0) {
+              parentStep.removeClass("has-error");
+              parentStepTitle.removeClass("has-error");
+            }
+          }
+        });
+      }
+
+    });
+
   });
 })(jQuery);
 
@@ -180,52 +279,52 @@ function UpdateTaxonomyTerms() {
   return true;
 }
 
-function check_required_fields() {
-  $list_of_required_fields = [
-    {
-      id: "re-beehiiv-content_type[]",
-      name: RE_BEEHIIV_CORE.strings.labels.content_type,
-      type: "checkbox",
-    },
-    {
-      id: "re-beehiiv-beehiiv-status[]",
-      name: RE_BEEHIIV_CORE.strings.labels.beehiiv_status,
-      type: "checkbox",
-    },
-    {
-      id: "re-beehiiv-post_type",
-      name: RE_BEEHIIV_CORE.strings.labels.post_type,
-      type: "select",
-    },
-    {
-      id: "re-beehiiv-post_author",
-      name: RE_BEEHIIV_CORE.strings.labels.post_author,
-      type: "select",
-    },
-    {
-      id: "re-beehiiv-import_method",
-      name: RE_BEEHIIV_CORE.strings.labels.import_method,
-      type: "radio",
-    },
-    {
-      id: "re-beehiiv-taxonomy",
-      name: RE_BEEHIIV_CORE.strings.labels.taxonomy,
-      type: "select",
-    },
-    {
-      id: "re-beehiiv-taxonomy_term",
-      name: RE_BEEHIIV_CORE.strings.labels.taxonomy_term,
-      type: "select",
-    },
-  ];
+const list_of_required_fields = [
+  {
+    id: "re-beehiiv-content_type[]",
+    name: RE_BEEHIIV_CORE.strings.labels.content_type,
+    type: "checkbox",
+  },
+  {
+    id: "re-beehiiv-beehiiv-status[]",
+    name: RE_BEEHIIV_CORE.strings.labels.beehiiv_status,
+    type: "checkbox",
+  },
+  {
+    id: "re-beehiiv-post_type",
+    name: RE_BEEHIIV_CORE.strings.labels.post_type,
+    type: "select",
+  },
+  {
+    id: "re-beehiiv-post_author",
+    name: RE_BEEHIIV_CORE.strings.labels.post_author,
+    type: "select",
+  },
+  {
+    id: "re-beehiiv-import_method",
+    name: RE_BEEHIIV_CORE.strings.labels.import_method,
+    type: "radio",
+  },
+  {
+    id: "re-beehiiv-taxonomy",
+    name: RE_BEEHIIV_CORE.strings.labels.taxonomy,
+    type: "select",
+  },
+  {
+    id: "re-beehiiv-taxonomy_term",
+    name: RE_BEEHIIV_CORE.strings.labels.taxonomy_term,
+    type: "select",
+  },
+];
 
+function check_required_fields() {
   $notice_list = jQuery("#re-beehiiv-import--notices");
   $has_error = false;
   $notice_list.find("ul").html("");
 
   let $input, $input_value;
   let $tax_flag = false;
-  $list_of_required_fields.forEach(function (field) {
+  list_of_required_fields.forEach(function (field) {
     if ( field.id == "re-beehiiv-taxonomy_term" ) {
       $input = jQuery(`#re-beehiiv-taxonomy`);
       $input_value = $input.val();
@@ -251,6 +350,19 @@ function check_required_fields() {
       $notice_list
         .find("ul")
         .append("<li>" + RE_BEEHIIV_CORE.strings.required_fields.replace("{{field_name}}", field.name) + "</li>");
+
+      const input = ( field.type == "select" ) ? jQuery(`#${field.id}`) : jQuery(`input[name='${field.id}']`);
+      const parentFieldset = input.closest("fieldset");
+      const parentStep = parentFieldset.closest(".re-beehiiv-import-fields--step");
+      const parentStepTitle = parentStep.find(".re-beehiiv-import-fields--step--title");
+
+      parentStep.addClass("has-error");
+
+      let countOfErrorsInStep = parentStepTitle.attr("data-error-count");
+      countOfErrorsInStep = parseInt(countOfErrorsInStep) + 1;
+      parentStepTitle.attr("data-error-count", countOfErrorsInStep);
+
+      parentFieldset.addClass("has-error");
     }
   });
 
@@ -449,13 +561,22 @@ function trigger_update_post_statuses() {
       label = 'Published'
     }
 
+    // select option if status is equal to 'publish'
     $wrapper.append(`
       <div class="re-beehiiv-post_status--field mb-2">
         <label for="re-beehiiv-post_status--${status}">${label}: </label>
         <select name="re-beehiiv-post_status--${status}" id="re-beehiiv-post_status--${status}">
           <option value="0">Select a status</option>
           ${AllPostStatuses.map((option) => {
-            return `<option value="${option.name}">${option.label}</option>`;
+            let selected = '';
+            if ( status === 'confirmed' ) {
+              if ( option.name === 'publish' ) {
+                selected = 'selected';
+              }
+            } else if ( option.name === 'draft' ) {
+              selected = 'selected';
+            }
+            return `<option value="${option.name}" ${selected}>${option.label}</option>`;
           }
         )}
         </select>
@@ -483,6 +604,18 @@ function validatePostStatuses() {
 
     if ($select.val() == "0") {
       isValid = false;
+      const input = $select[0];
+      const parentFieldset = jQuery(input.closest("fieldset"));
+      const parentStep = jQuery(parentFieldset.closest(".re-beehiiv-import-fields--step"));
+      const parentStepTitle = parentStep.find(".re-beehiiv-import-fields--step--title");
+
+      parentStep.addClass("has-error");
+
+      let countOfErrorsInStep = parentStepTitle.attr("data-error-count");
+      countOfErrorsInStep = parseInt(countOfErrorsInStep) + 1;
+      parentStepTitle.attr("data-error-count", countOfErrorsInStep);
+
+      parentFieldset.addClass("has-error");
     }
   });
 

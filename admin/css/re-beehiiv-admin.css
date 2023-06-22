@@ -237,8 +237,36 @@ input#re-beehiiv-start-import:disabled,
     background: #abe2e0;
 }
 
-.re-beehiiv-import-fields .description {
+.re-beehiiv-import-fields .description,
+.re-beehiiv-import-fields--step--content fieldset {
     max-width: 500px;
+}
+
+h2.re-beehiiv-import-fields--step--title:after {
+    content: attr(data-error-count);
+    margin-left: 8px;
+    background-color: red;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    border-radius: 50px;
+    color: white;
+    text-align: center;
+    font-size: 13px;
+    visibility: hidden;
+}
+
+.re-beehiiv-import-fields--step.has-error h2.re-beehiiv-import-fields--step--title:after {
+    visibility: visible;
+}
+
+.re-beehiiv-import-fields--step--content fieldset {
+    border-radius: 3px;
+    padding: 8px;
+}
+
+.re-beehiiv-import-fields--step--content fieldset.has-error {
+    border: solid red 1px;
 }
 
 .re-beehiiv-import-fields label[for]:not([for=""]) {

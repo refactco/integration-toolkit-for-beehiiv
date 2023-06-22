@@ -209,7 +209,7 @@ var AllDefaultArgs = <?php echo wp_json_encode( $default_args ); ?>;
 		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" id="re-beehiiv-import-form" class="re-beehiiv-import-form">
 			<div class="re-beehiiv-import-fields">
 				<div class="re-beehiiv-import-fields--step import-fields--step1 <?php echo ! $is_auto_action_exist ? 'active' : ''; ?>">
-					<h2 class="re-beehiiv-import-fields--step--title"><?php esc_html_e( 'Step1: Choose data from Beehiiv', 're-beehiiv' ); ?></h2>
+					<h2 class="re-beehiiv-import-fields--step--title" data-error-count="0"><?php esc_html_e( 'Step1: Choose data from Beehiiv', 're-beehiiv' ); ?></h2>
 					<div class="re-beehiiv-import-fields--step--content">
 						<fieldset>
 							<label for="re-beehiiv-content_type" class="pr-2"><strong><?php esc_html_e( 'Content Type', 're-beehiiv' ); ?></strong></label>
@@ -261,8 +261,8 @@ var AllDefaultArgs = <?php echo wp_json_encode( $default_args ); ?>;
 						</fieldset>
 					</div>
 				</div>
-				<div class="re-beehiiv-import-fields--step import-fields--step2">
-					<h2 class="re-beehiiv-import-fields--step--title"><?php esc_html_e( 'Step 2: Insert data to WordPress', 're-beehiiv' ); ?></h2>
+				<div class="re-beehiiv-import-fields--step import-fields--step2" data-error-count="0">
+					<h2 class="re-beehiiv-import-fields--step--title" data-error-count="0"><?php esc_html_e( 'Step 2: Insert data to WordPress', 're-beehiiv' ); ?></h2>
 					<div class="re-beehiiv-import-fields--step--content">
 						<fieldset>
 							<label class="d-block" for="re-beehiiv-post_type"><strong><?php esc_html_e( 'Select Post Type and Taxonomy', 're-beehiiv' ); ?></strong></label>
@@ -308,12 +308,12 @@ var AllDefaultArgs = <?php echo wp_json_encode( $default_args ); ?>;
 						<fieldset id="re-beehiiv-post_status">
 							<label for="re-beehiiv-post_status"><strong><?php esc_html_e( 'Post Status', 're-beehiiv' ); ?></strong></label>
 							<div class="re-beehiiv-post_status--fields"></div>
-							<p class="description"><?php esc_html_e( 'For each beehiiv status that you have selected, choose the post status that you want to assign to the imported content.', 're-beehiiv' ); ?></p>
+							<p class="description"><?php esc_html_e( 'For each beehiiv status that you have selected in step 1, choose the post status that you want to assign to the imported content in WordPress.', 're-beehiiv' ); ?></p>
 						</fieldset>
 					</div>
 				</div>
-				<div class="re-beehiiv-import-fields--step import-fields--step3">
-					<h2 class="re-beehiiv-import-fields--step--title"><?php esc_html_e( 'Step3: Import Options', 're-beehiiv' ); ?></h2>
+				<div class="re-beehiiv-import-fields--step import-fields--step3" data-error-count="0">
+					<h2 class="re-beehiiv-import-fields--step--title" data-error-count="0"><?php esc_html_e( 'Step3: Import Options', 're-beehiiv' ); ?></h2>
 					<div class="re-beehiiv-import-fields--step--content">
 						<fieldset>
 							<label for="re-beehiiv-import_method"><strong><?php esc_html_e( 'Import Method', 're-beehiiv' ); ?></strong></label>
