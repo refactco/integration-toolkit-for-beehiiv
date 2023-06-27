@@ -17,6 +17,11 @@ $is_running = get_transient( 'RE_BEEHIIV_manual_import_running' );
 $re_tab  = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : false; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 $is_auto = $re_tab === 'auto-import';
 
+$is_canceled = false;
+if ( isset( $_GET['cancel'] ) ) {
+	$is_canceled = true;
+}
+
 
 // get all taxonomies based on post type
 $post_types = get_post_types(
@@ -82,7 +87,7 @@ $default_args         = array(
 		'confirmed' => 'publish',
 	),
 	'import_method'  => 'new_and_update',
-	'cron_time'      => '1',
+	'cron_time'      => '6',
 );
 $is_auto_action_exist = false;
 if ( $is_auto ) {
@@ -196,7 +201,7 @@ var AllDefaultArgs = <?php echo wp_json_encode( $default_args ); ?>;
 	</div>
 
 	<div class="re-beehiiv-wrapper border-t-0">
-		<div class="re-beehiiv-import--notices" id="re-beehiiv-import--notices">
+		<div class="re-beehiiv-import--notices <?php echo ! $is_running && $is_canceled ? 're-beehiiv-import-form--hide_canceled' : ''; ?>" id="re-beehiiv-import--notices">
 			<div class="hidden re-beehiiv-import--notice re-beehiiv-import--notice-error">
 				<h4><?php esc_html_e( 'Please fix the following errors:', 're-beehiiv' ); ?></h4>
 				<ul>
@@ -205,7 +210,7 @@ var AllDefaultArgs = <?php echo wp_json_encode( $default_args ); ?>;
 			<?php do_action( 're_beehiiv_admin_notices' ); ?>
 			<!-- convert notice above to new format -->
 		</div>
-		<?php if ( $is_auto || ! $is_running ) : ?>
+		<?php if ( ! $is_running || ( $is_canceled && ! $is_running) ) : ?>
 		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" id="re-beehiiv-import-form" class="re-beehiiv-import-form">
 			<div class="re-beehiiv-import-fields">
 				<div class="re-beehiiv-import-fields--step import-fields--step1 <?php echo ! $is_auto_action_exist ? 'active' : ''; ?>">
@@ -299,11 +304,11 @@ var AllDefaultArgs = <?php echo wp_json_encode( $default_args ); ?>;
 							<p class="description"><?php esc_html_e( 'Assign the imported posts to a specific user.', 're-beehiiv' ); ?></p>
 						</fieldset>
 						<fieldset>
-							<label for="re-beehiiv-post_tags"><strong><?php esc_html_e( 'Post Tags', 're-beehiiv' ); ?></strong></label>
-							<label class="pr-2 d-block">
-								<input type="checkbox" name="re-beehiiv-post_tags" id="re-beehiiv-post_tags" value="1" <?php echo ( '1' === $default_args['post_tags'] ) ? 'checked' : ''; ?>> <?php esc_html_e( 'Import Tags', 're-beehiiv' ); ?>
-							</label>
-							<p class="description"><?php esc_html_e( 'If checked, the tags will be imported as post tags.', 're-beehiiv' ); ?></p>
+							<label for="re-beehiiv-post_tags"><strong><?php esc_html_e( 'Beehiiv Tags', 're-beehiiv' ); ?></strong></label>
+							<select name="re-beehiiv-post_tags-taxonomy" id="re-beehiiv-post_tags-taxonomy" class="re-beehiiv-post_tags-taxonomy">
+								<option value="0"><?php esc_html_e( 'Select post type first', 're-beehiiv' ); ?></option>
+							</select>
+							<p class="description"><?php esc_html_e( 'If you want to import the tags from Beehiiv, select the taxonomy and term that you want to use for the imported tags.', 're-beehiiv' ); ?></p>
 						</fieldset>
 						<fieldset id="re-beehiiv-post_status">
 							<label for="re-beehiiv-post_status"><strong><?php esc_html_e( 'Post Status', 're-beehiiv' ); ?></strong></label>

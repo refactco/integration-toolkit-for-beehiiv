@@ -37,7 +37,6 @@ const Tabs = (props) => {
       data: settings,
     })
       .then((response) => {
-        console.log(response);
         if (!response.success) {
           setSaving(false);
         } else {
@@ -74,8 +73,6 @@ const Tabs = (props) => {
         console.log(error);
       });
   };
-  console.log(re_beehiiv_settings);
-  console.log(status);
   return (
     <>
     <div className="re-beehiiv-heading">

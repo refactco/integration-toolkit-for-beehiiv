@@ -64,6 +64,10 @@ class Import {
 			'name'     => 'cron_time',
 			'required' => false,
 		),
+		array(
+			'name'     => 'post_tags-taxonomy',
+			'required' => false,
+		),
 	);
 
 	/**
@@ -333,7 +337,7 @@ class Import {
 	 */
 	public function maybe_push_to_queue( $data, $args ) {
 
-		$import_interval_s = apply_filters( 're_beehiiv_import_interval', 4 );
+		$import_interval_s = apply_filters( 're_beehiiv_import_interval', 5 );
 		$import_interval   = $import_interval_s;
 		$import_method     = $args['form_data']['import_method'];
 		$args['group']     = 'auto_recurring_import' === $args['group'] ? 'auto_recurring_import_task' : $args['group'];
@@ -558,6 +562,23 @@ class Import {
 			return;
 		}
 
+		if ( isset( $_GET['cancel'] ) ) {
+
+			add_action(
+				're_beehiiv_admin_notices',
+				function() {
+					?>
+				<div class="re-beehiiv-import--notice re-beehiiv-import--notice-canceled">
+					<h4><?php esc_html_e( 'Importing posts from Beehiiv is cancelled.', 're-beehiiv' ); ?></h4>
+					<p class="description"><?php esc_html_e( 'The import process is cancelled. You can start the import process again.', 're-beehiiv' ); ?></p>
+					<?php require_once RE_BEEHIIV_PATH . 'admin/partials/components/progressbar.php'; ?>
+				</div>
+					<?php
+				}
+			);
+			return;
+		}
+
 		$group_name = get_transient( 'RE_BEEHIIV_manual_import_group' );
 		$is_running = get_transient( 'RE_BEEHIIV_manual_import_running' );
 
@@ -604,8 +625,6 @@ class Import {
 
 			return;
 		}
-
-		$this->maybe_cancel_import();
 
 		$complete_actions = Manage_Actions::get_actions( $group_name, 'complete' );
 		$all_actions      = Manage_Actions::get_actions( $group_name );
@@ -853,27 +872,40 @@ class Import {
 	 * Maybe cancel import
 	 * If cancel button is clicked, it will remove all related actions and redirect to import page
 	 *
-	 * @return void
+	 * @return array
 	 */
-	public function maybe_cancel_import() {
+	public static function maybe_cancel_import() {
 		if ( ! isset( $_GET['cancel'] ) || ! isset( $_GET['nonce'] ) ) {
-			return;
+			return array();
 		}
 
 		$group_name = sanitize_text_field( $_GET['cancel'] );
 		$nonce      = sanitize_text_field( $_GET['nonce'] );
 
 		if ( ! wp_verify_nonce( $nonce, 're_beehiiv_cancel_import' ) ) {
-			return;
+			return array();
 		}
 
 		Manage_Actions::remove_actions( $group_name );
 
-		$this->remove_import_transient();
+		delete_transient( 'RE_BEEHIIV_manual_import_group' );
+		delete_transient( 'RE_BEEHIIV_manual_import_running' );
+		delete_transient( 'RE_BEEHIIV_manual_import_group_data' );
+		Import_Table::delete_row_by_group( $group_name );
+		
+		$logger = new Logger( $group_name );
+		$logger->log(
+			array(
+				'status'  => 'error',
+				'message' => __( 'Import canceled', 're-beehiiv' ),
+			)
+		);
+		
+		$logs = $logger->get_logs();
 
-		wp_safe_redirect( admin_url( 'admin.php?page=re-beehiiv-import&notice=import_canceled' ) );
+		$logger->clear_log();
 
-		exit;
+		return $logs;
 	}
 
 	/**
@@ -888,7 +920,6 @@ class Import {
 		delete_transient( 'RE_BEEHIIV_manual_import_group' );
 		delete_transient( 'RE_BEEHIIV_manual_import_running' );
 		delete_transient( 'RE_BEEHIIV_manual_import_group_data' );
-		( new Logger( $group_name ) )->clear_log();
 		Import_Table::delete_row_by_group( $group_name );
 	}
 

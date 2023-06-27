@@ -50,7 +50,7 @@ class Logger {
 		$log              = $this->get_logs();
 		$log_item['time'] = current_time( 'mysql' );
 		$log[]            = $log_item;
-		set_transient( 're_beehiiv_import_log_' . $this->group_name, $log );
+		set_transient( 're_beehiiv_import_log_' . $this->group_name, $log, 60 * 60 * 24 );
 	}
 
 	/**

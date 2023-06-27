@@ -109,10 +109,8 @@ class Create_Post {
 
 		$this->create_post();
 		$this->add_meta();
-		if ( isset( $this->data['args']['form_data']['post_tags'] ) && $this->data['args']['form_data']['post_tags'] == '1' ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
-			$this->add_tags();
-		}
 		$this->add_taxonomies();
+		$this->add_tags();
 
 		$this->logger->log(
 			array(
@@ -162,10 +160,35 @@ class Create_Post {
 	/**
 	 * Add tags to post
 	 *
-	 * @return void
+	 * @return bool
 	 */
 	private function add_tags() {
-		wp_set_post_tags( $this->post_id, $this->data['tags'], true );
+		if ( !isset( $this->data['args']['form_data']['post_tags-taxonomy'] ) || $this->data['args']['form_data']['post_tags-taxonomy'] === '0' ) {
+			return false;
+		}
+
+		$taxonomy = $this->data['args']['form_data']['post_tags-taxonomy'];
+
+		if ( ! taxonomy_exists( $taxonomy ) ) {
+			return false;
+		}
+
+		foreach ( $this->data['tags'] as $tag ) {
+			$term = term_exists( $tag, $taxonomy );
+			if ( ! $term ) {
+				$term = wp_insert_term(
+					$tag,
+					$taxonomy,
+					array(
+						'slug' => strtolower( str_ireplace( ' ', '-', $tag ) ),
+					)
+				);
+			}
+			$term = get_term_by( 'id', $term['term_id'], $taxonomy );
+			wp_set_post_terms( $this->post_id, array((int)$term->term_id), $taxonomy, true );
+		}
+
+		return true;
 	}
 
 	/**
@@ -203,7 +226,7 @@ class Create_Post {
 
 		$term = get_term_by( 'id', $term, $taxonomy );
 		if ( $term ) {
-			wp_set_post_terms( $this->post_id, $term->term_id, $taxonomy );
+			wp_set_post_terms( $this->post_id, array((int)$term->term_id), $taxonomy, false );
 		}
 
 		return true;
@@ -218,8 +241,8 @@ class Create_Post {
 	private function update_existing_post() {
 		wp_update_post( $this->data['post'] );
 		$this->add_meta();
-		$this->add_tags();
 		$this->add_taxonomies();
+		$this->add_tags();
 
 		Import_Table::delete_custom_table_row( $this->data['meta']['post_id'] );
 	}

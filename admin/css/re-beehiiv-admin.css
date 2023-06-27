@@ -176,6 +176,10 @@ input#re-beehiiv-start-import:disabled,
     border-color: #ccc  !important;
 }
 
+.re-beehiiv-import-form--hide_canceled .re-beehiiv-import--notice.re-beehiiv-import--notice-canceled {
+    display: none;
+}
+
 .re-beehiiv-import--notice {
     background: #e6e6e6;
     padding: 20px 16px;

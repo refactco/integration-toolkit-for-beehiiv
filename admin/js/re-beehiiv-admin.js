@@ -9,7 +9,7 @@
       $(this).hide();
       $(".re-beehiiv-import-running").show();
       re_beehiiv_start_auto_import();
-      location.reload();
+      // location.reload();
     });
 
     $("#re-beehiiv-post_type").on("change", function () {
@@ -29,6 +29,9 @@
         );
         $("#re-beehiiv-taxonomy").addClass("hidden");
         $("#re-beehiiv-taxonomy_term").addClass("hidden");
+        $("#re-beehiiv-post_tags-taxonomy").html(
+          `<option value="0">Select post type first</option>`
+        );
         return false;
       }
 
@@ -39,6 +42,9 @@
         // hide the taxonomy and taxonomy term select
         $("#re-beehiiv-taxonomy").addClass("hidden");
         $("#re-beehiiv-taxonomy_term").addClass("hidden");
+        $("#re-beehiiv-post_tags-taxonomy").html(
+          `<option value="0">Selected post type has no taxonomies</option>`
+        );
         return false;
       }
 
@@ -58,6 +64,7 @@
       }
 
       $("#re-beehiiv-taxonomy").html(html);
+      $("#re-beehiiv-post_tags-taxonomy").html(html)
     });
 
     $("#re-beehiiv-taxonomy").on("change", function () {
@@ -126,11 +133,35 @@
     const $cancel_button = $("#re-beehiiv-import--cancel");
     if ($cancel_button) {
       $cancel_button.hide();
+
+      // $cancel_button.on("click", function () {
+      //   is_cancelled = true;
+
+      //   // send ajax request to cancel import
+      //   $.ajax({
+      //     url: ajaxurl,
+      //     type: "POST",
+      //     data: {
+      //       action: "re_beehiiv_cancel_import",
+      //       nonce: RE_BEEHIIV_CORE.progress_bar_nonce,
+      //     },
+      //     success: function (response) {
+      //       if (response.status == 'canceled') {
+      //         update_logs_box(response.logs);
+      //       }
+      //     }
+      //   });
+      // })
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('cancel')) {
+      is_cancelled = true;
     }
 
     // Progress bar
     const bar = document.querySelector(".bar");
-    if (bar) {
+    if (bar && !is_cancelled) {
       update_progress_bar();
     }
 
@@ -348,9 +379,12 @@ function check_required_fields() {
 
     if ($tax_flag || !validateInput(field.id, field.type)) {
       $has_error = true;
+
+      let error_message = RE_BEEHIIV_CORE.strings.required_fields.replace("{{field_name}}", field.name);
+
       $notice_list
         .find("ul")
-        .append("<li>" + RE_BEEHIIV_CORE.strings.required_fields.replace("{{field_name}}", field.name) + "</li>");
+        .append("<li>" + error_message + "</li>");
 
       const input = ( field.type == "select" ) ? jQuery(`#${field.id}`) : jQuery(`input[name='${field.id}']`);
       const parentFieldset = input.closest("fieldset");
@@ -479,9 +513,9 @@ function update_progress_bar() {
       }
 
       const ruleOfThree = (num1, num2) => {
-        const proportion = (num2 * 95) / num1;
+        const proportion = (num2 * 80) / num1;
         let percentage = Math.round(proportion * 10) / 10;
-        percentage += 5;
+        percentage += 20;
 
         return percentage;
       };
