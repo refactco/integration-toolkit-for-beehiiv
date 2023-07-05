@@ -146,10 +146,10 @@ class Import {
 		set_transient(
 			'RE_BEEHIIV_manual_import_getting_data',
 			array(
-				'group_name'  => $group_name,
-				'form_data'   => $form_data,
-				'status'      => 'started',
-				'page'        => 1,
+				'group_name' => $group_name,
+				'form_data'  => $form_data,
+				'status'     => 'started',
+				'page'       => 1,
 			),
 			60 * 60 * 24,
 		);
@@ -196,8 +196,6 @@ class Import {
 
 			if ( $getting_data ) {
 				if ( 'finished' === $getting_data['status'] ) {
-					
-
 					return false;
 				} else {
 					$this->start_import_page_to_page( $form_data['content_type'], $group_name );
@@ -205,7 +203,7 @@ class Import {
 				}
 			}
 		}
-		
+
 		$data = $this->get_all_data( $form_data['content_type'] );
 		if ( ! $data ) {
 			// show the error message
@@ -247,21 +245,32 @@ class Import {
 		);
 
 		return $is_anything_added;
-		
+
 	}
 
+	/**
+	 * Start import page to page
+	 * This method used to start the import action for the manual import
+	 * It will fetch the data from the API page by page
+	 * And push it to the queue
+	 * It also sets a transient to show the user the import is getting data from the API
+	 *
+	 * @param array $content_type The content type of the import
+	 * @param string $group_name The group name of the import
+	 * @return void
+	 */
 	public function start_import_page_to_page( array $content_type, string $group_name ) {
-		
+
 		$getting_data = get_transient( 'RE_BEEHIIV_manual_import_getting_data' );
 
 		if ( ! $getting_data || $getting_data['status'] === 'finished' ) {
 			return;
 		}
-		
+
 		$page = $getting_data['page'];
 
-		$logger = new Logger( $group_name );
-		$str_total_page = isset($getting_data['total_pages']) && $getting_data['total_pages'] > 0 ? '/' . $getting_data['total_pages'] : '';
+		$logger         = new Logger( $group_name );
+		$str_total_page = isset( $getting_data['total_pages'] ) && $getting_data['total_pages'] > 0 ? '/' . $getting_data['total_pages'] : '';
 		$logger->log(
 			array(
 				'message' => 'Start getting data of page ' . $page . $str_total_page,
@@ -284,7 +293,6 @@ class Import {
 			$data = Posts::get_posts_in_page( $page, 'free_web_content' );
 		}
 
-
 		if ( ! $data || ! isset( $data['data'] ) ) {
 			$logger->log(
 				array(
@@ -302,7 +310,7 @@ class Import {
 			)
 		);
 
-		$posts = get_transient( 'RE_BEEHIIV_manual_import_posts' ) ?: array();
+		$posts = get_transient( 'RE_BEEHIIV_manual_import_posts' ) ? get_transient( 'RE_BEEHIIV_manual_import_posts' ) : array();
 		$posts = array_merge( $posts, $data['data'] );
 		set_transient( 'RE_BEEHIIV_manual_import_posts', $posts, 60 * 60 * 24 );
 
@@ -658,7 +666,7 @@ class Import {
 			return;
 		}
 
-		if ( isset( $_GET['cancel'] ) ) {
+		if ( isset( $_GET['cancel'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 			add_action(
 				're_beehiiv_admin_notices',
@@ -901,7 +909,7 @@ class Import {
 
 			if ( $getting_data['status'] === 'started' || $getting_data['page'] <= $getting_data['total_pages'] ) {
 				$is_anything_added = $this->start_import( $form_data, $group_name );
-				$getting_data = get_transient( 'RE_BEEHIIV_manual_import_getting_data' );
+				$getting_data      = get_transient( 'RE_BEEHIIV_manual_import_getting_data' );
 
 				wp_send_json(
 					array(
@@ -916,7 +924,7 @@ class Import {
 				);
 				wp_die();
 
-			} else if ( $getting_data['status'] === 'finished' ) {
+			} elseif ( $getting_data['status'] === 'finished' ) {
 				$logger->log(
 					array(
 						'message' => 'Starting import to queue',

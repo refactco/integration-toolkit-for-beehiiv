@@ -18,7 +18,7 @@ $re_tab  = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : false; 
 $is_auto = $re_tab === 'auto-import';
 
 $is_canceled = false;
-if ( isset( $_GET['cancel'] ) ) {
+if ( isset( $_GET['cancel'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	$is_canceled = true;
 }
 

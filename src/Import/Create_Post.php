@@ -163,7 +163,7 @@ class Create_Post {
 	 * @return bool
 	 */
 	private function add_tags() {
-		if ( !isset( $this->data['args']['form_data']['post_tags-taxonomy'] ) || $this->data['args']['form_data']['post_tags-taxonomy'] === '0' ) {
+		if ( ! isset( $this->data['args']['form_data']['post_tags-taxonomy'] ) || $this->data['args']['form_data']['post_tags-taxonomy'] === '0' ) {
 			return false;
 		}
 
@@ -185,7 +185,7 @@ class Create_Post {
 				);
 			}
 			$term = get_term_by( 'id', $term['term_id'], $taxonomy );
-			wp_set_post_terms( $this->post_id, array((int)$term->term_id), $taxonomy, true );
+			wp_set_post_terms( $this->post_id, array( (int) $term->term_id ), $taxonomy, true );
 		}
 
 		return true;
@@ -226,7 +226,7 @@ class Create_Post {
 
 		$term = get_term_by( 'id', $term, $taxonomy );
 		if ( $term ) {
-			wp_set_post_terms( $this->post_id, array((int)$term->term_id), $taxonomy, false );
+			wp_set_post_terms( $this->post_id, array( (int) $term->term_id ), $taxonomy, false );
 		}
 
 		return true;

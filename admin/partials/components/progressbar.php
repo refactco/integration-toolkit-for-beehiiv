@@ -4,6 +4,7 @@
  *
  * @package Re_Beehiiv
  */
+
 use Re_Beehiiv\Import\Import;
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -11,12 +12,12 @@ if ( ! defined( 'WPINC' ) ) {
 if ( empty( $all_actions ) ) {
 	$percentage = 0;
 } else {
-	$percentage = ( count( $complete_actions ) / count( $all_actions ) ) * 80;
-	$percentage = number_format( (float) $percentage, 2, '.', '' );
+	$percentage  = ( count( $complete_actions ) / count( $all_actions ) ) * 80;
+	$percentage  = number_format( (float) $percentage, 2, '.', '' );
 	$percentage += 20; // Add 5 to the calculated percentage because the data fetching takes some time.
 }
 
-if ( isset( $_GET['cancel'] ) && isset( $_GET['nonce'] ) ) {
+if ( isset( $_GET['cancel'] ) && isset( $_GET['nonce'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	$logs = Import::maybe_cancel_import();
 }
 
@@ -36,16 +37,19 @@ if ( isset( $_GET['cancel'] ) && isset( $_GET['nonce'] ) ) {
 			<span class="log-item__status log-item__status--running"><?php esc_html_e( 'Running', 're-beehiiv' ); ?></span>
 			<span class="log-item__message"><?php esc_html_e( 'Please wait... We are fetching data from Beehiiv.', 're-beehiiv' ); ?></span>
 		</div>
-		<?php if ( ! empty( $logs ) ) : ?>
-			<?php foreach ( $logs as $log ) :
+		<?php
+		if ( ! empty( $logs ) ) :
+			foreach ( $logs as $log ) :
 				$time = explode( ' ', $log['time'] );
 				?>
 				<div class="log-item">
 					<span class="log-item__time">[<?php echo esc_html( $time[1] ); ?>]</span>
 					<span class="log-item__status log-item__status--<?php echo esc_attr( $log['status'] ); ?>"><?php echo esc_html( $log['status'] ); ?></span>
-					<span class="log-item__message"><?php echo $log['message']; ?></span>
+					<span class="log-item__message"><?php echo esc_attr( $log['message'] ); ?></span>
 				</div>
-			<?php endforeach; ?>
-		<?php endif; ?>
+				<?php
+			endforeach;
+		endif;
+		?>
 	</div>
 </div>
