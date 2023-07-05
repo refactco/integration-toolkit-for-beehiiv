@@ -361,7 +361,7 @@ h2.re-beehiiv-import-fields--step--title:after {
 /* Results Log Box Start */
 /* with scroll bar */
 .result-log {
-    height: 90px;
+    height: 290px;
     overflow: auto;
     padding: 10px;
     margin-top: 8px;

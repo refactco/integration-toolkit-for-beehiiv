@@ -143,6 +143,17 @@ class Import {
 		set_transient( 'RE_BEEHIIV_manual_import_group', $group_name, 60 * 60 * 24 );
 		set_transient( 'RE_BEEHIIV_manual_import_group_data', $form_data, 60 * 60 * 24 );
 
+		set_transient(
+			'RE_BEEHIIV_manual_import_getting_data',
+			array(
+				'group_name'  => $group_name,
+				'form_data'   => $form_data,
+				'status'      => 'started',
+				'page'        => 1,
+			),
+			60 * 60 * 24,
+		);
+
 		// redirect to import page
 		wp_safe_redirect( admin_url( 'admin.php?page=re-beehiiv-import' ) );
 
@@ -179,6 +190,22 @@ class Import {
 		);
 
 		// get the data from the API
+
+		if ( 'auto_recurring_import' !== $group_name ) {
+			$getting_data = get_transient( 'RE_BEEHIIV_manual_import_getting_data' );
+
+			if ( $getting_data ) {
+				if ( 'finished' === $getting_data['status'] ) {
+					
+
+					return false;
+				} else {
+					$this->start_import_page_to_page( $form_data['content_type'], $group_name );
+					return true;
+				}
+			}
+		}
+		
 		$data = $this->get_all_data( $form_data['content_type'] );
 		if ( ! $data ) {
 			// show the error message
@@ -220,6 +247,75 @@ class Import {
 		);
 
 		return $is_anything_added;
+		
+	}
+
+	public function start_import_page_to_page( array $content_type, string $group_name ) {
+		
+		$getting_data = get_transient( 'RE_BEEHIIV_manual_import_getting_data' );
+
+		if ( ! $getting_data || $getting_data['status'] === 'finished' ) {
+			return;
+		}
+		
+		$page = $getting_data['page'];
+
+		$logger = new Logger( $group_name );
+		$str_total_page = isset($getting_data['total_pages']) && $getting_data['total_pages'] > 0 ? '/' . $getting_data['total_pages'] : '';
+		$logger->log(
+			array(
+				'message' => 'Start getting data of page ' . $page . $str_total_page,
+				'status'  => 'running',
+			)
+		);
+
+		// get the data from the API
+		if ( in_array( 'premium_web_content', $content_type, true ) ) {
+
+			$data                = Posts::get_posts_in_page( $page, 'free_web_content' );
+			$premium_web_content = Posts::get_posts_in_page( $page, 'premium_web_content' );
+
+			foreach ( $data as $key => $value ) {
+				if ( isset( $premium_web_content[ $key ]['content']['premium']['web'] ) ) {
+					$data[ $key ]['content']['premium']['web'] = $premium_web_content[ $key ]['content']['premium']['web'];
+				}
+			}
+		} else {
+			$data = Posts::get_posts_in_page( $page, 'free_web_content' );
+		}
+
+
+		if ( ! $data || ! isset( $data['data'] ) ) {
+			$logger->log(
+				array(
+					'message' => 'there is an error',
+					'status'  => 'error',
+				)
+			);
+			return false;
+		}
+
+		$logger->log(
+			array(
+				'message' => 'Data of page ' . $page . $str_total_page . ' fetched',
+				'status'  => 'success',
+			)
+		);
+
+		$posts = get_transient( 'RE_BEEHIIV_manual_import_posts' ) ?: array();
+		$posts = array_merge( $posts, $data['data'] );
+		set_transient( 'RE_BEEHIIV_manual_import_posts', $posts, 60 * 60 * 24 );
+
+		$getting_data['page']        = $page + 1;
+		$getting_data['total_pages'] = $data['total_pages'];
+
+		if ( $getting_data['page'] > $data['total_pages'] ) {
+			$getting_data['status'] = 'finished';
+		}
+
+		set_transient( 'RE_BEEHIIV_manual_import_getting_data', $getting_data, 60 * 60 * 24 );
+
+		return true;
 	}
 
 	/**
@@ -781,8 +877,11 @@ class Import {
 			exit;
 		}
 
-		$group_name = get_transient( 'RE_BEEHIIV_manual_import_group' );
-		$is_running = get_transient( 'RE_BEEHIIV_manual_import_running' );
+		$group_name   = get_transient( 'RE_BEEHIIV_manual_import_group' );
+		$is_running   = get_transient( 'RE_BEEHIIV_manual_import_running' );
+		$getting_data = get_transient( 'RE_BEEHIIV_manual_import_getting_data' );
+		$form_data    = get_transient( 'RE_BEEHIIV_manual_import_group_data' );
+		$logger       = new Logger( $group_name );
 
 		if ( ! $group_name || ! $is_running ) {
 			wp_send_json(
@@ -798,13 +897,62 @@ class Import {
 
 		$all_actions = Manage_Actions::get_actions( $group_name );
 
+		if ( ! empty( $getting_data ) ) {
+
+			if ( $getting_data['status'] === 'started' || $getting_data['page'] <= $getting_data['total_pages'] ) {
+				$is_anything_added = $this->start_import( $form_data, $group_name );
+				$getting_data = get_transient( 'RE_BEEHIIV_manual_import_getting_data' );
+
+				wp_send_json(
+					array(
+						'complete'    => 0,
+						'all'         => 0,
+						'failed'      => 0,
+						'status'      => 'getting_data',
+						'page'        => $getting_data['page'] - 1,
+						'total_pages' => $getting_data['total_pages'],
+						'logs'        => $logger->get_logs(),
+					)
+				);
+				wp_die();
+
+			} else if ( $getting_data['status'] === 'finished' ) {
+				$logger->log(
+					array(
+						'message' => 'Starting import to queue',
+						'status'  => 'running',
+					)
+				);
+
+				$posts = get_transient( 'RE_BEEHIIV_manual_import_posts' );
+				$this->maybe_push_to_queue(
+					$posts,
+					array(
+						'auto'      => 'manual',
+						'form_data' => $form_data,
+						'group'     => $group_name,
+					),
+				);
+				delete_transient( 'RE_BEEHIIV_manual_import_getting_data' );
+				delete_transient( 'RE_BEEHIIV_manual_import_posts' );
+
+				wp_send_json(
+					array(
+						'complete'    => 0,
+						'all'         => 0,
+						'failed'      => 0,
+						'status'      => 'import_to_queue',
+						'page'        => $getting_data['page'],
+						'total_pages' => $getting_data['total_pages'],
+						'logs'        => $logger->get_logs(),
+					)
+				);
+			}
+		}
+
 		if ( ! $all_actions ) {
-
-			$form_data = get_transient( 'RE_BEEHIIV_manual_import_group_data' );
-
 			if ( ! $form_data ) {
 
-				$logger = new Logger( $group_name );
 				$logger->log(
 					array(
 						'status'  => 'running',
@@ -812,27 +960,17 @@ class Import {
 					)
 				);
 
-				$logs = $logger->get_logs();
-
 				wp_send_json(
 					array(
 						'complete' => 0,
 						'all'      => 0,
 						'failed'   => 0,
 						'status'   => 'waiting_for_api_response',
-						'logs'     => $logs,
+						'logs'     => $logger->get_logs(),
 					)
 				);
 				wp_die();
 
-			}
-
-			delete_transient( 'RE_BEEHIIV_manual_import_group_data' );
-			$is_anything_added = $this->start_import( $form_data, $group_name );
-
-			if ( ! $is_anything_added ) {
-				$this->remove_import_transient();
-				wp_die();
 			}
 
 			$all_actions = Manage_Actions::get_actions( $group_name );
@@ -892,7 +1030,7 @@ class Import {
 		delete_transient( 'RE_BEEHIIV_manual_import_running' );
 		delete_transient( 'RE_BEEHIIV_manual_import_group_data' );
 		Import_Table::delete_row_by_group( $group_name );
-		
+
 		$logger = new Logger( $group_name );
 		$logger->log(
 			array(
@@ -900,7 +1038,7 @@ class Import {
 				'message' => __( 'Import canceled', 're-beehiiv' ),
 			)
 		);
-		
+
 		$logs = $logger->get_logs();
 
 		$logger->clear_log();

@@ -210,7 +210,7 @@ var AllDefaultArgs = <?php echo wp_json_encode( $default_args ); ?>;
 			<?php do_action( 're_beehiiv_admin_notices' ); ?>
 			<!-- convert notice above to new format -->
 		</div>
-		<?php if ( ! $is_running || ( $is_canceled && ! $is_running) ) : ?>
+		<?php if ( ! $is_running || ( $is_canceled && ! $is_running ) ) : ?>
 		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" id="re-beehiiv-import-form" class="re-beehiiv-import-form">
 			<div class="re-beehiiv-import-fields">
 				<div class="re-beehiiv-import-fields--step import-fields--step1 <?php echo ! $is_auto_action_exist ? 'active' : ''; ?>">

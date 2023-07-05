@@ -59,7 +59,7 @@ class Posts {
 			array( 'publicationId' => get_option( 're_beehiiv_publication_id' ) ),
 			array(
 				'page'   => $page,
-				'limit'	 => 50,
+				'limit'  => 20,
 				'expand' => $expand,
 			)
 		);

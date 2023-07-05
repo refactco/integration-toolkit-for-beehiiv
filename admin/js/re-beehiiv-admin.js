@@ -479,6 +479,7 @@ function update_progress_bar() {
   jQuery.ajax({
     url: RE_BEEHIIV_CORE.ajax_url,
     type: "POST",
+    timeout: 30000,
     data: {
       action: "re_beehiiv_progress_bar_data",
       nonce: RE_BEEHIIV_CORE.progress_bar_nonce,
@@ -492,25 +493,17 @@ function update_progress_bar() {
         return;
       }
 
-      const percentageTag = document.querySelector(".percentage");
-      const totalTag = document.querySelector("#total_count");
-      const solvedTag = document.querySelector("#imported_count");
-      const bar = document.querySelector(".bar");
+      const updateBarLength = (percentage = '') => {
+        if ( percentage === '') {
+          var percentage = ruleOfThree(total, solved);
+        }
 
-      let total = response.all;
-      let solved = response.complete + response.failed;
+        if (percentage > 0) {
+          jQuery("#re-beehiiv-import--cancel").show();
+        }
 
-      if (response.status === 'nothing_to_import') {
-        // no post to import
-        // refresh the page
-        // add a query string to the url then refresh to new url
-
-        let url = new URL(window.location.href);
-        url.searchParams.set("notice", "nothing_to_import");
-        
-        location.href = url.href;
-        return;
-      }
+        bar.style.width = percentage + "%";
+      };
 
       const ruleOfThree = (num1, num2) => {
         const proportion = (num2 * 80) / num1;
@@ -520,29 +513,40 @@ function update_progress_bar() {
         return percentage;
       };
 
-      const updateBarLength = () => {
-        const percentage = ruleOfThree(total, solved);
 
-        if (percentage > 0) {
-          jQuery("#re-beehiiv-import--cancel").show();
-        }
+      const percentageTag = document.querySelector(".percentage");
+      const totalTag      = document.querySelector("#total_count");
+      const solvedTag     = document.querySelector("#imported_count");
+      const bar           = document.querySelector(".bar");
 
-        bar.style.width = percentage + "%";
-      };
+      let total      = response.all;
+      let solved     = response.complete + response.failed;
+      var percentage = ruleOfThree(total, solved)
+      if (response.status === 'getting_data') {
+        const page        = response.page
+        const total_pages = response.total_pages
 
-      const updateText = () => {
-        solvedTag.textContent = solved;
-        percentageTag.textContent = ruleOfThree(total, solved) + "%";
-      };
+        const proportion = (page * 20) / total_pages
+        var percentage = Math.round(proportion * 10) / 10;
+      } else if (response.status === 'import_to_queue') {
+        var percentage = 20
+      } else if (response.status === 'nothing_to_import') {
+        let url = new URL(window.location.href);
+        url.searchParams.set("notice", "nothing_to_import");
+        
+        location.href = url.href;
+        return;
+      }
 
-      totalTag.textContent = total;
-      solvedTag.textContent = solved;
-      percentageTag.textContent = ruleOfThree(total, solved) + "%";
+      console.log(percentage)
+
+      totalTag.textContent      = total;
+      solvedTag.textContent     = solved;
+      percentageTag.textContent = percentage + ' %';
 
       update_logs_box(response.logs);
 
-      updateBarLength();
-      updateText();
+      updateBarLength(percentage);
 
       if (total !== 0 && total === solved) {
         jQuery("#re-beehiiv-import--cancel").hide();
@@ -550,6 +554,10 @@ function update_progress_bar() {
       }
 
       setTimeout(update_progress_bar, 2000);
+    },
+    error: function (error) {
+      console.log(error);
+      update_progress_bar();
     },
   });
 }
