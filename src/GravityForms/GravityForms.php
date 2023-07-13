@@ -2,7 +2,6 @@
 
 namespace Re_Beehiiv\GravityForms;
 
-use MarkItDone\ESP\Src\ESP_Bridge;
 
 
 class GravityForms
@@ -12,7 +11,7 @@ class GravityForms
     {
         include_once ABSPATH . 'wp-admin/includes/plugin.php';
 
-        if (get_option('re_beehiiv_api_key') == '' || get_option('re_beehiiv_publication_id') == '' || !class_exists('MarkItDone\ESP\Src\ESP_Bridge') || !is_plugin_active('action-scheduler/action-scheduler.php')) {
+        if (get_option('re_beehiiv_api_key') == '' || get_option('re_beehiiv_publication_id') == '' || !is_plugin_active('action-scheduler/action-scheduler.php')) {
             add_action('admin_notices', [self::class, 'admin_notice']);
         } else {
 			add_filter( 'gform_form_settings', array( self::class, 'add_beehiiv_to_gf_setting' ), 10, 2 );
@@ -128,9 +127,6 @@ class GravityForms
         } elseif (get_option('re_beehiiv_publication_id') == '') {
             $message = 'Re/Beehiiv Plugin : Publication ID is missing.';
             $class = 'error';
-        } elseif (!class_exists('MarkItDone\ESP\Src\ESP_Bridge')) {
-            $message = 'ESP Bridge plugin is required to run Re/Beehiiv Plugin.';
-            $class = 'error';
         } else if (!is_plugin_active('action-scheduler/action-scheduler.php')) {
             $message = 'Action Scheduler plugin is required to run Re/Beehiiv Plugin.';
             $class = 'error';
@@ -147,74 +143,72 @@ class GravityForms
 	 * @param array $entry The current entry.
 	 * @param array $form The current form.
 	 */
-	public static function sync_to_beehiiv( $entry, $form ) {
-
-        $email_field = self::get_email_field( $entry, $form );
-
-
-		if ( false === $email_field['has_email_field'] ) {
+	public static function sync_to_beehiiv($entry, $form) {
+		$email_field = self::get_email_field($entry, $form);
+	
+		if (false === $email_field['has_email_field']) {
 			return;
 		}
-        
-		$bridge = new ESP_Bridge(
-			'MarkItDone\ESP\Src\Services\\Beehiiv',
-			array(
-			'apiKey'        => get_option( 'beehiiv_api_key' ),
-			'publicationId' => get_option( 'beehiiv_publication_id' ),
-			)
-		);
-
+	
 		$final_data = array(
-			array(
-				'type'      => 'custom',
-				'esp_field' => 'send_welcome_email',
-				'value'     => true,
-			),
-			array(
-				'type'      => 'custom',
-				'esp_field' => 'reactivate_existing',
-				'value'     => true,
-			),
+			'email' => $email_field['email_field'],
+			'send_welcome_email' => true,
+			'reactivate_existing' => true,
 		);
-
-		$mapped_fields = self::map_gravity_form_fields_to_beehiiv_custom_fields( $entry, $form );
-
-		if ( ! empty( $mapped_fields ) ) {
-
+	
+		$mapped_fields = self::map_gravity_form_fields_to_beehiiv_custom_fields($entry, $form);
+	
+		if (!empty($mapped_fields)) {
 			$esp_special_fields = array(
 				'utm_source',
 				'utm_medium',
 				'utm_campaign',
 			);
-
-			foreach ( $mapped_fields as $key => $value ) {
-				if ( in_array( $key, $esp_special_fields ) ) {
-					$final_data[] = array(
-						'type'      => 'custom',
-						'esp_field' => $key,
-						'value'     => $value,
-					);
-				} else {
-					$final_data[] = array(
-						'type'       => 'custom',
-						'esp_field'  => 'CustomFields',
-						'esp_key'    => $key,
-						'value'      => $value,
-						'isEmpty'    => 'clear',
+	
+			$custom_fields = array(); // Create an array for custom fields
+	
+			foreach ($mapped_fields as $key => $value) {
+				if (in_array($key, $esp_special_fields) && !empty($value)) {
+					$final_data[$key] = $value;
+				} elseif ('email' !== $key && !empty($value)) {
+					$custom_fields[] = array( // Add each field as a separate object
+						'name' => $key,
+						'value' => $value,
 					);
 				}
 			}
+	
+			$final_data['custom_fields'] = $custom_fields; // Assign the custom fields array to the final_data
 		}
-
-		$data = $bridge->getMappedData( '1', $final_data );
-
-		$response = $bridge->createOrUpdateUser(
-			array(
-				'data'  => $data,
-				'Email' => $email_field['email_field'],
-			)
+	
+	
+		$apiKey = get_option('re_beehiiv_api_key');
+		$publicationId = get_option('re_beehiiv_publication_id');
+	
+		$url = "https://api.beehiiv.com/v2/publications/{$publicationId}/subscriptions";
+	
+		$headers = array(
+			"Accept" => "application/json",
+			"Authorization" => "Bearer {$apiKey}",
+			"Content-Type" => "application/json"
 		);
+	
+		$args = array(
+			'headers' => $headers,
+			'body' => json_encode($final_data),
+		);
+	
+		$response = wp_remote_post($url, $args);
+	
+		if (is_wp_error($response)) {
+			$error_message = $response->get_error_message();
+			//error log with desired error message
+			$message = "Something went wrong on sync to Beehiiv: {$error_message}";
+			error_log($message);
+		}
 	}
+	
+	
 
 	/**
 	 * Get the email field.
@@ -256,4 +250,5 @@ class GravityForms
 		}
 		return $result;
 	}
+
 }
