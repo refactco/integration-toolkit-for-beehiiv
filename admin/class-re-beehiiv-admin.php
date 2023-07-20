@@ -100,7 +100,7 @@ class Re_Beehiiv_Admin {
 			'RE_BEEHIIV_CORE',
 			array(
 				'ajax_url'           => admin_url( 'admin-ajax.php' ),
-				'progress_bar_nonce' => wp_create_nonce( 'progress_bar_nonce' ),
+				'progress_bar_nonce' => wp_create_nonce( 'update_progress_bar_nonce' ),
 				'strings'            => array(
 					'select_taxonomy' => __( 'Select taxonomy', 're-beehiiv' ),
 					'select_term'     => __( 'Select taxonomy term', 're-beehiiv' ),

@@ -78,7 +78,7 @@ class Import_Table {
 	public static function insert_custom_table_row( string $key_name, array $key_value, string $group_name, string $status ) : void {
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
-		$wpdb->insert(
+		$res = $wpdb->insert(
 			$table_name,
 			array(
 				'key_name'   => sanitize_text_field( $key_name ),
@@ -87,6 +87,10 @@ class Import_Table {
 				'status'     => sanitize_text_field( $status ),
 			)
 		);
+
+		if ( ! $res ) {
+			throw new \Exception( 'Error inserting row in custom table' );
+		}
 	}
 
 	/**
@@ -137,5 +141,25 @@ class Import_Table {
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
 		$group_name = sanitize_text_field( $group_name );
 		$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE group_name = %s', $table_name, $group_name ) ); // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnsupportedPlaceholder,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber
+	}
+
+	public static function get_rows_by_status( string $status, string $group_name = '' ) : array {
+		global $wpdb;
+		$table_name = $wpdb->prefix . self::TABLE_NAME;
+		$status     = sanitize_text_field( $status );
+		$group_name = sanitize_text_field( $group_name );
+		$query      = "SELECT * FROM $table_name WHERE status = '$status'";
+
+		if ( ! empty( $group_name ) ) {
+			$query .= " AND group_name = '$group_name'";
+		}
+
+		$result = $wpdb->get_results( $query );
+
+		if ( ! $result ) {
+			return [];
+		}
+
+		return $result;
 	}
 }

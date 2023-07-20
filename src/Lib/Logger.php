@@ -1,5 +1,5 @@
 <?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
-namespace Re_Beehiiv\Import;
+namespace Re_Beehiiv\Lib;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * This class is used to log the import process.
  *
- * @package Re_Beehiiv\Import
+ * @package Re_Beehiiv\Lib
  */
 class Logger {
 
@@ -17,15 +17,15 @@ class Logger {
 	 *
 	 * @var string
 	 */
-	private $group_name;
+	protected $group_name;
 
 	/**
 	 * Logger constructor.
 	 *
 	 * @param string $group_name
 	 */
-	public function __construct( string $group_name ) {
-		$this->group_name = $group_name;
+	public function __construct( string $group_name = '' ) {
+		$this->group_name = $this->group_name . $group_name;
 	}
 
 	/**
@@ -34,7 +34,7 @@ class Logger {
 	 * @return array
 	 */
 	public function get_logs() : array {
-		$log = get_transient( 're_beehiiv_import_log_' . $this->group_name );
+		$log = get_transient( $this->group_name );
 		if ( false === $log ) {
 			$log = array();
 		}
@@ -46,17 +46,22 @@ class Logger {
 	 *
 	 * @param array $log_item
 	 */
-	public function log( array $log_item ) {
+	public function log( array $log_item, bool $print_in_debug_file = true ) {
 		$log              = $this->get_logs();
 		$log_item['time'] = current_time( 'mysql' );
 		$log[]            = $log_item;
-		set_transient( 're_beehiiv_import_log_' . $this->group_name, $log, 60 * 60 * 24 );
+
+		if ( $print_in_debug_file && ( ( defined('WP_DEBUG') && WP_DEBUG ) || ( defined('WP_DEBUG_LOG') && WP_DEBUG_LOG ) ) ) {
+			\error_log( print_r( $log_item, true ) );
+		}
+
+		set_transient( $this->group_name, $log, 60 * 60 * 24 );
 	}
 
 	/**
 	 * Clear log
 	 */
 	public function clear_log() {
-		delete_transient( 're_beehiiv_import_log_' . $this->group_name );
+		delete_transient( $this->group_name );
 	}
 }

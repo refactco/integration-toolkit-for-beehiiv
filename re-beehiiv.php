@@ -47,7 +47,7 @@ function re_bee_activate_re_beehiiv() {
 	Re_Beehiiv_Activator::activate();
 }
 
-register_activation_hook( __FILE__, 'activate_re_beehiiv' );
+register_activation_hook( __FILE__, 're_bee_activate_re_beehiiv' );
 register_deactivation_hook( __FILE__, 'deactivate_re_beehiiv' );
 
 /**

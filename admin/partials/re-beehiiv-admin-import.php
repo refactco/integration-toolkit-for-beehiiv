@@ -11,8 +11,6 @@ use Re_Beehiiv\Import\Manage_Actions;
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
-$group_name = get_transient( 'RE_BEEHIIV_manual_import_group' );
-$is_running = get_transient( 'RE_BEEHIIV_manual_import_running' );
 
 $re_tab  = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : false; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 $is_auto = $re_tab === 'auto-import';
@@ -20,6 +18,61 @@ $is_auto = $re_tab === 'auto-import';
 $is_canceled = false;
 if ( isset( $_GET['cancel'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	$is_canceled = true;
+}
+
+$is_running = false;
+if ( ! $is_auto ) {
+	$manual_import_data = get_option( 're_beehiiv_manual_import_progress', array() );
+	$is_running = ! empty( $manual_import_data ) && $manual_import_data['status'] !== 'finished' ? true : false;
+}
+
+if ( $is_canceled ) {
+	$is_running = false;
+	add_action(
+		're_beehiiv_admin_notices',
+		function() {
+			?>
+		<div class="re-beehiiv-import--notice re-beehiiv-import--notice-canceled">
+			<h4><?php esc_html_e( 'Importing posts from Beehiiv is cancelled.', 're-beehiiv' ); ?></h4>
+			<p class="description"><?php esc_html_e( 'The import process is cancelled. You can start the import process again.', 're-beehiiv' ); ?></p>
+			<?php require_once RE_BEEHIIV_PATH . 'admin/partials/components/progressbar.php'; ?>
+		</div>
+			<?php
+		}
+	);
+	delete_option( 're_beehiiv_manual_import_progress' );
+}
+
+if ( $is_running ) {
+	$left_items	    = $manual_import_data['posts_progress']['pending_items'] ?? 0;
+	$total_items    = $manual_import_data['posts_progress']['total_items'] ?? 0;
+	$complete_items = $total_items - $left_items;
+
+	$group_name       = $manual_import_data['group_name'];
+	// notice with progress bar
+	add_action(
+		're_beehiiv_admin_notices',
+		function() use ( $complete_items, $total_items, $group_name ) {
+			$cancel_nonce = wp_create_nonce( 're_beehiiv_cancel_import' );
+			$cancel_url   = add_query_arg(
+				array(
+					'page'   => 're-beehiiv-import',
+					'cancel' => $group_name,
+					'nonce'  => $cancel_nonce,
+				),
+				admin_url( 'admin.php' )
+			);
+			?>
+		<div class="re-beehiiv-import--notice">
+			<h4><?php esc_html_e( 'Importing posts from Beehiiv is in progress.', 're-beehiiv' ); ?></h4>
+			<p class="description"><?php esc_html_e( 'The import process is currently running in the background. You may proceed with your work and close this page, but please be patient and wait until it is complete.', 're-beehiiv' ); ?>
+			<br><strong><?php esc_html_e( 'Progress: ', 're-beehiiv' ); ?><span class="number" id="imported_count"><?php echo $complete_items . '</span> / <span class="number" id="total_count">' . $total_items; ?></span></strong></p>
+			<a class="re-beehiiv-button-secondary re-beehiiv-button-cancel" id="re-beehiiv-import--cancel" href="<?php echo esc_url( $cancel_url ); ?>"><?php esc_html_e( 'Cancel', 're-beehiiv' ); ?></a>
+			<?php require_once RE_BEEHIIV_PATH . 'admin/partials/components/progressbar.php'; ?>
+		</div>
+			<?php
+		}
+	);
 }
 
 

@@ -481,7 +481,7 @@ function update_progress_bar() {
     type: "POST",
     timeout: 30000,
     data: {
-      action: "re_beehiiv_progress_bar_data",
+      action: "update_progress_bar",
       nonce: RE_BEEHIIV_CORE.progress_bar_nonce,
     },
     success: function (response) {
@@ -501,7 +501,7 @@ function update_progress_bar() {
         if (percentage > 0) {
           jQuery("#re-beehiiv-import--cancel").show();
         }
-
+        percentageTag.textContent = percentage + ' %';
         bar.style.width = percentage + "%";
       };
 
@@ -519,26 +519,33 @@ function update_progress_bar() {
       const solvedTag     = document.querySelector("#imported_count");
       const bar           = document.querySelector(".bar");
 
-      let total      = response.all;
-      let solved     = response.complete + response.failed;
-      var percentage = ruleOfThree(total, solved)
-      if (response.status === 'getting_data') {
-        const page        = response.page
-        const total_pages = response.total_pages
+      if (response.data.status === 'getting_data' || response.data.status === 'data_ready') {
+        const page        = response.data.page
+        const total_pages = response.data.total_pages
 
         const proportion = (page * 20) / total_pages
         var percentage = Math.round(proportion * 10) / 10;
-      } else if (response.status === 'import_to_queue') {
-        var percentage = 20
-      } else if (response.status === 'nothing_to_import') {
+
+        update_logs_box(response.logs);
+        updateBarLength(percentage);
+        setTimeout(update_progress_bar, 2000);
+        return;
+      }
+
+      let total      = response.data.posts_progress.total_items;
+      let left       = response.data.posts_progress.pending_items;
+      let solved     = total - left;
+      var percentage = ruleOfThree(total, solved)
+
+      if (response.data.status === 'nothing_to_import') {
         let url = new URL(window.location.href);
         url.searchParams.set("notice", "nothing_to_import");
         
         location.href = url.href;
         return;
+      } else if (response.data.status === 'stop') {
+        return;
       }
-
-      console.log(percentage)
 
       totalTag.textContent      = total;
       solvedTag.textContent     = solved;

@@ -5,20 +5,22 @@
  * @package Re_Beehiiv
  */
 
-use Re_Beehiiv\Import\Import;
+use Re_Beehiiv\Import\Import_OLD;
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
-if ( empty( $all_actions ) ) {
+if ( ! isset( $complete_items ) ) {
+	$percentage = 0;
+} elseif ( $complete_items === 0 || $total_items === 0 ) {
 	$percentage = 0;
 } else {
-	$percentage  = ( count( $complete_actions ) / count( $all_actions ) ) * 80;
+	$percentage  = ( $complete_items / $total_items ) * 80;
 	$percentage  = number_format( (float) $percentage, 2, '.', '' );
 	$percentage += 20; // Add 5 to the calculated percentage because the data fetching takes some time.
 }
 
 if ( isset( $_GET['cancel'] ) && isset( $_GET['nonce'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-	$logs = Import::maybe_cancel_import();
+	$logs = Import_OLD::maybe_cancel_import();
 }
 
 ?>

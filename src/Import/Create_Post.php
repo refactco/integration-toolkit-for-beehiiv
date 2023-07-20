@@ -1,6 +1,7 @@
 <?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
 
 namespace Re_Beehiiv\Import;
+use Re_Beehiiv\Lib\Logger;
 
 /**
  * Class Create_Post
@@ -34,14 +35,20 @@ class Create_Post {
 	/**
 	 * Create_Post constructor.
 	 *
-	 * @param array $req
+	 * @param object $data
 	 * @param string $group_name
 	 */
-	public function __construct( $req, string $group_name ) {
+	public function __construct( $data, string $group_name ) {
 		$this->logger = new Logger( $group_name );
-		$data         = Import_Table::get_custom_table_row( $req['id'], $group_name );
 
-		if ( ! $data ) {
+		if ( ! isset( $data->key_value ) && isset( $data['id'] ) ) {
+			$data = Import_Table::get_custom_table_row( $data['id'], $group_name );
+			if ( $data ) {
+				$data = $data[0];
+			}
+		}
+
+		if ( ! $data || ! isset( $data->key_value ) ) {
 			$this->data = false;
 			$this->logger->log(
 				array(
@@ -52,8 +59,8 @@ class Create_Post {
 			return;
 		}
 
-		$data[0]->key_value = json_decode( $data[0]->key_value, true );
-		$this->data         = $data[0]->key_value;
+		$data->key_value = json_decode( $data->key_value, true );
+		$this->data         = $data->key_value;
 	}
 
 	/**
@@ -73,7 +80,7 @@ class Create_Post {
 		$existing_id = $this->is_unique_post();
 		if ( $existing_id ) {
 
-			$import_method = $this->data['args']['form_data']['import_method'];
+			$import_method = $this->data['args']['form_data']['import_method'] ?? 'new_and_update';
 			if ( 'update' === $import_method || 'new_and_update' === $import_method ) {
 				$this->data['post']['ID'] = $existing_id;
 				$this->post_id            = $existing_id;
