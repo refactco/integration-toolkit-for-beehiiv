@@ -6,7 +6,7 @@ use Re_Beehiiv\API\V2\Posts;
 defined( 'ABSPATH' ) || exit;
 
 
-class Process_Item extends \Re_Beehiiv\Lib\BulkProcess\Bulk_Process {
+class Process_Item extends \Re_Beehiiv\Lib\Bulk_Process {
 
     public function setup() {
 
