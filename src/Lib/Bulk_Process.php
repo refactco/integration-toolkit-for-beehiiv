@@ -1,5 +1,5 @@
 <?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
-namespace Re_Beehiiv\Lib\BulkProcess;
+namespace Re_Beehiiv\Lib;
 
 use Re_Beehiiv\Lib\Logger;
 
