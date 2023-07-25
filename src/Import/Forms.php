@@ -2,7 +2,7 @@
 namespace Re_Beehiiv\Import;
 class Forms {
 
-    const FIELD_PREFIX = 're-beehiiv-';
+	const FIELD_PREFIX = 're-beehiiv-';
 	const FIELDS       = array(
 		array(
 			'name'     => 'content_type',
@@ -59,15 +59,15 @@ class Forms {
 	);
 
 
-    public function maybe_register_auto_import() {
-        if ( ! isset( $_POST['re_beehiiv_import_nonce'] ) || ! wp_verify_nonce( $_POST['re_beehiiv_import_nonce'], 're_beehiiv_import_nonce' ) ) {
+	public function maybe_register_auto_import() {
+		if ( ! isset( $_POST['re_beehiiv_import_nonce'] ) || ! wp_verify_nonce( $_POST['re_beehiiv_import_nonce'], 're_beehiiv_import_nonce' ) ) {
 			return;
 		}
 
-    
-        $form_data = $this->get_form_validated_data();
+ 
+		$form_data = $this->get_form_validated_data();
 
-        if ( isset( $form_data['error'] ) ) {
+		if ( isset( $form_data['error'] ) ) {
 			// show the error message
 			add_action(
 				're_beehiiv_admin_notices',
@@ -82,11 +82,11 @@ class Forms {
 			return;
 		}
 
-        $import = new Import( $form_data, 'auto_recurring_import', 'auto' );
+		$import = new Import( $form_data, 'auto_recurring_import', 'auto' );
 
-        // redirect to import page
+		// redirect to import page
 		wp_safe_redirect( admin_url( 'admin.php?page=re-beehiiv-import&tab=auto-import' ) );
-    }
+	}
 
 	/**
 	 * Maybe start manual import
@@ -121,7 +121,7 @@ class Forms {
 
 		$import = new Import( $form_data, 'manual_import_' . time(), 'manual' );
 
-        // redirect to import page
+		// redirect to import page
 		wp_safe_redirect( admin_url( 'admin.php?page=re-beehiiv-import' ) );
 	}
 

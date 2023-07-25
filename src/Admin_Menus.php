@@ -66,7 +66,14 @@ class Admin_Menus {
 		if ( ! \Re_Beehiiv::is_plugin_activated() ) {
 			?>
 			<div class="notice notice-error is-dismissible">
-				<p><?php esc_html_e( 'Re Beehiiv is not activated. Please activate the plugin first.', 're-beehiiv' ); ?></p>
+				<p>
+				<?php 
+					$message = esc_html__( 'API Key or publication ID is not set. Please set it on the ', 're-beehiiv' );
+					$settings_url = esc_url( home_url( '/wp-admin/admin.php?page=re-beehiiv-settings' ) );
+
+					echo "<p>{$message}<a href='{$settings_url}'>settings page.</a></p>";
+				?>
+				</p>
 			</div>
 			<?php
 		}

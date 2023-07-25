@@ -20,7 +20,7 @@ if ( ! isset( $complete_items ) ) {
 }
 
 if ( isset( $_GET['cancel'] ) && isset( $_GET['nonce'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-	$logs = Import_OLD::maybe_cancel_import();
+	// $logs = Import_OLD::maybe_cancel_import();
 }
 
 ?>

@@ -172,7 +172,7 @@ class Prepare_Post {
 		return $data;
 	}
 
-    /**
+	/**
 	 * Remove unnecessary content from html
 	 * This function will remove unnecessary content from html
 	 * It will remove html, head, body, style, class attributes and doctype
@@ -182,12 +182,23 @@ class Prepare_Post {
 	 * @return string
 	 */
 	private function filter_unnecessary_content( $content ) {
+
+		$content=preg_replace( '/<h1[^>]*>(.*?)<\/h1>/s', '', $content, 1);
+		$content=preg_replace( '/<h3[^>]*>(.*?)<\/h3>/s', '', $content, 1 );
+		$content=preg_replace( '/<svg[^>]*>.*?<\/svg>/s', '', $content, 3 );
+		$content=preg_replace( '/<img\s+[^>]*>/i', '', $content, 1 );
+		$content=preg_replace( '/<a[^>]*>.*?<\/a>/s', '', $content, 1 );
+		$content=preg_replace( '/<span\s+class\s*=\s*["\']text-wt-text-on-background\s+opacity-75["\']\s*>(.*?)<\/span>/', '', $content, 1 );
+
 		$pattern = '/<!DOCTYPE.*?>|<head>.*?<\/head>|<body.*?>|<\/body>|style=[\'"].*?[\'"]|<style.*?<\/style>|class=[\'"][^\'"]*[\'"]|<html.*?>|<\/html>/s';
 
-		return preg_replace( $pattern, '', $content );
+		$content = preg_replace( $pattern, '', $content );
+
+		return preg_replace('/<img([^>]+)>/i', '<img$1 style="width: 100%;">', $content);
+
 	}
 
-    /**
+	/**
 	 * Get post content
 	 *
 	 * @param array $content

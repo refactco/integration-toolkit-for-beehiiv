@@ -168,7 +168,6 @@ class Re_Beehiiv {
 		$blocks   = new \Re_Beehiiv\Blocks\Blocks();
 
 		$this->loader->add_action( 'rest_api_init', $settings, 'register_rest_routes' );
-		$this->loader->add_action( 'rest_api_init', $settings, 'register_rest_routes' );
 		$this->loader->add_action( 'init', $blocks, 'register_all_blocks', 10 );
 
 	}
