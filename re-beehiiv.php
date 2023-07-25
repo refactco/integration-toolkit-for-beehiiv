@@ -48,7 +48,6 @@ function re_bee_activate_re_beehiiv() {
 }
 
 register_activation_hook( __FILE__, 're_bee_activate_re_beehiiv' );
-register_deactivation_hook( __FILE__, 'deactivate_re_beehiiv' );
 
 /**
  * The core plugin class that is used to define internationalization,
