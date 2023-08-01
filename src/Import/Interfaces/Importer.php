@@ -131,7 +131,7 @@ abstract class Importer {
             Import_Table::insert_custom_table_row( $item['meta']['post_id'], $item, $this->group_name, 'pending' );
         } catch ( \Exception $e ) {
             $this->logger->log( array(
-                'message' => 'Error saving item to custom table: ' . $e->getMessage(),
+                'message' => __('Error saving item to custom table: ','re-beehiiv') . $e->getMessage(),
                 'status' => 'error',
             ) );
             return;

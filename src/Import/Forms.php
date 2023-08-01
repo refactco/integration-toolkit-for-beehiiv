@@ -74,7 +74,7 @@ class Forms {
 				function () use ( $form_data ) {
 					?>
 				<div class="notice notice-error">
-					<p><?php echo esc_html( $form_data['error'] ); ?></p>
+					<p><?php echo esc_html__( $form_data['error'] ); ?></p>
 				</div>
 					<?php
 				}
@@ -111,7 +111,7 @@ class Forms {
 				function () use ( $form_data ) {
 					?>
 				<div class="notice notice-error">
-					<p><?php echo esc_html( $form_data['error'] ); ?></p>
+					<p><?php echo esc_html__( $form_data['error'] ); ?></p>
 				</div>
 					<?php
 				}

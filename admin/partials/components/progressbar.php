@@ -45,9 +45,9 @@ if ( isset( $_GET['cancel'] ) && isset( $_GET['nonce'] ) ) { // phpcs:ignore Wor
 				$time = explode( ' ', $log['time'] );
 				?>
 				<div class="log-item">
-					<span class="log-item__time">[<?php echo esc_html( $time[1] ); ?>]</span>
-					<span class="log-item__status log-item__status--<?php echo esc_attr( $log['status'] ); ?>"><?php echo esc_html( $log['status'] ); ?></span>
-					<span class="log-item__message"><?php echo esc_attr( $log['message'] ); ?></span>
+					<span class="log-item__time">[<?php echo esc_html_e( $time[1],'re-beehiiv'); ?>]</span>
+					<span class="log-item__status log-item__status--<?php echo esc_attr( $log['status'] ); ?>"><?php echo esc_html_e( $log['status'], 're-beehiiv'  ); ?></span>
+					<span class="log-item__message"><?php echo esc_attr_e( $log['message'], 're-beehiiv' ); ?></span>
 				</div>
 				<?php
 			endforeach;

@@ -14,7 +14,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 <div class="re-beehiiv-settings-header">
 	<div class="re-beehiiv-settings-header__logo">
-		Re/Beehiiv
+		<?php esc_attr_e( 'Re/Beehiiv', 're-beehiiv' ); ?>
 	</div>
 	<div class="re-beehiiv-settings-header__links"></div>
 </div>

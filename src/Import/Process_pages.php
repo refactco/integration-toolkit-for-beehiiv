@@ -94,14 +94,14 @@ class Process_Pages extends \Re_Beehiiv\Lib\Bulk_Process {
             if ( 'error' === $status ) {
                 $this->logger->log(
                     array(
-                        'message' => 'Data of page ' . $this->current_page_index . ' has been error',
+                        'message' => __('Data of page ', 're-beehiiv') . $this->current_page_index . __(' has been error',  're-beehiiv'),
                         'status'  => 'error',
                     )
                 );
             } elseif ( 'success' === $status ) {
                 $this->logger->log(
                     array(
-                        'message' => 'Data of page ' . $this->current_page_index . ' has been successfully fetched',
+                        'message' => __('Data of page ', 're-beehiiv') . $this->current_page_index . __(' has been successfully fetched', 're-beehiiv'),
                         'status'  => 'success',
                     )
                 );

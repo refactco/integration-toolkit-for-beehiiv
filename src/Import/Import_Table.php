@@ -89,7 +89,7 @@ class Import_Table {
 		);
 
 		if ( ! $res ) {
-			throw new \Exception( 'Error inserting row in custom table' );
+			throw new \Exception( __('Error inserting row in custom table' , 're-beehiiv'));
 		}
 	}
 
