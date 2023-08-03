@@ -148,18 +148,24 @@ class Import_Table {
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
 		$status     = sanitize_text_field( $status );
 		$group_name = sanitize_text_field( $group_name );
-		$query      = "SELECT * FROM $table_name WHERE status = '$status'";
-
+		$query      = "SELECT * FROM $table_name WHERE status = %s";
+	
+		$params = array( $status );
+	
 		if ( ! empty( $group_name ) ) {
-			$query .= " AND group_name = '$group_name'";
+			$query .= " AND group_name = %s";
+			$params[] = $group_name;
 		}
-
-		$result = $wpdb->get_results( $query );
-
+	
+		$prepared_query = $wpdb->prepare( $query, $params );
+	
+		$result = $wpdb->get_results( $prepared_query );
+	
 		if ( ! $result ) {
 			return [];
 		}
-
+	
 		return $result;
 	}
+	
 }

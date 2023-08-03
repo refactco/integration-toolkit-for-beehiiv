@@ -40,6 +40,12 @@ if ( $is_canceled ) {
 			<?php
 		}
 	);
+
+	//delete all rows pending roe from the re_beehiiv_import table
+	$manual_import_data = get_option( 're_beehiiv_manual_import_progress', array() );
+	Re_Beehiiv\Import\Import_Table::delete_row_by_group($manual_import_data['group_name']);
+
+	//delete the current manual import option from the database
 	delete_option( 're_beehiiv_manual_import_progress' );
 }
 
