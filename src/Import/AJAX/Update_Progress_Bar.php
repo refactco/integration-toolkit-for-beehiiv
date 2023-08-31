@@ -35,13 +35,6 @@ class Update_Progress_Bar extends \Re_Beehiiv\Lib\AJAX {
     */
     protected function update_progress_bar() {
         $import_progress = Import::get_import_progress();
-        
-        $is_importing = ! empty( $manual_import_data ) && $manual_import_data['status'] !== 'finished' ? true : false;
-
-        if ( $is_importing ) {
-            $this->send_response();
-            exit;
-        }
 
         $this->logger        = new Logger( $import_progress['group_name'] );
 
