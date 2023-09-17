@@ -214,6 +214,4 @@ class Prepare_Post {
 			return '';
 		}
 	}
-
-
 }
