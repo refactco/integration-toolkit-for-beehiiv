@@ -405,7 +405,7 @@ function check_required_fields() {
     $has_error = true;
     $notice_list
       .find("ul")
-      .append("<li>" + 'Select post status for each beehiiv status' + "</li>");
+      .append("<li>" + 'Select Post Status for each beehiiv status' + "</li>");
   }
 
   if ($has_error) {
@@ -614,7 +614,6 @@ function trigger_update_post_statuses() {
     // select option if status is equal to 'publish'
     $wrapper.append(`
       <div class="re-beehiiv-post_status--field mb-2">
-        <label for="re-beehiiv-post_status--${status}">${label}: </label>
         <select name="re-beehiiv-post_status--${status}" id="re-beehiiv-post_status--${status}">
           <option value="0">Select a status</option>
           ${AllPostStatuses.map((option) => {

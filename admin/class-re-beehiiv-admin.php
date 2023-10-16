@@ -115,7 +115,7 @@ class Re_Beehiiv_Admin {
 						'post_status'    => __( 'Post Status', 're-beehiiv' ),
 					),
 					// Translators: {{field_name}} is a required field name and should not be translated.
-					'required_fields' => __( '{{field_name}}  is a required field', 're-beehiiv' ),
+					'required_fields' => __( '{{field_name}}  is a Required Field', 're-beehiiv' ),
 				),
 			)
 		);

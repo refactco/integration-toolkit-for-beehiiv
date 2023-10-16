@@ -236,20 +236,9 @@ var AllDefaultArgs = <?php echo wp_json_encode( $default_args ); ?>;
 		<h1>
 		<?php
 		esc_html_e( 'Import Content', 're-beehiiv' );
-		echo ' - ' . esc_html( $import_title );
 		?>
 		</h1>
-		<?php
-		if ( $is_auto ) {
-			?>
-				<p><?php esc_html_e( 'Automatically import content from Beehiiv to your WordPress site', 're-beehiiv' ); ?></p>
-				<?php
-		} else {
-			?>
-			<p><?php esc_html_e( 'Manually import content from Beehiiv to your WordPress site', 're-beehiiv' ); ?></p>
-				<?php
-		}
-		?>
+		<p><?php esc_html_e( 'Choose how to import content from Beehiiv to your WordPress Site.', 're-beehiiv' ); ?></p>
 	</div>
 
 	<div class="re-beehiiv-tabs">
@@ -300,7 +289,7 @@ var AllDefaultArgs = <?php echo wp_json_encode( $default_args ); ?>;
 						</fieldset>
 
 						<fieldset>
-							<label for="re-beehiiv-beehiiv-status[]" class="pr-2"><strong><?php esc_html_e( 'Post Status on Beehiiv', 're-beehiiv' ); ?></strong></label>
+							<label for="re-beehiiv-beehiiv-status[]" class="pr-2"><strong><?php esc_html_e( 'Post Status', 're-beehiiv' ); ?></strong></label>
 							<?php
 							$beehiiv_statuses = array(
 								'confirmed' => __( 'Published', 're-beehiiv' ),
@@ -321,12 +310,12 @@ var AllDefaultArgs = <?php echo wp_json_encode( $default_args ); ?>;
 								<?php
 							}
 							?>
-							<p class="description"><?php esc_html_e( 'Choose the status of the content you want to import from Beehiiv.', 're-beehiiv' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Choose the status of the content you want to import.', 're-beehiiv' ); ?></p>
 						</fieldset>
 					</div>
 				</div>
 				<div class="re-beehiiv-import-fields--step import-fields--step2" data-error-count="0">
-					<h2 class="re-beehiiv-import-fields--step--title" data-error-count="0"><?php esc_html_e( 'Step 2: Insert data to WordPress', 're-beehiiv' ); ?></h2>
+					<h2 class="re-beehiiv-import-fields--step--title" data-error-count="0"><?php esc_html_e( 'Step 2: Import data to WordPress', 're-beehiiv' ); ?></h2>
 					<div class="re-beehiiv-import-fields--step--content">
 						<fieldset>
 							<label class="d-block" for="re-beehiiv-post_type"><strong><?php esc_html_e( 'Select Post Type and Taxonomy', 're-beehiiv' ); ?></strong></label>
@@ -350,7 +339,7 @@ var AllDefaultArgs = <?php echo wp_json_encode( $default_args ); ?>;
 							<p class="description"><?php esc_html_e( 'Choose the post type and taxonomy for the imported content.', 're-beehiiv' ); ?></p>
 						</fieldset>
 						<fieldset>
-							<label for="re-beehiiv-post_author" class="d-block"><strong><?php esc_html_e( 'Content author', 're-beehiiv' ); ?></strong></label>
+							<label for="re-beehiiv-post_author" class="d-block"><strong><?php esc_html_e( 'Content Author', 're-beehiiv' ); ?></strong></label>
 							<select name="re-beehiiv-post_author" id="re-beehiiv-post_author" required>
 								<option value="0"><?php esc_html_e( 'Select Author', 're-beehiiv' ); ?></option>
 								<?php
@@ -367,25 +356,21 @@ var AllDefaultArgs = <?php echo wp_json_encode( $default_args ); ?>;
 							<select name="re-beehiiv-post_tags-taxonomy" id="re-beehiiv-post_tags-taxonomy" class="re-beehiiv-post_tags-taxonomy">
 								<option value="0"><?php esc_html_e( 'Select post type first', 're-beehiiv' ); ?></option>
 							</select>
-							<p class="description"><?php esc_html_e( 'If you want to import the tags from Beehiiv, select the taxonomy and term that you want to use for the imported tags.', 're-beehiiv' ); ?></p>
+							<p class="description"><?php esc_html_e( 'To import tags from Beehiiv, select the taxonomy and term you want to use for the imported tags.', 're-beehiiv' ); ?></p>
 						</fieldset>
 						<fieldset id="re-beehiiv-post_status">
 							<label for="re-beehiiv-post_status"><strong><?php esc_html_e( 'Post Status', 're-beehiiv' ); ?></strong></label>
 							<div class="re-beehiiv-post_status--fields"></div>
-							<p class="description"><?php esc_html_e( 'For each beehiiv status that you have selected in step 1, choose the post status that you want to assign to the imported content in WordPress.', 're-beehiiv' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Assign Post Status to the imported content for each Post Status selected in step 1.', 're-beehiiv' ); ?></p>
 						</fieldset>
-					</div>
-				</div>
-				<div class="re-beehiiv-import-fields--step import-fields--step3" data-error-count="0">
-					<h2 class="re-beehiiv-import-fields--step--title" data-error-count="0"><?php esc_html_e( 'Step3: Import Options', 're-beehiiv' ); ?></h2>
-					<div class="re-beehiiv-import-fields--step--content">
+
 						<fieldset>
-							<label for="re-beehiiv-import_method"><strong><?php esc_html_e( 'Import Method', 're-beehiiv' ); ?></strong></label>
+							<label for="re-beehiiv-import_method"><strong><?php esc_html_e( 'Import Option', 're-beehiiv' ); ?></strong></label>
 							<?php
 							$import_methods = array(
-								'new'            => __( 'Import New Items Only', 're-beehiiv' ),
-								'update'         => __( 'Update Existing Items Only', 're-beehiiv' ),
-								'new_and_update' => __( 'Import New Items and Update Existing', 're-beehiiv' ),
+								'new'            => __( 'Import new items', 're-beehiiv' ),
+								'update'         => __( 'Update existing items', 're-beehiiv' ),
+								'new_and_update' => __( 'Do both', 're-beehiiv' ),
 							);
 
 							foreach ( $import_methods as $import_method => $label ) {
@@ -401,13 +386,13 @@ var AllDefaultArgs = <?php echo wp_json_encode( $default_args ); ?>;
 								<?php
 							}
 							?>
-							<p class="description"><?php esc_html_e( 'Choose the desired action for importing data. Options include importing new items only, updating existing items only, or performing both actions simultaneously.', 're-beehiiv' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Choose the desired action for importing data.', 're-beehiiv' ); ?></p>
 						</fieldset>
 						<?php if ( $is_auto ) : ?>
 							<fieldset>
 								<label for="re-beehiiv-cron_time" class="d-block"><strong><?php esc_html_e( 'Import Schedule', 're-beehiiv' ); ?></strong></label>
 								<input type="number" name="re-beehiiv-cron_time" id="re-beehiiv-cron_time" value="<?php echo esc_attr( $default_args['cron_time'] ); ?>" min="1" required placeholder="<?php esc_attr_e( 'Enter interval in hours', 're-beehiiv' ); ?>">
-									<p class="description"><?php esc_html_e( 'Set the frequency of automatic imports from Beehiiv by specifying the time interval between each import in hours. For example, if you want to import content from Beehiiv at regular intervals, enter the desired time interval in hours in the field.', 're-beehiiv' ); ?></p>
+									<p class="description"><?php esc_html_e( 'Enter the desired time intervals in hours and set the frequency of auto imports from your Beehiiv to your WordPress site.', 're-beehiiv' ); ?></p>
 							</fieldset>
 						<?php endif; ?>
 					</div>

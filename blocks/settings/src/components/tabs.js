@@ -80,7 +80,7 @@ const Tabs = (props) => {
         Settings
       </h1>
 			<p>
-        {__('Connect your Beehiiv account to import your content to WordPress.', 're-beehiiv')}
+        {__('Connect your Beehiiv account to import content to your WordPress site.', 're-beehiiv')}
       </p>
 	  </div>
     <div className="re-beehiiv-tabs">
