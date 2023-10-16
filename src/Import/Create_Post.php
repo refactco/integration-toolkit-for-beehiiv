@@ -205,7 +205,7 @@ class Create_Post {
 		$args  = array(
 			'meta_key'       => 're_beehiiv_post_id',
 			'meta_value'     => $this->data['meta']['post_id'],
-			'post_type'      => 'post',
+			'post_type'      =>  $this->data['args']['form_data']['post_type'],
 			'post_status'    => 'any',
 			'posts_per_page' => 1,
 		);

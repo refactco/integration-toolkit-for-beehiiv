@@ -129,7 +129,7 @@ class Prepare_Post {
 				'post_title'   => $value['title'],
 				'post_excerpt' => $value['subtitle'],
 				'post_author'  => 1,
-				'post_type'    => 'post',
+				'post_type'    => $this->form_data['post_type'],
 				'post_name'    => $value['slug'],
 			),
 			'tags' => $value['content_tags'],
