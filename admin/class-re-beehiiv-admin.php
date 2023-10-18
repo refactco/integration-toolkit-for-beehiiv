@@ -73,6 +73,9 @@ class Re_Beehiiv_Admin {
 		 */
 
 		wp_enqueue_style( $this->re_beehiiv, plugin_dir_url( __FILE__ ) . 'css/re-beehiiv-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_script('tippy-tooltip1', 'https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js', array(), $this->version, false);
+		wp_enqueue_script('tippy-tooltip2', 'https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js', array(), $this->version, false);
+		wp_enqueue_script('font-awesome', 'https://kit.fontawesome.com/57fc5c4e26.js', array(), $this->version, false);
 	}
 
 	/**

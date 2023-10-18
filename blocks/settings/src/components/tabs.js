@@ -80,7 +80,7 @@ const Tabs = (props) => {
         Settings
       </h1>
 			<p>
-        {__('Connect your Beehiiv account to import content to your WordPress site.', 're-beehiiv')}
+        {__('Establish a connection between your WordPress website and Beehiiv by providing the necessary credentials. This ensures a seamless integration of content.', 're-beehiiv')}
       </p>
 	  </div>
     <div className="re-beehiiv-tabs">
@@ -104,18 +104,27 @@ const Tabs = (props) => {
       )}
             <PanelRow className="mt-0">
               <Grid columns={1} style={{ width: "100%" }}>
+                <div>
+                  <span>{__('API Key ', 're-beehiiv')}</span>
+                  <small id="setting_api_key">
+                    <i className="fa-solid fa-circle-question" style={{ color: '#65696c' }} />
+									</small>
+                </div>
                 <InputControl
                   type="password"
-                  help={__("The API key provided by Beehiiv.", 're-beehiiv')}
-                  label={__("API Key", 're-beehiiv')}
                   onChange={(value) => setApiKey(value)}
                   placeholder={__("Enter your API key", 're-beehiiv')}
                   value={apiKey}
                 />
+
+                <div>
+                  <span>{__('Publication ID ', 're-beehiiv')}</span>
+                  <small id="setting_publication_id">
+                    <i className="fa-solid fa-circle-question" style={{ color: '#65696c' }} />
+									</small>
+                </div>
                 <InputControl
                   type="password"
-                  help={__("The unique publication ID associated with your Beehiiv account.", 're-beehiiv')}
-                  label={__("Publication ID", 're-beehiiv')}
                   placeholder={__("Enter your publication ID", 're-beehiiv')}
                   onChange={(value) => setPublicationId(value)}
                   value={publicationId}

@@ -12,6 +12,12 @@
     text-align: left;
 }
 
+.tippy-content {
+    text-align: center;
+    font-size: 9px;
+    line-height: 2;
+}
+
 .wpfac-stats li {
     display: inline-block;
     width: 200px;

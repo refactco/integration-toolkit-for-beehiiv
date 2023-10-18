@@ -1,6 +1,58 @@
 (function ($) {
   "use strict";
   jQuery(document).ready(function ($) {
+
+    tippy('#step1_content_type', {
+      content: "Choose the Beehiiv content subscription level you'd like to import. 'Free' pertains to content available without subscription fees, while 'Premium' is exclusive paid content",
+      allowHTML: true,
+    });
+
+    tippy('#step1_post_status', {
+      content: "Select the visibility status of the posts within Beehiiv. 'Published' posts are live on Beehiiv, 'Archived' posts are stored but not visible to the audience, and 'Draft' posts are unpublished content.",
+      allowHTML: true,
+    });
+
+    tippy('#step2_post_type', {
+      content: "Define how you'd like the imported content to be categorized within your WordPress site. 'Post Type' determines the format of your content, such as a blog post, page, or custom post type. 'Taxonomy' allows you to classify your content into categories and tags for easy searching and organization.",
+      allowHTML: true,
+    });
+
+
+    tippy('#step2_post_author', {
+      content: "Choose a WordPress user to be designated as the author of the imported content. This user will be credited for the posts and will have edit rights over them.",
+      allowHTML: true,
+    });
+
+    tippy('#step2_post_tags', {
+      content: "Tags help organize and categorize your content. This setting allows you to pull tags associated with your Beehiiv content and assign them to specific taxonomies and terms within WordPress.",
+      allowHTML: true,
+    });
+
+    tippy('#step2_post_status', {
+      content: "Define how the imported Beehiiv content should appear on your WordPress site. For example, whether it should be immediately visible, archived, or saved as a draft.",
+      allowHTML: true,
+    });
+    
+    tippy('#step2_import_method', {
+      content: "Select how you'd like to handle the incoming Beehiiv content. 'Import new items' will only add new content, 'Update existing items' will overwrite existing content with updates from Beehiiv, and 'Do both' will import new items while updating any matching existing content.",
+      allowHTML: true,
+    });
+    
+    tippy('#step2_cron_time', {
+      content: "Schedule the automatic importing process by specifying how often the system should check Beehiiv for new content.",
+      allowHTML: true,
+    });
+
+    tippy('#setting_api_key', {
+      content: "Enter the unique API key you received from Beehiiv. This key authorizes and facilitates the communication between your WordPress website and Beehiiv.",
+      allowHTML: true,
+    });
+    
+    tippy('#setting_publication_id', {
+      content: "Input the specific ID related to the content or publication you intend to import. This helps in pinpointing the exact data you want to fetch from Beehiiv.",
+      allowHTML: true,
+    });
+
     $("#re-beehiiv-auto-import").on("click", function () {
       if (!check_required_fields()) {
         return false;
