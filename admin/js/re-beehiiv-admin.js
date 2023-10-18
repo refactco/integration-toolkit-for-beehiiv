@@ -43,16 +43,6 @@
       allowHTML: true,
     });
 
-    tippy('#setting_api_key', {
-      content: "Enter the unique API key you received from Beehiiv. This key authorizes and facilitates the communication between your WordPress website and Beehiiv.",
-      allowHTML: true,
-    });
-    
-    tippy('#setting_publication_id', {
-      content: "Input the specific ID related to the content or publication you intend to import. This helps in pinpointing the exact data you want to fetch from Beehiiv.",
-      allowHTML: true,
-    });
-
     $("#re-beehiiv-auto-import").on("click", function () {
       if (!check_required_fields()) {
         return false;

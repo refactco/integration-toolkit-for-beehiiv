@@ -238,21 +238,18 @@ var AllDefaultArgs = <?php echo wp_json_encode( $default_args ); ?>;
 		esc_html_e( 'Import Content', 're-beehiiv' );
 		?>
 		</h1>
-			<?php 
-			if ( !$is_auto ) {
-				?>
-					<p><?php esc_html_e( 'Choose how to import content from Beehiiv to your WordPress Site.
-This feature allows you to pull content from Beehiiv and publish it on your WordPress website.', 're-beehiiv' ); ?></p>
-				<?php
-			} else {
-				?>
-				<p>
-					<?php esc_html_e( 'Choose how to import content from Beehiiv to your WordPress Site.
-Set up an automatic process to periodically fetch and integrate content from Beehiiv into your WordPress website.' ); ?>
-				</p>
-				<?php
-			}
-			?>
+
+					<p>
+						<?php esc_html_e( 'Choose how to import content from Beehiiv to your WordPress Site.', 're-beehiiv' ); ?>
+						<br>
+						<?php 
+							if ( !$is_auto ) {
+								esc_html_e( 'This feature allows you to pull content from Beehiiv and publish it on your WordPress website.', 're-beehiiv' ); 
+							} else {
+								esc_html_e( 'Set up an automatic process to periodically fetch and integrate content from Beehiiv into your WordPress website.' ); 
+							}
+						?>
+					</p>	
 	</div>
 
 	<div class="re-beehiiv-tabs">

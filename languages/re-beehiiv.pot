@@ -413,7 +413,7 @@ msgstr ""
 #: blocks/settings/build/index.js:109
 #: blocks/settings/src/components/tabs.js:83
 #: blocks/settings/build/index.js:101
-msgid "Establish a connection between your WordPress website and Beehiiv by providing the necessary credentials. This ensures a seamless integration of content."
+msgid "Establish a connection between your WordPress website and Beehiiv by providing the necessary credentials."
 msgstr ""
 
 #: blocks/settings/build/index.js:117

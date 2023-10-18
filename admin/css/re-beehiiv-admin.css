@@ -13,9 +13,9 @@
 }
 
 .tippy-content {
-    text-align: center;
-    font-size: 9px;
-    line-height: 2;
+    font-size: 12px;
+    border-radius: 50%;
+    line-height: 1.7;
 }
 
 .wpfac-stats li {
