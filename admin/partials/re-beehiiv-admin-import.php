@@ -70,8 +70,8 @@ if ( $is_running ) {
 			);
 			?>
 		<div class="re-beehiiv-import--notice">
-			<h4><?php esc_html_e( 'Importing posts from Beehiiv is in progress.', 're-beehiiv' ); ?></h4>
-			<p class="description"><?php esc_html_e( 'The import process is currently running in the background. You may proceed with your work and close this page, but please be patient and wait until it is complete.', 're-beehiiv' ); ?>
+			<h4><?php esc_html_e( '🔄 Currently Importing Content from Beehiiv...', 're-beehiiv' ); ?></h4>
+			<p class="description"><?php esc_html_e( 'We\'re actively importing posts from Beehiiv. You can continue with your other tasks or leave this page. We\'ll handle the rest.', 're-beehiiv' ); ?>
 			<br><strong><?php esc_html_e( 'Progress: ', 're-beehiiv' ); ?><span class="number" id="imported_count"><?php echo $complete_items . '</span> / <span class="number" id="total_count">' . $total_items; ?></span></strong></p>
 			<a class="re-beehiiv-button-secondary re-beehiiv-button-cancel" id="re-beehiiv-import--cancel" href="<?php echo esc_url( $cancel_url ); ?>"><?php esc_html_e( 'Cancel', 're-beehiiv' ); ?></a>
 			<?php require_once RE_BEEHIIV_PATH . 'admin/partials/components/progressbar.php'; ?>
@@ -172,7 +172,7 @@ if ( $is_auto_action_exist ) {
 			$is_existing_item_update = $args['import_method'] !== 'new';
 			?>
 			<div class="re-beehiiv-import--notice">
-				<h4><?php esc_html_e( 'Auto Import is set', 're-beehiiv' ); ?></h4>
+				<h4><?php esc_html_e( 'Automated Content Import Activated.', 're-beehiiv' ); ?></h4>
 				<p class="description">
 					<?php
 					$post_status_str = '';
@@ -182,7 +182,7 @@ if ( $is_auto_action_exist ) {
 						}
 						$post_status_str .= sprintf(
 							// Translators: %1$s: beehiiv post status, %2$s: post status.
-							esc_html__( '"%1$s" will be "%2$s"', 're-beehiiv' ),
+							esc_html__( 'a status "%1$s" in Beehiiv will be set to "%2$s"', 're-beehiiv' ),
 							ucwords( $status ),
 							ucwords( $post_status )
 						);
@@ -192,23 +192,35 @@ if ( $is_auto_action_exist ) {
 							$post_status_str .= ' and ';
 						}
 					}
-					$post_status_str = sprintf(
-						// Translators: %s: "Published" will be "Publish" and "Archived" will be "Draft"
-						esc_html__( 'Posts with status %s', 're-beehiiv' ),
-						$post_status_str
-					);
+
 					if ( ! $term instanceof WP_Error ) {
-						echo sprintf(
-							// Translators: %1$s: cron time, %2$s: post type, %3$s: taxonomy, %4$s: term name, %5$s: post status, %6$s: new item add, %7$s: existing item update.
-							esc_html__( 'Current Auto Import is set to run every "%1$s" hours and will import to "%2$s" post type and "%3$s" taxonomy with "%4$s" term. %5$s. The new items will %6$s imported and the Existing posts will %7$s updated. You can modify these settings below to customize the automatic import process to your needs.', 're-beehiiv' ),
+						$update_message='';
+						
+						switch( $args['import_method'] ) {
+							case 'new':
+								$update_message = esc_html__( 'new content will be added, but existing posts will remain unaffected.', 're-beehiiv' );
+								break;
+							case 'update':
+								$update_message = esc_html__( 'existing posts will updated.', 're-beehiiv' );
+								break;
+							default:
+								$update_message = esc_html__( 'new content will be added, and existing posts will updated', 're-beehiiv' );
+								break;
+						}
+						echo nl2br(sprintf(
+							esc_html__( 'The current configuration will automatically fetch content from Beehiiv every "%1$s" hours. This content will be integrated as WordPress "%2$s" under the "%3$s" taxonomy labeled as "%4$s".
+
+						All incoming content with  %5$s in WordPress. Please note that during this import process, %6$s
+						
+						Customize the automated import settings below to better match your content requirements.
+						', 're-beehiiv' ),
 							'<strong>' . esc_html( $args['cron_time'] ) . '</strong>',
 							'<strong>' . esc_html( $args['post_type'] ) . '</strong>',
-							'<strong>' . esc_html( $args['taxonomy'] ) . '</strong>',
+							'<strong>' . esc_html( $args['taxonomy'] ) . '</strong>', 
 							'<strong>' . esc_html( $term->name ) . '</strong>',
-							$post_status_str, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							( $is_new_item_add === true ? esc_html__( 'be', 're-beehiiv' ) : esc_html__( 'not be', 're-beehiiv' ) ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
-							( $is_existing_item_update === true ? esc_html__( 'be', 're-beehiiv' ) : esc_html__( 'not be', 're-beehiiv' ) ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
-						);
+							$post_status_str,
+							$update_message
+						));
 					} else {
 						// Translators: %1$s: cron time, %2$s: post type, %3$s: post status, %4$s: new item add, %5$s: existing item update.
 						echo sprintf( esc_html__( 'Current Auto Import is set to run every "%1$s" hours and will import to "%2$s" post type. %3$s. The new items will %4$s imported and the Existing posts will %5$s updated. You can modify these settings below to customize the automatic import process to your needs.', 're-beehiiv' ), '<strong>' . esc_html( $args['cron_time'] ) . '</strong>', '<strong>' . esc_html( $args['post_type'] ) . '</strong>', $post_status_str, ( $is_new_item_add === true ? esc_html__( 'be', 're-beehiiv' ) : esc_html__( 'not be', 're-beehiiv' ) ), ( $is_existing_item_update === true ? esc_html__( 'be', 're-beehiiv' ) : esc_html__( 'not be', 're-beehiiv' ) ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
@@ -397,7 +409,7 @@ var AllDefaultArgs = <?php echo wp_json_encode( $default_args ); ?>;
 							<label for="re-beehiiv-post_status">
 								<strong><?php esc_html_e( 'Post Status', 're-beehiiv' ); ?></strong>
 								<small id="step2_post_status">
-									<i class="fa-solid fa-circle-question" style="color: #65696c;"></i>
+									<i claversion-1.0.0ss="fa-solid fa-circle-question" style="color: #65696c;"></i>
 								</small>
 							</label>
 							<div class="re-beehiiv-post_status--fields"></div>

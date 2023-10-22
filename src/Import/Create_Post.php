@@ -88,7 +88,7 @@ class Create_Post {
 
 				$this->logger->log(
 					array(
-						'message' => $this->data['meta']['post_id'] . ' - <a href="' . $this->get_edit_post_link() . '" target="_blank">#' . $existing_id . ' - ' . $this->data['post']['post_title'] . '</a> ' . esc_attr__( 'updated', 're-beehiiv' ),
+						'message' => esc_attr__( ' Updated post', 're-beehiiv' ) . ' - <a href="' . $this->get_edit_post_link() . '" target="_blank">#' . $existing_id . ' - ' . $this->data['post']['post_title'] . '</a> ',
 						'status'  => 'success',
 					)
 				);
@@ -101,7 +101,7 @@ class Create_Post {
 
 				$this->logger->log(
 					array(
-						'message' => $this->data['meta']['post_id'] . ' - <a href="' . $this->get_edit_post_link() . '" target="_blank">#' . $existing_id . ' - ' . $this->data['post']['post_title'] . '</a> ' . esc_attr__( 'skipped', 're-beehiiv' ),
+						'message' => esc_attr__( 'Skipped post', 're-beehiiv' ) . ' - <a href="' . $this->get_edit_post_link() . '" target="_blank">#' . $existing_id . ' - ' . $this->data['post']['post_title'] . '</a> ',
 						'status'  => 'skipped',
 					)
 				);
@@ -121,7 +121,7 @@ class Create_Post {
 
 		$this->logger->log(
 			array(
-				'message' => $this->data['meta']['post_id'] . ' - <a href="' . $this->get_edit_post_link() . '" target="_blank">#' . $this->post_id . ' - ' . $this->data['post']['post_title'] . '</a> ' . esc_attr__( 'created', 're-beehiiv' ),
+				'message' => esc_attr__( 'Created post', 're-beehiiv' ) . ' - <a href="' . $this->get_edit_post_link() . '" target="_blank">#' . $this->post_id . ' - ' . $this->data['post']['post_title'] . '</a> ',
 				'status'  => 'success',
 			)
 		);
