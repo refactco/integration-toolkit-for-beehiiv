@@ -452,7 +452,7 @@ var AllDefaultArgs = <?php echo wp_json_encode( $default_args ); ?>;
 										<i class="fa-solid fa-circle-question" style="color: #65696c;"></i>
 									</small>
 						    	</label>
-								<input type="number" name="re-beehiiv-cron_time" id="re-beehiiv-cron_time" value="<?php echo esc_attr( $default_args['cron_time'] ); ?>" min="1" required placeholder="<?php esc_attr_e( 'Enter interval in hours', 're-beehiiv' ); ?>">
+								<input type="number" name="re-beehiiv-cron_time" id="re-beehiiv-cron_time" value="<?php echo esc_attr( $default_args['cron_time'] ); ?>" min="1" required placeholder="<?php esc_attr_e( 'Enter interval in hours', 're-beehiiv' ); ?>"> Hours
 									<p class="description"><?php esc_html_e( 'Enter the desired time intervals in hours and set the frequency of auto imports from your Beehiiv to your WordPress site.', 're-beehiiv' ); ?></p>
 							</fieldset>
 						<?php endif; ?>
