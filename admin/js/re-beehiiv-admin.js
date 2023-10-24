@@ -593,7 +593,7 @@ function update_progress_bar() {
       solvedTag.textContent     = solved;
       percentageTag.textContent = percentage + ' %';
 
-      update_logs_box(response.logs);
+      update_logs_box(response.logs,percentage);
 
       updateBarLength(percentage);
 
@@ -611,16 +611,24 @@ function update_progress_bar() {
   });
 }
 
-function update_logs_box( logs ) {
+function update_logs_box( logs,percentage) {
   const resultBox = jQuery(".result-log");
   const logBox = jQuery(".result-log #log");
   logBox.html("");
-
+  let process_compellation_time;
   logs.forEach((log) => {
     let status = log.status.charAt(0).toUpperCase() + log.status.slice(1);
     let time = log.time.split(" ")[1];
     logBox.append(`<div class="log-item"><span class="log-item__time">[${time}] </span><span class="log-item__status log-item__status--${log.status}">${status}</span> <span class="log-item__message">${log.message}</span></div>`);
+    if(percentage === 100){
+      process_compellation_time=time;
+    }
   });
+
+  if(percentage === 100){
+    logBox.append(`<div class="log-item"><span class="log-item__time">[${process_compellation_time}] </span><span class="log-item__status log-item__status--success">All posts imported successfully.</span></div>`);
+  }
+  
 
   resultBox.scrollTop(logBox.height());
 
