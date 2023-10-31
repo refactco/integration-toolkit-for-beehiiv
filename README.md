@@ -11,10 +11,6 @@ Effortlessly connect Beehiiv content and subscription capabilities with your Wor
 - **GravityForms Compatibility:** Craft subscription forms using the popular GravityForms plugin and capture user details.
 - **Data Forwarding to Beehiiv:** Automatically send user's email addresses and other custom information to Beehiiv when they subscribe.
 
-## Installation
-Certainly! Let's modify the `Installation` section considering the plugin hasn't been published on the WordPress.org website:
-
----
 
 ## Installation
 
