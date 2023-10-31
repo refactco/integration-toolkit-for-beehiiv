@@ -97,7 +97,7 @@ class Queue {
 	 * @param array $args
 	 */
 	public function auto_import_callback( $group_name, $args ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundBeforeLastUsed
-		( new Import( $args, 're_import_batch', 'auto') )->import();
+		( new Import( $args, 're_import_batch', 'auto') );
 	}
 
 	/**

@@ -84,6 +84,10 @@ class Forms {
 
 		$form_data['api_key']       = get_option( 're_beehiiv_api_key' );
 		$form_data['publication_id'] = get_option( 're_beehiiv_publication_id' );
+
+		$form_data=array(
+			'primary_account' => $form_data,
+		);
 		
 		/**
 		 * Filter the form data before starting the import

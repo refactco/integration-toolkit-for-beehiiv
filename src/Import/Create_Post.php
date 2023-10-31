@@ -170,6 +170,7 @@ class Create_Post {
 	 * @return bool
 	 */
 	private function add_tags() {
+		error_log( 'add_tags' );
 		if ( ! isset( $this->data['args']['form_data']['post_tags-taxonomy'] ) || $this->data['args']['form_data']['post_tags-taxonomy'] === '0' ) {
 			return false;
 		}
