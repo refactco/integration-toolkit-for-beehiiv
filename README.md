@@ -47,4 +47,4 @@ This plugin is open-source and licensed under the GPL v2 or later.
 
 ## Credits
 
-Developed by Refact.co. A special thanks to the WordPress and GravityForms communities for their ongoing support.
+This plugin has been developed by Refact.co and is not an official release by Beehiiv. The Refact team wishes to thank all contributors and users of this plugin for their support and feedback, which are invaluable for ongoing improvements.
