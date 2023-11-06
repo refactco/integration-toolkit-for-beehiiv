@@ -1,5 +1,5 @@
-<?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
 
+<?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
 namespace Re_Beehiiv\API\V2;
 
 defined( 'ABSPATH' ) || exit;
@@ -55,7 +55,6 @@ class Routes {
 	 * @return string
 	 */
 	public static function get_base_url() {
-
 		if ( defined( 'BEEHIIV_API_MOCK' ) && BEEHIIV_API_MOCK ) {
 			return self::BASE_MOCK_URL;
 		}
