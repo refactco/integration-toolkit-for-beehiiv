@@ -6,8 +6,8 @@
 	"title": "Settings",
 	"category": "widgets",
 	"icon": "welcome-view-site",
-	"description": "Add global hooks",
-	"textdomain": "refact-newsletter",
+	"description": "This block is used to display the settings of the plugin.",
+	"textdomain": "re-beehiiv",
 	"editorScript": "re-beehiiv-block-settings-editor-script",
 	"editorStyle": "re-beehiiv-block-settings-editor-style",
 	"style": "re-beehiiv-block-settings-style"

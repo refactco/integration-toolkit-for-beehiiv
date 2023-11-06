@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Fired during plugin activation
  *
@@ -21,7 +20,6 @@
  * @author     Refact <info@refact.co>
  */
 class Re_Beehiiv_Activator {
-
 	/**
 	 * Short Description. (use period)
 	 *
@@ -30,7 +28,7 @@ class Re_Beehiiv_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-
+		\Re_Beehiiv\Import\Import_Table::create_table();
 	}
 
 }

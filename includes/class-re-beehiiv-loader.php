@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Register all actions and filters for the plugin
  *
@@ -102,7 +101,7 @@ class Re_Beehiiv_Loader {
 			'component'     => $component,
 			'callback'      => $callback,
 			'priority'      => $priority,
-			'accepted_args' => $accepted_args
+			'accepted_args' => $accepted_args,
 		);
 
 		return $hooks;

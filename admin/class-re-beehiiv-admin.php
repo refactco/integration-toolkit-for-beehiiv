@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -20,8 +19,8 @@
  * @subpackage Re_Beehiiv/admin
  * @author     Refact <info@refact.co>
  */
-class Re_Beehiiv_Admin
-{
+class Re_Beehiiv_Admin {
+
 
 	/**
 	 * The ID of this plugin.
@@ -48,10 +47,10 @@ class Re_Beehiiv_Admin
 	 * @param      string    $re_beehiiv       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct($re_beehiiv, $version)
-	{
+	public function __construct( $re_beehiiv, $version ) {
 
 		$this->re_beehiiv = $re_beehiiv;
+
 		$this->version = $version;
 	}
 
@@ -60,9 +59,7 @@ class Re_Beehiiv_Admin
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_styles()
-	{
-
+	public function enqueue_styles() {
 		/**
 		 * This function is provided for demonstration purposes only.
 		 *
@@ -75,7 +72,10 @@ class Re_Beehiiv_Admin
 		 * class.
 		 */
 
-		wp_enqueue_style($this->re_beehiiv, plugin_dir_url(__FILE__) . 'css/re-beehiiv-admin.css', array(), $this->version, 'all');
+		wp_enqueue_style( $this->re_beehiiv, plugin_dir_url( __FILE__ ) . 'css/re-beehiiv-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_script('tippy-tooltip1', 'https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js', array(), $this->version, false);
+		wp_enqueue_script('tippy-tooltip2', 'https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js', array(), $this->version, false);
+		wp_enqueue_script('font-awesome', 'https://kit.fontawesome.com/57fc5c4e26.js', array(), $this->version, false);
 	}
 
 	/**
@@ -83,9 +83,7 @@ class Re_Beehiiv_Admin
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_scripts()
-	{
-
+	public function enqueue_scripts() {
 		/**
 		 * This function is provided for demonstration purposes only.
 		 *
@@ -98,15 +96,47 @@ class Re_Beehiiv_Admin
 		 * class.
 		 */
 
-		wp_enqueue_script($this->re_beehiiv, plugin_dir_url(__FILE__) . 'js/re-beehiiv-admin.js', array('jquery'), $this->version, false);
+		wp_enqueue_script( $this->re_beehiiv, plugin_dir_url( __FILE__ ) . 'js/re-beehiiv-admin.js', array( 'jquery' ), $this->version, false );
 
-		wp_localize_script($this->re_beehiiv, 'RE_BEEHIIV_CORE', array('ajax_url' => admin_url('admin-ajax.php')));
+		wp_localize_script(
+			$this->re_beehiiv,
+			'RE_BEEHIIV_CORE',
+			array(
+				'ajax_url'           => admin_url( 'admin-ajax.php' ),
+				'progress_bar_nonce' => wp_create_nonce( 'update_progress_bar_nonce' ),
+				'strings'            => array(
+					'select_taxonomy' => __( 'Select taxonomy', 're-beehiiv' ),
+					'select_term'     => __( 'Select taxonomy term', 're-beehiiv' ),
+					'labels'          => array(
+						'content_type'   => __( 'Content Type', 're-beehiiv' ),
+						'beehiiv_status' => __( 'Post status on Beehiiv', 're-beehiiv' ),
+						'post_type'      => __( 'Post Type', 're-beehiiv' ),
+						'taxonomy'       => __( 'Taxonomy', 're-beehiiv' ),
+						'taxonomy_term'  => __( 'Taxonomy Term', 're-beehiiv' ),
+						'post_author'    => __( 'Content Author', 're-beehiiv' ),
+						'import_method'  => __( 'Import Method', 're-beehiiv' ),
+						'post_status'    => __( 'Post Status', 're-beehiiv' ),
+					),
+					// Translators: {{field_name}} is a required field name and should not be translated.
+					'required_fields' => __( '{{field_name}}  is a Required Field', 're-beehiiv' ),
+				),
+			)
+		);
 	}
 
-	function acf_json_load_point($paths)
-	{
-		$paths[] = plugin_dir_path(__FILE__) . 'acf-json';
+	/**
+	 * Setup ACF JSON save point
+	 *
+	 * @param string $paths
+	 */
+	public function acf_json_load_point( $paths ) {
+		$paths[] = plugin_dir_path( __FILE__ ) . 'acf-json';
 
 		return $paths;
 	}
+
+	/**
+	 * Setup Admin Menu
+	 */
+	public function add_admin_menu() {  }
 }

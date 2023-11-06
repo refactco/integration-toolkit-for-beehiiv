@@ -2,7 +2,7 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
- .wpfac-stats{
+.wpfac-stats {
     padding: 0;
     margin: 0;
     list-style: none;
@@ -12,7 +12,13 @@
     text-align: left;
 }
 
-.wpfac-stats li{
+.tippy-content {
+    font-size: 12px;
+    border-radius: 50%;
+    line-height: 1.7;
+}
+
+.wpfac-stats li {
     display: inline-block;
     width: 200px;
     background-color: #fff;
@@ -23,176 +29,391 @@
     text-align: center;
 }
 
-.wpfac-stats li b{
+.wpfac-stats li b {
     display: block;
     font-size: 20px;
     margin-bottom: 20px;
 }
-.wpfac-stats li span{
+
+.wpfac-stats li span {
     display: block;
     color: seagreen;
     font-size: 20px;
     font-weight: bolder;
 }
 
-/* -----------------------------------------------------
-	CSS Progress Bars
--------------------------------------------------------- */
-.cssProgress {
-	width: 100%;
-	margin-bottom: 20px;
-}
-
-.cssProgress .progress1,
-.cssProgress .progress2,
-.cssProgress .progress3 {
-	position: relative;
-	overflow: hidden;
-	width: 100%;
-	font-family: "Roboto", sans-serif;
-}
-
-.cssProgress .cssProgress-bar {
-	display: block;
-	float: left;
-	width: 0%;
-	height: 100%;
-	background: #3798d9;
-	box-shadow: inset 0px -1px 2px rgba(0, 0, 0, 0.1);
-	-webkit-transition: width 0.8s ease-in-out;
-	transition: width 0.8s ease-in-out;
-}
-
-.cssProgress .cssProgress-label {
-	position: absolute;
-	overflow: hidden;
-	left: 0px;
-	right: 0px;
-	color: rgba(0, 0, 0, 0.6);
-	font-size: 12px;
-	text-align: center;
-    text-shadow: 0px 1px rgba(0, 0, 0, 0.3);
-    font-weight: bold !important;
-}
-
-.cssProgress .cssProgress-info {
-	background-color: #9575cd !important;
-}
-
-.cssProgress .cssProgress-danger {
-	background-color: #ef5350 !important;
-}
-
-.cssProgress .cssProgress-success {
-	background-color: #66bb6a !important;
-}
-
-.cssProgress .cssProgress-warning {
-	background-color: #ffb74d !important;
-}
-
-.cssProgress .cssProgress-right {
-	float: right !important;
-}
-
-.cssProgress .cssProgress-label-left {
-	margin-left: 10px;
-	text-align: left !important;
-}
-
-.cssProgress .cssProgress-label-right {
-	margin-right: 10px;
-	text-align: right !important;
-}
-
-.cssProgress .cssProgress-label2 {
-	display: block;
-	margin: 2px 0;
-	padding: 0 8px;
-	font-size: 0.8em;
-}
-
-.cssProgress .cssProgress-label2.cssProgress-label2-right {
-	text-align: right;
-}
-
-.cssProgress .cssProgress-label2.cssProgress-label2-center {
-	text-align: center;
-}
-
-.cssProgress .cssProgress-stripes,
-.cssProgress .cssProgress-active,
-.cssProgress .cssProgress-active-right {
-	background-image: linear-gradient(-45deg, rgba(255, 255, 255, 0.125) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.125) 50%, rgba(255, 255, 255, 0.125) 75%, transparent 75%, transparent);
-	background-size: 35px 35px;
-}
-
-.cssProgress .cssProgress-active {
-	-webkit-animation: cssProgressActive 2s linear infinite;
-	animation: cssProgressActive 2s linear infinite;
-}
-
-.cssProgress .cssProgress-active-right {
-	-webkit-animation: cssProgressActiveRight 2s linear infinite;
-	animation: cssProgressActiveRight 2s linear infinite;
-}
-
-@-webkit-keyframes cssProgressActive {
-	0% {
-		background-position: 0 0;
-	}
-	100% {
-		background-position: 35px 35px;
-	}
-}
-
-@keyframes cssProgressActive {
-	0% {
-		background-position: 0 0;
-	}
-	100% {
-		background-position: 35px 35px;
-	}
-}
-
-@-webkit-keyframes cssProgressActiveRight {
-	0% {
-		background-position: 0 0;
-	}
-	100% {
-		background-position: -35px -35px;
-	}
-}
-
-@keyframes cssProgressActiveRight {
-	0% {
-		background-position: 0 0;
-	}
-	100% {
-		background-position: -35px -35px;
-	}
-}
-
-/* -----------------------------------------------------
-	Progress Bar 3
--------------------------------------------------------- */
-.progress3 {
-	width: auto !important;
-	padding: 4px;
-	background-color: rgba(0, 0, 0, 0.1);
-	box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2);
-	border-radius: 3px;
-}
-
-.progress3 .cssProgress-bar {
-	height: 16px;
-	border-radius: 3px;
-}
-
-.progress3 .cssProgress-label {
-	line-height: 16px;
-}
-
 .wpfac-card {
-	margin-bottom: 12px;
+    margin-bottom: 12px;
+}
+
+.re-beehiiv-wrapper fieldset {
+    margin-bottom: 16px;
+}
+
+.beehiiv-toggle-section {
+    margin-bottom: 10px;
+}
+
+.beehiiv-toggle-section h3 {
+    cursor: pointer;
+}
+
+.beehiiv-toggle-section .content {
+    display: none;
+}
+
+.beehiiv-toggle-section.open .content {
+    display: block;
+}
+
+.re-beehiiv-wrap {
+    margin-inline-end: 1rem;
+}
+
+.re-beehiiv-wrapper {
+    background: #fff;
+    padding: 16px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border: 1px solid #ccc;
+}
+
+.border-t-0 {
+    border-top: 0 !important;
+}
+
+.nav-tab-wrapper {
+    background-color: #fff;
+    border-bottom: 1px solid #ccc;
+    padding: 0;
+}
+
+
+.nav-tab-wrapper .re-nav-tab {
+    padding: 12px 20px;
+    display: inline-block;
+    color: #6f6f6f;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.nav-tab-wrapper .re-nav-tab-active {
+    color: black;
+    border-bottom: 2px solid #003233;
+}
+
+.nav-tab-wrapper .re-nav-tab:hover {
+    color: black;
+}
+
+.re-beehiiv-heading h1 {
+    margin-bottom: 0;
+}
+
+.re-beehiiv-heading p {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #6f6f6f;
+}
+
+.pr-2 {
+    padding-right: 0.5rem;
+}
+
+.pr-4 {
+    padding-right: 1rem;
+}
+
+.mb-0 {
+    margin-bottom: 0 !important;
+}
+
+.mb-2 {
+    margin-bottom: 0.5rem !important;
+}
+
+.re-beehiiv-import-fields h2:first-child {
+    margin-top: 0;
+}
+
+.mt-0 {
+    margin-top: 0;
+}
+
+.d-block {
+    display: block;
+}
+
+.re-beehiiv-settings-disconnect {
+    transition: all 0.3s ease-in-out;
+    padding: 10px 32px !important;
+    height: auto !important;
+    border-radius: 3px !important;
+    text-align: center !important;
+    line-height: 2.15384615;
+    display: inline-block;
+}
+
+input#re-beehiiv-start-import,
+.re-beehiiv-settings-save {
+    background-color: #003233 !important;
+    border-color: #005c5e !important;
+    transition: all 0.3s ease-in-out;
+    min-width: 200px;
+    color: #fff !important;
+    padding: 10px 16px !important;
+    height: auto !important;
+    border-radius: 3px !important;
+    text-align: center !important;
+    line-height: 2.15384615;
+    display: inline-block;
+}
+
+input#re-beehiiv-start-import:hover,
+.re-beehiiv-settings-save:hover {
+    background-color: #005c5e !important;
+    border-color: #005c5e !important;
+}
+
+input#re-beehiiv-start-import:disabled,
+.re-beehiiv-settings-save:disabled {
+    background-color: #ccc !important;
+    border-color: #ccc  !important;
+}
+
+.re-beehiiv-import-form--hide_canceled .re-beehiiv-import--notice.re-beehiiv-import--notice-canceled {
+    display: none;
+}
+
+.re-beehiiv-import--notice {
+    background: #e6e6e6;
+    padding: 20px 16px;
+    border-radius: 3px;
+    margin-bottom: 16px;
+    position: relative;
+}
+
+.re-beehiiv-button-secondary {
+    cursor: pointer;
+    padding: 4px 10px;
+    background-color: transparent;
+    box-shadow: none;
+    border: solid #767676;
+    border-radius: 3px;
+    color: #232323;
+    transition: all 0.1s ease-in-out;
+    text-decoration: none;
+}
+
+.re-beehiiv-button-secondary:hover {
+    background-color: #767676;
+    color: #fff;
+}
+
+.re-beehiiv-import--notice .re-beehiiv-button-cancel {
+    top: 20px;
+    right: 16px;
+    position: absolute;
+}
+
+.re-beehiiv-import--notice .re-beehiiv-button-cancel:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    background-color: transparent !important;
+    color: #232323;
+}
+
+.re-beehiiv-import--notice h4 {
+    margin: 0 0 16px;
+}
+
+.re-beehiiv-import--notice .description {
+    margin-bottom: 0;
+}
+
+.re-beehiiv-import--notice ul {
+    list-style: disc;
+    margin-inline-start: 20px;
+    margin-top: 8px;
+    margin-bottom: 0;
+}
+
+.re-beehiiv-import--notice.re-beehiiv-import--notice-error {
+    background: #ffcaca;
+}
+
+.re-beehiiv-import--notice.re-beehiiv-import--notice-success {
+    background: #abe2e0;
+}
+
+.re-beehiiv-import-fields .description,
+.re-beehiiv-import-fields--step--content fieldset {
+    max-width: 500px;
+}
+
+h2.re-beehiiv-import-fields--step--title:after {
+    content: attr(data-error-count);
+    margin-left: 8px;
+    background-color: red;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    border-radius: 50px;
+    color: white;
+    text-align: center;
+    font-size: 13px;
+    visibility: hidden;
+}
+
+.re-beehiiv-import-fields--step.has-error h2.re-beehiiv-import-fields--step--title:after {
+    visibility: visible;
+}
+
+.re-beehiiv-import-fields--step--content fieldset {
+    border-radius: 3px;
+    padding: 8px;
+}
+
+.re-beehiiv-import-fields--step--content fieldset.has-error {
+    border: solid red 1px;
+}
+
+.re-beehiiv-import-fields label[for]:not([for=""]) {
+    margin-bottom: 8px;
+    display: block;
+}
+
+.re-beehiiv-import-fields--step {
+    outline: 3px solid transparent;
+    border: 1px solid #e3e3e3;
+    height: auto;
+    position: relative;
+    text-align: left;
+    transition: background .1s ease-in-out;
+    margin-bottom: 16px;
+    border-radius: 3px;
+}
+
+.re-beehiiv-import-fields--step--title {
+    cursor: pointer;
+    display: block;
+    font-weight: 500;
+    color: #1e1e1e;
+    margin: 0;
+    padding: 20px;
+}
+
+.re-beehiiv-import-fields--step.active .re-beehiiv-import-fields--step--title {
+    cursor: default;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #e3e3e3;
+}
+
+.re-beehiiv-import-fields--step--content {
+    display: none;
+    padding: 0 20px;
+}
+
+.re-beehiiv-import-fields--step.active .re-beehiiv-import-fields--step--content {
+    display: block;
+}
+
+.re-beehiiv-import-fields select {
+    min-width: 150px;
+}
+
+/* Progress Bar Start */
+
+:root {
+    --bar-color: #003233;
+    --body-color: #222;
+    --text-color: rgb(29, 17, 17);
+    --bar-wrap-back-color: #cccccc;
+}
+
+.status-info {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.bar-wrap {
+    padding: 6px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    border-radius: 100px;
+    background-color: var(--bar-wrap-back-color);
+}
+
+.bar {
+    width: 0%;
+    height: 12px;
+    transition: width .15s ease-out;
+    background-color: var(--bar-color);
+    border-radius: 100px;
+    box-shadow: inset -1px -1px 10px rgb(0 0 0 / .5);
+}
+
+.percentage {
+    align-self: center;
+    font-size: 1rem;
+    color: #fff;
+    position: absolute;
+    top: 18px;
+}
+
+/* Progress Bar End */
+/* Results Log Box Start */
+/* with scroll bar */
+.result-log {
+    height: 290px;
+    overflow: auto;
+    padding: 10px;
+    margin-top: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.log {
+    border-radius: 3px;
+    background-color: #e6e6e6;
+    color: #1e1e1e;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.result-log .log-item {
+    margin-bottom: 4px;
+}
+
+.log-item__status {
+    background: #cdcdcd;
+    padding: 3px 6px;
+    border-radius: 10px;
+    font-size: 10px;
+}
+
+.log-item__status--success {
+    background: #abe2e0;
+}
+
+.log-item__status--error {
+    background: #ffcaca;
+}
+
+.log-item__status--running {
+    background: #a5c8ff;
+}
+/* Results Log Box End */
+
+.re-beehiiv-post_status--fields div label {
+    display: inline-block !important;
+    min-width: 80px;
+    margin-bottom: 0 !important;
+}
+
+.re-beehiiv-post_status--field {
+    display: flex;
+    align-items: center;
 }

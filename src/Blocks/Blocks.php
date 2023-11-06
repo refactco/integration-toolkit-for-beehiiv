@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
 
 namespace Re_Beehiiv\Blocks;
 
@@ -11,20 +11,17 @@ use Re_Beehiiv\Blocks\Settings;
  * @subpackage MIDNewsletterCore
  * @since 1.0.0
  */
+class Blocks {
 
-class Blocks
-{
 
-    // Register all blocks
-    public static function register_all_blocks()
-    {
+	/**
+	 * Register all blocks
+	 *
+	 * @return void
+	 */
+	public static function register_all_blocks() {
 
-         /**
-         * Register "Settings" block
-         *
-         */
+		Settings::register();
 
-		 Settings::register();
-
-    }
+	}
 }

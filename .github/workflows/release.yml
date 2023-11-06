@@ -1,0 +1,40 @@
+name: Releases
+
+on:
+  push:
+    tags:
+    - 'v*'
+jobs:
+  install-dependency:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - run: composer install --ansi --no-progress --no-interaction --prefer-dist --no-dev
+      - uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r vendor.zip vendor
+      - uses: actions/upload-artifact@v2
+        with:
+          name: vendor
+          path: ./vendor.zip
+          if-no-files-found: error
+  release:
+    needs: install-dependency
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/download-artifact@v2
+      with:
+        name: vendor
+    - run: unzip -qq vendor.zip
+    - run: rm vendor.zip
+    - run: zip -qq -X -r release.zip ./ -x "*.git*" .gitignore composer.* phpcs.xml README.md "blocks/*/node_modules*" blocks/*/package.json blocks/*/package-lock.json
+    - name: Upload Release
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "release.zip"
+        generateReleaseNotes: true
+        omitPrereleaseDuringUpdate: true
+        token: ${{ secrets.GITHUB_TOKEN }}

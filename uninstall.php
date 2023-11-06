@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Fired when the plugin is uninstalled.
  *
@@ -29,3 +28,13 @@
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
+
+$table_name = 're_beehiiv_import';
+global $wpdb;
+$table_name = $wpdb->prefix . $table_name;
+$wpdb->query(
+	$wpdb->prepare(
+		'DROP TABLE IF EXISTS %i', // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnsupportedPlaceholder,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
+		$table_name
+	)
+);

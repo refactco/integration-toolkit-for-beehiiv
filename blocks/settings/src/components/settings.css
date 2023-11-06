@@ -7,17 +7,16 @@
   padding: 1em;
   display: flex;
   justify-content: space-between;
-  border-radius: 0 0 2px 2px;
+  border-radius: 0 0 4px 4px;
   margin-bottom: 1em;
 }
 
-.re-beehiiv-settings-header__logo{
+.re-beehiiv-settings-header__logo {
   width: 200px;
   display: flex;
-}
-
-.re-beehiiv-settings-header__logo svg{
-  max-width: 100px;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #fff;
 }
 
 .re-beehiiv-settings-header__links a{
