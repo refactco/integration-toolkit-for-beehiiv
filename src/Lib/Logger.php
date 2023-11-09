@@ -46,7 +46,7 @@ class Logger {
 	 *
 	 * @param array $log_item
 	 */
-	public function log( array $log_item, bool $print_in_debug_file = true ) {
+	public function log( array $log_item, bool $print_in_debug_file = false ) {
 		$log              = $this->get_logs();
 		$log_item['time'] = current_time( 'mysql' );
 		$log[]            = $log_item;
