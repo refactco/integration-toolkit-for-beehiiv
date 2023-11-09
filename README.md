@@ -1,6 +1,6 @@
 # Beehiiv WordPress Integration Plugin
 
-Effortlessly connect Beehiiv content and subscription capabilities with your WordPress site using this open-source plugin.
+Effortlessly connect [Beehiiv](https://www.beehiiv.com/) content and subscription capabilities with your WordPress site using this open-source plugin.
 
 ## Features
 
@@ -39,12 +39,12 @@ We value contributions! Here's the standard GitHub workflow:
 
 ## Issues
 
-Facing bugs or issues? Kindly report them in the 'Issues' section of this GitHub repository.
+Facing bugs or issues? Kindly report them in the [Issues](https://github.com/refactco/Re-Beehiiv/issues) section of this GitHub repository.
 
 ## License
 
-This plugin is open-source and licensed under the GPL v2 or later.
+This plugin is open-source and licensed under the [GPL v2 or later](https://en.wikipedia.org/wiki/GNU_General_Public_License).
 
 ## Credits
 
-This plugin has been developed by Refact.co and is not an official release by Beehiiv. The Refact team wishes to thank all contributors and users of this plugin for their support and feedback, which are invaluable for ongoing improvements.
+This plugin has been developed by [Refact.co](https://refact.co/) and is not an official release by [Beehiiv](https://www.beehiiv.com/). The Refact team wishes to thank all contributors and users of this plugin for their support and feedback, which are invaluable for ongoing improvements.
