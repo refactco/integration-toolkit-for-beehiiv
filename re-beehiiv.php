@@ -8,7 +8,7 @@
  * Author URI:        https://refact.co
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       re-beehiiv
+ * Text Domain:       Re-Beehiiv
  * Domain Path:       /languages
  * Requires at least: 5.2
  * Requires PHP:      7.2

@@ -20,14 +20,14 @@ class Posts {
 	 * @param string $content_types
 	 * @return array
 	 */
-	public static function get_all_posts( string $content_types ) {
+	public static function get_all_posts( string $content_types , array $args = array() ) {
 
 		$page  = 1;
 		$posts = array();
 
 		while ( true ) {
 
-			$data = self::get_posts_in_page( $page, $content_types );
+			$data = self::get_posts_in_page( $page, $content_types, $args);
 			if ( isset( $data['error'] ) ) {
 				return $data;
 			}
@@ -52,11 +52,19 @@ class Posts {
 	 * @param int $page
 	 * @param string $expand
 	 */
-	public static function get_posts_in_page( $page = 1, $expand = '' ) {
+	public static function get_posts_in_page( $page = 1, $expand = '', array $args = array() ) {
+		
+		if ( ! empty( $args ) && ! empty( $args['publication_id'] ) && ! empty( $args['api_key'] ) && !empty( $args['content_type']) ) {
+			$publication_id = $args['publication_id'];
+			$api_key        = $args['api_key'];
+		} else {
+			$publication_id = get_option( 're_beehiiv_publication_id' );
+			$api_key        = get_option( 're_beehiiv_api_key' );
+		}
 
 		$route = Routes::build_route(
 			Routes::POSTS_INDEX,
-			array( 'publicationId' => get_option( 're_beehiiv_publication_id' ) ),
+			array( 'publicationId' => $publication_id ),
 			array(
 				'page'   => $page,
 				'limit'  => 20,
@@ -64,7 +72,6 @@ class Posts {
 			)
 		);
 
-		$api_key = get_option( 're_beehiiv_api_key' );
 
 		$response = Request_Beehiiv::get( $api_key, $route );
 

@@ -157,9 +157,9 @@ class Import_Table {
 			$params[] = $group_name;
 		}
 	
-		$prepared_query = $wpdb->prepare( $query, $params );
+		$prepared_query = $wpdb->prepare( $query, $params ); //phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 	
-		$result = $wpdb->get_results( $prepared_query );
+		$result = $wpdb->get_results( $prepared_query );//phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 	
 		if ( ! $result ) {
 			return [];
