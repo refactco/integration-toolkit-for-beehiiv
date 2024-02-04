@@ -12,7 +12,7 @@ msgstr ""
 "POT-Creation-Date: 2023-10-22T07:24:45+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
-"X-Domain: re-beehiiv\n"
+"X-Domain: wp-to-beehiiv-integration\n"
 
 #. Plugin Name of the plugin
 #: admin/partials/components/header.php:17
@@ -37,52 +37,52 @@ msgstr ""
 msgid "https://refact.co"
 msgstr ""
 
-#: admin/class-re-beehiiv-admin.php:108
+#: admin/class-wp-to-beehiiv-integration-admin.php:108
 msgid "Select taxonomy"
 msgstr ""
 
-#: admin/class-re-beehiiv-admin.php:109
+#: admin/class-wp-to-beehiiv-integration-admin.php:109
 msgid "Select taxonomy term"
 msgstr ""
 
-#: admin/class-re-beehiiv-admin.php:111
-#: admin/partials/re-beehiiv-admin-import.php:291
+#: admin/class-wp-to-beehiiv-integration-admin.php:111
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:291
 msgid "Content Type"
 msgstr ""
 
-#: admin/class-re-beehiiv-admin.php:112
+#: admin/class-wp-to-beehiiv-integration-admin.php:112
 msgid "Post status on Beehiiv"
 msgstr ""
 
-#: admin/class-re-beehiiv-admin.php:113
+#: admin/class-wp-to-beehiiv-integration-admin.php:113
 msgid "Post Type"
 msgstr ""
 
-#: admin/class-re-beehiiv-admin.php:114
+#: admin/class-wp-to-beehiiv-integration-admin.php:114
 msgid "Taxonomy"
 msgstr ""
 
-#: admin/class-re-beehiiv-admin.php:115
+#: admin/class-wp-to-beehiiv-integration-admin.php:115
 msgid "Taxonomy Term"
 msgstr ""
 
-#: admin/class-re-beehiiv-admin.php:116
-#: admin/partials/re-beehiiv-admin-import.php:380
+#: admin/class-wp-to-beehiiv-integration-admin.php:116
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:380
 msgid "Content Author"
 msgstr ""
 
-#: admin/class-re-beehiiv-admin.php:117
+#: admin/class-wp-to-beehiiv-integration-admin.php:117
 msgid "Import Method"
 msgstr ""
 
-#: admin/class-re-beehiiv-admin.php:118
-#: admin/partials/re-beehiiv-admin-import.php:320
-#: admin/partials/re-beehiiv-admin-import.php:410
+#: admin/class-wp-to-beehiiv-integration-admin.php:118
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:320
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:410
 msgid "Post Status"
 msgstr ""
 
 #. Translators: {{field_name}} is a required field name and should not be translated.
-#: admin/class-re-beehiiv-admin.php:121
+#: admin/class-wp-to-beehiiv-integration-admin.php:121
 msgid "{{field_name}}  is a Required Field"
 msgstr ""
 
@@ -98,56 +98,56 @@ msgstr ""
 msgid "Please wait... We are fetching data from Beehiiv."
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:36
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:36
 msgid "Importing posts from Beehiiv is cancelled."
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:37
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:37
 msgid "The import process is cancelled. You can start the import process again."
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:73
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:73
 msgid "🔄 Currently Importing Content from Beehiiv..."
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:74
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:74
 msgid "We're actively importing posts from Beehiiv. You can continue with your other tasks or leave this page. We'll handle the rest."
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:75
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:75
 msgid "Progress: "
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:76
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:76
 msgid "Cancel"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:175
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:175
 msgid "Automated Content Import Activated."
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:181
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:181
 msgid "published"
 msgstr ""
 
 #. Translators: %1$s: beehiiv post status, %2$s: post status.
-#: admin/partials/re-beehiiv-admin-import.php:185
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:185
 msgid "a status \"%1$s\" in Beehiiv will be set to \"%2$s\""
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:201
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:201
 msgid "new content will be added, but existing posts will remain unaffected."
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:204
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:204
 msgid "existing posts will updated."
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:207
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:207
 msgid "new content will be added, and existing posts will updated"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:211
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:211
 msgid ""
 "The current configuration will automatically fetch content from Beehiiv every \"%1$s\" hours. This content will be integrated as WordPress \"%2$s\" under the \"%3$s\" taxonomy labeled as \"%4$s\".\n"
 "\n"
@@ -158,177 +158,177 @@ msgid ""
 msgstr ""
 
 #. Translators: %1$s: cron time, %2$s: post type, %3$s: post status, %4$s: new item add, %5$s: existing item update.
-#: admin/partials/re-beehiiv-admin-import.php:226
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:226
 msgid "Current Auto Import is set to run every \"%1$s\" hours and will import to \"%2$s\" post type. %3$s. The new items will %4$s imported and the Existing posts will %5$s updated. You can modify these settings below to customize the automatic import process to your needs."
 msgstr ""
 
 #. Translators: %1$s: cron time, %2$s: post type, %3$s: post status, %4$s: new item add, %5$s: existing item update.
-#: admin/partials/re-beehiiv-admin-import.php:226
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:226
 msgid "be"
 msgstr ""
 
 #. Translators: %1$s: cron time, %2$s: post type, %3$s: post status, %4$s: new item add, %5$s: existing item update.
-#: admin/partials/re-beehiiv-admin-import.php:226
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:226
 msgid "not be"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:235
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:235
 msgid "Auto"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:235
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:235
 msgid "Manual"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:250
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:250
 #: src/Admin_Menus.php:32
 msgid "Import Content"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:255
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:255
 msgid "Choose how to import content from Beehiiv to your WordPress Site."
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:259
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:259
 msgid "This feature allows you to pull content from Beehiiv and publish it on your WordPress website."
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:269
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:269
 msgid "Manual Import"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:270
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:270
 msgid "Auto Import"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:277
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:277
 msgid "Please fix the following errors:"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:288
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:288
 msgid "Step1: Choose data from Beehiiv"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:298
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:298
 msgid "Free"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:299
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:299
 msgid "Premium"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:315
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:315
 msgid "Select the type of content you want to import."
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:327
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:327
 msgid "Published"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:328
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:328
 msgid "Archived"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:329
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:329
 msgid "Draft"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:345
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:345
 msgid "Choose the status of the content you want to import."
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:350
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:350
 msgid "Step 2: Import data to WordPress"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:354
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:354
 msgid "Select Post Type and Taxonomy"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:360
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:360
 msgid "Select Post Type"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:371
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:371
 msgid "Select Post Type First"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:374
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:374
 msgid "Select Term"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:376
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:376
 msgid "Choose the post type and taxonomy for the imported content."
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:386
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:386
 msgid "Select Author"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:394
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:394
 msgid "Assign the imported posts to a specific user."
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:398
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:398
 msgid "Beehiiv Tags"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:404
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:404
 msgid "Select post type first"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:406
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:406
 msgid "To import tags from Beehiiv, select the taxonomy and term you want to use for the imported tags."
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:416
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:416
 msgid "Assign Post Status to the imported content for each Post Status selected in step 1."
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:420
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:420
 msgid "Import Option"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:427
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:427
 msgid "Import new items"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:428
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:428
 msgid "Update existing items"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:429
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:429
 msgid "Do both"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:445
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:445
 msgid "Choose the desired action for importing data."
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:450
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:450
 msgid "Import Schedule"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:455
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:455
 msgid "Enter interval in hours"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:456
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:456
 msgid "Enter the desired time intervals in hours and set the frequency of auto imports from your Beehiiv to your WordPress site."
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:468
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:468
 msgid "It is not possible to initiate another manual import while the current one is still in progress. refresh the page to update the status."
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:471
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:471
 #: blocks/settings/build/index.js:160
 #: blocks/settings/src/components/tabs.js:134
 #: blocks/settings/build/index.js:152
 msgid "Save"
 msgstr ""
 
-#: admin/partials/re-beehiiv-admin-import.php:471
+#: admin/partials/wp-to-beehiiv-integration-admin-import.php:471
 msgid "Start Import"
 msgstr ""
 

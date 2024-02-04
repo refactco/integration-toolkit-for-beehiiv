@@ -1,9 +1,9 @@
 <?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
 
-namespace Re_Beehiiv\Import;
-use Re_Beehiiv\Import\Interfaces\Importer;
-use Re_Beehiiv\Import\Queue;
-use Re_Beehiiv\Lib\Logger;
+namespace WP_to_Beehiiv_Integration\Import;
+use WP_to_Beehiiv_Integration\Import\Interfaces\Importer;
+use WP_to_Beehiiv_Integration\Import\Queue;
+use WP_to_Beehiiv_Integration\Lib\Logger;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -64,7 +64,7 @@ class Manual_Importer extends Importer {
             $this->import_data_to_wordpress();
             $this->status = 'importing_post';
         } elseif ( $this->status === 'finished' ) {
-            delete_option( 're_beehiiv_manual_import_progress' );
+            delete_option( 'wp_to_beehiiv_integration_manual_import_progress' );
         }
     }
 
@@ -162,6 +162,6 @@ class Manual_Importer extends Importer {
 
         $args = array_merge( $data, $args );
 
-        return update_option( 're_beehiiv_manual_import_progress', $args );
+        return update_option( 'wp_to_beehiiv_integration_manual_import_progress', $args );
     }
 }

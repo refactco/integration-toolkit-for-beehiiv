@@ -1,5 +1,5 @@
 <?php // phpcs:ignore WordPress.Files.FileName
-namespace Re_Beehiiv;
+namespace WP_to_Beehiiv_Integration;
 
 /**
  * Class Canonical_URL
@@ -30,7 +30,7 @@ class Canonical_URL {
 	 */
 	public function wpseo_canonical( $canonical ) {
 		global $post;
-		$canonical_url = get_post_meta( $post->ID, 're_beehiiv_post_url', true );
+		$canonical_url = get_post_meta( $post->ID, 'wp_to_beehiiv_integration_post_url', true );
 		return $canonical_url ? $canonical_url : $canonical;
 	}
 
@@ -41,7 +41,7 @@ class Canonical_URL {
 	 */
 	public function add_canonical_url() {
 		global $post;
-		$canonical_url = get_post_meta( $post->ID, 're_beehiiv_post_url', true );
+		$canonical_url = get_post_meta( $post->ID, 'wp_to_beehiiv_integration_post_url', true );
 
 		if ( $canonical_url ) {
 			echo '<link rel="canonical" href="' . esc_url( $canonical_url ) . '" />';

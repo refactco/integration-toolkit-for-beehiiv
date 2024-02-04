@@ -5,8 +5,8 @@
  * @link       https://refact.co
  * @since      1.0.0
  *
- * @package    Re_Beehiiv
- * @subpackage Re_Beehiiv/includes
+ * @package    WP_to_Beehiiv_Integration
+ * @subpackage WP_to_Beehiiv_Integration/includes
  */
 
 /**
@@ -15,11 +15,11 @@
  * This class defines all code necessary to run during the plugin's activation.
  *
  * @since      1.0.0
- * @package    Re_Beehiiv
- * @subpackage Re_Beehiiv/includes
+ * @package    WP_to_Beehiiv_Integration
+ * @subpackage WP_to_Beehiiv_Integration/includes
  * @author     Refact <info@refact.co>
  */
-class Re_Beehiiv_Activator {
+class WP_to_Beehiiv_Integration_Activator {
 	/**
 	 * Short Description. (use period)
 	 *
@@ -28,7 +28,7 @@ class Re_Beehiiv_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-		\Re_Beehiiv\Import\Import_Table::create_table();
+		\WP_to_Beehiiv_Integration\Import\Import_Table::create_table();
 	}
 
 }

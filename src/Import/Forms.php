@@ -1,8 +1,8 @@
 <?php
-namespace Re_Beehiiv\Import;
+namespace WP_to_Beehiiv_Integration\Import;
 class Forms {
 
-	const FIELD_PREFIX = 're-beehiiv-';
+	const FIELD_PREFIX = 'wp-to-beehiiv-integration-';
 	const FIELDS       = array(
 		array(
 			'name'     => 'content_type',
@@ -60,7 +60,7 @@ class Forms {
 
 
 	public function maybe_register_auto_import() {
-		if ( ! isset( $_POST['re_beehiiv_import_nonce'] ) || ! wp_verify_nonce( $_POST['re_beehiiv_import_nonce'], 're_beehiiv_import_nonce' ) ) {
+		if ( ! isset( $_POST['wp_to_beehiiv_integration_import_nonce'] ) || ! wp_verify_nonce( $_POST['wp_to_beehiiv_integration_import_nonce'], 'wp_to_beehiiv_integration_import_nonce' ) ) {
 			return;
 		}
 
@@ -70,7 +70,7 @@ class Forms {
 		if ( isset( $form_data['error'] ) ) {
 			// show the error message
 			add_action(
-				're_beehiiv_admin_notices',
+				'wp_to_beehiiv_integration_admin_notices',
 				function () use ( $form_data ) {
 					?>
 				<div class="notice notice-error">
@@ -82,8 +82,8 @@ class Forms {
 			return;
 		}
 
-		$form_data['api_key']       = get_option( 're_beehiiv_api_key' );
-		$form_data['publication_id'] = get_option( 're_beehiiv_publication_id' );
+		$form_data['api_key']       = get_option( 'wp_to_beehiiv_integration_api_key' );
+		$form_data['publication_id'] = get_option( 'wp_to_beehiiv_integration_publication_id' );
 
 		$form_data=array(
 			'primary_account' => $form_data,
@@ -94,12 +94,12 @@ class Forms {
 		 *
 		 * @param array $form_data The form data
 		 */
-		$form_data = apply_filters( 're_beehiiv_auto_import_form_data', $form_data );
+		$form_data = apply_filters( 'wp_to_beehiiv_integration_auto_import_form_data', $form_data );
 
 		$import = new Import( $form_data, 'auto_recurring_import', 'auto' );
 
 		// redirect to import page
-		wp_safe_redirect( admin_url( 'admin.php?page=re-beehiiv-import&tab=auto-import' ) );
+		wp_safe_redirect( admin_url( 'admin.php?page=wp-to-beehiiv-integration-import&tab=auto-import' ) );
 	}
 
 	/**
@@ -111,7 +111,7 @@ class Forms {
 	 * @return void
 	 */
 	public function maybe_start_manual_import() {
-		if ( ! isset( $_POST['re_beehiiv_import_nonce'] ) || ! wp_verify_nonce( $_POST['re_beehiiv_import_nonce'], 're_beehiiv_import_nonce' ) ) {
+		if ( ! isset( $_POST['wp_to_beehiiv_integration_import_nonce'] ) || ! wp_verify_nonce( $_POST['wp_to_beehiiv_integration_import_nonce'], 'wp_to_beehiiv_integration_import_nonce' ) ) {
 			return;
 		}
 
@@ -121,7 +121,7 @@ class Forms {
 		if ( isset( $form_data['error'] ) ) {
 			// show the error message
 			add_action(
-				're_beehiiv_admin_notices',
+				'wp_to_beehiiv_integration_admin_notices',
 				function () use ( $form_data ) {
 					?>
 				<div class="notice notice-error">
@@ -136,7 +136,7 @@ class Forms {
 		$import = new Import( $form_data, 'manual_import_' . time(), 'manual' );
 
 		// redirect to import page
-		wp_safe_redirect( admin_url( 'admin.php?page=re-beehiiv-import' ) );
+		wp_safe_redirect( admin_url( 'admin.php?page=wp-to-beehiiv-integration-import' ) );
 	}
 
 	/**
@@ -162,7 +162,7 @@ class Forms {
 					'error'   => true,
 					'message' => sprintf(
 						// Translators: %s is a placeholder for the field label. This text is displayed when a required field is left blank.
-						__( '%s is required', 're-beehiiv' ),
+						__( '%s is required', 'wp-to-beehiiv-integration' ),
 						$field['label']
 					),
 				);

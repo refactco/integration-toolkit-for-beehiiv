@@ -1,12 +1,12 @@
 <?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
 
-namespace Re_Beehiiv\Import;
-use Re_Beehiiv\API\V2\Posts;
+namespace WP_to_Beehiiv_Integration\Import;
+use WP_to_Beehiiv_Integration\API\V2\Posts;
 
 defined( 'ABSPATH' ) || exit;
 
 
-class Process_Pages extends \Re_Beehiiv\Lib\Bulk_Process {
+class Process_Pages extends \WP_to_Beehiiv_Integration\Lib\Bulk_Process {
 
     protected int $total_pages = 1;
 
@@ -94,14 +94,14 @@ class Process_Pages extends \Re_Beehiiv\Lib\Bulk_Process {
             if ( 'error' === $status ) {
                 $this->logger->log(
                     array(
-                        'message' => __('Unable to fetch content from page ', 're-beehiiv') . $this->current_page_index,
+                        'message' => __('Unable to fetch content from page ', 'wp-to-beehiiv-integration') . $this->current_page_index,
                         'status'  => 'error',
                     )
                 );
             } elseif ( 'success' === $status ) {
                 $this->logger->log(
                     array(
-                        'message' => __('Fetched content from page ', 're-beehiiv') . $this->current_page_index,
+                        'message' => __('Fetched content from page ', 'wp-to-beehiiv-integration') . $this->current_page_index,
                         'status'  => 'success',
                     )
                 );

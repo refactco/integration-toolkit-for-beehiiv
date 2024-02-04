@@ -1,6 +1,6 @@
 <?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
 
-namespace Re_Beehiiv\Import;
+namespace WP_to_Beehiiv_Integration\Import;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -46,7 +46,7 @@ class Import {
     }
 
     public static function get_import_progress() {
-        return get_option( 're_beehiiv_manual_import_progress', array() );
+        return get_option( 'wp_to_beehiiv_integration_manual_import_progress', array() );
     }
 
 }

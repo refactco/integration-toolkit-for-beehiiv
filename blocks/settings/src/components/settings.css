@@ -1,8 +1,8 @@
-.re-beehiiv-settings-wrap {
+.wp-to-beehiiv-integration-settings-wrap {
   margin-right: 1em;
 }
 
-.re-beehiiv-settings-header {
+.wp-to-beehiiv-integration-settings-header {
   background-color: #003233;
   padding: 1em;
   display: flex;
@@ -11,7 +11,7 @@
   margin-bottom: 1em;
 }
 
-.re-beehiiv-settings-header__logo {
+.wp-to-beehiiv-integration-settings-header__logo {
   width: 200px;
   display: flex;
   font-size: 1.2em;
@@ -19,16 +19,16 @@
   color: #fff;
 }
 
-.re-beehiiv-settings-header__links a{
+.wp-to-beehiiv-integration-settings-header__links a{
   color: #c6f0c2;
   text-decoration: none;
 }
 
-.re-beehiiv-settings-tabs-contents-actions {
+.wp-to-beehiiv-integration-settings-tabs-contents-actions {
   margin: 1em 0;
 }
 
-.re-beehiiv-snackbar-settings {
+.wp-to-beehiiv-integration-snackbar-settings {
   margin-bottom: 1em;
   width: 100%;
   max-width: 100%;

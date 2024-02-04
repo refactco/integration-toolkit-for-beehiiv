@@ -1,7 +1,7 @@
 <?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
 
-namespace Re_Beehiiv\Import;
-use Re_Beehiiv\Lib\Logger;
+namespace WP_to_Beehiiv_Integration\Import;
+use WP_to_Beehiiv_Integration\Lib\Logger;
 use WP_Error;
 
 class Prepare_Post {
@@ -40,8 +40,8 @@ class Prepare_Post {
         
         // Prepare post data
         $post_data = apply_filters(
-            're_beehiiv_import_prepare_post',
-            $this->prepare_beehiiv_data_for_wp(
+            'wp_to_beehiiv_integration_import_prepare_post',
+            $this->prepawp_to_beehiiv_integration_data_for_wp(
                 $this->item,
             ),
             $this->item,
@@ -58,7 +58,7 @@ class Prepare_Post {
             if ( $this->is_unique_post( $this->item['id'] ) ) {
                 throw new \Exception(
                     sprintf(
-                        __( '%1$s - %2$s is already exists', 're-beehiiv' ),
+                        __( '%1$s - %2$s is already exists', 'wp-to-beehiiv-integration' ),
                         $this->item['id'],
                         $this->item['title'],
                     )
@@ -69,7 +69,7 @@ class Prepare_Post {
             if ( ! $this->is_unique_post( $this->item['id'] ) ) {
                 throw new \Exception(
                     sprintf(
-                        __( '%1$s - %2$s is not exists', 're-beehiiv' ),
+                        __( '%1$s - %2$s is not exists', 'wp-to-beehiiv-integration' ),
                         $this->item['id'],
                         $this->item['title'],
                     )
@@ -81,7 +81,7 @@ class Prepare_Post {
         if ( ! in_array( $this->item['status'], $this->form_data['beehiiv-status'], true ) ) {
             throw new \Exception(
                 sprintf(
-                    __( '%1$s - %2$s is not in selected status', 're-beehiiv' ),
+                    __( '%1$s - %2$s is not in selected status', 'wp-to-beehiiv-integration' ),
                     $this->item['id'],
                     $this->item['title'],
                 )
@@ -99,7 +99,7 @@ class Prepare_Post {
 	 */
 	public function is_unique_post( $post_id ) {
 		$args  = array(
-			'meta_key'       => 're_beehiiv_post_id',
+			'meta_key'       => 'wp_to_beehiiv_integration_post_id',
 			'meta_value'     => $post_id,
 			'post_type'      => 'post',
 			'post_status'    => 'any',
@@ -121,7 +121,7 @@ class Prepare_Post {
 	 * @param array $value
 	 * @return array
 	 */
-	private function prepare_beehiiv_data_for_wp( $value ) {
+	private function prepawp_to_beehiiv_integration_data_for_wp( $value ) {
 
 		// create a post
 		$data = array(

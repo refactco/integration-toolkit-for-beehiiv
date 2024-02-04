@@ -5,8 +5,8 @@
  * @link       https://refact.co
  * @since      1.0.0
  *
- * @package    Re_Beehiiv
- * @subpackage Re_Beehiiv/admin
+ * @package    WP_to_Beehiiv_Integration
+ * @subpackage WP_to_Beehiiv_Integration/admin
  */
 
 /**
@@ -15,11 +15,11 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
- * @package    Re_Beehiiv
- * @subpackage Re_Beehiiv/admin
+ * @package    WP_to_Beehiiv_Integration
+ * @subpackage WP_to_Beehiiv_Integration/admin
  * @author     Refact <info@refact.co>
  */
-class Re_Beehiiv_Admin {
+class WP_to_Beehiiv_Integration_Admin {
 
 
 	/**
@@ -27,9 +27,9 @@ class Re_Beehiiv_Admin {
 	 *
 	 * @since    1.0.0
 	 * @access   private
-	 * @var      string    $re_beehiiv    The ID of this plugin.
+	 * @var      string    $wp_to_beehiiv_integration    The ID of this plugin.
 	 */
-	private $re_beehiiv;
+	private $wp_to_beehiiv_integration;
 
 	/**
 	 * The version of this plugin.
@@ -44,12 +44,12 @@ class Re_Beehiiv_Admin {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
-	 * @param      string    $re_beehiiv       The name of this plugin.
+	 * @param      string    $wp_to_beehiiv_integration       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $re_beehiiv, $version ) {
+	public function __construct( $wp_to_beehiiv_integration, $version ) {
 
-		$this->re_beehiiv = $re_beehiiv;
+		$this->wp_to_beehiiv_integration = $wp_to_beehiiv_integration;
 
 		$this->version = $version;
 	}
@@ -64,15 +64,15 @@ class Re_Beehiiv_Admin {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Re_Beehiiv_Loader as all of the hooks are defined
+		 * defined in WP_to_Beehiiv_Integration_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Re_Beehiiv_Loader will then create the relationship
+		 * The WP_to_Beehiiv_Integration_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->re_beehiiv, plugin_dir_url( __FILE__ ) . 'css/re-beehiiv-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->wp_to_beehiiv_integration, plugin_dir_url( __FILE__ ) . 'css/wp-to-beehiiv-integration-admin.css', array(), $this->version, 'all' );
 		wp_enqueue_script('tippy-tooltip1', 'https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js', array(), $this->version, false);
 		wp_enqueue_script('tippy-tooltip2', 'https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js', array(), $this->version, false);
 		wp_enqueue_script('font-awesome', 'https://kit.fontawesome.com/57fc5c4e26.js', array(), $this->version, false);
@@ -88,37 +88,37 @@ class Re_Beehiiv_Admin {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Re_Beehiiv_Loader as all of the hooks are defined
+		 * defined in WP_to_Beehiiv_Integration_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Re_Beehiiv_Loader will then create the relationship
+		 * The WP_to_Beehiiv_Integration_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->re_beehiiv, plugin_dir_url( __FILE__ ) . 'js/re-beehiiv-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->wp_to_beehiiv_integration, plugin_dir_url( __FILE__ ) . 'js/wp-to-beehiiv-integration-admin.js', array( 'jquery' ), $this->version, false );
 
 		wp_localize_script(
-			$this->re_beehiiv,
-			'RE_BEEHIIV_CORE',
+			$this->wp_to_beehiiv_integration,
+			'WP_TO_BEEHIIV_INTEGRATIONCORE',
 			array(
 				'ajax_url'           => admin_url( 'admin-ajax.php' ),
 				'progress_bar_nonce' => wp_create_nonce( 'update_progress_bar_nonce' ),
 				'strings'            => array(
-					'select_taxonomy' => __( 'Select taxonomy', 're-beehiiv' ),
-					'select_term'     => __( 'Select taxonomy term', 're-beehiiv' ),
+					'select_taxonomy' => __( 'Select taxonomy', 'wp-to-beehiiv-integration' ),
+					'select_term'     => __( 'Select taxonomy term', 'wp-to-beehiiv-integration' ),
 					'labels'          => array(
-						'content_type'   => __( 'Content Type', 're-beehiiv' ),
-						'beehiiv_status' => __( 'Post status on Beehiiv', 're-beehiiv' ),
-						'post_type'      => __( 'Post Type', 're-beehiiv' ),
-						'taxonomy'       => __( 'Taxonomy', 're-beehiiv' ),
-						'taxonomy_term'  => __( 'Taxonomy Term', 're-beehiiv' ),
-						'post_author'    => __( 'Content Author', 're-beehiiv' ),
-						'import_method'  => __( 'Import Method', 're-beehiiv' ),
-						'post_status'    => __( 'Post Status', 're-beehiiv' ),
+						'content_type'   => __( 'Content Type', 'wp-to-beehiiv-integration' ),
+						'beehiiv_status' => __( 'Post status on Beehiiv', 'wp-to-beehiiv-integration' ),
+						'post_type'      => __( 'Post Type', 'wp-to-beehiiv-integration' ),
+						'taxonomy'       => __( 'Taxonomy', 'wp-to-beehiiv-integration' ),
+						'taxonomy_term'  => __( 'Taxonomy Term', 'wp-to-beehiiv-integration' ),
+						'post_author'    => __( 'Content Author', 'wp-to-beehiiv-integration' ),
+						'import_method'  => __( 'Import Method', 'wp-to-beehiiv-integration' ),
+						'post_status'    => __( 'Post Status', 'wp-to-beehiiv-integration' ),
 					),
 					// Translators: {{field_name}} is a required field name and should not be translated.
-					'required_fields' => __( '{{field_name}}  is a Required Field', 're-beehiiv' ),
+					'required_fields' => __( '{{field_name}}  is a Required Field', 'wp-to-beehiiv-integration' ),
 				),
 			)
 		);

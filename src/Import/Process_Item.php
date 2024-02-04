@@ -1,12 +1,12 @@
 <?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
 
-namespace Re_Beehiiv\Import;
-use Re_Beehiiv\API\V2\Posts;
+namespace WP_to_Beehiiv_Integration\Import;
+use WP_to_Beehiiv_Integration\API\V2\Posts;
 
 defined( 'ABSPATH' ) || exit;
 
 
-class Process_Item extends \Re_Beehiiv\Lib\Bulk_Process {
+class Process_Item extends \WP_to_Beehiiv_Integration\Lib\Bulk_Process {
 
     public function setup() {
 

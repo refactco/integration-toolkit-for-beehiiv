@@ -1,5 +1,5 @@
 <?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
-namespace Re_Beehiiv\API\V2;
+namespace WP_to_Beehiiv_Integration\API\V2;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -8,8 +8,8 @@ defined( 'ABSPATH' ) || exit;
  * This class contains all the methods to interact with the posts endpoint of the Beehiiv API
  *
  * @since      1.0.0
- * @package    Re_Beehiiv
- * @subpackage Re_Beehiiv/API/V2
+ * @package    WP_to_Beehiiv_Integration
+ * @subpackage WP_to_Beehiiv_Integration/API/V2
  */
 class Posts {
 
@@ -58,8 +58,8 @@ class Posts {
 			$publication_id = $args['publication_id'];
 			$api_key        = $args['api_key'];
 		} else {
-			$publication_id = get_option( 're_beehiiv_publication_id' );
-			$api_key        = get_option( 're_beehiiv_api_key' );
+			$publication_id = get_option( 'wp_to_beehiiv_integration_publication_id' );
+			$api_key        = get_option( 'wp_to_beehiiv_integration_api_key' );
 		}
 
 		$route = Routes::build_route(

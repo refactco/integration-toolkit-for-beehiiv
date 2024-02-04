@@ -2,7 +2,7 @@
 /**
  * Header Component
  *
- * @package Re_Beehiiv
+ * @package WP_to_Beehiiv_Integration
  */
 
 if ( ! defined( 'WPINC' ) ) {
@@ -12,9 +12,9 @@ if ( ! defined( 'WPINC' ) ) {
 ?>
 
 
-<div class="re-beehiiv-settings-header">
-	<div class="re-beehiiv-settings-header__logo">
-		<?php esc_attr_e( 'Re/Beehiiv', 're-beehiiv' ); ?>
+<div class="wp-to-beehiiv-integration-settings-header">
+	<div class="wp-to-beehiiv-integration-settings-header__logo">
+		<?php esc_attr_e( 'Re/Beehiiv', 'wp-to-beehiiv-integration' ); ?>
 	</div>
-	<div class="re-beehiiv-settings-header__links"></div>
+	<div class="wp-to-beehiiv-integration-settings-header__links"></div>
 </div>
