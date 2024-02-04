@@ -19,7 +19,7 @@ Effortlessly connect Beehiiv content and subscription capabilities with your Wor
 3. Upload the plugin folder to the `/wp-content/plugins/` directory of your WordPress installation using FTP or any file manager.
 4. Navigate to the 'Plugins' section in your WordPress dashboard.
 5. Locate 'Beehiiv WordPress Integration Plugin' and activate it.
-6. After activation, navigate to the Re/Beehiiv section in your WordPress dashboard.
+6. After activation, navigate to the WP to Beehiiv Integration section in your WordPress dashboard.
 7. Follow the on-screen instructions to set up content imports and subscription forms.
 
 ## Usage

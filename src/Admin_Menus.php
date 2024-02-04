@@ -15,8 +15,8 @@ class Admin_Menus {
 	 */
 	public function register() {
 		add_menu_page(
-			__( 'Re/Beehiiv', 'wp-to-beehiiv-integration' ),
-			__( 'Re/Beehiiv', 'wp-to-beehiiv-integration' ),
+			__( 'WP to Beehiiv Integration', 'wp-to-beehiiv-integration' ),
+			__( 'WP to Beehiiv Integration', 'wp-to-beehiiv-integration' ),
 			'manage_options',
 			'wp-to-beehiiv-integration-import',
 			array( $this, 'load_page_import' ),
@@ -28,7 +28,7 @@ class Admin_Menus {
 
 		add_submenu_page(
 			'wp-to-beehiiv-integration-import',
-			__( 'Re/Beehiiv - Import', 'wp-to-beehiiv-integration' ),
+			__( 'WP to Beehiiv Integration - Import', 'wp-to-beehiiv-integration' ),
 			__( 'Import Content', 'wp-to-beehiiv-integration' ),
 			'manage_options',
 			'wp-to-beehiiv-integration-import',
@@ -37,7 +37,7 @@ class Admin_Menus {
 
 		add_submenu_page(
 			'wp-to-beehiiv-integration-import',
-			__( 'Re/Beehiiv - Import', 'wp-to-beehiiv-integration' ),
+			__( 'WP to Beehiiv Integration - Import', 'wp-to-beehiiv-integration' ),
 			'Settings',
 			'manage_options',
 			'wp-to-beehiiv-integration-settings',

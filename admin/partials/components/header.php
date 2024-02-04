@@ -14,7 +14,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 <div class="wp-to-beehiiv-integration-settings-header">
 	<div class="wp-to-beehiiv-integration-settings-header__logo">
-		<?php esc_attr_e( 'Re/Beehiiv', 'wp-to-beehiiv-integration' ); ?>
+		<?php esc_attr_e( 'WP to Beehiiv Integration', 'wp-to-beehiiv-integration' ); ?>
 	</div>
 	<div class="wp-to-beehiiv-integration-settings-header__links"></div>
 </div>
