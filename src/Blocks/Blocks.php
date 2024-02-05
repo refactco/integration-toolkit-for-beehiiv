@@ -1,8 +1,8 @@
 <?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
 
-namespace Re_Beehiiv\Blocks;
+namespace WP_to_Beehiiv_Integration\Blocks;
 
-use Re_Beehiiv\Blocks\Settings;
+use WP_to_Beehiiv_Integration\Blocks\Settings;
 
 /**
  * Register Plugin Blocks

@@ -1,5 +1,5 @@
 <?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
-namespace Re_Beehiiv\API\V2;
+namespace WP_to_Beehiiv_Integration\API\V2;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -8,8 +8,8 @@ defined( 'ABSPATH' ) || exit;
  * This class is used to send a request to the Beehiiv API
  *
  * @since      1.0.0
- * @package    Re_Beehiiv
- * @subpackage Re_Beehiiv/API/V2
+ * @package    WP_to_Beehiiv_Integration
+ * @subpackage WP_to_Beehiiv_Integration/API/V2
  */
 class Request_Beehiiv {
 

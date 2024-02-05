@@ -20,12 +20,12 @@ __webpack_require__.r(__webpack_exports__);
 
 const Header = props => {
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "re-beehiiv-settings-header",
+    className: "wp-to-beehiiv-integration-settings-header",
     key: "settings-header"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "re-beehiiv-settings-header__logo"
-  }, "Re/Beehiiv"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "re-beehiiv-settings-header__links"
+    className: "wp-to-beehiiv-integration-settings-header__logo"
+  }, "WP to Beehiiv Integration"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "wp-to-beehiiv-integration-settings-header__links"
   }));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Header);
@@ -60,9 +60,9 @@ __webpack_require__.r(__webpack_exports__);
 const Tabs = props => {
   const [saving, setSaving] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
   const [loading, setLoading] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
-  const [apiKey, setApiKey] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(re_beehiiv_settings.api_key);
-  const [publicationId, setPublicationId] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(re_beehiiv_settings.publication_id);
-  const [status, setStatus] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(re_beehiiv_settings.api_status);
+  const [apiKey, setApiKey] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(wp_to_beehiiv_integration_settings.api_key);
+  const [publicationId, setPublicationId] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(wp_to_beehiiv_integration_settings.publication_id);
+  const [status, setStatus] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(wp_to_beehiiv_integration_settings.api_status);
   const [onSaveMessage, setOnSaveMessage] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)("");
   const saveSettings = () => {
     const settings = {
@@ -107,23 +107,23 @@ const Tabs = props => {
     });
   };
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "re-beehiiv-heading"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, "Settings"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Establish a connection between your WordPress website and Beehiiv by providing the necessary credentials.', 're-beehiiv'))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "re-beehiiv-tabs"
+    className: "wp-to-beehiiv-integration-heading"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, "Settings"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Establish a connection between your WordPress website and Beehiiv by providing the necessary credentials.', 'wp-to-beehiiv-integration'))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "wp-to-beehiiv-integration-tabs"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("nav", {
     className: "nav-tab-wrapper"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
     className: "re-nav-tab re-nav-tab-active",
-    "data-tab": "re-beehiiv-credentials",
+    "data-tab": "wp-to-beehiiv-integration-credentials",
     href: "#"
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Beehiiv Credentials', 're-beehiiv')))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "re-beehiiv-settings-tabs re-beehiiv-wrapper",
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Beehiiv Credentials', 'wp-to-beehiiv-integration')))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "wp-to-beehiiv-integration-settings-tabs wp-to-beehiiv-integration-wrapper",
     key: "settings-tabs"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "re-beehiiv-settings-tabs-menu",
+    className: "wp-to-beehiiv-integration-settings-tabs-menu",
     key: "settings-tabs"
   }), onSaveMessage && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Snackbar, {
-    className: "re-beehiiv-snackbar re-beehiiv-snackbar-settings",
+    className: "wp-to-beehiiv-integration-snackbar wp-to-beehiiv-integration-snackbar-settings",
     explicitDismiss: true,
     onDismiss: () => setOnSaveMessage(""),
     status: "success"
@@ -136,20 +136,20 @@ const Tabs = props => {
     }
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.__experimentalInputControl, {
     type: "password",
-    help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)("Enter the unique API key you received from Beehiiv. This key authorizes and facilitates the communication between your WordPress website and Beehiiv.", 're-beehiiv'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)("API Key", 're-beehiiv'),
+    help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)("Enter the unique API key you received from Beehiiv. This key authorizes and facilitates the communication between your WordPress website and Beehiiv.", 'wp-to-beehiiv-integration'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)("API Key", 'wp-to-beehiiv-integration'),
     onChange: value => setApiKey(value),
-    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)("Enter your API key", 're-beehiiv'),
+    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)("Enter your API key", 'wp-to-beehiiv-integration'),
     value: apiKey
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.__experimentalInputControl, {
     type: "password",
-    help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)("Input the specific ID related to the content or publication you intend to import. This helps in pinpointing the exact data you want to fetch from Beehiiv.", 're-beehiiv'),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)("Publication ID", 're-beehiiv'),
-    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)("Enter your publication ID", 're-beehiiv'),
+    help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)("Input the specific ID related to the content or publication you intend to import. This helps in pinpointing the exact data you want to fetch from Beehiiv.", 'wp-to-beehiiv-integration'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)("Publication ID", 'wp-to-beehiiv-integration'),
+    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)("Enter your publication ID", 'wp-to-beehiiv-integration'),
     onChange: value => setPublicationId(value),
     value: publicationId
   }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "re-beehiiv-settings-tabs-contents-actions"
+    className: "wp-to-beehiiv-integration-settings-tabs-contents-actions"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Button, {
     isPrimary: true,
     style: {
@@ -158,18 +158,18 @@ const Tabs = props => {
     onClick: () => saveSettings(),
     isBusy: saving,
     disabled: status == 'connected',
-    className: "re-beehiiv-settings-save"
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Save', 're-beehiiv')), status && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Button, {
+    className: "wp-to-beehiiv-integration-settings-save"
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Save', 'wp-to-beehiiv-integration')), status && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Button, {
     style: {
       marginRight: "1em"
     },
     isDestructive: true,
     onClick: () => removeAPIKey(),
-    className: "re-beehiiv-settings-disconnect"
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)("Disconnect", 're-beehiiv')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+    className: "wp-to-beehiiv-integration-settings-disconnect"
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)("Disconnect", 'wp-to-beehiiv-integration')), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
     href: "https://app.beehiiv.com/settings/integrations",
     target: "_blank"
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)("Get your API key", 're-beehiiv')))));
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)("Get your API key", 'wp-to-beehiiv-integration')))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Tabs);
 
@@ -326,10 +326,10 @@ __webpack_require__.r(__webpack_exports__);
 
 const Settings = props => {
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "re-beehiiv-settings-wrap"
+    className: "wp-to-beehiiv-integration-settings-wrap"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_header__WEBPACK_IMPORTED_MODULE_3__["default"], null), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_tabs__WEBPACK_IMPORTED_MODULE_4__["default"], null));
 };
-var rootElement = document.getElementById("re-beehiiv-settings");
+var rootElement = document.getElementById("wp-to-beehiiv-integration-settings");
 if (rootElement) {
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.render)((0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Settings, {
     scope: "global"

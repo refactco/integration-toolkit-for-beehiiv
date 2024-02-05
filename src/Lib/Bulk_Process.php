@@ -1,7 +1,7 @@
 <?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
-namespace Re_Beehiiv\Lib;
+namespace WP_to_Beehiiv_Integration\Lib;
 
-use Re_Beehiiv\Lib\Logger;
+use WP_to_Beehiiv_Integration\Lib\Logger;
 
 /**
  * Class Bulk_Process

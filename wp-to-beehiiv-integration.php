@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       Re/Beehiiv
+ * Plugin Name:       WP to Beehiiv Integration
  * Plugin URI:        https://refact.co/
  * Description:       integrates WP with Beehive, making it easy to sync subscriptions and streamline your email marketing campaigns.
  * Version:           1.0.0
@@ -13,7 +13,7 @@
  * Requires at least: 5.2
  * Requires PHP:      7.2
  *
- * @package Re_Beehiiv
+ * @package WP_to_Beehiiv_Integration
  **/
 
 // If this file is called directly, abort.
@@ -24,36 +24,36 @@ if ( ! defined( 'WPINC' ) ) {
 // Load Plugin File autoload
 require_once dirname( __FILE__ ) . '/vendor/autoload.php';
 
-if ( ! defined( 'RE_BEEHIIV_CORE_VERSION' ) ) {
-	define( 'RE_BEEHIIV_CORE_VERSION', '1.0.0' );
+if ( ! defined( 'WP_TO_BEEHIIV_INTEGRATIONCORE_VERSION' ) ) {
+	define( 'WP_TO_BEEHIIV_INTEGRATIONCORE_VERSION', '1.0.0' );
 }
 
-if ( ! defined( 'RE_BEEHIIV_URL' ) ) {
-	define( 'RE_BEEHIIV_URL', plugin_dir_url( __FILE__ ) );
+if ( ! defined( 'WP_TO_BEEHIIV_INTEGRATIONURL' ) ) {
+	define( 'WP_TO_BEEHIIV_INTEGRATIONURL', plugin_dir_url( __FILE__ ) );
 }
 
-if ( ! defined( 'RE_BEEHIIV_PATH' ) ) {
-	define( 'RE_BEEHIIV_PATH', plugin_dir_path( __FILE__ ) );
+if ( ! defined( 'WP_TO_BEEHIIV_INTEGRATIONPATH' ) ) {
+	define( 'WP_TO_BEEHIIV_INTEGRATIONPATH', plugin_dir_path( __FILE__ ) );
 }
 
 
 
 /**
  * The code that runs during plugin activation.
- * This action is documented in includes/class-re-beehiiv-activator.php
+ * This action is documented in includes/class-wp-to-beehiiv-integration-activator.php
  */
-function re_bee_activate_re_beehiiv() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-re-beehiiv-activator.php';
-	Re_Beehiiv_Activator::activate();
+function re_bee_activate_wp_to_beehiiv_integration() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wp-to-beehiiv-integration-activator.php';
+	WP_to_Beehiiv_Integration_Activator::activate();
 }
 
-register_activation_hook( __FILE__, 're_bee_activate_re_beehiiv' );
+register_activation_hook( __FILE__, 're_bee_activate_wp_to_beehiiv_integration' );
 
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-re-beehiiv.php';
+require plugin_dir_path( __FILE__ ) . 'includes/class-wp-to-beehiiv-integration.php';
 
 /**
  * Begins execution of the plugin.
@@ -64,8 +64,8 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-re-beehiiv.php';
  *
  * @since    1.0.0
  */
-function re_beehiiv() {
-	$plugin = new Re_Beehiiv();
+function wp_to_beehiiv_integration() {
+	$plugin = new WP_to_Beehiiv_Integration();
 	$plugin->run();
 }
-re_beehiiv();
+wp_to_beehiiv_integration();

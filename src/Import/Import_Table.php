@@ -1,16 +1,16 @@
 <?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
 
-namespace Re_Beehiiv\Import;
+namespace WP_to_Beehiiv_Integration\Import;
 
 /**
  * Class Import_Table
  * This class is responsible for creating the custom table and its operations
  *
- * @package Re_Beehiiv\Import
+ * @package WP_to_Beehiiv_Integration\Import
  */
 class Import_Table {
 
-	const TABLE_NAME = 're_beehiiv_import';
+	const TABLE_NAME = 'wp_to_beehiiv_integration_import';
 
 	/**
 	 * Create the custom table
@@ -89,7 +89,7 @@ class Import_Table {
 		);
 
 		if ( ! $res ) {
-			throw new \Exception( __('Error inserting row in custom table' , 're-beehiiv'));
+			throw new \Exception( __('Error inserting row in custom table' , 'wp-to-beehiiv-integration'));
 		}
 	}
 

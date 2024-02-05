@@ -1,10 +1,10 @@
 <?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
 
-namespace Re_Beehiiv\Import;
-use Re_Beehiiv\Import\Interfaces\Importer;
-use Re_Beehiiv\Import\Manage_Actions;
-use Re_Beehiiv\Import\Queue;
-use Re_Beehiiv\API\V2\Posts;
+namespace WP_to_Beehiiv_Integration\Import;
+use WP_to_Beehiiv_Integration\Import\Interfaces\Importer;
+use WP_to_Beehiiv_Integration\Import\Manage_Actions;
+use WP_to_Beehiiv_Integration\Import\Queue;
+use WP_to_Beehiiv_Integration\API\V2\Posts;
 
 defined( 'ABSPATH' ) || exit;
 

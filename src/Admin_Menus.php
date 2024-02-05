@@ -1,6 +1,6 @@
 <?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName
 
-namespace Re_Beehiiv;
+namespace WP_to_Beehiiv_Integration;
 
 /**
  * This class is responsible for registering and loading the admin menus
@@ -15,10 +15,10 @@ class Admin_Menus {
 	 */
 	public function register() {
 		add_menu_page(
-			__( 'Re/Beehiiv', 're-beehiiv' ),
-			__( 'Re/Beehiiv', 're-beehiiv' ),
+			__( 'WP to Beehiiv Integration', 'wp-to-beehiiv-integration' ),
+			__( 'WP to Beehiiv Integration', 'wp-to-beehiiv-integration' ),
 			'manage_options',
-			're-beehiiv-import',
+			'wp-to-beehiiv-integration-import',
 			array( $this, 'load_page_import' ),
 			'dashicons-welcome-write-blog',
 			75
@@ -27,20 +27,20 @@ class Admin_Menus {
 		// add submenu page
 
 		add_submenu_page(
-			're-beehiiv-import',
-			__( 'Re/Beehiiv - Import', 're-beehiiv' ),
-			__( 'Import Content', 're-beehiiv' ),
+			'wp-to-beehiiv-integration-import',
+			__( 'WP to Beehiiv Integration - Import', 'wp-to-beehiiv-integration' ),
+			__( 'Import Content', 'wp-to-beehiiv-integration' ),
 			'manage_options',
-			're-beehiiv-import',
+			'wp-to-beehiiv-integration-import',
 			array( $this, 'load_page_import' )
 		);
 
 		add_submenu_page(
-			're-beehiiv-import',
-			__( 'Re/Beehiiv - Import', 're-beehiiv' ),
+			'wp-to-beehiiv-integration-import',
+			__( 'WP to Beehiiv Integration - Import', 'wp-to-beehiiv-integration' ),
 			'Settings',
 			'manage_options',
-			're-beehiiv-settings',
+			'wp-to-beehiiv-integration-settings',
 			array( $this, 'add_settings_page' )
 		);
 	}
@@ -52,8 +52,8 @@ class Admin_Menus {
 	 */
 	public function load_page_import() {
 		$this->add_notice_when_not_activated();
-		if ( \Re_Beehiiv::is_plugin_activated() ) {
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/re-beehiiv-admin-import.php';
+		if ( \WP_to_Beehiiv_Integration::is_plugin_activated() ) {
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/wp-to-beehiiv-integration-admin-import.php';
 		}
 	}
 
@@ -63,13 +63,13 @@ class Admin_Menus {
 	 * @return void
 	 */
 	private function add_notice_when_not_activated() {
-		if ( ! \Re_Beehiiv::is_plugin_activated() ) {
+		if ( ! \WP_to_Beehiiv_Integration::is_plugin_activated() ) {
 			?>
 			<div class="notice notice-error is-dismissible">
 				<p>
 				<?php 
-					$message = esc_html__( 'API Key or publication ID is not set. Please set it on the ', 're-beehiiv' );
-					$settings_url = esc_url( home_url( '/wp-admin/admin.php?page=re-beehiiv-settings' ) );
+					$message = esc_html__( 'API Key or publication ID is not set. Please set it on the ', 'wp-to-beehiiv-integration' );
+					$settings_url = esc_url( home_url( '/wp-admin/admin.php?page=wp-to-beehiiv-integration-settings' ) );
 
 					echo "<p>{$message}<a href='{$settings_url}'>settings page.</a></p>";
 				?>
@@ -85,6 +85,6 @@ class Admin_Menus {
 	 * @return void
 	 */
 	public function add_settings_page() {
-		require_once RE_BEEHIIV_PATH . 'admin/partials/re-beehiiv-admin-settings.php';
+		require_once WP_TO_BEEHIIV_INTEGRATIONPATH . 'admin/partials/wp-to-beehiiv-integration-admin-settings.php';
 	}
 }

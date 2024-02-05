@@ -2,5 +2,5 @@
 /**
  * Functions
  *
- * @package Re_Beehiiv
+ * @package WP_to_Beehiiv_Integration
  */

@@ -6,14 +6,14 @@ import Tabs from "./components/tabs";
 const Settings = (props) => {
 
   return (
-    <div className="re-beehiiv-settings-wrap">
+    <div className="wp-to-beehiiv-integration-settings-wrap">
       <Header />
       <Tabs />
     </div>
   );
 };
 
-var rootElement = document.getElementById("re-beehiiv-settings");
+var rootElement = document.getElementById("wp-to-beehiiv-integration-settings");
 
 if (rootElement) {
   render(<Settings scope="global" />, rootElement);

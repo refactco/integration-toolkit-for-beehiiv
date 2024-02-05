@@ -7,10 +7,10 @@
  * @link       https://markitdone.com
  * @since      1.0.0
  *
- * @package    Re_Beehiiv
- * @subpackage Re_Beehiiv/admin/templates
+ * @package    WP_to_Beehiiv_Integration
+ * @subpackage WP_to_Beehiiv_Integration/admin/templates
  */
 
 ?>
 
-<div id="re-beehiiv-settings"></div>
+<div id="wp-to-beehiiv-integration-settings"></div>
