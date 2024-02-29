@@ -1,13 +1,13 @@
 <?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
 
-namespace WP_to_Beehiiv_Integration\Import;
-use WP_to_Beehiiv_Integration\Lib\Logger;
+namespace Integration_Toolkit_For_Beehiiv\Import;
+use Integration_Toolkit_For_Beehiiv\Lib\Logger;
 
 /**
  * Class Create_Post
  * This class is responsible for creating a post from the data
  *
- * @package WP_to_Beehiiv_Integration\Import
+ * @package Integration_Toolkit_For_Beehiiv\Import
  */
 class Create_Post {
 
@@ -52,7 +52,7 @@ class Create_Post {
 			$this->data = false;
 			$this->logger->log(
 				array(
-					'message' => __( 'No data found', 'wp-to-beehiiv-integration' ),
+					'message' => __( 'No data found', 'integration-toolkit-for-beehiiv' ),
 					'status'  => 'error',
 				)
 			);
@@ -73,7 +73,7 @@ class Create_Post {
 		if ( ! $this->data || ! isset( $this->data['meta']['post_id'] ) ) {
 			return array(
 				'success' => false,
-				'message' => __( 'No data found', 'wp-to-beehiiv-integration' ),
+				'message' => __( 'No data found', 'integration-toolkit-for-beehiiv' ),
 			);
 		}
 
@@ -88,20 +88,20 @@ class Create_Post {
 
 				$this->logger->log(
 					array(
-						'message' => esc_attr__( ' Updated post', 'wp-to-beehiiv-integration' ) . ' - <a href="' . $this->get_edit_post_link() . '" target="_blank">#' . $existing_id . ' - ' . $this->data['post']['post_title'] . '</a> ',
+						'message' => esc_attr__( ' Updated post', 'integration-toolkit-for-beehiiv' ) . ' - <a href="' . $this->get_edit_post_link() . '" target="_blank">#' . $existing_id . ' - ' . $this->data['post']['post_title'] . '</a> ',
 						'status'  => 'success',
 					)
 				);
 
 				return array(
 					'success' => true,
-					'message' => __('Post updated', 'wp-to-beehiiv-integration' ),
+					'message' => __('Post updated', 'integration-toolkit-for-beehiiv' ),
 				);
 			} else {
 
 				$this->logger->log(
 					array(
-						'message' => esc_attr__( 'Skipped post', 'wp-to-beehiiv-integration' ) . ' - <a href="' . $this->get_edit_post_link() . '" target="_blank">#' . $existing_id . ' - ' . $this->data['post']['post_title'] . '</a> ',
+						'message' => esc_attr__( 'Skipped post', 'integration-toolkit-for-beehiiv' ) . ' - <a href="' . $this->get_edit_post_link() . '" target="_blank">#' . $existing_id . ' - ' . $this->data['post']['post_title'] . '</a> ',
 						'status'  => 'skipped',
 					)
 				);
@@ -109,7 +109,7 @@ class Create_Post {
 				$this->complete();
 				return array(
 					'success' => true,
-					'message' => __( 'Post already exists', 'wp-to-beehiiv-integration' ),
+					'message' => __( 'Post already exists', 'integration-toolkit-for-beehiiv' ),
 				);
 			}
 		}
@@ -118,10 +118,10 @@ class Create_Post {
 		$this->add_meta();
 		$this->add_taxonomies();
 		$this->add_tags();
-
+		$this->add_thumbnail();
 		$this->logger->log(
 			array(
-				'message' => esc_attr__( 'Created post', 'wp-to-beehiiv-integration' ) . ' - <a href="' . $this->get_edit_post_link() . '" target="_blank">#' . $this->post_id . ' - ' . $this->data['post']['post_title'] . '</a> ',
+				'message' => esc_attr__( 'Created post', 'integration-toolkit-for-beehiiv' ) . ' - <a href="' . $this->get_edit_post_link() . '" target="_blank">#' . $this->post_id . ' - ' . $this->data['post']['post_title'] . '</a> ',
 				'status'  => 'success',
 			)
 		);
@@ -139,7 +139,7 @@ class Create_Post {
 
 		return array(
 			'success' => true,
-			'message' => __( 'Post created', 'wp-to-beehiiv-integration' ),
+			'message' => __( 'Post created', 'integration-toolkit-for-beehiiv' ),
 		);
 	}
 
@@ -159,7 +159,7 @@ class Create_Post {
 	 */
 	private function add_meta() {
 		foreach ( $this->data['meta'] as $key => $value ) {
-			update_post_meta( $this->post_id, 'wp_to_beehiiv_integration_' . $key, $value );
+			update_post_meta( $this->post_id, 'integration_toolkit_for_beehiiv_' . $key, $value );
 		}
 	}
 
@@ -203,7 +203,7 @@ class Create_Post {
 	 */
 	private function is_unique_post() {
 		$args  = array(
-			'meta_key'       => 'wp_to_beehiiv_integration_post_id',
+			'meta_key'       => 'integration_toolkit_for_beehiiv_post_id',
 			'meta_value'     => $this->data['meta']['post_id'],
 			'post_type'      =>  $this->data['args']['form_data']['post_type'],
 			'post_status'    => 'any',
@@ -250,8 +250,30 @@ class Create_Post {
 		$this->add_meta();
 		$this->add_taxonomies();
 		$this->add_tags();
-
+		$this->add_thumbnail($update = true);
 		Import_Table::delete_custom_table_row( $this->data['meta']['post_id'] );
+	}
+
+		/**
+	 * Add thumbnail to post
+	 *
+	 * @return bool
+	 */
+	private function add_thumbnail($update = false) {
+		if ( !isset( $this->data['thumbnail_url'] ) || empty( $this->data['thumbnail_url'] ) ) {
+			return false;
+		}
+		
+		// if update post, remove old thumbnail
+		if ($update) {
+			delete_post_thumbnail($this->post_id);
+		}
+		
+		$image_id = media_sideload_image($this->data['thumbnail_url'], $this->post_id, null, 'id');
+
+		if (!is_wp_error($image_id)) {
+			set_post_thumbnail($this->post_id, $image_id);
+		}
 	}
 
 	/**

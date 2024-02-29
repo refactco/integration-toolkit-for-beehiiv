@@ -1,7 +1,7 @@
 <?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
 
-namespace WP_to_Beehiiv_Integration\Import;
-use WP_to_Beehiiv_Integration\Lib\Logger;
+namespace Integration_Toolkit_For_Beehiiv\Import;
+use Integration_Toolkit_For_Beehiiv\Lib\Logger;
 use WP_Error;
 
 class Prepare_Post {
@@ -40,8 +40,8 @@ class Prepare_Post {
         
         // Prepare post data
         $post_data = apply_filters(
-            'wp_to_beehiiv_integration_import_prepare_post',
-            $this->prepawp_to_beehiiv_integration_data_for_wp(
+            'integration_toolkit_for_beehiiv_import_prepare_post',
+            $this->prepaintegration_toolkit_for_beehiiv_data_for_wp(
                 $this->item,
             ),
             $this->item,
@@ -58,7 +58,7 @@ class Prepare_Post {
             if ( $this->is_unique_post( $this->item['id'] ) ) {
                 throw new \Exception(
                     sprintf(
-                        __( '%1$s - %2$s is already exists', 'wp-to-beehiiv-integration' ),
+                        __( '%1$s - %2$s is already exists', 'integration-toolkit-for-beehiiv' ),
                         $this->item['id'],
                         $this->item['title'],
                     )
@@ -69,7 +69,7 @@ class Prepare_Post {
             if ( ! $this->is_unique_post( $this->item['id'] ) ) {
                 throw new \Exception(
                     sprintf(
-                        __( '%1$s - %2$s is not exists', 'wp-to-beehiiv-integration' ),
+                        __( '%1$s - %2$s is not exists', 'integration-toolkit-for-beehiiv' ),
                         $this->item['id'],
                         $this->item['title'],
                     )
@@ -81,7 +81,7 @@ class Prepare_Post {
         if ( ! in_array( $this->item['status'], $this->form_data['beehiiv-status'], true ) ) {
             throw new \Exception(
                 sprintf(
-                    __( '%1$s - %2$s is not in selected status', 'wp-to-beehiiv-integration' ),
+                    __( '%1$s - %2$s is not in selected status', 'integration-toolkit-for-beehiiv' ),
                     $this->item['id'],
                     $this->item['title'],
                 )
@@ -99,7 +99,7 @@ class Prepare_Post {
 	 */
 	public function is_unique_post( $post_id ) {
 		$args  = array(
-			'meta_key'       => 'wp_to_beehiiv_integration_post_id',
+			'meta_key'       => 'integration_toolkit_for_beehiiv_post_id',
 			'meta_value'     => $post_id,
 			'post_type'      => 'post',
 			'post_status'    => 'any',
@@ -121,7 +121,7 @@ class Prepare_Post {
 	 * @param array $value
 	 * @return array
 	 */
-	private function prepawp_to_beehiiv_integration_data_for_wp( $value ) {
+	private function prepaintegration_toolkit_for_beehiiv_data_for_wp( $value ) {
 
 		// create a post
 		$data = array(

@@ -1,4 +1,4 @@
-# wp to wp WP to Beehiiv Integration Plugin
+# wp to wp Integration Toolkit for Beehiiv Plugin
 
 Effortlessly connect Beehiiv content and subscription capabilities with your WordPress site using this open-source plugin.
 
@@ -18,8 +18,8 @@ Effortlessly connect Beehiiv content and subscription capabilities with your Wor
 2. If you've downloaded the ZIP, extract the contents.
 3. Upload the plugin folder to the `/wp-content/plugins/` directory of your WordPress installation using FTP or any file manager.
 4. Navigate to the 'Plugins' section in your WordPress dashboard.
-5. Locate 'WP to Beehiiv Integration Plugin' and activate it.
-6. After activation, navigate to the WP to Beehiiv Integration section in your WordPress dashboard.
+5. Locate 'Integration Toolkit for Beehiiv Plugin' and activate it.
+6. After activation, navigate to the Integration Toolkit for Beehiiv section in your WordPress dashboard.
 7. Follow the on-screen instructions to set up content imports and subscription forms.
 
 ## Usage

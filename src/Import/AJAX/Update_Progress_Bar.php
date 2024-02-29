@@ -1,14 +1,14 @@
 <?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
-namespace WP_to_Beehiiv_Integration\Import\AJAX;
+namespace Integration_Toolkit_For_Beehiiv\Import\AJAX;
 
-use WP_to_Beehiiv_Integration\Import\Import;
-use WP_to_Beehiiv_Integration\Lib\Logger;
+use Integration_Toolkit_For_Beehiiv\Import\Import;
+use Integration_Toolkit_For_Beehiiv\Lib\Logger;
 
 /**
  * AJAX Bulk Process
  * This class is responsible for handling AJAX requests for the Bulk Process
  */
-class Update_Progress_Bar extends \WP_to_Beehiiv_Integration\Lib\AJAX {
+class Update_Progress_Bar extends \Integration_Toolkit_For_Beehiiv\Lib\AJAX {
 
     /**
     * AJAX action name

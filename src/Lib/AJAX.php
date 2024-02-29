@@ -1,5 +1,5 @@
 <?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
-namespace WP_to_Beehiiv_Integration\Lib;
+namespace Integration_Toolkit_For_Beehiiv\Lib;
 
 /**
  * AJAX Bulk Process

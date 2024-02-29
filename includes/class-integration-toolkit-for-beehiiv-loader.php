@@ -5,8 +5,8 @@
  * @link       https://refact.co
  * @since      1.0.0
  *
- * @package    WP_to_Beehiiv_Integration
- * @subpackage WP_to_Beehiiv_Integration/includes
+ * @package    Integration_Toolkit_For_Beehiiv
+ * @subpackage Integration_Toolkit_For_Beehiiv/includes
  */
 
 /**
@@ -16,11 +16,11 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    WP_to_Beehiiv_Integration
- * @subpackage WP_to_Beehiiv_Integration/includes
+ * @package    Integration_Toolkit_For_Beehiiv
+ * @subpackage Integration_Toolkit_For_Beehiiv/includes
  * @author     Refact <info@refact.co>
  */
-class WP_to_Beehiiv_Integration_Loader {
+class Integration_Toolkit_For_Beehiiv_Loader {
 
 	/**
 	 * The array of actions registered with WordPress.

@@ -1,10 +1,10 @@
 <?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
 
-namespace WP_to_Beehiiv_Integration\Import;
-use WP_to_Beehiiv_Integration\Import\Interfaces\Importer;
-use WP_to_Beehiiv_Integration\Import\Manage_Actions;
-use WP_to_Beehiiv_Integration\Import\Queue;
-use WP_to_Beehiiv_Integration\API\V2\Posts;
+namespace Integration_Toolkit_For_Beehiiv\Import;
+use Integration_Toolkit_For_Beehiiv\Import\Interfaces\Importer;
+use Integration_Toolkit_For_Beehiiv\Import\Manage_Actions;
+use Integration_Toolkit_For_Beehiiv\Import\Queue;
+use Integration_Toolkit_For_Beehiiv\API\V2\Posts;
 
 defined( 'ABSPATH' ) || exit;
 

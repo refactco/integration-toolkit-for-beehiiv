@@ -46,7 +46,7 @@
     margin-bottom: 12px;
 }
 
-.wp-to-beehiiv-integration-wrapper fieldset {
+.integration-toolkit-for-beehiiv-wrapper fieldset {
     margin-bottom: 16px;
 }
 
@@ -66,11 +66,11 @@
     display: block;
 }
 
-.wp-to-beehiiv-integration-wrap {
+.integration-toolkit-for-beehiiv-wrap {
     margin-inline-end: 1rem;
 }
 
-.wp-to-beehiiv-integration-wrapper {
+.integration-toolkit-for-beehiiv-wrapper {
     background: #fff;
     padding: 16px;
     border-bottom-right-radius: 3px;
@@ -107,11 +107,11 @@
     color: black;
 }
 
-.wp-to-beehiiv-integration-heading h1 {
+.integration-toolkit-for-beehiiv-heading h1 {
     margin-bottom: 0;
 }
 
-.wp-to-beehiiv-integration-heading p {
+.integration-toolkit-for-beehiiv-heading p {
     margin-top: 8px;
     font-size: 14px;
     color: #6f6f6f;
@@ -133,7 +133,7 @@
     margin-bottom: 0.5rem !important;
 }
 
-.wp-to-beehiiv-integration-import-fields h2:first-child {
+.integration-toolkit-for-beehiiv-import-fields h2:first-child {
     margin-top: 0;
 }
 
@@ -145,7 +145,7 @@
     display: block;
 }
 
-.wp-to-beehiiv-integration-settings-disconnect {
+.integration-toolkit-for-beehiiv-settings-disconnect {
     transition: all 0.3s ease-in-out;
     padding: 10px 32px !important;
     height: auto !important;
@@ -155,8 +155,8 @@
     display: inline-block;
 }
 
-input#wp-to-beehiiv-integration-start-import,
-.wp-to-beehiiv-integration-settings-save {
+input#integration-toolkit-for-beehiiv-start-import,
+.integration-toolkit-for-beehiiv-settings-save {
     background-color: #003233 !important;
     border-color: #005c5e !important;
     transition: all 0.3s ease-in-out;
@@ -170,23 +170,23 @@ input#wp-to-beehiiv-integration-start-import,
     display: inline-block;
 }
 
-input#wp-to-beehiiv-integration-start-import:hover,
-.wp-to-beehiiv-integration-settings-save:hover {
+input#integration-toolkit-for-beehiiv-start-import:hover,
+.integration-toolkit-for-beehiiv-settings-save:hover {
     background-color: #005c5e !important;
     border-color: #005c5e !important;
 }
 
-input#wp-to-beehiiv-integration-start-import:disabled,
-.wp-to-beehiiv-integration-settings-save:disabled {
+input#integration-toolkit-for-beehiiv-start-import:disabled,
+.integration-toolkit-for-beehiiv-settings-save:disabled {
     background-color: #ccc !important;
     border-color: #ccc  !important;
 }
 
-.wp-to-beehiiv-integration-import-form--hide_canceled .wp-to-beehiiv-integration-import--notice.wp-to-beehiiv-integration-import--notice-canceled {
+.integration-toolkit-for-beehiiv-import-form--hide_canceled .integration-toolkit-for-beehiiv-import--notice.integration-toolkit-for-beehiiv-import--notice-canceled {
     display: none;
 }
 
-.wp-to-beehiiv-integration-import--notice {
+.integration-toolkit-for-beehiiv-import--notice {
     background: #e6e6e6;
     padding: 20px 16px;
     border-radius: 3px;
@@ -194,7 +194,7 @@ input#wp-to-beehiiv-integration-start-import:disabled,
     position: relative;
 }
 
-.wp-to-beehiiv-integration-button-secondary {
+.integration-toolkit-for-beehiiv-button-secondary {
     cursor: pointer;
     padding: 4px 10px;
     background-color: transparent;
@@ -206,53 +206,53 @@ input#wp-to-beehiiv-integration-start-import:disabled,
     text-decoration: none;
 }
 
-.wp-to-beehiiv-integration-button-secondary:hover {
+.integration-toolkit-for-beehiiv-button-secondary:hover {
     background-color: #767676;
     color: #fff;
 }
 
-.wp-to-beehiiv-integration-import--notice .wp-to-beehiiv-integration-button-cancel {
+.integration-toolkit-for-beehiiv-import--notice .integration-toolkit-for-beehiiv-button-cancel {
     top: 20px;
     right: 16px;
     position: absolute;
 }
 
-.wp-to-beehiiv-integration-import--notice .wp-to-beehiiv-integration-button-cancel:disabled {
+.integration-toolkit-for-beehiiv-import--notice .integration-toolkit-for-beehiiv-button-cancel:disabled {
     cursor: not-allowed;
     opacity: 0.5;
     background-color: transparent !important;
     color: #232323;
 }
 
-.wp-to-beehiiv-integration-import--notice h4 {
+.integration-toolkit-for-beehiiv-import--notice h4 {
     margin: 0 0 16px;
 }
 
-.wp-to-beehiiv-integration-import--notice .description {
+.integration-toolkit-for-beehiiv-import--notice .description {
     margin-bottom: 0;
 }
 
-.wp-to-beehiiv-integration-import--notice ul {
+.integration-toolkit-for-beehiiv-import--notice ul {
     list-style: disc;
     margin-inline-start: 20px;
     margin-top: 8px;
     margin-bottom: 0;
 }
 
-.wp-to-beehiiv-integration-import--notice.wp-to-beehiiv-integration-import--notice-error {
+.integration-toolkit-for-beehiiv-import--notice.integration-toolkit-for-beehiiv-import--notice-error {
     background: #ffcaca;
 }
 
-.wp-to-beehiiv-integration-import--notice.wp-to-beehiiv-integration-import--notice-success {
+.integration-toolkit-for-beehiiv-import--notice.integration-toolkit-for-beehiiv-import--notice-success {
     background: #abe2e0;
 }
 
-.wp-to-beehiiv-integration-import-fields .description,
-.wp-to-beehiiv-integration-import-fields--step--content fieldset {
+.integration-toolkit-for-beehiiv-import-fields .description,
+.integration-toolkit-for-beehiiv-import-fields--step--content fieldset {
     max-width: 500px;
 }
 
-h2.wp-to-beehiiv-integration-import-fields--step--title:after {
+h2.integration-toolkit-for-beehiiv-import-fields--step--title:after {
     content: attr(data-error-count);
     margin-left: 8px;
     background-color: red;
@@ -266,25 +266,25 @@ h2.wp-to-beehiiv-integration-import-fields--step--title:after {
     visibility: hidden;
 }
 
-.wp-to-beehiiv-integration-import-fields--step.has-error h2.wp-to-beehiiv-integration-import-fields--step--title:after {
+.integration-toolkit-for-beehiiv-import-fields--step.has-error h2.integration-toolkit-for-beehiiv-import-fields--step--title:after {
     visibility: visible;
 }
 
-.wp-to-beehiiv-integration-import-fields--step--content fieldset {
+.integration-toolkit-for-beehiiv-import-fields--step--content fieldset {
     border-radius: 3px;
     padding: 8px;
 }
 
-.wp-to-beehiiv-integration-import-fields--step--content fieldset.has-error {
+.integration-toolkit-for-beehiiv-import-fields--step--content fieldset.has-error {
     border: solid red 1px;
 }
 
-.wp-to-beehiiv-integration-import-fields label[for]:not([for=""]) {
+.integration-toolkit-for-beehiiv-import-fields label[for]:not([for=""]) {
     margin-bottom: 8px;
     display: block;
 }
 
-.wp-to-beehiiv-integration-import-fields--step {
+.integration-toolkit-for-beehiiv-import-fields--step {
     outline: 3px solid transparent;
     border: 1px solid #e3e3e3;
     height: auto;
@@ -295,7 +295,7 @@ h2.wp-to-beehiiv-integration-import-fields--step--title:after {
     border-radius: 3px;
 }
 
-.wp-to-beehiiv-integration-import-fields--step--title {
+.integration-toolkit-for-beehiiv-import-fields--step--title {
     cursor: pointer;
     display: block;
     font-weight: 500;
@@ -304,22 +304,22 @@ h2.wp-to-beehiiv-integration-import-fields--step--title:after {
     padding: 20px;
 }
 
-.wp-to-beehiiv-integration-import-fields--step.active .wp-to-beehiiv-integration-import-fields--step--title {
+.integration-toolkit-for-beehiiv-import-fields--step.active .integration-toolkit-for-beehiiv-import-fields--step--title {
     cursor: default;
     margin-bottom: 16px;
     border-bottom: 1px solid #e3e3e3;
 }
 
-.wp-to-beehiiv-integration-import-fields--step--content {
+.integration-toolkit-for-beehiiv-import-fields--step--content {
     display: none;
     padding: 0 20px;
 }
 
-.wp-to-beehiiv-integration-import-fields--step.active .wp-to-beehiiv-integration-import-fields--step--content {
+.integration-toolkit-for-beehiiv-import-fields--step.active .integration-toolkit-for-beehiiv-import-fields--step--content {
     display: block;
 }
 
-.wp-to-beehiiv-integration-import-fields select {
+.integration-toolkit-for-beehiiv-import-fields select {
     min-width: 150px;
 }
 
@@ -407,13 +407,13 @@ h2.wp-to-beehiiv-integration-import-fields--step--title:after {
 }
 /* Results Log Box End */
 
-.wp-to-beehiiv-integration-post_status--fields div label {
+.integration-toolkit-for-beehiiv-post_status--fields div label {
     display: inline-block !important;
     min-width: 80px;
     margin-bottom: 0 !important;
 }
 
-.wp-to-beehiiv-integration-post_status--field {
+.integration-toolkit-for-beehiiv-post_status--field {
     display: flex;
     align-items: center;
 }

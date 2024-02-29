@@ -2,7 +2,7 @@
 /**
  * Header Component
  *
- * @package WP_to_Beehiiv_Integration
+ * @package Integration_Toolkit_For_Beehiiv
  */
 
 if ( ! defined( 'WPINC' ) ) {
@@ -12,9 +12,9 @@ if ( ! defined( 'WPINC' ) ) {
 ?>
 
 
-<div class="wp-to-beehiiv-integration-settings-header">
-	<div class="wp-to-beehiiv-integration-settings-header__logo">
-		<?php esc_attr_e( 'WP to Beehiiv Integration', 'wp-to-beehiiv-integration' ); ?>
+<div class="integration-toolkit-for-beehiiv-settings-header">
+	<div class="integration-toolkit-for-beehiiv-settings-header__logo">
+		<?php esc_attr_e( 'Integration Toolkit for Beehiiv', 'integration-toolkit-for-beehiiv' ); ?>
 	</div>
-	<div class="wp-to-beehiiv-integration-settings-header__links"></div>
+	<div class="integration-toolkit-for-beehiiv-settings-header__links"></div>
 </div>

@@ -1,6 +1,6 @@
 <?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
 
-namespace WP_to_Beehiiv_Integration\Import;
+namespace Integration_Toolkit_For_Beehiiv\Import;
 
 use ActionScheduler_Action;
 
@@ -9,7 +9,7 @@ use ActionScheduler_Action;
  * This class is responsible for managing scheduled actions
  * This class extends ActionScheduler_Action class because we need to use private data of ActionScheduler_Action class
  *
- * @package WP_to_Beehiiv_Integration\Import
+ * @package Integration_Toolkit_For_Beehiiv\Import
  */
 class Manage_Actions extends ActionScheduler_Action {
 
@@ -41,7 +41,7 @@ class Manage_Actions extends ActionScheduler_Action {
 	public static function get_actions( $group = '', $status = '' ) {
 
 		$args = array(
-			'hook'     => 'wp_to_beehiiv_integration_bulk_import',
+			'hook'     => 'integration_toolkit_for_beehiiv_bulk_import',
 			'group'    => $group ? $group : '',
 			'per_page' => -1,
 		);

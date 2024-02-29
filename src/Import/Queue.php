@@ -1,12 +1,12 @@
 <?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
 
-namespace WP_to_Beehiiv_Integration\Import;
+namespace Integration_Toolkit_For_Beehiiv\Import;
 
 /**
  * Class Queue
  * This class is responsible for adding the request to the queue
  *
- * @package WP_to_Beehiiv_Integration\Import
+ * @package Integration_Toolkit_For_Beehiiv\Import
  */
 class Queue {
 	// Constants
@@ -25,7 +25,7 @@ class Queue {
 	 *
 	 * @var string
 	 */
-	private $action = 'wp_to_beehiiv_integration_bulk_import';
+	private $action = 'integration_toolkit_for_beehiiv_bulk_import';
 
 	/**
 	 * Timestamp
@@ -114,6 +114,6 @@ class Queue {
 	 * @return string
 	 */
 	public function get_request_key( $request ) {
-		return 'wp_to_beehiiv_integration_' . md5( wp_json_encode( $request ) );
+		return 'integration_toolkit_for_beehiiv_' . md5( wp_json_encode( $request ) );
 	}
 }

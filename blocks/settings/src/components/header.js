@@ -3,12 +3,12 @@ import { SVG, Path } from "@wordpress/components";
 
 const Header = (props) => {
   return (
-    <div className="wp-to-beehiiv-integration-settings-header" key="settings-header">
-      <div className="wp-to-beehiiv-integration-settings-header__logo">
-        WP to Beehiiv Integration
+    <div className="integration-toolkit-for-beehiiv-settings-header" key="settings-header">
+      <div className="integration-toolkit-for-beehiiv-settings-header__logo">
+        Integration Toolkit for Beehiiv
       </div>
 
-      <div className="wp-to-beehiiv-integration-settings-header__links">
+      <div className="integration-toolkit-for-beehiiv-settings-header__links">
       </div>
     </div>
   );

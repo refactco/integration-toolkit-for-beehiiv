@@ -1,5 +1,5 @@
 <?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
-namespace WP_to_Beehiiv_Integration\Lib;
+namespace Integration_Toolkit_For_Beehiiv\Lib;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * This class is used to log the import process.
  *
- * @package WP_to_Beehiiv_Integration\Lib
+ * @package Integration_Toolkit_For_Beehiiv\Lib
  */
 class Logger {
 

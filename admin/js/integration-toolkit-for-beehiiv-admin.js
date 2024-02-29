@@ -43,18 +43,18 @@
       allowHTML: true,
     });
 
-    $("#wp-to-beehiiv-integration-auto-import").on("click", function () {
+    $("#integration-toolkit-for-beehiiv-auto-import").on("click", function () {
       if (!check_required_fields()) {
         return false;
       }
 
       $(this).hide();
-      $(".wp-to-beehiiv-integration-import-running").show();
-      wp_to_beehiiv_integration_start_auto_import();
+      $(".integration-toolkit-for-beehiiv-import-running").show();
+      integration_toolkit_for_beehiiv_start_auto_import();
       // location.reload();
     });
 
-    $("#wp-to-beehiiv-integration-post_type").on("change", function () {
+    $("#integration-toolkit-for-beehiiv-post_type").on("change", function () {
       let post_type = $(this).val();
 
       if (
@@ -63,15 +63,15 @@
         post_type == "" ||
         post_type == "0"
       ) {
-        $("#wp-to-beehiiv-integration-taxonomy").html(
-          `<option value="0">${WP_TO_BEEHIIV_INTEGRATIONCORE.strings.select_taxonomy}</option>`
+        $("#integration-toolkit-for-beehiiv-taxonomy").html(
+          `<option value="0">${INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE.strings.select_taxonomy}</option>`
         );
-        $("#wp-to-beehiiv-integration-taxonomy_term").html(
-          `<option value="0">${WP_TO_BEEHIIV_INTEGRATIONCORE.strings.select_term}</option>`
+        $("#integration-toolkit-for-beehiiv-taxonomy_term").html(
+          `<option value="0">${INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE.strings.select_term}</option>`
         );
-        $("#wp-to-beehiiv-integration-taxonomy").addClass("hidden");
-        $("#wp-to-beehiiv-integration-taxonomy_term").addClass("hidden");
-        $("#wp-to-beehiiv-integration-post_tags-taxonomy").html(
+        $("#integration-toolkit-for-beehiiv-taxonomy").addClass("hidden");
+        $("#integration-toolkit-for-beehiiv-taxonomy_term").addClass("hidden");
+        $("#integration-toolkit-for-beehiiv-post_tags-taxonomy").html(
           `<option value="0">Select post type first</option>`
         );
         return false;
@@ -82,19 +82,19 @@
       // if taxonomies is empty
       if (taxonomies == null || taxonomies == "") {
         // hide the taxonomy and taxonomy term select
-        $("#wp-to-beehiiv-integration-taxonomy").addClass("hidden");
-        $("#wp-to-beehiiv-integration-taxonomy_term").addClass("hidden");
-        $("#wp-to-beehiiv-integration-post_tags-taxonomy").html(
+        $("#integration-toolkit-for-beehiiv-taxonomy").addClass("hidden");
+        $("#integration-toolkit-for-beehiiv-taxonomy_term").addClass("hidden");
+        $("#integration-toolkit-for-beehiiv-post_tags-taxonomy").html(
           `<option value="0">Selected post type has no taxonomies</option>`
         );
         return false;
       }
 
       // show the taxonomy select
-      $("#wp-to-beehiiv-integration-taxonomy").removeClass("hidden");
+      $("#integration-toolkit-for-beehiiv-taxonomy").removeClass("hidden");
 
       // populate the taxonomy select
-      let html = `<option value="0">${WP_TO_BEEHIIV_INTEGRATIONCORE.strings.select_taxonomy}</option>`;
+      let html = `<option value="0">${INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE.strings.select_taxonomy}</option>`;
 
       for (let i = 0; i < taxonomies.length; i++) {
         html +=
@@ -105,11 +105,11 @@
           "</option>";
       }
 
-      $("#wp-to-beehiiv-integration-taxonomy").html(html);
-      $("#wp-to-beehiiv-integration-post_tags-taxonomy").html(html)
+      $("#integration-toolkit-for-beehiiv-taxonomy").html(html);
+      $("#integration-toolkit-for-beehiiv-post_tags-taxonomy").html(html)
     });
 
-    $("#wp-to-beehiiv-integration-taxonomy").on("change", function () {
+    $("#integration-toolkit-for-beehiiv-taxonomy").on("change", function () {
       let taxonomy = $(this).val();
 
       if (
@@ -118,34 +118,34 @@
         taxonomy == "" ||
         taxonomy == "0"
       ) {
-        $("#wp-to-beehiiv-integration-taxonomy_term").html(
-          `<option value="0">${WP_TO_BEEHIIV_INTEGRATIONCORE.strings.select_term}</option>`
+        $("#integration-toolkit-for-beehiiv-taxonomy_term").html(
+          `<option value="0">${INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE.strings.select_term}</option>`
         );
-        $("#wp-to-beehiiv-integration-taxonomy_term").addClass("hidden");
+        $("#integration-toolkit-for-beehiiv-taxonomy_term").addClass("hidden");
         return false;
       }
-      let taxonomies = AllTaxonomies[$("#wp-to-beehiiv-integration-post_type").val()];
+      let taxonomies = AllTaxonomies[$("#integration-toolkit-for-beehiiv-post_type").val()];
 
       if (taxonomies == null || taxonomies == "") {
         // hide the taxonomy and taxonomy term select
-        $("#wp-to-beehiiv-integration-taxonomy").addClass("hidden");
-        $("#wp-to-beehiiv-integration-taxonomy_term").addClass("hidden");
+        $("#integration-toolkit-for-beehiiv-taxonomy").addClass("hidden");
+        $("#integration-toolkit-for-beehiiv-taxonomy_term").addClass("hidden");
         return false;
       }
 
       // show the taxonomy select
-      $("#wp-to-beehiiv-integration-taxonomy_term").removeClass("hidden");
+      $("#integration-toolkit-for-beehiiv-taxonomy_term").removeClass("hidden");
 
       // populate the taxonomy select
-      let html = `<option value="0">${WP_TO_BEEHIIV_INTEGRATIONCORE.strings.select_term}</option>`;
+      let html = `<option value="0">${INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE.strings.select_term}</option>`;
 
       UpdateTaxonomyTerms();
     });
 
-    $("#wp-to-beehiiv-integration-import-form").on("submit", function (e) {
+    $("#integration-toolkit-for-beehiiv-import-form").on("submit", function (e) {
       e.preventDefault();
 
-      document.querySelectorAll('.wp-to-beehiiv-integration-import-fields--step--title' ).forEach(function(i) {
+      document.querySelectorAll('.integration-toolkit-for-beehiiv-import-fields--step--title' ).forEach(function(i) {
         i.setAttribute('data-error-count', 0);
       });
 
@@ -157,22 +157,22 @@
       this.submit();
     });
 
-    $(".wp-to-beehiiv-integration-import-fields--step--title").on("click", function () {
+    $(".integration-toolkit-for-beehiiv-import-fields--step--title").on("click", function () {
       // hide all accordion content
-      $(".wp-to-beehiiv-integration-import-fields--step-content").hide();
+      $(".integration-toolkit-for-beehiiv-import-fields--step-content").hide();
       // remove active class from all accordion
-      $(".wp-to-beehiiv-integration-import-fields--step").removeClass("active");
+      $(".integration-toolkit-for-beehiiv-import-fields--step").removeClass("active");
       // add active class to current accordion
       $(this).parent().addClass("active");
       // show current accordion content
       $(this).next().show();
     });
 
-    $("#wp-to-beehiiv-integration-import--cancel").on("click", function () {
+    $("#integration-toolkit-for-beehiiv-import--cancel").on("click", function () {
       is_cancelled = true;
     });
 
-    const $cancel_button = $("#wp-to-beehiiv-integration-import--cancel");
+    const $cancel_button = $("#integration-toolkit-for-beehiiv-import--cancel");
     if ($cancel_button) {
       $cancel_button.hide();
 
@@ -184,8 +184,8 @@
       //     url: ajaxurl,
       //     type: "POST",
       //     data: {
-      //       action: "wp_to_beehiiv_integration_cancel_import",
-      //       nonce: WP_TO_BEEHIIV_INTEGRATIONCORE.progress_bar_nonce,
+      //       action: "integration_toolkit_for_beehiiv_cancel_import",
+      //       nonce: INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE.progress_bar_nonce,
       //     },
       //     success: function (response) {
       //       if (response.status == 'canceled') {
@@ -211,11 +211,11 @@
 
 
     const $post_status_selects = [
-      'wp-to-beehiiv-integration-post_status--confirmed',
-      'wp-to-beehiiv-integration-post_status--draft',
-      'wp-to-beehiiv-integration-post_status--archived',
+      'integration-toolkit-for-beehiiv-post_status--confirmed',
+      'integration-toolkit-for-beehiiv-post_status--draft',
+      'integration-toolkit-for-beehiiv-post_status--archived',
     ]
-    const $beehiiv_status = document.querySelectorAll('input[name="wp-to-beehiiv-integration-beehiiv-status[]"]');
+    const $beehiiv_status = document.querySelectorAll('input[name="integration-toolkit-for-beehiiv-beehiiv-status[]"]');
     $beehiiv_status.forEach(function(i) {
       i.addEventListener('change', function() {
         trigger_update_post_statuses();
@@ -232,8 +232,8 @@
         
                 parentFieldset.classList.remove("has-error");
         
-                const parentStep = jQuery(parentFieldset.closest(".wp-to-beehiiv-integration-import-fields--step"));
-                const parentStepTitle = parentStep.find(".wp-to-beehiiv-integration-import-fields--step--title");
+                const parentStep = jQuery(parentFieldset.closest(".integration-toolkit-for-beehiiv-import-fields--step"));
+                const parentStepTitle = parentStep.find(".integration-toolkit-for-beehiiv-import-fields--step--title");
         
                 let countOfErrorsInStep = parentStepTitle.attr("data-error-count");
                 countOfErrorsInStep = parseInt(countOfErrorsInStep) - 1;
@@ -251,7 +251,7 @@
     })
 
 
-    if (document.getElementsByClassName('wp-to-beehiiv-integration-import-fields').length > 0) {
+    if (document.getElementsByClassName('integration-toolkit-for-beehiiv-import-fields').length > 0) {
       list_of_required_fields.forEach(function (item) {
 
         if (item.type == "checkbox" || item.type == "radio") {
@@ -267,8 +267,8 @@
                   return ;
                 }
                 parentFieldset.classList.remove("has-error");
-                const parentStep = jQuery(parentFieldset.closest(".wp-to-beehiiv-integration-import-fields--step"));
-                const parentStepTitle = parentStep.find(".wp-to-beehiiv-integration-import-fields--step--title");
+                const parentStep = jQuery(parentFieldset.closest(".integration-toolkit-for-beehiiv-import-fields--step"));
+                const parentStepTitle = parentStep.find(".integration-toolkit-for-beehiiv-import-fields--step--title");
                 let countOfErrorsInStep = parentStepTitle.attr("data-error-count");
                 countOfErrorsInStep = parseInt(countOfErrorsInStep) - 1;
                 parentStepTitle.attr("data-error-count", countOfErrorsInStep);
@@ -292,8 +292,8 @@
 
               parentFieldset.classList.remove("has-error");
 
-              const parentStep = jQuery(parentFieldset.closest(".wp-to-beehiiv-integration-import-fields--step"));
-              const parentStepTitle = parentStep.find(".wp-to-beehiiv-integration-import-fields--step--title");
+              const parentStep = jQuery(parentFieldset.closest(".integration-toolkit-for-beehiiv-import-fields--step"));
+              const parentStepTitle = parentStep.find(".integration-toolkit-for-beehiiv-import-fields--step--title");
 
               
               let countOfErrorsInStep = parentStepTitle.attr("data-error-count");
@@ -315,12 +315,12 @@
 })(jQuery);
 
 function UpdateTaxonomyTerms() {
-  jQuery("#wp-to-beehiiv-integration-taxonomy_term").html(
-    `<option value="0">${WP_TO_BEEHIIV_INTEGRATIONCORE.strings.select_term}</option>`
+  jQuery("#integration-toolkit-for-beehiiv-taxonomy_term").html(
+    `<option value="0">${INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE.strings.select_term}</option>`
   );
 
-  let post_type = jQuery("#wp-to-beehiiv-integration-post_type").val();
-  let taxonomy = jQuery("#wp-to-beehiiv-integration-taxonomy").val();
+  let post_type = jQuery("#integration-toolkit-for-beehiiv-post_type").val();
+  let taxonomy = jQuery("#integration-toolkit-for-beehiiv-taxonomy").val();
 
   if (
     post_type == null ||
@@ -341,66 +341,66 @@ function UpdateTaxonomyTerms() {
     return false;
   }
 
-  let html = `<option value="0">${WP_TO_BEEHIIV_INTEGRATIONCORE.strings.select_term}</option>`;
+  let html = `<option value="0">${INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE.strings.select_term}</option>`;
 
   for (let i = 0; i < Terms.length; i++) {
     html +=
       '<option value="' + Terms[i].term_id + '">' + Terms[i].name + "</option>";
   }
 
-  jQuery("#wp-to-beehiiv-integration-taxonomy_term").html(html);
+  jQuery("#integration-toolkit-for-beehiiv-taxonomy_term").html(html);
 
   return true;
 }
 
 const list_of_required_fields = [
   {
-    id: "wp-to-beehiiv-integration-content_type[]",
-    name: WP_TO_BEEHIIV_INTEGRATIONCORE.strings.labels.content_type,
+    id: "integration-toolkit-for-beehiiv-content_type[]",
+    name: INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE.strings.labels.content_type,
     type: "checkbox",
   },
   {
-    id: "wp-to-beehiiv-integration-beehiiv-status[]",
-    name: WP_TO_BEEHIIV_INTEGRATIONCORE.strings.labels.beehiiv_status,
+    id: "integration-toolkit-for-beehiiv-beehiiv-status[]",
+    name: INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE.strings.labels.beehiiv_status,
     type: "checkbox",
   },
   {
-    id: "wp-to-beehiiv-integration-post_type",
-    name: WP_TO_BEEHIIV_INTEGRATIONCORE.strings.labels.post_type,
+    id: "integration-toolkit-for-beehiiv-post_type",
+    name: INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE.strings.labels.post_type,
     type: "select",
   },
   {
-    id: "wp-to-beehiiv-integration-post_author",
-    name: WP_TO_BEEHIIV_INTEGRATIONCORE.strings.labels.post_author,
+    id: "integration-toolkit-for-beehiiv-post_author",
+    name: INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE.strings.labels.post_author,
     type: "select",
   },
   {
-    id: "wp-to-beehiiv-integration-import_method",
-    name: WP_TO_BEEHIIV_INTEGRATIONCORE.strings.labels.import_method,
+    id: "integration-toolkit-for-beehiiv-import_method",
+    name: INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE.strings.labels.import_method,
     type: "radio",
   },
   {
-    id: "wp-to-beehiiv-integration-taxonomy",
-    name: WP_TO_BEEHIIV_INTEGRATIONCORE.strings.labels.taxonomy,
+    id: "integration-toolkit-for-beehiiv-taxonomy",
+    name: INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE.strings.labels.taxonomy,
     type: "select",
   },
   {
-    id: "wp-to-beehiiv-integration-taxonomy_term",
-    name: WP_TO_BEEHIIV_INTEGRATIONCORE.strings.labels.taxonomy_term,
+    id: "integration-toolkit-for-beehiiv-taxonomy_term",
+    name: INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE.strings.labels.taxonomy_term,
     type: "select",
   },
 ];
 
 function check_required_fields() {
-  $notice_list = jQuery("#wp-to-beehiiv-integration-import--notices");
+  $notice_list = jQuery("#integration-toolkit-for-beehiiv-import--notices");
   $has_error = false;
   $notice_list.find("ul").html("");
 
   let $input, $input_value;
   let $tax_flag = false;
   list_of_required_fields.forEach(function (field) {
-    if ( field.id == "wp-to-beehiiv-integration-taxonomy_term" ) {
-      $input = jQuery(`#wp-to-beehiiv-integration-taxonomy`);
+    if ( field.id == "integration-toolkit-for-beehiiv-taxonomy_term" ) {
+      $input = jQuery(`#integration-toolkit-for-beehiiv-taxonomy`);
       $input_value = $input.val();
       if ( $input_value == null ||
         $input_value == undefined ||
@@ -408,7 +408,7 @@ function check_required_fields() {
         $input_value == "0") {
         $tax_flag = false;
       } else {
-        $input = jQuery(`#wp-to-beehiiv-integration-taxonomy_term`);
+        $input = jQuery(`#integration-toolkit-for-beehiiv-taxonomy_term`);
         $input_value = $input.val();
         if ( $input_value == null ||
           $input_value == undefined ||
@@ -422,7 +422,7 @@ function check_required_fields() {
     if ($tax_flag || !validateInput(field.id, field.type)) {
       $has_error = true;
 
-      let error_message = WP_TO_BEEHIIV_INTEGRATIONCORE.strings.required_fields.replace("{{field_name}}", field.name);
+      let error_message = INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE.strings.required_fields.replace("{{field_name}}", field.name);
 
       $notice_list
         .find("ul")
@@ -430,8 +430,8 @@ function check_required_fields() {
 
       const input = ( field.type == "select" ) ? jQuery(`#${field.id}`) : jQuery(`input[name='${field.id}']`);
       const parentFieldset = input.closest("fieldset");
-      const parentStep = parentFieldset.closest(".wp-to-beehiiv-integration-import-fields--step");
-      const parentStepTitle = parentStep.find(".wp-to-beehiiv-integration-import-fields--step--title");
+      const parentStep = parentFieldset.closest(".integration-toolkit-for-beehiiv-import-fields--step");
+      const parentStepTitle = parentStep.find(".integration-toolkit-for-beehiiv-import-fields--step--title");
 
       parentStep.addClass("has-error");
 
@@ -452,7 +452,7 @@ function check_required_fields() {
 
   if ($has_error) {
     $notice_list
-      .children(".wp-to-beehiiv-integration-import--notice-error")
+      .children(".integration-toolkit-for-beehiiv-import--notice-error")
       .removeClass("hidden");
 
     jQuery("html, body").animate(
@@ -465,7 +465,7 @@ function check_required_fields() {
     return false;
   } else {
     $notice_list
-      .children(".wp-to-beehiiv-integration-import--notice-error")
+      .children(".integration-toolkit-for-beehiiv-import--notice-error")
       .addClass("hidden");
   }
 
@@ -475,7 +475,7 @@ function check_required_fields() {
 function validateInput($input_name, $input_type) {
   let $input, $input_value;
 
-  if ($input_name == 'wp-to-beehiiv-integration-taxonomy' || $input_name == 'wp-to-beehiiv-integration-taxonomy_term') {
+  if ($input_name == 'integration-toolkit-for-beehiiv-taxonomy' || $input_name == 'integration-toolkit-for-beehiiv-taxonomy_term') {
     return true;
   }
 
@@ -519,12 +519,12 @@ var is_cancelled = false;
 function update_progress_bar() {
   // ajax call to get the progress
   jQuery.ajax({
-    url: WP_TO_BEEHIIV_INTEGRATIONCORE.ajax_url,
+    url: INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE.ajax_url,
     type: "POST",
     timeout: 30000,
     data: {
       action: "update_progress_bar",
-      nonce: WP_TO_BEEHIIV_INTEGRATIONCORE.progress_bar_nonce,
+      nonce: INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE.progress_bar_nonce,
     },
     success: function (response) {
       if (response === "" || typeof response !== "object") {
@@ -541,7 +541,7 @@ function update_progress_bar() {
         }
 
         if (percentage > 0) {
-          jQuery("#wp-to-beehiiv-integration-import--cancel").show();
+          jQuery("#integration-toolkit-for-beehiiv-import--cancel").show();
         }
         percentageTag.textContent = percentage + ' %';
         bar.style.width = percentage + "%";
@@ -598,7 +598,7 @@ function update_progress_bar() {
       updateBarLength(percentage);
 
       if (total !== 0 && total === solved) {
-        jQuery("#wp-to-beehiiv-integration-import--cancel").hide();
+        jQuery("#integration-toolkit-for-beehiiv-import--cancel").hide();
         return;
       }
 
@@ -637,10 +637,10 @@ function update_logs_box( logs,percentage) {
 }
 
 function trigger_update_post_statuses() {
-  const $wrapper = jQuery(".wp-to-beehiiv-integration-post_status--fields");
+  const $wrapper = jQuery(".integration-toolkit-for-beehiiv-post_status--fields");
   const beehiiv_status = [];
 
-  jQuery(`input[name='wp-to-beehiiv-integration-beehiiv-status[]']:checked`).each(function () {
+  jQuery(`input[name='integration-toolkit-for-beehiiv-beehiiv-status[]']:checked`).each(function () {
     beehiiv_status.push(jQuery(this).val());
   });
 
@@ -663,8 +663,8 @@ function trigger_update_post_statuses() {
 
     // select option if status is equal to 'publish'
     $wrapper.append(`
-      <div class="wp-to-beehiiv-integration-post_status--field mb-2">
-        <select name="wp-to-beehiiv-integration-post_status--${status}" id="wp-to-beehiiv-integration-post_status--${status}">
+      <div class="integration-toolkit-for-beehiiv-post_status--field mb-2">
+        <select name="integration-toolkit-for-beehiiv-post_status--${status}" id="integration-toolkit-for-beehiiv-post_status--${status}">
           <option value="0">Select a status</option>
           ${AllPostStatuses.map((option) => {
             let selected = '';
@@ -685,10 +685,10 @@ function trigger_update_post_statuses() {
 }
 
 function validatePostStatuses() {
-  const $wrapper = jQuery(".wp-to-beehiiv-integration-post_status--fields");
+  const $wrapper = jQuery(".integration-toolkit-for-beehiiv-post_status--fields");
   const beehiiv_status = [];
 
-  jQuery(`input[name='wp-to-beehiiv-integration-beehiiv-status[]']:checked`).each(function () {
+  jQuery(`input[name='integration-toolkit-for-beehiiv-beehiiv-status[]']:checked`).each(function () {
     beehiiv_status.push(jQuery(this).val());
   });
 
@@ -699,14 +699,14 @@ function validatePostStatuses() {
   let isValid = true;
 
   beehiiv_status.forEach((status) => {
-    const $select = jQuery(`#wp-to-beehiiv-integration-post_status--${status}`);
+    const $select = jQuery(`#integration-toolkit-for-beehiiv-post_status--${status}`);
 
     if ($select.val() == "0") {
       isValid = false;
       const input = $select[0];
       const parentFieldset = jQuery(input.closest("fieldset"));
-      const parentStep = jQuery(parentFieldset.closest(".wp-to-beehiiv-integration-import-fields--step"));
-      const parentStepTitle = parentStep.find(".wp-to-beehiiv-integration-import-fields--step--title");
+      const parentStep = jQuery(parentFieldset.closest(".integration-toolkit-for-beehiiv-import-fields--step"));
+      const parentStepTitle = parentStep.find(".integration-toolkit-for-beehiiv-import-fields--step--title");
 
       parentStep.addClass("has-error");
 

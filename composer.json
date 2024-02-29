@@ -1,7 +1,7 @@
 {
   "autoload": {
     "psr-4": {
-      "WP_to_Beehiiv_Integration\\": [
+      "Integration_Toolkit_For_Beehiiv\\": [
         "src/"
       ]
     },

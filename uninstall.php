@@ -29,7 +29,7 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
 
-$table_name = 'wp_to_beehiiv_integration_import';
+$table_name = 'integration_toolkit_for_beehiiv_import';
 global $wpdb;
 $table_name = $wpdb->prefix . $table_name;
 $wpdb->query(

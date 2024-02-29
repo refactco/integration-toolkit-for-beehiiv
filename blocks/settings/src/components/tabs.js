@@ -15,11 +15,11 @@ import {
 const Tabs = (props) => {
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [apiKey, setApiKey] = useState(wp_to_beehiiv_integration_settings.api_key);
+  const [apiKey, setApiKey] = useState(integration_toolkit_for_beehiiv_settings.api_key);
   const [publicationId, setPublicationId] = useState(
-    wp_to_beehiiv_integration_settings.publication_id
+    integration_toolkit_for_beehiiv_settings.publication_id
   );
-  const [status, setStatus] = useState(wp_to_beehiiv_integration_settings.api_status);
+  const [status, setStatus] = useState(integration_toolkit_for_beehiiv_settings.api_status);
   const [onSaveMessage, setOnSaveMessage] = useState("");
 
 
@@ -75,26 +75,26 @@ const Tabs = (props) => {
   };
   return (
     <>
-    <div className="wp-to-beehiiv-integration-heading">
+    <div className="integration-toolkit-for-beehiiv-heading">
       <h1>
         Settings
       </h1>
 			<p>
-        {__('Establish a connection between your WordPress website and Beehiiv by providing the necessary credentials.', 'wp-to-beehiiv-integration')}
+        {__('Establish a connection between your WordPress website and Beehiiv by providing the necessary credentials.', 'integration-toolkit-for-beehiiv')}
       </p>
 	  </div>
-    <div className="wp-to-beehiiv-integration-tabs">
+    <div className="integration-toolkit-for-beehiiv-tabs">
       <nav className="nav-tab-wrapper">
-        <a className="re-nav-tab re-nav-tab-active" data-tab="wp-to-beehiiv-integration-credentials" href="#">
-          { __('Beehiiv Credentials', 'wp-to-beehiiv-integration') }
+        <a className="re-nav-tab re-nav-tab-active" data-tab="integration-toolkit-for-beehiiv-credentials" href="#">
+          { __('Beehiiv Credentials', 'integration-toolkit-for-beehiiv') }
         </a>
       </nav>
     </div>
-    <div className="wp-to-beehiiv-integration-settings-tabs wp-to-beehiiv-integration-wrapper" key="settings-tabs">
-      <div className="wp-to-beehiiv-integration-settings-tabs-menu" key="settings-tabs"></div>
+    <div className="integration-toolkit-for-beehiiv-settings-tabs integration-toolkit-for-beehiiv-wrapper" key="settings-tabs">
+      <div className="integration-toolkit-for-beehiiv-settings-tabs-menu" key="settings-tabs"></div>
       {onSaveMessage && (
         <Snackbar
-          className="wp-to-beehiiv-integration-snackbar wp-to-beehiiv-integration-snackbar-settings"
+          className="integration-toolkit-for-beehiiv-snackbar integration-toolkit-for-beehiiv-snackbar-settings"
           explicitDismiss
           onDismiss={() => setOnSaveMessage("")}
           status="success"
@@ -106,45 +106,45 @@ const Tabs = (props) => {
               <Grid columns={1} style={{ width: "100%" }}>
                 <InputControl
                   type="password"
-                  help={__("Enter the unique API key you received from Beehiiv. This key authorizes and facilitates the communication between your WordPress website and Beehiiv.", 'wp-to-beehiiv-integration')}
-                  label={__("API Key", 'wp-to-beehiiv-integration')}
+                  help={__("Enter the unique API key you received from Beehiiv. This key authorizes and facilitates the communication between your WordPress website and Beehiiv.", 'integration-toolkit-for-beehiiv')}
+                  label={__("API Key", 'integration-toolkit-for-beehiiv')}
                   onChange={(value) => setApiKey(value)}
-                  placeholder={__("Enter your API key", 'wp-to-beehiiv-integration')}
+                  placeholder={__("Enter your API key", 'integration-toolkit-for-beehiiv')}
                   value={apiKey}
                 />
                 <InputControl
                   type="password"
-                  help={__("Input the specific ID related to the content or publication you intend to import. This helps in pinpointing the exact data you want to fetch from Beehiiv.", 'wp-to-beehiiv-integration')}
-                  label={__("Publication ID", 'wp-to-beehiiv-integration')}
-                  placeholder={__("Enter your publication ID", 'wp-to-beehiiv-integration')}
+                  help={__("Input the specific ID related to the content or publication you intend to import. This helps in pinpointing the exact data you want to fetch from Beehiiv.", 'integration-toolkit-for-beehiiv')}
+                  label={__("Publication ID", 'integration-toolkit-for-beehiiv')}
+                  placeholder={__("Enter your publication ID", 'integration-toolkit-for-beehiiv')}
                   onChange={(value) => setPublicationId(value)}
                   value={publicationId}
                 />
               </Grid>
             </PanelRow>
-        <div className="wp-to-beehiiv-integration-settings-tabs-contents-actions">
+        <div className="integration-toolkit-for-beehiiv-settings-tabs-contents-actions">
           <Button
             isPrimary
             style={{ marginRight: "1em" }}
             onClick={() => saveSettings()}
             isBusy={saving}
             disabled={status == 'connected'}
-            className="wp-to-beehiiv-integration-settings-save"
+            className="integration-toolkit-for-beehiiv-settings-save"
           >
-            {__('Save', 'wp-to-beehiiv-integration')}
+            {__('Save', 'integration-toolkit-for-beehiiv')}
           </Button>
           {status && (
             <Button
               style={{ marginRight: "1em" }}
               isDestructive
               onClick={() => removeAPIKey()}
-              className="wp-to-beehiiv-integration-settings-disconnect"
+              className="integration-toolkit-for-beehiiv-settings-disconnect"
             >
-              {__("Disconnect", 'wp-to-beehiiv-integration')}
+              {__("Disconnect", 'integration-toolkit-for-beehiiv')}
             </Button>
           )}
           <a href="https://app.beehiiv.com/settings/integrations" target="_blank">
-            {__("Get your API key", 'wp-to-beehiiv-integration')}
+            {__("Get your API key", 'integration-toolkit-for-beehiiv')}
           </a>
           
         </div>

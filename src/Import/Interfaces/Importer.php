@@ -1,11 +1,11 @@
 <?php // phpcs:ignore Squiz.Commenting.FileComment.Missing
 
-namespace WP_to_Beehiiv_Integration\Import\Interfaces;
+namespace Integration_Toolkit_For_Beehiiv\Import\Interfaces;
 
-use WP_to_Beehiiv_Integration\Import\Import_Table;
-use WP_to_Beehiiv_Integration\Import\Prepare_Post;
-use WP_to_Beehiiv_Integration\Import\Queue;
-use WP_to_Beehiiv_Integration\Lib\Logger;
+use Integration_Toolkit_For_Beehiiv\Import\Import_Table;
+use Integration_Toolkit_For_Beehiiv\Import\Prepare_Post;
+use Integration_Toolkit_For_Beehiiv\Import\Queue;
+use Integration_Toolkit_For_Beehiiv\Lib\Logger;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -64,11 +64,11 @@ abstract class Importer {
     abstract protected function get_data_from_beehiiv();
 
     public static function get_import_progress() {
-        return get_option( 'wp_to_beehiiv_integration_manual_import_progress', array() );
+        return get_option( 'integration_toolkit_for_beehiiv_manual_import_progress', array() );
     }
 
     public static function remove_import_progress() {
-        delete_option( 'wp_to_beehiiv_integration_manual_import_progress' );
+        delete_option( 'integration_toolkit_for_beehiiv_manual_import_progress' );
     }
 
     public function maybe_push_to_queue( $prepared_items ) {
@@ -76,7 +76,7 @@ abstract class Importer {
             return;
         }
         
-        $import_interval_s = apply_filters( 'wp_to_beehiiv_integration_import_interval', 5 );
+        $import_interval_s = apply_filters( 'integration_toolkit_for_beehiiv_import_interval', 5 );
 		$import_interval   = $import_interval_s;
         foreach( $prepared_items as $item ) {
             $this->push_to_queue( $item, $import_interval );
@@ -131,7 +131,7 @@ abstract class Importer {
             Import_Table::insert_custom_table_row( $item['meta']['post_id'], $item, $this->group_name, 'pending' );
         } catch ( \Exception $e ) {
             $this->logger->log( array(
-                'message' => __('Error saving item to custom table: ','wp-to-beehiiv-integration') . $e->getMessage(),
+                'message' => __('Error saving item to custom table: ','integration-toolkit-for-beehiiv') . $e->getMessage(),
                 'status' => 'error',
             ) );
             return;

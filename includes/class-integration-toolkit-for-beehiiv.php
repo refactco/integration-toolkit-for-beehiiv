@@ -8,11 +8,11 @@
  * @link       https://refact.co
  * @since      1.0.0
  *
- * @package    WP_to_Beehiiv_Integration
- * @subpackage WP_to_Beehiiv_Integration/includes
+ * @package    Integration_Toolkit_For_Beehiiv
+ * @subpackage Integration_Toolkit_For_Beehiiv/includes
  */
 
-use WP_to_Beehiiv_Integration\Import\Queue;
+use Integration_Toolkit_For_Beehiiv\Import\Queue;
 
 /**
  * The core plugin class.
@@ -24,11 +24,11 @@ use WP_to_Beehiiv_Integration\Import\Queue;
  * version of the plugin.
  *
  * @since      1.0.0
- * @package    WP_to_Beehiiv_Integration
- * @subpackage WP_to_Beehiiv_Integration/includes
+ * @package    Integration_Toolkit_For_Beehiiv
+ * @subpackage Integration_Toolkit_For_Beehiiv/includes
  * @author     Refact <info@refact.co>
  */
-class WP_to_Beehiiv_Integration {
+class Integration_Toolkit_For_Beehiiv {
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -36,7 +36,7 @@ class WP_to_Beehiiv_Integration {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      WP_to_Beehiiv_Integration_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @var      Integration_Toolkit_For_Beehiiv_Loader    $loader    Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
@@ -45,9 +45,9 @@ class WP_to_Beehiiv_Integration {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      string    $wp_to_beehiiv_integration    The string used to uniquely identify this plugin.
+	 * @var      string    $integration_toolkit_for_beehiiv    The string used to uniquely identify this plugin.
 	 */
-	protected $wp_to_beehiiv_integration;
+	protected $integration_toolkit_for_beehiiv;
 
 	/**
 	 * The current version of the plugin.
@@ -68,12 +68,12 @@ class WP_to_Beehiiv_Integration {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		if ( defined( 'WP_TO_BEEHIIV_INTEGRATIONCORE_VERSION' ) ) {
-			$this->version = WP_TO_BEEHIIV_INTEGRATIONCORE_VERSION;
+		if ( defined( 'INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE_VERSION' ) ) {
+			$this->version = INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE_VERSION;
 		} else {
 			$this->version = '1.0.0';
 		}
-		$this->wp_to_beehiiv_integration = 'wp-to-beehiiv-integration';
+		$this->integration_toolkit_for_beehiiv = 'integration-toolkit-for-beehiiv';
 
 		$this->load_dependencies();
 		$this->define_admin_hooks();
@@ -86,8 +86,8 @@ class WP_to_Beehiiv_Integration {
 	 *
 	 * Include the following files that make up the plugin:
 	 *
-	 * - WP_to_Beehiiv_Integration_Loader. Orchestrates the hooks of the plugin.
-	 * - WP_to_Beehiiv_Integration_Admin. Defines all hooks for the admin area.
+	 * - Integration_Toolkit_For_Beehiiv_Loader. Orchestrates the hooks of the plugin.
+	 * - Integration_Toolkit_For_Beehiiv_Admin. Defines all hooks for the admin area.
 	 *
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
@@ -100,18 +100,18 @@ class WP_to_Beehiiv_Integration {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wp-to-beehiiv-integration-loader.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-integration-toolkit-for-beehiiv-loader.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wp-to-beehiiv-integration-admin.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-integration-toolkit-for-beehiiv-admin.php';
 
 		if ( ! $this->is_action_scheduler_plugin_active() ) {
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/woocommerce/action-scheduler/action-scheduler.php';
 		}
 
-		$this->loader = new WP_to_Beehiiv_Integration_Loader();
+		$this->loader = new Integration_Toolkit_For_Beehiiv_Loader();
 	}
 
 	/**
@@ -122,7 +122,7 @@ class WP_to_Beehiiv_Integration {
 	 */
 	public function load_text_domain() {
 		load_plugin_textdomain(
-			'wp-to-beehiiv-integration',
+			'integration-toolkit-for-beehiiv',
 			false,
 			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/',
 		);
@@ -138,20 +138,20 @@ class WP_to_Beehiiv_Integration {
 	private function define_admin_hooks() {
 		$this->loader->add_action( 'plugins_loaded', $this, 'load_text_domain' );
 
-		$plugin_admin = new WP_to_Beehiiv_Integration_Admin( $this->get_wp_to_beehiiv_integration(), $this->get_version() );
+		$plugin_admin = new Integration_Toolkit_For_Beehiiv_Admin( $this->get_integration_toolkit_for_beehiiv(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
-		$admin_menus = new \WP_to_Beehiiv_Integration\Admin_Menus();
+		$admin_menus = new \Integration_Toolkit_For_Beehiiv\Admin_Menus();
 		$this->loader->add_action( 'admin_menu', $admin_menus, 'register', 10 );
 
-		new \WP_to_Beehiiv_Integration\Import\AJAX\Update_Progress_Bar();
-		$forms = new \WP_to_Beehiiv_Integration\Import\Forms();
-		$this->loader->add_action( 'admin_post_wp_to_beehiiv_integration_manual_import', $forms, 'maybe_start_manual_import' );
-		$this->loader->add_action( 'admin_post_wp_to_beehiiv_integration_auto_import', $forms, 'maybe_register_auto_import' );
+		new \Integration_Toolkit_For_Beehiiv\Import\AJAX\Update_Progress_Bar();
+		$forms = new \Integration_Toolkit_For_Beehiiv\Import\Forms();
+		$this->loader->add_action( 'admin_post_integration_toolkit_for_beehiiv_manual_import', $forms, 'maybe_start_manual_import' );
+		$this->loader->add_action( 'admin_post_integration_toolkit_for_beehiiv_auto_import', $forms, 'maybe_register_auto_import' );
 
-		$canonical_url = new \WP_to_Beehiiv_Integration\Canonical_URL();
+		$canonical_url = new \Integration_Toolkit_For_Beehiiv\Canonical_URL();
 		$this->loader->add_action( 'plugins_loaded', $canonical_url, 'register_hook' );
 	}
 
@@ -164,8 +164,8 @@ class WP_to_Beehiiv_Integration {
 	 */
 	private function define_public_hooks() {
 
-		$settings = new \WP_to_Beehiiv_Integration\Blocks\Settings();
-		$blocks   = new \WP_to_Beehiiv_Integration\Blocks\Blocks();
+		$settings = new \Integration_Toolkit_For_Beehiiv\Blocks\Settings();
+		$blocks   = new \Integration_Toolkit_For_Beehiiv\Blocks\Blocks();
 
 		$this->loader->add_action( 'rest_api_init', $settings, 'register_rest_routes' );
 		$this->loader->add_action( 'init', $blocks, 'register_all_blocks', 10 );
@@ -188,15 +188,15 @@ class WP_to_Beehiiv_Integration {
 	 * @since     1.0.0
 	 * @return    string    The name of the plugin.
 	 */
-	public function get_wp_to_beehiiv_integration() {
-		return $this->wp_to_beehiiv_integration;
+	public function get_integration_toolkit_for_beehiiv() {
+		return $this->integration_toolkit_for_beehiiv;
 	}
 
 	/**
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
 	 * @since     1.0.0
-	 * @return    WP_to_Beehiiv_Integration_Loader    Orchestrates the hooks of the plugin.
+	 * @return    Integration_Toolkit_For_Beehiiv_Loader    Orchestrates the hooks of the plugin.
 	 */
 	public function get_loader() {
 		return $this->loader;
@@ -236,6 +236,6 @@ class WP_to_Beehiiv_Integration {
 	 * @return bool
 	 */
 	public static function is_plugin_activated(): bool {
-		return ! empty( get_option( 'wp_to_beehiiv_integration_publication_id' ) ) && ! empty( get_option( 'wp_to_beehiiv_integration_api_key' ) );
+		return ! empty( get_option( 'integration_toolkit_for_beehiiv_publication_id' ) ) && ! empty( get_option( 'integration_toolkit_for_beehiiv_api_key' ) );
 	}
 }
