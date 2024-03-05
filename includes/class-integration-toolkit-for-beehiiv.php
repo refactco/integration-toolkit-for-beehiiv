@@ -145,6 +145,9 @@ class Integration_Toolkit_For_Beehiiv {
 
 		$admin_menus = new \Integration_Toolkit_For_Beehiiv\Admin_Menus();
 		$this->loader->add_action( 'admin_menu', $admin_menus, 'register', 10 );
+		
+		$this->loader->add_action( 'admin_init', $admin_menus, 'register_beehiiv_importer' );
+		$this->loader->add_action( 'load-importer-integration_toolkit_for_beehiiv', $admin_menus, 'redirect_importer_to_plugin_settings_page' );
 
 		new \Integration_Toolkit_For_Beehiiv\Import\AJAX\Update_Progress_Bar();
 		$forms = new \Integration_Toolkit_For_Beehiiv\Import\Forms();
@@ -169,7 +172,6 @@ class Integration_Toolkit_For_Beehiiv {
 
 		$this->loader->add_action( 'rest_api_init', $settings, 'register_rest_routes' );
 		$this->loader->add_action( 'init', $blocks, 'register_all_blocks', 10 );
-
 	}
 
 	/**

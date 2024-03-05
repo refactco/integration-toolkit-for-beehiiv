@@ -87,4 +87,34 @@ class Admin_Menus {
 	public function add_settings_page() {
 		require_once INTEGRATION_TOOLKIT_FOR_BEEHIIV_PATH . 'admin/partials/integration-toolkit-for-beehiiv-admin-settings.php';
 	}
+
+
+	/**
+	 * Register the importer
+	 * 
+	 * @return void
+	 */
+	public function register_beehiiv_importer() {
+		register_importer(
+			'integration_toolkit_for_beehiiv',
+			__( 'Integration Toolkit for Beehiiv', 'integration-toolkit-for-beehiiv' ),
+			__( 'Import Beehiiv content to WordPress using "Integration Toolkit For Beehiiv" ', 'integration-toolkit-for-beehiiv' ),
+			array( $this, 'beehiiv_importer_callback' )
+		);
+	}
+	/**
+	 * Beehiiv Importer Callback
+	 * 
+	 * @return void
+	 */
+	public function beehiiv_importer_callback() {}
+	/**
+	 * Register the importer.
+	 * 
+	 * @return void
+	 */
+	public function redirect_importer_to_plugin_settings_page(){
+		wp_redirect( admin_url( 'admin.php?page=integration-toolkit-for-beehiiv-settings' ) );
+	}
+	
 }

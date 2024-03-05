@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Integration Toolkit for Beehiiv
  * Plugin URI:        https://refact.co/
- * Description:       integrates WP with Beehive, making it easy to sync subscriptions and streamline your email marketing campaigns.
+ * Description:       Effortlessly connect Beehiiv content and subscription capabilities with your WordPress site.
  * Version:           1.0.0
  * Author:            Refact.co
  * Author URI:        https://refact.co
