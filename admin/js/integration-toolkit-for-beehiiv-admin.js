@@ -3,12 +3,12 @@
   jQuery(document).ready(function ($) {
 
     tippy('#step1_content_type', {
-      content: "Choose the Beehiiv content subscription level you'd like to import. 'Free' pertains to content available without subscription fees, while 'Premium' is exclusive paid content",
+      content: "Choose the content subscription level you'd like to import. 'Free' pertains to content available without subscription fees, while 'Premium' is exclusive paid content",
       allowHTML: true,
     });
 
     tippy('#step1_post_status', {
-      content: "Select the visibility status of the posts within Beehiiv. 'Published' posts are live on Beehiiv, 'Archived' posts are stored but not visible to the audience, and 'Draft' posts are unpublished content.",
+      content: "Select the visibility status of the posts within. 'Published' posts are live on, 'Archived' posts are stored but not visible to the audience, and 'Draft' posts are unpublished content.",
       allowHTML: true,
     });
 
@@ -24,22 +24,22 @@
     });
 
     tippy('#step2_post_tags', {
-      content: "Tags help organize and categorize your content. This setting allows you to pull tags associated with your Beehiiv content and assign them to specific taxonomies and terms within WordPress.",
+      content: "Tags help organize and categorize your content. This setting allows you to pull tags associated with your content and assign them to specific taxonomies and terms within WordPress.",
       allowHTML: true,
     });
 
     tippy('#step2_post_status', {
-      content: "Define how the imported Beehiiv content should appear on your WordPress site. For example, whether it should be immediately visible, archived, or saved as a draft.",
+      content: "Define how the imported content should appear on your WordPress site. For example, whether it should be immediately visible, archived, or saved as a draft.",
       allowHTML: true,
     });
     
     tippy('#step2_import_method', {
-      content: "Select how you'd like to handle the incoming Beehiiv content. 'Import new items' will only add new content, 'Update existing items' will overwrite existing content with updates from Beehiiv, and 'Do both' will import new items while updating any matching existing content.",
+      content: "Select how you'd like to handle the incoming content. 'Import new items' will only add new content, 'Update existing items' will overwrite existing content with updates from, and 'Do both' will import new items while updating any matching existing content.",
       allowHTML: true,
     });
     
     tippy('#step2_cron_time', {
-      content: "Schedule the automatic importing process by specifying how often the system should check Beehiiv for new content.",
+      content: "Schedule the automatic importing process by specifying how often the system should check for new content.",
       allowHTML: true,
     });
 

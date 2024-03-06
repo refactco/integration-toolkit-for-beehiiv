@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Posts
- * This class contains all the methods to interact with the posts endpoint of the Beehiiv API
+ * This class contains all the methods to interact with the posts endpoint of the API
  *
  * @since      1.0.0
  * @package    Integration_Toolkit_For_Beehiiv

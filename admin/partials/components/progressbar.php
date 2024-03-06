@@ -37,7 +37,7 @@ if ( isset( $_GET['cancel'] ) && isset( $_GET['nonce'] ) ) { // phpcs:ignore Wor
 		<div class="log-item">
 			<span class="log-item__time">[<?php echo esc_html( current_time( 'H:i:s' ) ); ?>]</span>
 			<span class="log-item__status log-item__status--running"><?php esc_html_e( 'Running', 'integration-toolkit-for-beehiiv' ); ?></span>
-			<span class="log-item__message"><?php esc_html_e( 'Please wait... We are fetching data from Beehiiv.', 'integration-toolkit-for-beehiiv' ); ?></span>
+			<span class="log-item__message"><?php esc_html_e( 'Please wait... We are fetching data from.', 'integration-toolkit-for-beehiiv' ); ?></span>
 		</div>
 		<?php
 		if ( ! empty( $logs ) ) :

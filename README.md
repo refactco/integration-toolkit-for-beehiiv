@@ -1,15 +1,15 @@
 ## Integration Toolkit for beehiiv Plugin
 
-Effortlessly connect Beehiiv content and subscription capabilities with your WordPress site using this open-source plugin.
+Effortlessly connect content and subscription capabilities with your WordPress site using this open-source plugin.
 
 ## Features
 
-- **One-Click Integration:** Easily integrate content from Beehiiv into your WordPress site.
+- **One-Click Integration:** Easily integrate content from into your WordPress site.
 - **Manual & Auto Import Options:** Choose between manual or automatic content import based on your needs.
 - **Real-time Progress Monitoring:** Monitor the import process with a real-time progress bar and detailed activity logs.
 - **Background Processing:** Initiate the import and move on with your other tasks. The plugin manages the rest.
 - **GravityForms Compatibility:** Craft subscription forms using the popular GravityForms plugin and capture user details.
-- **Data Forwarding to Beehiiv:** Automatically send user's email addresses and other custom information to Beehiiv when they subscribe.
+- **Data Forwarding to:** Automatically send user's email addresses and other custom information to when they subscribe.
 
 
 ## Installation
@@ -25,8 +25,8 @@ Effortlessly connect Beehiiv content and subscription capabilities with your Wor
 ## Usage
 
 1. **Manual Import:** Choose specific content you'd like to import.
-2. **Auto Import:** Allow the plugin to fetch the latest content from Beehiiv at specified intervals.
-3. **Subscription Form Setup:** Design your subscription forms using GravityForms and link them with Beehiiv to capture and forward user data.
+2. **Auto Import:** Allow the plugin to fetch the latest content from at specified intervals.
+3. **Subscription Form Setup:** Design your subscription forms using GravityForms and link them with to capture and forward user data.
 
 ## Contributing
 
@@ -47,4 +47,4 @@ This plugin is open-source and licensed under the GPL v2 or later.
 
 ## Credits
 
-This plugin has been developed by Refact.co and is not an official release by Beehiiv. The Refact team wishes to thank all contributors and users of this plugin for their support and feedback, which are invaluable for ongoing improvements.
+This plugin has been developed by Refact.co and is not an official release by. The Refact team wishes to thank all contributors and users of this plugin for their support and feedback, which are invaluable for ongoing improvements.
