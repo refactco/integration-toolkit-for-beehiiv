@@ -5,7 +5,7 @@ const Header = (props) => {
   return (
     <div className="integration-toolkit-for-beehiiv-settings-header" key="settings-header">
       <div className="integration-toolkit-for-beehiiv-settings-header__logo">
-        Integration Toolkit for Beehiiv
+        Integration Toolkit for beehiiv
       </div>
 
       <div className="integration-toolkit-for-beehiiv-settings-header__links">

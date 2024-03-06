@@ -24,7 +24,7 @@ const Header = props => {
     key: "settings-header"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "integration-toolkit-for-beehiiv-settings-header__logo"
-  }, "Integration Toolkit for Beehiiv"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, "Integration Toolkit for beehiiv"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "integration-toolkit-for-beehiiv-settings-header__links"
   }));
 };
