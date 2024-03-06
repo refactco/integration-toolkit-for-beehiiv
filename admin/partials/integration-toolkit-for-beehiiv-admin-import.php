@@ -33,7 +33,7 @@ if ( $is_canceled ) {
 		function() {
 			?>
 		<div class="integration-toolkit-for-beehiiv-import--notice integration-toolkit-for-beehiiv-import--notice-canceled">
-			<h4><?php esc_html_e( 'Importing posts from Beehiiv is cancelled.', 'integration-toolkit-for-beehiiv' ); ?></h4>
+			<h4><?php esc_html_e( 'Importing posts from is cancelled.', 'integration-toolkit-for-beehiiv' ); ?></h4>
 			<p class="description"><?php esc_html_e( 'The import process is cancelled. You can start the import process again.', 'integration-toolkit-for-beehiiv' ); ?></p>
 			<?php require_once INTEGRATION_TOOLKIT_FOR_BEEHIIV_PATH . 'admin/partials/components/progressbar.php'; ?>
 		</div>
@@ -70,8 +70,8 @@ if ( $is_running ) {
 			);
 			?>
 		<div class="integration-toolkit-for-beehiiv-import--notice">
-			<h4><?php esc_html_e( '🔄 Currently Importing Content from Beehiiv...', 'integration-toolkit-for-beehiiv' ); ?></h4>
-			<p class="description"><?php esc_html_e( 'We\'re actively importing posts from Beehiiv. You can continue with your other tasks or leave this page. We\'ll handle the rest.', 'integration-toolkit-for-beehiiv' ); ?>
+			<h4><?php esc_html_e( '🔄 Currently Importing Content from...', 'integration-toolkit-for-beehiiv' ); ?></h4>
+			<p class="description"><?php esc_html_e( 'We\'re actively importing posts from. You can continue with your other tasks or leave this page. We\'ll handle the rest.', 'integration-toolkit-for-beehiiv' ); ?>
 			<br><strong><?php esc_html_e( 'Progress: ', 'integration-toolkit-for-beehiiv' ); ?><span class="number" id="imported_count"><?php echo $complete_items . '</span> / <span class="number" id="total_count">' . $total_items; ?></span></strong></p>
 			<a class="integration-toolkit-for-beehiiv-button-secondary integration-toolkit-for-beehiiv-button-cancel" id="integration-toolkit-for-beehiiv-import--cancel" href="<?php echo esc_url( $cancel_url ); ?>"><?php esc_html_e( 'Cancel', 'integration-toolkit-for-beehiiv' ); ?></a>
 			<?php require_once INTEGRATION_TOOLKIT_FOR_BEEHIIV_PATH . 'admin/partials/components/progressbar.php'; ?>
@@ -182,7 +182,7 @@ if ( $is_auto_action_exist ) {
 						}
 						$post_status_str .= sprintf(
 							// Translators: %1$s: beehiiv post status, %2$s: post status.
-							esc_html__( 'a status "%1$s" in Beehiiv will be set to "%2$s"', 'integration-toolkit-for-beehiiv' ),
+							esc_html__( 'a status "%1$s" in will be set to "%2$s"', 'integration-toolkit-for-beehiiv' ),
 							ucwords( $status ),
 							ucwords( $post_status )
 						);
@@ -208,7 +208,7 @@ if ( $is_auto_action_exist ) {
 								break;
 						}
 						echo nl2br(sprintf(
-							esc_html__( 'The current configuration will automatically fetch content from Beehiiv every "%1$s" hours. This content will be integrated as WordPress "%2$s" under the "%3$s" taxonomy labeled as "%4$s".
+							esc_html__( 'The current configuration will automatically fetch content from every "%1$s" hours. This content will be integrated as WordPress "%2$s" under the "%3$s" taxonomy labeled as "%4$s".
 
 						All incoming content with  %5$s in WordPress. Please note that during this import process, %6$s
 						
@@ -252,13 +252,13 @@ var AllDefaultArgs = <?php echo wp_json_encode( $default_args ); ?>;
 		</h1>
 
 					<p>
-						<?php esc_html_e( 'Choose how to import content from Beehiiv to your WordPress Site.', 'integration-toolkit-for-beehiiv' ); ?>
+						<?php esc_html_e( 'Choose how to import content from to your WordPress Site.', 'integration-toolkit-for-beehiiv' ); ?>
 						<br>
 						<?php 
 							if ( !$is_auto ) {
-								esc_html_e( 'This feature allows you to pull content from Beehiiv and publish it on your WordPress website.', 'integration-toolkit-for-beehiiv' ); 
+								esc_html_e( 'This feature allows you to pull content from and publish it on your WordPress website.', 'integration-toolkit-for-beehiiv' ); 
 							} else {
-								esc_html_e( 'Set up an automatic process to periodically fetch and integrate content from Beehiiv into your WordPress website.' ); 
+								esc_html_e( 'Set up an automatic process to periodically fetch and integrate content from into your WordPress website.' ); 
 							}
 						?>
 					</p>	
@@ -285,7 +285,7 @@ var AllDefaultArgs = <?php echo wp_json_encode( $default_args ); ?>;
 		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" id="integration-toolkit-for-beehiiv-import-form" class="integration-toolkit-for-beehiiv-import-form">
 			<div class="integration-toolkit-for-beehiiv-import-fields">
 				<div class="integration-toolkit-for-beehiiv-import-fields--step import-fields--step1 <?php echo ! $is_auto_action_exist ? 'active' : ''; ?>">
-					<h2 class="integration-toolkit-for-beehiiv-import-fields--step--title" data-error-count="0"><?php esc_html_e( 'Step1: Choose data from Beehiiv', 'integration-toolkit-for-beehiiv' ); ?></h2>
+					<h2 class="integration-toolkit-for-beehiiv-import-fields--step--title" data-error-count="0"><?php esc_html_e( 'Step1: Choose data from', 'integration-toolkit-for-beehiiv' ); ?></h2>
 					<div class="integration-toolkit-for-beehiiv-import-fields--step--content">
 						<fieldset>
 							<label for="integration-toolkit-for-beehiiv-content_type" class="pr-2"><strong><?php esc_html_e( 'Content Type', 'integration-toolkit-for-beehiiv' ); ?></strong>
@@ -403,7 +403,7 @@ var AllDefaultArgs = <?php echo wp_json_encode( $default_args ); ?>;
 							<select name="integration-toolkit-for-beehiiv-post_tags-taxonomy" id="integration-toolkit-for-beehiiv-post_tags-taxonomy" class="integration-toolkit-for-beehiiv-post_tags-taxonomy">
 								<option value="0"><?php esc_html_e( 'Select post type first', 'integration-toolkit-for-beehiiv' ); ?></option>
 							</select>
-							<p class="description"><?php esc_html_e( 'To import tags from Beehiiv, select the taxonomy and term you want to use for the imported tags.', 'integration-toolkit-for-beehiiv' ); ?></p>
+							<p class="description"><?php esc_html_e( 'To import tags from, select the taxonomy and term you want to use for the imported tags.', 'integration-toolkit-for-beehiiv' ); ?></p>
 						</fieldset>
 						<fieldset id="integration-toolkit-for-beehiiv-post_status">
 							<label for="integration-toolkit-for-beehiiv-post_status">
@@ -453,7 +453,7 @@ var AllDefaultArgs = <?php echo wp_json_encode( $default_args ); ?>;
 									</small>
 						    	</label>
 								<input type="number" name="integration-toolkit-for-beehiiv-cron_time" id="integration-toolkit-for-beehiiv-cron_time" value="<?php echo esc_attr( $default_args['cron_time'] ); ?>" min="1" required placeholder="<?php esc_attr_e( 'Enter interval in hours', 'integration-toolkit-for-beehiiv' ); ?>"> Hour(s)
-									<p class="description"><?php esc_html_e( 'Enter the desired time intervals in hours and set the frequency of auto imports from your Beehiiv to your WordPress site.', 'integration-toolkit-for-beehiiv' ); ?></p>
+									<p class="description"><?php esc_html_e( 'Enter the desired time intervals in hours and set the frequency of auto imports from your to your WordPress site.', 'integration-toolkit-for-beehiiv' ); ?></p>
 							</fieldset>
 						<?php endif; ?>
 					</div>

@@ -98,12 +98,12 @@ class Admin_Menus {
 		register_importer(
 			'integration_toolkit_for_beehiiv',
 			__( 'Integration Toolkit for beehiiv', 'integration-toolkit-for-beehiiv' ),
-			__( 'Import Beehiiv content to WordPress using "Integration Toolkit For Beehiiv" ', 'integration-toolkit-for-beehiiv' ),
+			__( 'Import content to WordPress using "Integration Toolkit For" ', 'integration-toolkit-for-beehiiv' ),
 			array( $this, 'beehiiv_importer_callback' )
 		);
 	}
 	/**
-	 * Beehiiv Importer Callback
+	 * Importer Callback
 	 * 
 	 * @return void
 	 */

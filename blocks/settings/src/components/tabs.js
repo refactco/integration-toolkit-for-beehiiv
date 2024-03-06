@@ -80,7 +80,7 @@ const Tabs = (props) => {
         Settings
       </h1>
 			<p>
-        {__('Establish a connection between your WordPress website and Beehiiv by providing the necessary credentials.', 'integration-toolkit-for-beehiiv')}
+        {__('Establish a connection between your WordPress website and by providing the necessary credentials.', 'integration-toolkit-for-beehiiv')}
       </p>
 	  </div>
     <div className="integration-toolkit-for-beehiiv-tabs">
@@ -106,7 +106,7 @@ const Tabs = (props) => {
               <Grid columns={1} style={{ width: "100%" }}>
                 <InputControl
                   type="password"
-                  help={__("Enter the unique API key you received from Beehiiv. This key authorizes and facilitates the communication between your WordPress website and Beehiiv.", 'integration-toolkit-for-beehiiv')}
+                  help={__("Enter the unique API key you received from. This key authorizes and facilitates the communication between your WordPress website and.", 'integration-toolkit-for-beehiiv')}
                   label={__("API Key", 'integration-toolkit-for-beehiiv')}
                   onChange={(value) => setApiKey(value)}
                   placeholder={__("Enter your API key", 'integration-toolkit-for-beehiiv')}
@@ -114,7 +114,7 @@ const Tabs = (props) => {
                 />
                 <InputControl
                   type="password"
-                  help={__("Input the specific ID related to the content or publication you intend to import. This helps in pinpointing the exact data you want to fetch from Beehiiv.", 'integration-toolkit-for-beehiiv')}
+                  help={__("Input the specific ID related to the content or publication you intend to import. This helps in pinpointing the exact data you want to fetch from.", 'integration-toolkit-for-beehiiv')}
                   label={__("Publication ID", 'integration-toolkit-for-beehiiv')}
                   placeholder={__("Enter your publication ID", 'integration-toolkit-for-beehiiv')}
                   onChange={(value) => setPublicationId(value)}

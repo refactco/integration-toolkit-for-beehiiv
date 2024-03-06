@@ -109,7 +109,7 @@ class Integration_Toolkit_For_Beehiiv_Admin {
 					'select_term'     => __( 'Select taxonomy term', 'integration-toolkit-for-beehiiv' ),
 					'labels'          => array(
 						'content_type'   => __( 'Content Type', 'integration-toolkit-for-beehiiv' ),
-						'beehiiv_status' => __( 'Post status on Beehiiv', 'integration-toolkit-for-beehiiv' ),
+						'beehiiv_status' => __( 'Post status on', 'integration-toolkit-for-beehiiv' ),
 						'post_type'      => __( 'Post Type', 'integration-toolkit-for-beehiiv' ),
 						'taxonomy'       => __( 'Taxonomy', 'integration-toolkit-for-beehiiv' ),
 						'taxonomy_term'  => __( 'Taxonomy Term', 'integration-toolkit-for-beehiiv' ),

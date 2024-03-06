@@ -51,7 +51,7 @@ msgid "Content Type"
 msgstr ""
 
 #: admin/class-integration-toolkit-for-beehiiv-admin.php:112
-msgid "Post status on Beehiiv"
+msgid "Post status on"
 msgstr ""
 
 #: admin/class-integration-toolkit-for-beehiiv-admin.php:113
@@ -95,11 +95,11 @@ msgid "Running"
 msgstr ""
 
 #: admin/partials/components/progressbar.php:40
-msgid "Please wait... We are fetching data from Beehiiv."
+msgid "Please wait... We are fetching data from."
 msgstr ""
 
 #: admin/partials/integration-toolkit-for-beehiiv-admin-import.php:36
-msgid "Importing posts from Beehiiv is cancelled."
+msgid "Importing posts from is cancelled."
 msgstr ""
 
 #: admin/partials/integration-toolkit-for-beehiiv-admin-import.php:37
@@ -107,11 +107,11 @@ msgid "The import process is cancelled. You can start the import process again."
 msgstr ""
 
 #: admin/partials/integration-toolkit-for-beehiiv-admin-import.php:73
-msgid "🔄 Currently Importing Content from Beehiiv..."
+msgid "🔄 Currently Importing Content from..."
 msgstr ""
 
 #: admin/partials/integration-toolkit-for-beehiiv-admin-import.php:74
-msgid "We're actively importing posts from Beehiiv. You can continue with your other tasks or leave this page. We'll handle the rest."
+msgid "We're actively importing posts from. You can continue with your other tasks or leave this page. We'll handle the rest."
 msgstr ""
 
 #: admin/partials/integration-toolkit-for-beehiiv-admin-import.php:75
@@ -132,7 +132,7 @@ msgstr ""
 
 #. Translators: %1$s: beehiiv post status, %2$s: post status.
 #: admin/partials/integration-toolkit-for-beehiiv-admin-import.php:185
-msgid "a status \"%1$s\" in Beehiiv will be set to \"%2$s\""
+msgid "a status \"%1$s\" in will be set to \"%2$s\""
 msgstr ""
 
 #: admin/partials/integration-toolkit-for-beehiiv-admin-import.php:201
@@ -149,7 +149,7 @@ msgstr ""
 
 #: admin/partials/integration-toolkit-for-beehiiv-admin-import.php:211
 msgid ""
-"The current configuration will automatically fetch content from Beehiiv every \"%1$s\" hours. This content will be integrated as WordPress \"%2$s\" under the \"%3$s\" taxonomy labeled as \"%4$s\".\n"
+"The current configuration will automatically fetch content from every \"%1$s\" hours. This content will be integrated as WordPress \"%2$s\" under the \"%3$s\" taxonomy labeled as \"%4$s\".\n"
 "\n"
 "\t\t\t\t\t\tAll incoming content with  %5$s in WordPress. Please note that during this import process, %6$s\n"
 "\t\t\t\t\t\t\n"
@@ -186,11 +186,11 @@ msgid "Import Content"
 msgstr ""
 
 #: admin/partials/integration-toolkit-for-beehiiv-admin-import.php:255
-msgid "Choose how to import content from Beehiiv to your WordPress Site."
+msgid "Choose how to import content from to your WordPress Site."
 msgstr ""
 
 #: admin/partials/integration-toolkit-for-beehiiv-admin-import.php:259
-msgid "This feature allows you to pull content from Beehiiv and publish it on your WordPress website."
+msgid "This feature allows you to pull content from and publish it on your WordPress website."
 msgstr ""
 
 #: admin/partials/integration-toolkit-for-beehiiv-admin-import.php:269
@@ -206,7 +206,7 @@ msgid "Please fix the following errors:"
 msgstr ""
 
 #: admin/partials/integration-toolkit-for-beehiiv-admin-import.php:288
-msgid "Step1: Choose data from Beehiiv"
+msgid "Step1: Choose data from"
 msgstr ""
 
 #: admin/partials/integration-toolkit-for-beehiiv-admin-import.php:298
@@ -278,7 +278,7 @@ msgid "Select post type first"
 msgstr ""
 
 #: admin/partials/integration-toolkit-for-beehiiv-admin-import.php:406
-msgid "To import tags from Beehiiv, select the taxonomy and term you want to use for the imported tags."
+msgid "To import tags from, select the taxonomy and term you want to use for the imported tags."
 msgstr ""
 
 #: admin/partials/integration-toolkit-for-beehiiv-admin-import.php:416
@@ -314,7 +314,7 @@ msgid "Enter interval in hours"
 msgstr ""
 
 #: admin/partials/integration-toolkit-for-beehiiv-admin-import.php:456
-msgid "Enter the desired time intervals in hours and set the frequency of auto imports from your Beehiiv to your WordPress site."
+msgid "Enter the desired time intervals in hours and set the frequency of auto imports from your to your WordPress site."
 msgstr ""
 
 #: admin/partials/integration-toolkit-for-beehiiv-admin-import.php:468
@@ -418,7 +418,7 @@ msgstr ""
 #: blocks/settings/build/index.js:109
 #: blocks/settings/src/components/tabs.js:83
 #: blocks/settings/build/index.js:101
-msgid "Establish a connection between your WordPress website and Beehiiv by providing the necessary credentials."
+msgid "Establish a connection between your WordPress website and by providing the necessary credentials."
 msgstr ""
 
 #: blocks/settings/build/index.js:117
@@ -430,7 +430,7 @@ msgstr ""
 #: blocks/settings/build/index.js:137
 #: blocks/settings/src/components/tabs.js:109
 #: blocks/settings/build/index.js:127
-msgid "Enter the unique API key you received from Beehiiv. This key authorizes and facilitates the communication between your WordPress website and Beehiiv."
+msgid "Enter the unique API key you received from. This key authorizes and facilitates the communication between your WordPress website and."
 msgstr ""
 
 #: blocks/settings/build/index.js:138
@@ -448,7 +448,7 @@ msgstr ""
 #: blocks/settings/build/index.js:144
 #: blocks/settings/src/components/tabs.js:117
 #: blocks/settings/build/index.js:135
-msgid "Input the specific ID related to the content or publication you intend to import. This helps in pinpointing the exact data you want to fetch from Beehiiv."
+msgid "Input the specific ID related to the content or publication you intend to import. This helps in pinpointing the exact data you want to fetch from."
 msgstr ""
 
 #: blocks/settings/build/index.js:145

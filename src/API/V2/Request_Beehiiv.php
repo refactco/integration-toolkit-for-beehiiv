@@ -4,8 +4,8 @@ namespace Integration_Toolkit_For_Beehiiv\API\V2;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Send a request to the Beehiiv API
- * This class is used to send a request to the Beehiiv API
+ * Send a request to the API
+ * This class is used to send a request to the API
  *
  * @since      1.0.0
  * @package    Integration_Toolkit_For_Beehiiv
@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
 class Request_Beehiiv {
 
 	/**
-	 * Send a GET request to the Beehiiv API
+	 * Send a GET request to the API
 	 *
 	 * @param string|null $api_key
 	 * @param string $endpoint
