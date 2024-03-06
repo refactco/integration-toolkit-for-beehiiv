@@ -2,7 +2,7 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Integration Toolkit for Beehiiv 1.0.0\n"
+"Project-Id-Version: Integration Toolkit for beehiiv 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/Re-Beehiiv\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 #: admin/partials/components/header.php:17
 #: src/Admin_Menus.php:18
 #: src/Admin_Menus.php:19
-msgid "Integration Toolkit for Beehiiv"
+msgid "Integration Toolkit for beehiiv"
 msgstr ""
 
 #. Plugin URI of the plugin
@@ -334,7 +334,7 @@ msgstr ""
 
 #: src/Admin_Menus.php:31
 #: src/Admin_Menus.php:40
-msgid "Integration Toolkit for Beehiiv - Import"
+msgid "Integration Toolkit for beehiiv - Import"
 msgstr ""
 
 #: src/Admin_Menus.php:71
