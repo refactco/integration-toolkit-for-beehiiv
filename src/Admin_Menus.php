@@ -15,8 +15,8 @@ class Admin_Menus {
 	 */
 	public function register() {
 		add_menu_page(
-			__( 'Integration Toolkit for Beehiiv', 'integration-toolkit-for-beehiiv' ),
-			__( 'Integration Toolkit for Beehiiv', 'integration-toolkit-for-beehiiv' ),
+			__( 'Integration Toolkit for beehiiv', 'integration-toolkit-for-beehiiv' ),
+			__( 'Integration Toolkit for beehiiv', 'integration-toolkit-for-beehiiv' ),
 			'manage_options',
 			'integration-toolkit-for-beehiiv-import',
 			array( $this, 'load_page_import' ),
@@ -28,7 +28,7 @@ class Admin_Menus {
 
 		add_submenu_page(
 			'integration-toolkit-for-beehiiv-import',
-			__( 'Integration Toolkit for Beehiiv - Import', 'integration-toolkit-for-beehiiv' ),
+			__( 'Integration Toolkit for beehiiv - Import', 'integration-toolkit-for-beehiiv' ),
 			__( 'Import Content', 'integration-toolkit-for-beehiiv' ),
 			'manage_options',
 			'integration-toolkit-for-beehiiv-import',
@@ -37,7 +37,7 @@ class Admin_Menus {
 
 		add_submenu_page(
 			'integration-toolkit-for-beehiiv-import',
-			__( 'Integration Toolkit for Beehiiv - Import', 'integration-toolkit-for-beehiiv' ),
+			__( 'Integration Toolkit for beehiiv - Import', 'integration-toolkit-for-beehiiv' ),
 			'Settings',
 			'manage_options',
 			'integration-toolkit-for-beehiiv-settings',
@@ -97,7 +97,7 @@ class Admin_Menus {
 	public function register_beehiiv_importer() {
 		register_importer(
 			'integration_toolkit_for_beehiiv',
-			__( 'Integration Toolkit for Beehiiv', 'integration-toolkit-for-beehiiv' ),
+			__( 'Integration Toolkit for beehiiv', 'integration-toolkit-for-beehiiv' ),
 			__( 'Import Beehiiv content to WordPress using "Integration Toolkit For Beehiiv" ', 'integration-toolkit-for-beehiiv' ),
 			array( $this, 'beehiiv_importer_callback' )
 		);

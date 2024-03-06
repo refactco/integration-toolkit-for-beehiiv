@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       Integration Toolkit for Beehiiv
+ * Plugin Name:       Integration Toolkit for beehiiv
  * Plugin URI:        https://refact.co/
  * Description:       Effortlessly connect Beehiiv content and subscription capabilities with your WordPress site.
  * Version:           1.0.0
