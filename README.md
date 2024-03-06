@@ -1,4 +1,4 @@
-#Integration Toolkit for beehiiv Plugin
+## Integration Toolkit for beehiiv Plugin
 
 Effortlessly connect Beehiiv content and subscription capabilities with your WordPress site using this open-source plugin.
 
