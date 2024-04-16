@@ -1,15 +1,15 @@
-=== Integration Toolkit for beehiiv: An advanced beehiiv WordPress integration ===
+=== Integration Toolkit for beehiiv: An advanced beehiiv integration ===
  
 Contributors:      refact
 Requires at least: 5.2
 Tested up to:      6.3
 Requires PHP:      5.6
 Stable tag:        1.0.0
-licenses: GPL2+
-License URI: http://www.gnu.org/licenses/gpl-2.0.txt
+License: GPL2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: esp, beehiiv, import, email, importer
  
-Integration Toolkit for beehiiv is a powerful integration tool between beehiiv and your WordPress site. Import all your content automatically and save time. 
+Integration Toolkit for beehiiv is a powerful tool between beehiiv and your WordPress site. Import all your content automatically and save time 
  
 == Description ==
  
@@ -85,6 +85,10 @@ Yes, at any time you can navigate to the plugin’s settings in your dashboard a
 1. The Settings page
 2. Manual Import
 3. Automatic Import
+
+== Upgrade Notice ==
+= v1.0.0 =
+New: Initial release
  
 == Changelog ==
  

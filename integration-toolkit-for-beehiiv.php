@@ -6,8 +6,8 @@
  * Version:           1.0.0
  * Author:            Refact.co
  * Author URI:        https://refact.co
- * License:           GPL-2.0+
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * License:           GPL2 or later
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       Re-Beehiiv
  * Domain Path:       /languages
  * Requires at least: 5.2
