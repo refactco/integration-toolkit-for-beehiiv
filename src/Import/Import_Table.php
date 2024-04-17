@@ -143,29 +143,27 @@ class Import_Table {
 		$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE group_name = %s', $table_name, $group_name ) ); // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnsupportedPlaceholder,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber
 	}
 
+	/**
+	 * Get all rows from the custom table.
+	 *
+	 * @param string $status
+	 * @param string $group_name
+	 * @return array
+	 */
 	public static function get_rows_by_status( string $status, string $group_name = '' ) : array {
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
 		$status     = sanitize_text_field( $status );
 		$group_name = sanitize_text_field( $group_name );
-		$query      = "SELECT * FROM $table_name WHERE status = %s";
-	
-		$params = array( $status );
-	
 		if ( ! empty( $group_name ) ) {
-			$query .= " AND group_name = %s";
-			$params[] = $group_name;
+			$result = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %s WHERE status = %s AND group_name = %s', $table_name, $status, $group_name ) );
+		} else {
+			$result = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %s WHERE status = %s', $table_name, $status ) );
 		}
-	
-		$prepared_query = $wpdb->prepare( $query, $params ); //phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-	
-		$result = $wpdb->get_results( $prepared_query );//phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-	
 		if ( ! $result ) {
-			return [];
+			return array();
 		}
-	
+
 		return $result;
 	}
-	
 }
