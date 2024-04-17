@@ -14,7 +14,18 @@ Integration Toolkit for beehiiv is a powerful tool between beehiiv and your Word
 == Description ==
  
 Integration Toolkit for beehiiv provides you with the necessary integration to import content automatically between beehiiv and your WordPress site. 
- 
+
+### Third-Party Service Information
+
+This plugin utilizes Beehiiv’s external API services to facilitate content importation. When you use this plugin, data such as post content, author information, and tags are transmitted to and from Beehiiv under the following conditions:
+- When manually or automatically importing posts to WordPress.
+- When updating existing posts with new content from Beehiiv.
+
+For more detailed information about the Beehiiv services and their privacy practices, please refer to:
+- Beehiiv API Homepage: [https://api.beehiiv.com/v2]
+- Terms of Use: [https://www.beehiiv.com/tou]
+- Privacy Policy: [https://www.beehiiv.com/privacy]
+
 This plugin is designed to be simple and ensures your WordPress site is always updated with the latest content. Integration Toolkit for beehiiv allows you to: 
  
 - Select the content type to import from beehiiv (free, premium, etc.)
@@ -30,7 +41,19 @@ This plugin is designed to be simple and ensures your WordPress site is always u
 In addition to its importing capabilities, this version of The Integration Toolkit for beehiiv integrates perfectly with Yoast SEO plugin, allowing you to add Canonical tags to all your imported content. This integration helps in improving your SEO ranking by preventing duplicate content issues and directing search engines to the original content.
  
 While “Integration Toolkit for beehiiv” is not officially developed or endorsed by beehiiv, it adheres to all best practices and protocols, ensuring a secure and effective synchronization between your WordPress site and beehiiv.
- 
+
+
+### API Integration Points
+
+Our plugin communicates with Beehiiv’s API at the following endpoint:
+- `BASE_URL`: `https://api.beehiiv.com/v2` — Main endpoint for fetching and sending data to Beehiiv.
+
+### Legal and Security
+
+The secure handling of your data is paramount. We use industry-standard security measures during data transmission to Beehiiv. By using this plugin, you acknowledge and consent to the transfer of data to Beehiiv as described in the Third-Party Service Information section. It is your responsibility to ensure that the use of Beehiiv’s API complies with all relevant legal requirements applicable to your geographical location.
+
+While “Integration Toolkit for beehiiv” is not officially developed or endorsed by Beehiiv, it adheres to all best practices and protocols, ensuring a secure and effective synchronization between your WordPress site and Beehiiv.
+
 = We want your input =
  
 If you have any suggestions for improvements, feature updates, etc., or would like to simply give us feedback, then we want to hear it. Please email your comments to dev@refact.co
