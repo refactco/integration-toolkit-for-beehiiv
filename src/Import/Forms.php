@@ -60,46 +60,44 @@ class Forms {
 
 
 	public function maybe_register_auto_import() {
-		if ( ! isset( $_POST['integration_toolkit_for_beehiiv_import_nonce'] ) || ! wp_verify_nonce( $_POST['integration_toolkit_for_beehiiv_import_nonce'], 'integration_toolkit_for_beehiiv_import_nonce' ) ) {
-			return;
-		}
+		if ( isset( $_POST['integration_toolkit_for_beehiiv_import_nonce'] ) ) {
+			$nonce = sanitize_text_field( wp_unslash( $_POST['integration_toolkit_for_beehiiv_import_nonce'] ));
+			if ( ! wp_verify_nonce( $nonce, 'integration_toolkit_for_beehiiv_action' ) ) {
+				return;
+			}
+			$form_data = $this->get_form_validated_data();
 
- 
-		$form_data = $this->get_form_validated_data();
+			if ( isset( $form_data['error'] ) ) {
+				// show the error message
+				add_action(
+					'integration_toolkit_for_beehiiv_admin_notices',
+					function () use ( $form_data ) {
+						?>
+					<div class="notice notice-error">
+						<p><?php echo esc_html__( $form_data['error'] ,'integration-toolkit-for-beehiiv' ); ?></p>
+					</div>
+						<?php
+					}
+				);
+				return;
+			}
 
-		if ( isset( $form_data['error'] ) ) {
-			// show the error message
-			add_action(
-				'integration_toolkit_for_beehiiv_admin_notices',
-				function () use ( $form_data ) {
-					?>
-				<div class="notice notice-error">
-					<p><?php echo esc_html__( $form_data['error'] ); ?></p>
-				</div>
-					<?php
-				}
+			$form_data['api_key']        = get_option( 'integration_toolkit_for_beehiiv_api_key' );
+			$form_data['publication_id'] = get_option( 'integration_toolkit_for_beehiiv_publication_id' );
+			$form_data                   = array(
+				'primary_account' => $form_data,
 			);
-			return;
+
+			/**
+			 * Filter the form data before starting the import
+			 *
+			 * @param array $form_data The form data
+			 */
+			$form_data = apply_filters( 'integration_toolkit_for_beehiiv_auto_import_form_data', $form_data );
+			$import    = new Import( $form_data, 'auto_recurring_import', 'auto' );
+			// redirect to import page
+			wp_safe_redirect( admin_url( 'admin.php?page=integration-toolkit-for-beehiiv-import&tab=auto-import' ) );
 		}
-
-		$form_data['api_key']       = get_option( 'integration_toolkit_for_beehiiv_api_key' );
-		$form_data['publication_id'] = get_option( 'integration_toolkit_for_beehiiv_publication_id' );
-
-		$form_data=array(
-			'primary_account' => $form_data,
-		);
-		
-		/**
-		 * Filter the form data before starting the import
-		 *
-		 * @param array $form_data The form data
-		 */
-		$form_data = apply_filters( 'integration_toolkit_for_beehiiv_auto_import_form_data', $form_data );
-
-		$import = new Import( $form_data, 'auto_recurring_import', 'auto' );
-
-		// redirect to import page
-		wp_safe_redirect( admin_url( 'admin.php?page=integration-toolkit-for-beehiiv-import&tab=auto-import' ) );
 	}
 
 	/**
@@ -111,32 +109,37 @@ class Forms {
 	 * @return void
 	 */
 	public function maybe_start_manual_import() {
-		if ( ! isset( $_POST['integration_toolkit_for_beehiiv_import_nonce'] ) || ! wp_verify_nonce( $_POST['integration_toolkit_for_beehiiv_import_nonce'], 'integration_toolkit_for_beehiiv_import_nonce' ) ) {
-			return;
+
+		if ( isset( $_POST['integration_toolkit_for_beehiiv_import_nonce'] ) ) {
+			$nonce = sanitize_text_field( wp_unslash( $_POST['integration_toolkit_for_beehiiv_import_nonce'] ) );
+
+			if ( ! wp_verify_nonce( $nonce, 'integration_toolkit_for_beehiiv_action' ) ) {
+				return;
+			}
+
+			// get the data from the form
+			$form_data = $this->get_form_validated_data();
+
+			if ( isset( $form_data['error'] ) ) {
+				// show the error message
+				add_action(
+					'integration_toolkit_for_beehiiv_admin_notices',
+					function () use ( $form_data ) {
+						?>
+					<div class="notice notice-error">
+						<p><?php echo esc_html__( $form_data['error'] ); ?></p>
+					</div>
+						<?php
+					}
+				);
+				return;
+			}
+
+			$import = new Import( $form_data, 'manual_import_' . time(), 'manual' );
+
+			// redirect to import page
+			wp_safe_redirect( admin_url( 'admin.php?page=integration-toolkit-for-beehiiv-import' ) );
 		}
-
-		// get the data from the form
-		$form_data = $this->get_form_validated_data();
-
-		if ( isset( $form_data['error'] ) ) {
-			// show the error message
-			add_action(
-				'integration_toolkit_for_beehiiv_admin_notices',
-				function () use ( $form_data ) {
-					?>
-				<div class="notice notice-error">
-					<p><?php echo esc_html__( $form_data['error'] ); ?></p>
-				</div>
-					<?php
-				}
-			);
-			return;
-		}
-
-		$import = new Import( $form_data, 'manual_import_' . time(), 'manual' );
-
-		// redirect to import page
-		wp_safe_redirect( admin_url( 'admin.php?page=integration-toolkit-for-beehiiv-import' ) );
 	}
 
 	/**
