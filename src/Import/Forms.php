@@ -1,5 +1,16 @@
 <?php
+/**
+ * This file  is responsible for handling the import form data.
+ *
+ * @package Integration_Toolkit_For_Beehiiv
+ */
+
 namespace Integration_Toolkit_For_Beehiiv\Import;
+/**
+ * Class Forms
+ *
+ * @package Integration_Toolkit_For_Beehiiv
+ */
 class Forms {
 
 	const FIELD_PREFIX = 'integration-toolkit-for-beehiiv-';
@@ -61,7 +72,7 @@ class Forms {
 
 	/**
 	 * Register the auto import form.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function maybe_register_auto_import() {
@@ -74,7 +85,15 @@ class Forms {
 				function () use ( $form_data ) {
 					?>
 				<div class="notice notice-error">
-					<p><?php echo esc_html__( $form_data['message'] ,'integration-toolkit-for-beehiiv' ); ?></p>
+					<p>
+						<?php
+						printf(
+							/* Translators: %s is a placeholder for the error message. This text is displayed when there is an error in the form data. */
+							esc_html__( 'Message : %s', 'integration-toolkit-for-beehiiv' ),
+							esc_html( $form_data['message'] )
+						);
+						?>
+					</p>
 				</div>
 					<?php
 				}
@@ -118,7 +137,15 @@ class Forms {
 				function () use ( $form_data ) {
 					?>
 				<div class="notice notice-error">
-					<p><?php echo esc_html__( $form_data['message'], 'integration-toolkit-for-beehiiv' ); ?></p>
+					<p>
+						<?php
+							printf(
+								/* Translators: %s is a placeholder for the error message. This text is displayed when there is an error in the form data. */
+								esc_html__( 'Message : %s', 'integration-toolkit-for-beehiiv' ),
+								esc_html( $form_data['message'] )
+							);
+						?>
+					</p>
 				</div>
 					<?php
 				}
@@ -191,5 +218,4 @@ class Forms {
 			);
 		}
 	}
-
 }
