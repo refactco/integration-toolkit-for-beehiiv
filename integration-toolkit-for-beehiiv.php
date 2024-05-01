@@ -42,12 +42,12 @@ if ( ! defined( 'INTEGRATION_TOOLKIT_FOR_BEEHIIV_PATH' ) ) {
  * The code that runs during plugin activation.
  * This action is documented in includes/class-integration-toolkit-for-beehiiv-activator.php
  */
-function re_bee_activate_integration_toolkit_for_beehiiv() {
+function integration_toolkit_for_beehiiv_activation_hook() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-integration-toolkit-for-beehiiv-activator.php';
 	Integration_Toolkit_For_Beehiiv_Activator::activate();
 }
 
-register_activation_hook( __FILE__, 're_bee_activate_integration_toolkit_for_beehiiv' );
+register_activation_hook( __FILE__, 'integration_toolkit_for_beehiiv_activation_hook' );
 
 /**
  * The core plugin class that is used to define internationalization,
