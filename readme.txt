@@ -49,8 +49,8 @@ Our plugin communicates with Beehiiv’s API at the following endpoint:
 
 ### Javascript Packages
 - Font Awesome: [https://docs.fontawesome.com/]
-- Tippy.js: [https://atomiks.github.io/tippyjs/v5/getting-started/]
-- Popper.js: [https://popper.js.org/docs/v1/]
+- Tippy.js: [https://atomiks.github.io/tippyjs/v6/getting-started/]
+- Popper.js: [https://popper.js.org/docs/v2/]
 
 ### Legal and Security
 
