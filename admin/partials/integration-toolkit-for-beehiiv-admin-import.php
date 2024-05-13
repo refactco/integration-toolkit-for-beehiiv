@@ -273,7 +273,7 @@ var AllDefaultArgs = <?php echo wp_json_encode( $default_args ); ?>;
 							if ( !$is_auto ) {
 								esc_html_e( 'This feature allows you to pull content from and publish it on your WordPress website.', 'integration-toolkit-for-beehiiv' ); 
 							} else {
-								esc_html_e( 'Set up an automatic process to periodically fetch and integrate content from into your WordPress website.' ); 
+								esc_html_e( 'Set up an automatic process to periodically fetch and integrate content from into your WordPress website.', 'integration-toolkit-for-beehiiv' );
 							}
 						?>
 					</p>	

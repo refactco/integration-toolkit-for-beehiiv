@@ -8,10 +8,10 @@
  * Author URI:        https://refact.co
  * License:           GPL2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       Re-Beehiiv
+ * Text Domain:       integration-toolkit-for-beehiiv
  * Domain Path:       /languages
- * Requires at least: 5.2
- * Requires PHP:      7.2
+ * Requires at least: 6.5.3
+ * Requires PHP:      7.4
  *
  * @package Integration_Toolkit_For_Beehiiv
  **/
