@@ -58,6 +58,7 @@ class Prepare_Post {
             if ( $this->is_unique_post( $this->item['id'] ) ) {
                 throw new \Exception(
                     sprintf(
+						/* translators: %1$s: post id, %2$s: post title */
                         __( '%1$s - %2$s is already exists', 'integration-toolkit-for-beehiiv' ),
                         $this->item['id'],
                         $this->item['title'],
@@ -69,6 +70,7 @@ class Prepare_Post {
             if ( ! $this->is_unique_post( $this->item['id'] ) ) {
                 throw new \Exception(
                     sprintf(
+						/* translators: %1$s: post id, %2$s: post title */
                         __( '%1$s - %2$s is not exists', 'integration-toolkit-for-beehiiv' ),
                         $this->item['id'],
                         $this->item['title'],
@@ -81,6 +83,7 @@ class Prepare_Post {
         if ( ! in_array( $this->item['status'], $this->form_data['beehiiv-status'], true ) ) {
             throw new \Exception(
                 sprintf(
+					/* translators: %1$s: post id, %2$s: post title */
                     __( '%1$s - %2$s is not in selected status', 'integration-toolkit-for-beehiiv' ),
                     $this->item['id'],
                     $this->item['title'],

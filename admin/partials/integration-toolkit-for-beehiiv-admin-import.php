@@ -208,9 +208,11 @@ if ( $is_auto_action_exist ) {
 								break;
 						}
 
-						// Translators: 1: Cron time, 2: Post type, 3: Taxonomy, 4: Taxonomy term, 5: Post status, 6: Update message
 						echo nl2br(
 							sprintf(
+							/*
+                             * translators: 1: Cron time in hours, 2: Post type, 3: Taxonomy, 4: Taxonomy term, 5: Post status, 6: Update message
+                             */
 							esc_html__(
 								'The current configuration will automatically fetch content every "%1$s" hours. This content will be integrated as WordPress "%2$s" under the "%3$s" taxonomy labeled as "%4$s". All incoming content with %5$s in WordPress. Please note that during this import process, %6$s Customize the automated import settings below to better match your content requirements.',
 								'integration-toolkit-for-beehiiv'
@@ -225,9 +227,8 @@ if ( $is_auto_action_exist ) {
 						);
 
 					} else {
-
-						/* translators: 1: Cron time in hours, 2: Post type, 3: Post status description, 4: New item action (be/not be), 5: Existing item update action (be/not be) */
-						$formatted_string = sprintf(
+                        $formatted_string = sprintf(
+                            /* translators: 1: Cron time in hours, 2: Post type, 3: Post status description, 4: New item action (be/not be), 5: Existing item update action (be/not be) */
 							esc_html__(
 								'Current Auto Import is set to run every "%1$s" hours and will import to "%2$s" post type. %3$s The new items will %4$s imported and the Existing posts will %5$s updated. You can modify these settings below to customize the automatic import process to your needs.',
 								'integration-toolkit-for-beehiiv'
