@@ -44,7 +44,7 @@ class Import_Table {
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
 		$wpdb->query(
 			$wpdb->prepare(
-				'DROP TABLE IF EXISTS %i', // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnsupportedPlaceholder,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
+				'DROP TABLE IF EXISTS %s',
 				$table_name
 			)
 		);
@@ -60,7 +60,7 @@ class Import_Table {
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
 		$wpdb->query(
 			$wpdb->prepare(
-				'DELETE FROM %i', // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnsupportedPlaceholder,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
+				'DELETE FROM %s',
 				$table_name
 			)
 		);
@@ -89,7 +89,7 @@ class Import_Table {
 		);
 
 		if ( ! $res ) {
-			throw new \Exception( __('Error inserting row in custom table' , 'integration-toolkit-for-beehiiv'));
+			throw new \Exception( esc_html__('Error inserting row in custom table' , 'integration-toolkit-for-beehiiv'));
 		}
 	}
 
@@ -103,8 +103,8 @@ class Import_Table {
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
 		$result     = $wpdb->get_results(
-			$wpdb->prepare( // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber
-				'SELECT * FROM %i WHERE key_name = %s AND group_name = %s', // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnsupportedPlaceholder
+			$wpdb->prepare(
+				'SELECT * FROM %s WHERE key_name = %s AND group_name = %s',
 				$table_name,
 				sanitize_text_field( $key_name ),
 				$group_name
@@ -128,7 +128,7 @@ class Import_Table {
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
 		$key_name   = sanitize_text_field( $key_name );
-		$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE key_name = %s', $table_name, $key_name ) ); // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnsupportedPlaceholder,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber
+		$wpdb->query( $wpdb->prepare( 'DELETE FROM %s WHERE key_name = %s', $table_name, $key_name ) );
 	}
 
 	/**
@@ -140,7 +140,7 @@ class Import_Table {
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
 		$group_name = sanitize_text_field( $group_name );
-		$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE group_name = %s', $table_name, $group_name ) ); // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnsupportedPlaceholder,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber
+		$wpdb->query( $wpdb->prepare( 'DELETE FROM %s WHERE group_name = %s', $table_name, $group_name ) );
 	}
 
 	/**
