@@ -59,6 +59,7 @@ class Import_Table
 	{
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		$wpdb->query(
 			$wpdb->prepare(
 				'DELETE FROM %s',
@@ -80,6 +81,7 @@ class Import_Table
 	{
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		$res = $wpdb->insert(
 			$table_name,
 			array(
@@ -105,6 +107,7 @@ class Import_Table
 	{
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		$result     = $wpdb->get_results(
 			$wpdb->prepare(
 				'SELECT * FROM %s WHERE key_name = %s AND group_name = %s',
@@ -132,6 +135,7 @@ class Import_Table
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
 		$key_name   = sanitize_text_field($key_name);
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		$wpdb->query($wpdb->prepare('DELETE FROM %s WHERE key_name = %s', $table_name, $key_name));
 	}
 
@@ -145,6 +149,7 @@ class Import_Table
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
 		$group_name = sanitize_text_field($group_name);
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		$wpdb->query($wpdb->prepare('DELETE FROM %s WHERE group_name = %s', $table_name, $group_name));
 	}
 
@@ -162,8 +167,10 @@ class Import_Table
 		$status     = sanitize_text_field($status);
 		$group_name = sanitize_text_field($group_name);
 		if (!empty($group_name)) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 			$result = $wpdb->get_results($wpdb->prepare('SELECT * FROM %s WHERE status = %s AND group_name = %s', $table_name, $status, $group_name));
 		} else {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 			$result = $wpdb->get_results($wpdb->prepare('SELECT * FROM %s WHERE status = %s', $table_name, $status));
 		}
 		if (!$result) {
