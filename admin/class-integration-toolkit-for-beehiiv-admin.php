@@ -76,8 +76,6 @@ class Integration_Toolkit_For_Beehiiv_Admin {
 		wp_enqueue_script( 'tippy-tooltip1', INTEGRATION_TOOLKIT_FOR_BEEHIIV_URL . 'admin/js/popper.min.js', array(), $this->version, false );
 
 		wp_enqueue_script( 'tippy-tooltip2', INTEGRATION_TOOLKIT_FOR_BEEHIIV_URL . 'admin/js/tippy-bundle.iife.min.js', array(), $this->version, false );
-
-		wp_enqueue_script( 'font-awesome', INTEGRATION_TOOLKIT_FOR_BEEHIIV_URL . 'admin/js/font-awesome.js', array(), $this->version, false );
 	}
 
 	/**
