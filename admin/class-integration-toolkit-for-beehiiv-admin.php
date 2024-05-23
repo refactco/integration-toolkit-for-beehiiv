@@ -75,9 +75,7 @@ class Integration_Toolkit_For_Beehiiv_Admin {
 		wp_enqueue_style( $this->integration_toolkit_for_beehiiv, plugin_dir_url( __FILE__ ) . 'css/integration-toolkit-for-beehiiv-admin.css', array(), $this->version, 'all' );
 		wp_enqueue_script( 'tippy-tooltip1', INTEGRATION_TOOLKIT_FOR_BEEHIIV_URL . 'admin/js/popper.min.js', array(), $this->version, false );
 
-		wp_enqueue_script( 'tippy-tooltip2', INTEGRATION_TOOLKIT_FOR_BEEHIIV_URL . 'admin/js/tippy-bundle.iife.min.js', array(), $this->version, false );
-
-		wp_enqueue_script( 'font-awesome', INTEGRATION_TOOLKIT_FOR_BEEHIIV_URL . 'admin/js/font-awesome.js', array(), $this->version, false );
+		wp_enqueue_script( 'tippy-tooltip2', INTEGRATION_TOOLKIT_FOR_BEEHIIV_URL . 'admin/js/tippy-bundle.iife.js', array(), $this->version, false );
 	}
 
 	/**

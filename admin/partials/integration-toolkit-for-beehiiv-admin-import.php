@@ -210,21 +210,21 @@ if ( $is_auto_action_exist ) {
 
 						echo nl2br(
 							sprintf(
-							/*
-                             * translators: 1: Cron time in hours, 2: Post type, 3: Taxonomy, 4: Taxonomy term, 5: Post status, 6: Update message
-                             */
-							esc_html__(
-								'The current configuration will automatically fetch content every "%1$s" hours. This content will be integrated as WordPress "%2$s" under the "%3$s" taxonomy labeled as "%4$s". All incoming content with %5$s in WordPress. Please note that during this import process, %6$s Customize the automated import settings below to better match your content requirements.',
-								'integration-toolkit-for-beehiiv'
-							),
-							'<strong>' . esc_html( $args['cron_time'] ) . '</strong>',  // Escaping and formatting cron time
-							'<strong>' . esc_html( $args['post_type'] ) . '</strong>',  // Escaping and formatting post type
-							'<strong>' . esc_html( $args['taxonomy'] ) . '</strong>',   // Escaping and formatting taxonomy
-							'<strong>' . esc_html( $term->name ) . '</strong>',         // Escaping and formatting taxonomy term
-							esc_html( $post_status_str ),                              // Escaping post status
-							esc_html( $update_message )                                // Escaping update message
+								/* translators: 1: Cron time in hours, 2: Post type, 3: Taxonomy, 4: Taxonomy term, 5: Post status, 6: Update message */
+								esc_html__(
+									'The current configuration will automatically fetch content every "%1$s" hours. This content will be integrated as WordPress "%2$s" under the "%3$s" taxonomy labeled as "%4$s". All incoming content with %5$s in WordPress. Please note that during this import process, %6$s Customize the automated import settings below to better match your content requirements.',
+									'integration-toolkit-for-beehiiv'
+								),
+								esc_html($args['cron_time']),  // Escaping and formatting cron time
+								esc_html($args['post_type']),  // Escaping and formatting post type
+								esc_html($args['taxonomy']),   // Escaping and formatting taxonomy
+								esc_html($term->name),         // Escaping and formatting taxonomy term
+								esc_html($post_status_str),    // Escaping post status
+								esc_html($update_message)      // Escaping update message
 							)
 						);
+						
+						
 
 					} else {
                         $formatted_string = sprintf(
@@ -306,7 +306,7 @@ var AllDefaultArgs = <?php echo wp_json_encode( $default_args ); ?>;
 						<fieldset>
 							<label for="integration-toolkit-for-beehiiv-content_type" class="pr-2"><strong><?php esc_html_e( 'Content Type', 'integration-toolkit-for-beehiiv' ); ?></strong>
 							<small id="step1_content_type">
-							   <i class="fa-solid fa-circle-question" style="color: #65696c;"></i>
+							   <div class="question-icon">?</div>
 							</small>
 						</label>
 							<?php
@@ -335,7 +335,7 @@ var AllDefaultArgs = <?php echo wp_json_encode( $default_args ); ?>;
 							<label for="integration-toolkit-for-beehiiv-beehiiv-status[]" class="pr-2">
 								<strong><?php esc_html_e( 'Post Status', 'integration-toolkit-for-beehiiv' ); ?></strong>
 								<small id="step1_post_status">
-									<i class="fa-solid fa-circle-question" style="color: #65696c;"></i>
+									<div class="question-icon">?</div>
 								</small>
 							</label>
 							<?php
@@ -369,7 +369,7 @@ var AllDefaultArgs = <?php echo wp_json_encode( $default_args ); ?>;
 							<label class="d-block" for="integration-toolkit-for-beehiiv-post_type">
 								<strong><?php esc_html_e( 'Select Post Type and Taxonomy', 'integration-toolkit-for-beehiiv' ); ?></strong>
 								<small id="step2_post_type">
-									<i class="fa-solid fa-circle-question" style="color: #65696c;"></i>
+									<div class="question-icon">?</div>
 								</small>
 							</label>
 							<select name="integration-toolkit-for-beehiiv-post_type" id="integration-toolkit-for-beehiiv-post_type" required>
@@ -395,7 +395,7 @@ var AllDefaultArgs = <?php echo wp_json_encode( $default_args ); ?>;
 							<label for="integration-toolkit-for-beehiiv-post_author" class="d-block">
 								<strong><?php esc_html_e( 'Content Author', 'integration-toolkit-for-beehiiv' ); ?></strong>
 								<small id="step2_post_author">
-									<i class="fa-solid fa-circle-question" style="color: #65696c;"></i>
+									<div class="question-icon">?</div>
 								</small>
 							</label>
 							<select name="integration-toolkit-for-beehiiv-post_author" id="integration-toolkit-for-beehiiv-post_author" required>
@@ -413,7 +413,7 @@ var AllDefaultArgs = <?php echo wp_json_encode( $default_args ); ?>;
 							<label for="integration-toolkit-for-beehiiv-post_tags">
 								<strong><?php esc_html_e( 'Beehiiv Tags', 'integration-toolkit-for-beehiiv' ); ?></strong>
 								<small id="step2_post_tags">
-									<i class="fa-solid fa-circle-question" style="color: #65696c;"></i>
+									<div class="question-icon">?</div>
 								</small>
 							</label>
 							<select name="integration-toolkit-for-beehiiv-post_tags-taxonomy" id="integration-toolkit-for-beehiiv-post_tags-taxonomy" class="integration-toolkit-for-beehiiv-post_tags-taxonomy">
@@ -435,7 +435,7 @@ var AllDefaultArgs = <?php echo wp_json_encode( $default_args ); ?>;
 						<fieldset>
 							<label for="integration-toolkit-for-beehiiv-import_method"><strong><?php esc_html_e( 'Import Option', 'integration-toolkit-for-beehiiv' ); ?></strong>
 								<small id="step2_import_method">
-									<i class="fa-solid fa-circle-question" style="color: #65696c;"></i>
+									<div class="question-icon">?</div>
 								</small>
 							</label>
 							<?php
@@ -465,7 +465,7 @@ var AllDefaultArgs = <?php echo wp_json_encode( $default_args ); ?>;
 								<label for="integration-toolkit-for-beehiiv-cron_time" class="d-block">
 									<strong><?php esc_html_e( 'Import Schedule', 'integration-toolkit-for-beehiiv' ); ?></strong>
 									<small id="step2_cron_time">
-										<i class="fa-solid fa-circle-question" style="color: #65696c;"></i>
+										<div class="question-icon">?</div>
 									</small>
 						    	</label>
 								<input type="number" name="integration-toolkit-for-beehiiv-cron_time" id="integration-toolkit-for-beehiiv-cron_time" value="<?php echo esc_attr( $default_args['cron_time'] ); ?>" min="1" required placeholder="<?php esc_attr_e( 'Enter interval in hours', 'integration-toolkit-for-beehiiv' ); ?>"> Hour(s)

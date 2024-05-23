@@ -169,7 +169,7 @@ class Forms {
 		if ( isset( $_POST['integration_toolkit_for_beehiiv_import_nonce'] ) ) {
 			$nonce = sanitize_text_field( wp_unslash( $_POST['integration_toolkit_for_beehiiv_import_nonce'] ) );
 
-			if ( ! wp_verify_nonce( $nonce, 'integration_toolkit_for_beehiiv_action' ) ) {
+			if ( ! wp_verify_nonce( $nonce, 'integration_toolkit_for_beehiiv_import_nonce' ) ) {
 				return array(
 					'error'   => true,
 					'message' => esc_html__( 'Invalid nonce', 'integration-toolkit-for-beehiiv' ),
