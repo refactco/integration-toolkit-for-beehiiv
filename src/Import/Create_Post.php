@@ -52,7 +52,7 @@ class Create_Post {
 			$this->data = false;
 			$this->logger->log(
 				array(
-					'message' => __( 'No data found', 'integration-toolkit-for-beehiiv' ),
+					'message' => __( 'No data found', 'Integration Toolkit for beehiiv' ),
 					'status'  => 'error',
 				)
 			);
@@ -73,7 +73,7 @@ class Create_Post {
 		if ( ! $this->data || ! isset( $this->data['meta']['post_id'] ) ) {
 			return array(
 				'success' => false,
-				'message' => __( 'No data found', 'integration-toolkit-for-beehiiv' ),
+				'message' => __( 'No data found', 'Integration Toolkit for beehiiv' ),
 			);
 		}
 
@@ -88,20 +88,20 @@ class Create_Post {
 
 				$this->logger->log(
 					array(
-						'message' => esc_attr__( ' Updated post', 'integration-toolkit-for-beehiiv' ) . ' - <a href="' . $this->get_edit_post_link() . '" target="_blank">#' . $existing_id . ' - ' . $this->data['post']['post_title'] . '</a> ',
+						'message' => esc_attr__( ' Updated post', 'Integration Toolkit for beehiiv' ) . ' - <a href="' . $this->get_edit_post_link() . '" target="_blank">#' . $existing_id . ' - ' . $this->data['post']['post_title'] . '</a> ',
 						'status'  => 'success',
 					)
 				);
 
 				return array(
 					'success' => true,
-					'message' => __('Post updated', 'integration-toolkit-for-beehiiv' ),
+					'message' => __('Post updated', 'Integration Toolkit for beehiiv' ),
 				);
 			} else {
 
 				$this->logger->log(
 					array(
-						'message' => esc_attr__( 'Skipped post', 'integration-toolkit-for-beehiiv' ) . ' - <a href="' . $this->get_edit_post_link() . '" target="_blank">#' . $existing_id . ' - ' . $this->data['post']['post_title'] . '</a> ',
+						'message' => esc_attr__( 'Skipped post', 'Integration Toolkit for beehiiv' ) . ' - <a href="' . $this->get_edit_post_link() . '" target="_blank">#' . $existing_id . ' - ' . $this->data['post']['post_title'] . '</a> ',
 						'status'  => 'skipped',
 					)
 				);
@@ -109,7 +109,7 @@ class Create_Post {
 				$this->complete();
 				return array(
 					'success' => true,
-					'message' => __( 'Post already exists', 'integration-toolkit-for-beehiiv' ),
+					'message' => __( 'Post already exists', 'Integration Toolkit for beehiiv' ),
 				);
 			}
 		}
@@ -121,7 +121,7 @@ class Create_Post {
 		$this->add_thumbnail();
 		$this->logger->log(
 			array(
-				'message' => esc_attr__( 'Created post', 'integration-toolkit-for-beehiiv' ) . ' - <a href="' . $this->get_edit_post_link() . '" target="_blank">#' . $this->post_id . ' - ' . $this->data['post']['post_title'] . '</a> ',
+				'message' => esc_attr__( 'Created post', 'Integration Toolkit for beehiiv' ) . ' - <a href="' . $this->get_edit_post_link() . '" target="_blank">#' . $this->post_id . ' - ' . $this->data['post']['post_title'] . '</a> ',
 				'status'  => 'success',
 			)
 		);
@@ -139,7 +139,7 @@ class Create_Post {
 
 		return array(
 			'success' => true,
-			'message' => __( 'Post created', 'integration-toolkit-for-beehiiv' ),
+			'message' => __( 'Post created', 'Integration Toolkit for beehiiv' ),
 		);
 	}
 

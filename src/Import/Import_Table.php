@@ -93,7 +93,7 @@ class Import_Table
 		);
 
 		if (!$res) {
-			throw new \Exception(esc_html__('Error inserting row in custom table', 'integration-toolkit-for-beehiiv'));
+			throw new \Exception(esc_html__('Error inserting row in custom table', 'Integration Toolkit for beehiiv'));
 		}
 	}
 

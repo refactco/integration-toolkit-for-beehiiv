@@ -7,7 +7,7 @@
 	"category": "widgets",
 	"icon": "welcome-view-site",
 	"description": "This block is used to display the settings of the plugin.",
-	"textdomain": "integration-toolkit-for-beehiiv",
+	"textdomain": "Integration Toolkit for beehiiv",
 	"editorScript": "integration-toolkit-for-beehiiv-block-settings-editor-script",
 	"editorStyle": "integration-toolkit-for-beehiiv-block-settings-editor-style",
 	"style": "integration-toolkit-for-beehiiv-block-settings-style"

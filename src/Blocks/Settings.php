@@ -94,7 +94,7 @@ class Settings {
 
 		return array(
 			'success' => true,
-			'message' => __( 'disconnected', 'integration-toolkit-for-beehiiv' ),
+			'message' => __( 'disconnected', 'Integration Toolkit for beehiiv' ),
 		);
 	}
 
@@ -112,7 +112,7 @@ class Settings {
 		if ( empty( $api_key ) || empty( $publication_id ) ) {
 			return array(
 				'success' => false,
-				'message' => __( 'Please fill all fields', 'integration-toolkit-for-beehiiv' ),
+				'message' => __( 'Please fill all fields', 'Integration Toolkit for beehiiv' ),
 			);
 		}
 
@@ -122,7 +122,7 @@ class Settings {
 
 		return array(
 			'success' => true,
-			'message' => __( 'Settings saved', 'integration-toolkit-for-beehiiv' ),
+			'message' => __( 'Settings saved', 'Integration Toolkit for beehiiv' ),
 		);
 	}
 

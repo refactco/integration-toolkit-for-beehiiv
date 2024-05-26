@@ -174,17 +174,17 @@ if ($is_auto_action_exist) {
 			$is_existing_item_update = $args['import_method'] !== 'new';
 	?>
 		<div class="integration-toolkit-for-beehiiv-import--notice">
-			<h4><?php esc_html_e('Automated Content Import Activated.', 'integration-toolkit-for-beehiiv'); ?></h4>
+			<h4><?php esc_html_e('Automated Content Import Activated.', 'Integration Toolkit for beehiiv'); ?></h4>
 			<p class="description">
 				<?php
 				$post_status_str = '';
 				foreach ($args['post_status'] as $status => $post_status) {
 					if ('confirmed' === $status) {
-						$status = __('published', 'integration-toolkit-for-beehiiv');
+						$status = __('published', 'Integration Toolkit for beehiiv');
 					}
 					$post_status_str .= sprintf(
 						// Translators: %1$s: beehiiv post status, %2$s: post status.
-						esc_html__('a status "%1$s" in will be set to "%2$s"', 'integration-toolkit-for-beehiiv'),
+						esc_html__('a status "%1$s" in will be set to "%2$s"', 'Integration Toolkit for beehiiv'),
 						ucwords($status),
 						ucwords($post_status)
 					);
@@ -200,13 +200,13 @@ if ($is_auto_action_exist) {
 
 					switch ($args['import_method']) {
 						case 'new':
-							$update_message = esc_html__('new content will be added, but existing posts will remain unaffected.', 'integration-toolkit-for-beehiiv');
+							$update_message = esc_html__('new content will be added, but existing posts will remain unaffected.', 'Integration Toolkit for beehiiv');
 							break;
 						case 'update':
-							$update_message = esc_html__('existing posts will updated.', 'integration-toolkit-for-beehiiv');
+							$update_message = esc_html__('existing posts will updated.', 'Integration Toolkit for beehiiv');
 							break;
 						default:
-							$update_message = esc_html__('new content will be added, and existing posts will updated', 'integration-toolkit-for-beehiiv');
+							$update_message = esc_html__('new content will be added, and existing posts will updated', 'Integration Toolkit for beehiiv');
 							break;
 					}
 
@@ -215,7 +215,7 @@ if ($is_auto_action_exist) {
 							/* translators: 1: Cron time in hours, 2: Post type, 3: Taxonomy, 4: Taxonomy term, 5: Post status, 6: Update message */
 							esc_html__(
 								'The current configuration will automatically fetch content every "%1$s" hours. This content will be integrated as WordPress "%2$s" under the "%3$s" taxonomy labeled as "%4$s". All incoming content with %5$s in WordPress. Please note that during this import process, %6$s Customize the automated import settings below to better match your content requirements.',
-								'integration-toolkit-for-beehiiv'
+								'Integration Toolkit for beehiiv'
 							),
 							esc_html($args['cron_time']),  // Escaping and formatting cron time
 							esc_html($args['post_type']),  // Escaping and formatting post type
@@ -230,7 +230,7 @@ if ($is_auto_action_exist) {
 						/* translators: 1: Cron time in hours, 2: Post type, 3: Post status description, 4: New item action (be/not be), 5: Existing item update action (be/not be) */
 						esc_html__(
 							'Current Auto Import is set to run every "%1$s" hours and will import to "%2$s" post type. %3$s The new items will %4$s imported and the Existing posts will %5$s updated. You can modify these settings below to customize the automatic import process to your needs.',
-							'integration-toolkit-for-beehiiv'
+							'Integration Toolkit for beehiiv'
 						),
 						esc_html('<strong>' . $args['cron_time'] . '</strong>'),
 						esc_html('<strong>' . $args['post_type'] . '</strong>'),
@@ -247,7 +247,7 @@ if ($is_auto_action_exist) {
 		}
 	);
 }
-$import_title = $is_auto ? __('Auto', 'integration-toolkit-for-beehiiv') : __('Manual', 'integration-toolkit-for-beehiiv');
+$import_title = $is_auto ? __('Auto', 'Integration Toolkit for beehiiv') : __('Manual', 'Integration Toolkit for beehiiv');
 ?>
 <div class="integration-toolkit-for-beehiiv-wrap">
 
@@ -255,17 +255,17 @@ $import_title = $is_auto ? __('Auto', 'integration-toolkit-for-beehiiv') : __('M
 	<?php require_once 'components/header.php'; ?>
 	<div class="integration-toolkit-for-beehiiv-heading">
 		<h1>
-			<?php esc_html_e('Import Content', 'integration-toolkit-for-beehiiv'); ?>
+			<?php esc_html_e('Import Content', 'Integration Toolkit for beehiiv'); ?>
 		</h1>
 
 		<p>
-			<?php esc_html_e('Choose how to import content from to your WordPress Site.', 'integration-toolkit-for-beehiiv'); ?>
+			<?php esc_html_e('Choose how to import content from to your WordPress Site.', 'Integration Toolkit for beehiiv'); ?>
 			<br>
 			<?php
 			if (!$is_auto) {
-				esc_html_e('This feature allows you to pull content from and publish it on your WordPress website.', 'integration-toolkit-for-beehiiv');
+				esc_html_e('This feature allows you to pull content from and publish it on your WordPress website.', 'Integration Toolkit for beehiiv');
 			} else {
-				esc_html_e('Set up an automatic process to periodically fetch and integrate content from into your WordPress website.', 'integration-toolkit-for-beehiiv');
+				esc_html_e('Set up an automatic process to periodically fetch and integrate content from into your WordPress website.', 'Integration Toolkit for beehiiv');
 			}
 			?>
 		</p>
@@ -302,8 +302,8 @@ $import_title = $is_auto ? __('Auto', 'integration-toolkit-for-beehiiv') : __('M
 								</label>
 								<?php
 								$content_types = array(
-									'free_web_content'    => __('Free', 'integration-toolkit-for-beehiiv'),
-									'premium_web_content' => __('Premium', 'integration-toolkit-for-beehiiv'),
+									'free_web_content'    => __('Free', 'Integration Toolkit for beehiiv'),
+									'premium_web_content' => __('Premium', 'Integration Toolkit for beehiiv'),
 								);
 
 								foreach ($content_types as $content_type => $label) {
@@ -319,21 +319,21 @@ $import_title = $is_auto ? __('Auto', 'integration-toolkit-for-beehiiv') : __('M
 								<?php
 								}
 								?>
-								<p class="description"><?php esc_html_e('Select the type of content you want to import.', 'integration-toolkit-for-beehiiv'); ?></p>
+								<p class="description"><?php esc_html_e('Select the type of content you want to import.', 'Integration Toolkit for beehiiv'); ?></p>
 							</fieldset>
 
 							<fieldset>
 								<label for="integration-toolkit-for-beehiiv-beehiiv-status[]" class="pr-2">
-									<strong><?php esc_html_e('Post Status', 'integration-toolkit-for-beehiiv'); ?></strong>
+									<strong><?php esc_html_e('Post Status', 'Integration Toolkit for beehiiv'); ?></strong>
 									<small id="step1_post_status">
 										<div class="question-icon">?</div>
 									</small>
 								</label>
 								<?php
 								$beehiiv_statuses = array(
-									'confirmed' => __('Published', 'integration-toolkit-for-beehiiv'),
-									'archived'  => __('Archived', 'integration-toolkit-for-beehiiv'),
-									'draft'     => __('Draft', 'integration-toolkit-for-beehiiv'),
+									'confirmed' => __('Published', 'Integration Toolkit for beehiiv'),
+									'archived'  => __('Archived', 'Integration Toolkit for beehiiv'),
+									'draft'     => __('Draft', 'Integration Toolkit for beehiiv'),
 								);
 
 								foreach ($beehiiv_statuses as $beehiiv_status => $label) {
@@ -424,16 +424,16 @@ $import_title = $is_auto ? __('Auto', 'integration-toolkit-for-beehiiv') : __('M
 							</fieldset>
 
 							<fieldset>
-								<label for="integration-toolkit-for-beehiiv-import_method"><strong><?php esc_html_e('Import Option', 'integration-toolkit-for-beehiiv'); ?></strong>
+								<label for="integration-toolkit-for-beehiiv-import_method"><strong><?php esc_html_e('Import Option', 'Integration Toolkit for beehiiv'); ?></strong>
 									<small id="step2_import_method">
 										<div class="question-icon">?</div>
 									</small>
 								</label>
 								<?php
 								$import_methods = array(
-									'new'            => __('Import new items', 'integration-toolkit-for-beehiiv'),
-									'update'         => __('Update existing items', 'integration-toolkit-for-beehiiv'),
-									'new_and_update' => __('Do both', 'integration-toolkit-for-beehiiv'),
+									'new'            => __('Import new items', 'Integration Toolkit for beehiiv'),
+									'update'         => __('Update existing items', 'Integration Toolkit for beehiiv'),
+									'new_and_update' => __('Do both', 'Integration Toolkit for beehiiv'),
 								);
 
 								foreach ($import_methods as $import_method => $label) {
@@ -475,7 +475,7 @@ $import_title = $is_auto ? __('Auto', 'integration-toolkit-for-beehiiv') : __('M
 					esc_html_e('It is not possible to initiate another manual import while the current one is still in progress. refresh the page to update the status.', 'integration-toolkit-for-beehiiv');
 					echo '</p>';
 				}
-				$submit_text = $is_auto ? __('Save', 'integration-toolkit-for-beehiiv') : __('Start Import', 'integration-toolkit-for-beehiiv');
+				$submit_text = $is_auto ? __('Save', 'integration-toolkit-for-beehiiv') : __('Start Import', 'Integration Toolkit for beehiiv');
 				submit_button($submit_text, 'primary components-button is-primary', 'integration-toolkit-for-beehiiv-start-import', false, $disabled);
 				?>
 			</form>

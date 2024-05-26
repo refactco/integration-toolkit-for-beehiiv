@@ -59,7 +59,7 @@ class Prepare_Post {
                 throw new \Exception(
                     sprintf(
 						/* translators: %1$s: post id, %2$s: post title */
-                        esc_html__( '%1$s - %2$s is already exists', 'integration-toolkit-for-beehiiv' ),
+                        esc_html__( '%1$s - %2$s is already exists', 'Integration Toolkit for beehiiv' ),
 	                    esc_attr($this->item['id']),
 	                    esc_attr($this->item['title']),
                     )
@@ -71,7 +71,7 @@ class Prepare_Post {
                 throw new \Exception(
                     sprintf(
 						/* translators: %1$s: post id, %2$s: post title */
-	                    esc_html__( '%1$s - %2$s is not exists', 'integration-toolkit-for-beehiiv' ),
+	                    esc_html__( '%1$s - %2$s is not exists', 'Integration Toolkit for beehiiv' ),
 	                    esc_attr($this->item['id']),
                         esc_attr($this->item['title']),
                     )
@@ -84,7 +84,7 @@ class Prepare_Post {
             throw new \Exception(
                 sprintf(
 					/* translators: %1$s: post id, %2$s: post title */
-	                esc_html__( '%1$s - %2$s is not in selected status', 'integration-toolkit-for-beehiiv' ),
+	                esc_html__( '%1$s - %2$s is not in selected status', 'Integration Toolkit for beehiiv' ),
                     esc_attr($this->item['id']),
 	                esc_attr($this->item['title']),
                 )

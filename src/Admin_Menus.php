@@ -15,8 +15,8 @@ class Admin_Menus {
 	 */
 	public function register() {
 		add_menu_page(
-			__( 'Integration Toolkit for beehiiv', 'integration-toolkit-for-beehiiv' ),
-			__( 'Integration Toolkit for beehiiv', 'integration-toolkit-for-beehiiv' ),
+			__( 'Integration Toolkit for beehiiv', 'Integration Toolkit for beehiiv' ),
+			__( 'Integration Toolkit for beehiiv', 'Integration Toolkit for beehiiv' ),
 			'manage_options',
 			'integration-toolkit-for-beehiiv-import',
 			array( $this, 'load_page_import' ),
@@ -28,7 +28,7 @@ class Admin_Menus {
 
 		add_submenu_page(
 			'integration-toolkit-for-beehiiv-import',
-			__( 'Integration Toolkit for beehiiv - Import', 'integration-toolkit-for-beehiiv' ),
+			__( 'Integration Toolkit for beehiiv - Import', 'Integration Toolkit for beehiiv' ),
 			__( 'Import Content', 'integration-toolkit-for-beehiiv' ),
 			'manage_options',
 			'integration-toolkit-for-beehiiv-import',
@@ -37,7 +37,7 @@ class Admin_Menus {
 
 		add_submenu_page(
 			'integration-toolkit-for-beehiiv-import',
-			__( 'Integration Toolkit for beehiiv - Import', 'integration-toolkit-for-beehiiv' ),
+			__( 'Integration Toolkit for beehiiv - Import', 'Integration Toolkit for beehiiv' ),
 			'Settings',
 			'manage_options',
 			'integration-toolkit-for-beehiiv-settings',
@@ -68,7 +68,7 @@ class Admin_Menus {
 			<div class="notice notice-error is-dismissible">
 				<p>
 				<?php
-					echo '<p>' . esc_html__( ' API Key or publication ID is not set. Please set it on the ', 'integration-toolkit-for-beehiiv' ) . '<a href="' . esc_url( home_url( '/wp-admin/admin.php?page=integration-toolkit-for-beehiiv-settings' ) ) . '">settings page.</a></p>';
+					echo '<p>' . esc_html__( ' API Key or publication ID is not set. Please set it on the ', 'Integration Toolkit for beehiiv' ) . '<a href="' . esc_url( home_url( '/wp-admin/admin.php?page=integration-toolkit-for-beehiiv-settings' ) ) . '">settings page.</a></p>';
 				?>
 				</p>
 			</div>
@@ -94,8 +94,8 @@ class Admin_Menus {
 	public function register_beehiiv_importer() {
 		register_importer(
 			'integration_toolkit_for_beehiiv',
-			__( 'Integration Toolkit for beehiiv', 'integration-toolkit-for-beehiiv' ),
-			__( 'Import content to WordPress using "Integration Toolkit For" ', 'integration-toolkit-for-beehiiv' ),
+			__( 'Integration Toolkit for beehiiv', 'Integration Toolkit for beehiiv' ),
+			__( 'Import content to WordPress using "Integration Toolkit For" ', 'Integration Toolkit for beehiiv' ),
 			array( $this, 'beehiiv_importer_callback' )
 		);
 	}

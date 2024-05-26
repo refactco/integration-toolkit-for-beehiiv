@@ -45,7 +45,7 @@ if ( ! isset( $complete_items ) ) {
 							<?php
 								printf(
 									/* Translators: %s is a placeholder for the time. This text is displayed when there is an error in the form data. */
-									esc_html__( 'Time : %s', 'integration-toolkit-for-beehiiv' ),
+									esc_html__( 'Time : %s', 'Integration Toolkit for beehiiv' ),
 									esc_html( $time[1] )
 								);
 							?>
@@ -55,7 +55,7 @@ if ( ! isset( $complete_items ) ) {
 					<?php
 						printf(
 							/* Translators: %s is a placeholder for the status. This text is displayed when there is an error in the form data. */
-							esc_html__( 'Status: %s', 'integration-toolkit-for-beehiiv' ),
+							esc_html__( 'Status: %s', 'Integration Toolkit for beehiiv' ),
 							esc_html( $log['status'] )
 						);
 					?>
@@ -64,7 +64,7 @@ if ( ! isset( $complete_items ) ) {
 						<?php
 							printf(
 								/* Translators: %s is a placeholder for the message. This text is displayed when there is an error in the form data. */
-								esc_html__( 'Error: %s', 'integration-toolkit-for-beehiiv' ),
+								esc_html__( 'Error: %s', 'Integration Toolkit for beehiiv' ),
 								esc_html( $log['message'] )
 							);
 						?>
