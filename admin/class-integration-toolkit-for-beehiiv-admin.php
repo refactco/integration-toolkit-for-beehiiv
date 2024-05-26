@@ -176,9 +176,9 @@ class Integration_Toolkit_For_Beehiiv_Admin {
 			)
 		);
 
-		wp_enqueue_script( 'tippy-tooltip1', INTEGRATION_TOOLKIT_FOR_BEEHIIV_URL . 'admin/js/popper.min.js', array(), $this->version, false );
+		wp_enqueue_script( $this->integration_toolkit_for_beehiiv.'popper', INTEGRATION_TOOLKIT_FOR_BEEHIIV_URL . 'admin/js/popper.min.js', array(), $this->version, false );
 
-		wp_enqueue_script( 'tippy-tooltip2', INTEGRATION_TOOLKIT_FOR_BEEHIIV_URL . 'admin/js/tippy-bundle.iife.js', array(), $this->version, false );
+		wp_enqueue_script( $this->integration_toolkit_for_beehiiv.'tippy-tooltip', INTEGRATION_TOOLKIT_FOR_BEEHIIV_URL . 'admin/js/tippy-bundle.iife.js', array(), $this->version, false );
 	}
 
 	/**
@@ -191,9 +191,4 @@ class Integration_Toolkit_For_Beehiiv_Admin {
 
 		return $paths;
 	}
-
-	/**
-	 * Setup Admin Menu
-	 */
-	public function add_admin_menu() {  }
 }
