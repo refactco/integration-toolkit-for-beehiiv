@@ -116,14 +116,14 @@ class Import_Table
 				sanitize_text_field($group_name)
 			),
 		);
-	
+
 		if (!$result) {
 			return false;
 		}
-	
+
 		return $result;
 	}
-	
+
 
 	/**
 	 * Remove a row from the custom table
@@ -137,9 +137,11 @@ class Import_Table
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
 		$key_name   = sanitize_text_field($key_name);
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
-		$wpdb->query($wpdb->prepare("DELETE FROM %s WHERE key_name = %s",
-		sanitize_text_field($table_name),
-		$key_name));
+		$wpdb->query($wpdb->prepare(
+			"DELETE FROM %s WHERE key_name = %s",
+			sanitize_text_field($table_name),
+			$key_name
+		));
 	}
 
 	/**
@@ -153,9 +155,11 @@ class Import_Table
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
 		$group_name = sanitize_text_field($group_name);
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
-		$wpdb->query($wpdb->prepare("DELETE FROM %s WHERE group_name = %s",
-		sanitize_text_field($table_name),
-		$group_name));
+		$wpdb->query($wpdb->prepare(
+			"DELETE FROM %s WHERE group_name = %s",
+			sanitize_text_field($table_name),
+			$group_name
+		));
 	}
 
 
@@ -174,21 +178,24 @@ class Import_Table
 		$group_name = sanitize_text_field($group_name);
 		if (!empty($group_name)) {
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
-			$result = $wpdb->get_results($wpdb->prepare("SELECT * FROM %s WHERE status = %s AND group_name = %s",
-			sanitize_text_field($table_name),
-			$status,
-			$group_name));
+			$result = $wpdb->get_results($wpdb->prepare(
+				"SELECT * FROM %s WHERE status = %s AND group_name = %s",
+				sanitize_text_field($table_name),
+				$status,
+				$group_name
+			));
 		} else {
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
-			$result = $wpdb->get_results($wpdb->prepare("SELECT * FROM %s WHERE status = %s",
-			sanitize_text_field($table_name),
-			$status));
+			$result = $wpdb->get_results($wpdb->prepare(
+				"SELECT * FROM %s WHERE status = %s",
+				sanitize_text_field($table_name),
+				$status
+			));
 		}
 		if (!$result) {
 			return array();
 		}
-	
+
 		return $result;
 	}
-	
 }
