@@ -26,4 +26,4 @@ node_modules
 # gitignore .DS_Store files in any folder
 **/.DS_Store
 
-blocks/settings/build
+#blocks/settings/build
