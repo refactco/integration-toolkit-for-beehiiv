@@ -202,16 +202,19 @@ class Create_Post {
 	 * Check if post already exists
 	 */
 	private function is_unique_post() {
+   		// phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_key, WordPress.DB.SlowDBQuery.slow_db_query_meta_value
 		$args  = array(
 			'meta_key'       => 'integration_toolkit_for_beehiiv_post_id',
 			'meta_value'     => $this->data['meta']['post_id'],
 			'post_type'      =>  $this->data['args']['form_data']['post_type'],
 			'post_status'    => 'any',
 			'posts_per_page' => 1,
+			'fields'         => 'ids',
 		);
 		$posts = get_posts( $args );
 
-		// return post id if exists
+        // phpcs:enable WordPress.DB.SlowDBQuery.slow_db_query_meta_key, WordPress.DB.SlowDBQuery.slow_db_query_meta_value
+	    // return post id if exists
 		if ( isset( $posts[0] ) ) {
 			return $posts[0]->ID;
 		}
