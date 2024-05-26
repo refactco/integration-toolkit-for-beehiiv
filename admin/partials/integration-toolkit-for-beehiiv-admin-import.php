@@ -249,12 +249,6 @@ if ($is_auto_action_exist) {
 }
 $import_title = $is_auto ? __('Auto', 'integration-toolkit-for-beehiiv') : __('Manual', 'integration-toolkit-for-beehiiv');
 ?>
-<script>
-	var AllTaxonomies = <?php echo wp_json_encode($taxonomies); ?>;
-	var AllTaxonomyTerms = <?php echo wp_json_encode($taxonomy_terms); ?>;
-	var AllPostStatuses = <?php echo wp_json_encode($post_statuses); ?>;
-	var AllDefaultArgs = <?php echo wp_json_encode($default_args); ?>;
-</script>
 <div class="integration-toolkit-for-beehiiv-wrap">
 
 

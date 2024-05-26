@@ -19,6 +19,9 @@
  * @subpackage Integration_Toolkit_For_Beehiiv/admin
  * @author     Refact <info@refact.co>
  */
+
+use Integration_Toolkit_For_Beehiiv\Import\Manage_Actions;
+
 class Integration_Toolkit_For_Beehiiv_Admin {
 
 
@@ -73,9 +76,6 @@ class Integration_Toolkit_For_Beehiiv_Admin {
 		 */
 
 		wp_enqueue_style( $this->integration_toolkit_for_beehiiv, plugin_dir_url( __FILE__ ) . 'css/integration-toolkit-for-beehiiv-admin.css', array(), $this->version, 'all' );
-		wp_enqueue_script( 'tippy-tooltip1', INTEGRATION_TOOLKIT_FOR_BEEHIIV_URL . 'admin/js/popper.min.js', array(), $this->version, false );
-
-		wp_enqueue_script( 'tippy-tooltip2', INTEGRATION_TOOLKIT_FOR_BEEHIIV_URL . 'admin/js/tippy-bundle.iife.js', array(), $this->version, false );
 	}
 
 	/**
@@ -97,6 +97,57 @@ class Integration_Toolkit_For_Beehiiv_Admin {
 		 */
 
 		wp_enqueue_script( $this->integration_toolkit_for_beehiiv, plugin_dir_url( __FILE__ ) . 'js/integration-toolkit-for-beehiiv-admin.js', array( 'jquery' ), $this->version, false );
+		// get all taxonomies based on post type
+		$post_types = get_post_types(
+			array(
+				'public' => true,
+			),
+			'objects'
+		);
+		$taxonomies = array();
+		foreach ($post_types as $re_post_type) {
+			if ($re_post_type->name === 'attachment') {
+				continue;
+			}
+			$post_type_taxonomies = get_object_taxonomies($re_post_type->name, 'objects');
+
+			foreach ($post_type_taxonomies as $re_taxonomy) {
+				if ($re_taxonomy->public != 1 || $re_taxonomy->name === 'post_format') { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+					continue;
+				}
+				$taxonomies[$re_post_type->name][] = array(
+					'name'  => $re_taxonomy->name,
+					'label' => $re_taxonomy->label,
+				);
+			}
+		}
+
+		$taxonomy_terms = array();
+		foreach ($taxonomies as $re_post_type => $re_taxonomy) {
+			foreach ($re_taxonomy as $re_tax) {
+				$terms = get_terms(
+					array(
+						'taxonomy'   => $re_tax['name'],
+						'hide_empty' => false,
+					)
+				);
+				$taxonomy_terms[$re_post_type][$re_tax['name']] = $terms;
+			}
+		}
+
+		$wp_post_status = get_post_stati(array('show_in_admin_all_list' => true), 'objects');
+		$post_statuses  = array();
+		// Filter post statuses.
+
+		foreach ($wp_post_status as $post_status => $post_status_object) {
+			if ('future' === $post_status) {
+				continue;
+			}
+			$post_statuses[] = array(
+				'name'  => $post_status,
+				'label' => $post_status_object->label,
+			);
+		}
 
 		wp_localize_script(
 			$this->integration_toolkit_for_beehiiv,
@@ -120,8 +171,15 @@ class Integration_Toolkit_For_Beehiiv_Admin {
 					// Translators: {{field_name}} is a required field name and should not be translated.
 					'required_fields' => __( '{{field_name}}  is a Required Field', 'integration-toolkit-for-beehiiv' ),
 				),
+				'AllTaxonomies'          => $taxonomies,
+				'AllTaxonomyTerms'       => $taxonomy_terms,
+				'AllPostStatuses'        => $post_statuses
 			)
 		);
+
+		wp_enqueue_script( 'tippy-tooltip1', INTEGRATION_TOOLKIT_FOR_BEEHIIV_URL . 'admin/js/popper.min.js', array(), $this->version, false );
+
+		wp_enqueue_script( 'tippy-tooltip2', INTEGRATION_TOOLKIT_FOR_BEEHIIV_URL . 'admin/js/tippy-bundle.iife.js', array(), $this->version, false );
 	}
 
 	/**
