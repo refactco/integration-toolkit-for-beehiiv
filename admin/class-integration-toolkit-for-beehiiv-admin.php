@@ -20,8 +20,6 @@
  * @author     Refact <info@refact.co>
  */
 
-use Integration_Toolkit_For_Beehiiv\Import\Manage_Actions;
-
 class Integration_Toolkit_For_Beehiiv_Admin {
 
 
@@ -104,6 +102,7 @@ class Integration_Toolkit_For_Beehiiv_Admin {
 			),
 			'objects'
 		);
+		
 		$taxonomies = array();
 		foreach ($post_types as $re_post_type) {
 			if ($re_post_type->name === 'attachment') {
