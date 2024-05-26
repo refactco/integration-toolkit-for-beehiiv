@@ -101,6 +101,7 @@ class Prepare_Post {
 	 * @param int $post_id post id on beehiiv
 	 */
 	public function is_unique_post( $post_id ) {
+		// phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_key, WordPress.DB.SlowDBQuery.slow_db_query_meta_value
 		$args  = array(
 			'meta_key'       => 'integration_toolkit_for_beehiiv_post_id',
 			'meta_value'     => $post_id,
@@ -108,6 +109,7 @@ class Prepare_Post {
 			'post_status'    => 'any',
 			'posts_per_page' => 1,
 		);
+		// phpcs:enable WordPress.DB.SlowDBQuery.slow_db_query_meta_key, WordPress.DB.SlowDBQuery.slow_db_query_meta_value
 		$posts = get_posts( $args );
 
 		// return post id if exists
