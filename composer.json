@@ -25,7 +25,8 @@
     "lint:wpcs": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs",
     "lint:wpcbf": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf",
     "lint:php": "@php ./vendor/bin/parallel-lint --exclude .git --exclude vendor .",
-    "make-pot": "wp i18n make-pot . languages/_s.pot"
+    "make-pot": "wp i18n make-pot . languages/_s.pot",
+    "pack": "zip -r integration-toolkit-for-beehiiv.zip . -x '*.git*' '*.DS_Store*' '*.vscode*' '*.github*' '*.gitignore*' '*.gitattributes*' '*.editorconfig*' '*.phpcs.xml*'"
   },
   "config": {
     "allow-plugins": {
