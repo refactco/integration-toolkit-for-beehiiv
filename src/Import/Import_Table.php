@@ -173,25 +173,27 @@ class Import_Table
 	public static function get_rows_by_status(string $status, string $group_name = ''): array
 	{
 		global $wpdb;
-		$table_name = $wpdb->prefix . self::TABLE_NAME;
+		$table_name = sanitize_term($wpdb->prefix . self::TABLE_NAME, 'string');
 		$status     = sanitize_text_field($status);
 		$group_name = sanitize_text_field($group_name);
+
 		if (!empty($group_name)) {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
 			$result = $wpdb->get_results($wpdb->prepare(
-				"SELECT * FROM %s WHERE status = %s AND group_name = %s",
-				sanitize_text_field($table_name),
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				"SELECT * FROM `{$table_name}` WHERE status = %s AND group_name = %s",
 				$status,
 				$group_name
 			));
 		} else {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery 
 			$result = $wpdb->get_results($wpdb->prepare(
-				"SELECT * FROM %s WHERE status = %s",
-				sanitize_text_field($table_name),
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				"SELECT * FROM `{$table_name}` WHERE status = %s",
 				$status
 			));
 		}
+
 		if (!$result) {
 			return array();
 		}
