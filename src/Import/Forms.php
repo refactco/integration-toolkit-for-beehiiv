@@ -89,7 +89,7 @@ class Forms {
 						<?php
 						printf(
 							/* Translators: %s is a placeholder for the error message. This text is displayed when there is an error in the form data. */
-							esc_html__( 'Message : %s', 'Integration Toolkit for beehiiv' ),
+							esc_html__( 'Message : %s', 'integration-toolkit-for-beehiiv' ),
 							esc_html( $form_data['message'] )
 						);
 						?>
@@ -141,7 +141,7 @@ class Forms {
 						<?php
 							printf(
 								/* Translators: %s is a placeholder for the error message. This text is displayed when there is an error in the form data. */
-								esc_html__( 'Message : %s', 'Integration Toolkit for beehiiv' ),
+								esc_html__( 'Message : %s', 'integration-toolkit-for-beehiiv' ),
 								esc_html( $form_data['message'] )
 							);
 						?>
@@ -172,7 +172,7 @@ class Forms {
 			if ( ! wp_verify_nonce( $nonce, 'integration_toolkit_for_beehiiv_import_nonce' ) ) {
 				return array(
 					'error'   => true,
-					'message' => esc_html__( 'Invalid nonce', 'Integration Toolkit for beehiiv' ),
+					'message' => esc_html__( 'Invalid nonce', 'integration-toolkit-for-beehiiv' ),
 				);
 			}
 
@@ -191,7 +191,7 @@ class Forms {
 						'error'   => true,
 						'message' => sprintf(
 							// Translators: %s is a placeholder for the field label. This text is displayed when a required field is left blank.
-							__( '%s is required', 'Integration Toolkit for beehiiv' ),
+							__( '%s is required', 'integration-toolkit-for-beehiiv' ),
 							$field['label']
 						),
 					);
@@ -214,7 +214,7 @@ class Forms {
 		} else {
 			return array(
 				'error'   => true,
-				'message' => esc_html__( 'Invalid nonce', 'Integration Toolkit for beehiiv' ),
+				'message' => esc_html__( 'Invalid nonce', 'integration-toolkit-for-beehiiv' ),
 			);
 		}
 	}

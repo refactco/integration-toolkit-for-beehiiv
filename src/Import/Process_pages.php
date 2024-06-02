@@ -94,14 +94,14 @@ class Process_Pages extends \Integration_Toolkit_For_Beehiiv\Lib\Bulk_Process {
             if ( 'error' === $status ) {
                 $this->logger->log(
                     array(
-                        'message' => __('Unable to fetch content from page ', 'Integration Toolkit for beehiiv') . $this->current_page_index,
+                        'message' => __('Unable to fetch content from page ', 'integration-toolkit-for-beehiiv') . $this->current_page_index,
                         'status'  => 'error',
                     )
                 );
             } elseif ( 'success' === $status ) {
                 $this->logger->log(
                     array(
-                        'message' => __('Fetched content from page ', 'Integration Toolkit for beehiiv') . $this->current_page_index,
+                        'message' => __('Fetched content from page ', 'integration-toolkit-for-beehiiv') . $this->current_page_index,
                         'status'  => 'success',
                     )
                 );
