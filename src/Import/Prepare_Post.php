@@ -58,9 +58,10 @@ class Prepare_Post {
             if ( $this->is_unique_post( $this->item['id'] ) ) {
                 throw new \Exception(
                     sprintf(
-                        __( '%1$s - %2$s is already exists', 'integration-toolkit-for-beehiiv' ),
-                        $this->item['id'],
-                        $this->item['title'],
+						/* translators: %1$s: post id, %2$s: post title */
+                        esc_html__( '%1$s - %2$s is already exists', 'integration-toolkit-for-beehiiv' ),
+	                    esc_attr($this->item['id']),
+	                    esc_attr($this->item['title']),
                     )
                 );
             }
@@ -69,9 +70,10 @@ class Prepare_Post {
             if ( ! $this->is_unique_post( $this->item['id'] ) ) {
                 throw new \Exception(
                     sprintf(
-                        __( '%1$s - %2$s is not exists', 'integration-toolkit-for-beehiiv' ),
-                        $this->item['id'],
-                        $this->item['title'],
+						/* translators: %1$s: post id, %2$s: post title */
+	                    esc_html__( '%1$s - %2$s is not exists', 'integration-toolkit-for-beehiiv' ),
+	                    esc_attr($this->item['id']),
+                        esc_attr($this->item['title']),
                     )
                 );
             }
@@ -81,9 +83,10 @@ class Prepare_Post {
         if ( ! in_array( $this->item['status'], $this->form_data['beehiiv-status'], true ) ) {
             throw new \Exception(
                 sprintf(
-                    __( '%1$s - %2$s is not in selected status', 'integration-toolkit-for-beehiiv' ),
-                    $this->item['id'],
-                    $this->item['title'],
+					/* translators: %1$s: post id, %2$s: post title */
+	                esc_html__( '%1$s - %2$s is not in selected status', 'integration-toolkit-for-beehiiv' ),
+                    esc_attr($this->item['id']),
+	                esc_attr($this->item['title']),
                 )
             );
         }
@@ -98,6 +101,7 @@ class Prepare_Post {
 	 * @param int $post_id post id on beehiiv
 	 */
 	public function is_unique_post( $post_id ) {
+		// phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_key, WordPress.DB.SlowDBQuery.slow_db_query_meta_value
 		$args  = array(
 			'meta_key'       => 'integration_toolkit_for_beehiiv_post_id',
 			'meta_value'     => $post_id,
@@ -105,6 +109,7 @@ class Prepare_Post {
 			'post_status'    => 'any',
 			'posts_per_page' => 1,
 		);
+		// phpcs:enable WordPress.DB.SlowDBQuery.slow_db_query_meta_key, WordPress.DB.SlowDBQuery.slow_db_query_meta_value
 		$posts = get_posts( $args );
 
 		// return post id if exists

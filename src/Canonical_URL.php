@@ -44,7 +44,7 @@ class Canonical_URL {
 		$canonical_url = get_post_meta( $post->ID, 'integration_toolkit_for_beehiiv_post_url', true );
 
 		if ( $canonical_url ) {
-			echo '<link rel="canonical" href="' . esc_url( $canonical_url ) . '" />';
+			wp_add_inline_script( 'canonical_url', 'document.head.insertAdjacentHTML("beforeend", "<link rel=\"canonical\" href=\"' . esc_url( $canonical_url ) . '\" />");' );
 		}
 	}
 }

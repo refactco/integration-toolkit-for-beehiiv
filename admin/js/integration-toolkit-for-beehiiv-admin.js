@@ -77,7 +77,7 @@
         return false;
       }
 
-      let taxonomies = AllTaxonomies[post_type];
+      let taxonomies = INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE.AllTaxonomies[post_type];
 
       // if taxonomies is empty
       if (taxonomies == null || taxonomies == "") {
@@ -124,7 +124,7 @@
         $("#integration-toolkit-for-beehiiv-taxonomy_term").addClass("hidden");
         return false;
       }
-      let taxonomies = AllTaxonomies[$("#integration-toolkit-for-beehiiv-post_type").val()];
+      let taxonomies = INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE.AllTaxonomies[$("#integration-toolkit-for-beehiiv-post_type").val()];
 
       if (taxonomies == null || taxonomies == "") {
         // hide the taxonomy and taxonomy term select
@@ -335,7 +335,7 @@ function UpdateTaxonomyTerms() {
     return false;
   }
 
-  let Terms = AllTaxonomyTerms[post_type][taxonomy];
+  let Terms = INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE.AllTaxonomyTerms[post_type][taxonomy];
 
   if (Terms == null || Terms == undefined || Terms == "") {
     return false;
@@ -654,7 +654,7 @@ function trigger_update_post_statuses() {
   // Update $wrapper with the new fields
   beehiiv_status.forEach((status) => {
 
-    // Create the field using AllPostStatuses variable. this variable has multiple status with name and label. add dropdown for each status with AllPostStatuses values
+    // Create the field using INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE.AllPostStatuses variable. this variable has multiple status with name and label. add dropdown for each status with INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE.AllPostStatuses values
     let label = status.charAt(0).toUpperCase() + status.slice(1);
 
     if (label === 'Confirmed') {
@@ -666,7 +666,7 @@ function trigger_update_post_statuses() {
       <div class="integration-toolkit-for-beehiiv-post_status--field mb-2">
         <select name="integration-toolkit-for-beehiiv-post_status--${status}" id="integration-toolkit-for-beehiiv-post_status--${status}">
           <option value="0">Select a status</option>
-          ${AllPostStatuses.map((option) => {
+          ${INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE.AllPostStatuses.map((option) => {
             let selected = '';
             if ( status === 'confirmed' ) {
               if ( option.name === 'publish' ) {

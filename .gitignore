@@ -23,6 +23,7 @@ node_modules
 
 # idea folder
 .idea
-.DS_Store
+# gitignore .DS_Store files in any folder
+**/.DS_Store
 
-blocks/settings/build
+#blocks/settings/build

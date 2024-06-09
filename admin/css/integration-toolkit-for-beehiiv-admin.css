@@ -179,7 +179,7 @@ input#integration-toolkit-for-beehiiv-start-import:hover,
 input#integration-toolkit-for-beehiiv-start-import:disabled,
 .integration-toolkit-for-beehiiv-settings-save:disabled {
     background-color: #ccc !important;
-    border-color: #ccc  !important;
+    border-color: #ccc !important;
 }
 
 .integration-toolkit-for-beehiiv-import-form--hide_canceled .integration-toolkit-for-beehiiv-import--notice.integration-toolkit-for-beehiiv-import--notice-canceled {
@@ -405,6 +405,7 @@ h2.integration-toolkit-for-beehiiv-import-fields--step--title:after {
 .log-item__status--running {
     background: #a5c8ff;
 }
+
 /* Results Log Box End */
 
 .integration-toolkit-for-beehiiv-post_status--fields div label {
@@ -416,4 +417,16 @@ h2.integration-toolkit-for-beehiiv-import-fields--step--title:after {
 .integration-toolkit-for-beehiiv-post_status--field {
     display: flex;
     align-items: center;
+}
+
+.question-icon {
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    line-height: 13px;
+    text-align: center;
+    font-size: 14px;
+    color: #65696c;
+    border: 1px solid #65696c;
+    border-radius: 50%;
 }

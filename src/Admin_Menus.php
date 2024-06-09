@@ -67,11 +67,8 @@ class Admin_Menus {
 			?>
 			<div class="notice notice-error is-dismissible">
 				<p>
-				<?php 
-					$message = esc_html__( 'API Key or publication ID is not set. Please set it on the ', 'integration-toolkit-for-beehiiv' );
-					$settings_url = esc_url( home_url( '/wp-admin/admin.php?page=integration-toolkit-for-beehiiv-settings' ) );
-
-					echo "<p>{$message}<a href='{$settings_url}'>settings page.</a></p>";
+				<?php
+					echo '<p>' . esc_html__( ' API Key or publication ID is not set. Please set it on the ', 'integration-toolkit-for-beehiiv' ) . '<a href="' . esc_url( home_url( '/wp-admin/admin.php?page=integration-toolkit-for-beehiiv-settings' ) ) . '">settings page.</a></p>';
 				?>
 				</p>
 			</div>

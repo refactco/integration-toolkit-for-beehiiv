@@ -8,7 +8,8 @@ namespace Integration_Toolkit_For_Beehiiv\Import;
  *
  * @package Integration_Toolkit_For_Beehiiv\Import
  */
-class Import_Table {
+class Import_Table
+{
 
 	const TABLE_NAME = 'integration_toolkit_for_beehiiv_import';
 
@@ -17,7 +18,8 @@ class Import_Table {
 	 *
 	 * @return void
 	 */
-	public static function create_table() : void {
+	public static function create_table(): void
+	{
 		global $wpdb;
 		$table_name      = $wpdb->prefix . self::TABLE_NAME;
 		$charset_collate = $wpdb->get_charset_collate();
@@ -31,7 +33,7 @@ class Import_Table {
 		) $charset_collate;";
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-		dbDelta( $sql );
+		dbDelta($sql);
 	}
 
 	/**
@@ -39,15 +41,13 @@ class Import_Table {
 	 *
 	 * @return void
 	 */
-	public static function delete_table() : void {
+	public static function delete_table(): void
+	{
 		global $wpdb;
-		$table_name = $wpdb->prefix . self::TABLE_NAME;
-		$wpdb->query(
-			$wpdb->prepare(
-				'DROP TABLE IF EXISTS %i', // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnsupportedPlaceholder,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
-				$table_name
-			)
-		);
+		$table_name = sanitize_text_field($wpdb->prefix . self::TABLE_NAME);
+		// Delete the table using dbDelta
+		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+		dbDelta("DROP TABLE $table_name");
 	}
 
 	/**
@@ -55,12 +55,14 @@ class Import_Table {
 	 *
 	 * @return void
 	 */
-	public static function delete_custom_table_rows() : void {
+	public static function delete_custom_table_rows(): void
+	{
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		$wpdb->query(
 			$wpdb->prepare(
-				'DELETE FROM %i', // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnsupportedPlaceholder,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
+				'DELETE FROM %s',
 				$table_name
 			)
 		);
@@ -75,21 +77,23 @@ class Import_Table {
 	 * @param string $status
 	 * @return void
 	 */
-	public static function insert_custom_table_row( string $key_name, array $key_value, string $group_name, string $status ) : void {
+	public static function insert_custom_table_row(string $key_name, array $key_value, string $group_name, string $status): void
+	{
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		$res = $wpdb->insert(
 			$table_name,
 			array(
-				'key_name'   => sanitize_text_field( $key_name ),
-				'key_value'  => wp_json_encode( $key_value ),
-				'group_name' => sanitize_text_field( $group_name ),
-				'status'     => sanitize_text_field( $status ),
+				'key_name'   => sanitize_text_field($key_name),
+				'key_value'  => wp_json_encode($key_value),
+				'group_name' => sanitize_text_field($group_name),
+				'status'     => sanitize_text_field($status),
 			)
 		);
 
-		if ( ! $res ) {
-			throw new \Exception( __('Error inserting row in custom table' , 'integration-toolkit-for-beehiiv'));
+		if (!$res) {
+			throw new \Exception(esc_html__('Error inserting row in custom table', 'integration-toolkit-for-beehiiv'));
 		}
 	}
 
@@ -99,24 +103,27 @@ class Import_Table {
 	 * @param string $key_name
 	 * @param string $group_name
 	 */
-	public static function get_custom_table_row( string $key_name, string $group_name ) {
+	public static function get_custom_table_row(string $key_name, string $group_name)
+	{
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		$result     = $wpdb->get_results(
-			$wpdb->prepare( // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber
-				'SELECT * FROM %i WHERE key_name = %s AND group_name = %s', // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnsupportedPlaceholder
-				$table_name,
-				sanitize_text_field( $key_name ),
-				$group_name
+			$wpdb->prepare(
+				"SELECT * FROM %s WHERE key_name = %s AND group_name = %s",
+				sanitize_text_field($table_name),
+				sanitize_text_field($key_name),
+				sanitize_text_field($group_name)
 			),
 		);
 
-		if ( ! $result ) {
+		if (!$result) {
 			return false;
 		}
 
 		return $result;
 	}
+
 
 	/**
 	 * Remove a row from the custom table
@@ -124,11 +131,17 @@ class Import_Table {
 	 * @param string $key_name
 	 * @return void
 	 */
-	public static function delete_custom_table_row( string $key_name ) : void {
+	public static function delete_custom_table_row(string $key_name): void
+	{
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
-		$key_name   = sanitize_text_field( $key_name );
-		$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE key_name = %s', $table_name, $key_name ) ); // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnsupportedPlaceholder,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber
+		$key_name   = sanitize_text_field($key_name);
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		$wpdb->query($wpdb->prepare(
+			"DELETE FROM %s WHERE key_name = %s",
+			sanitize_text_field($table_name),
+			$key_name
+		));
 	}
 
 	/**
@@ -136,36 +149,55 @@ class Import_Table {
 	 *
 	 * @param string $group_name
 	 */
-	public static function delete_row_by_group( string $group_name ) : void {
+	public static function delete_row_by_group(string $group_name): void
+	{
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
-		$group_name = sanitize_text_field( $group_name );
-		$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE group_name = %s', $table_name, $group_name ) ); // phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnsupportedPlaceholder,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber
+		$group_name = sanitize_text_field($group_name);
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		$wpdb->query($wpdb->prepare(
+			"DELETE FROM %s WHERE group_name = %s",
+			sanitize_text_field($table_name),
+			$group_name
+		));
 	}
 
-	public static function get_rows_by_status( string $status, string $group_name = '' ) : array {
+
+	/**
+	 * Get all rows from the custom table.
+	 *
+	 * @param string $status
+	 * @param string $group_name
+	 * @return array
+	 */
+	public static function get_rows_by_status(string $status, string $group_name = ''): array
+	{
 		global $wpdb;
-		$table_name = $wpdb->prefix . self::TABLE_NAME;
-		$status     = sanitize_text_field( $status );
-		$group_name = sanitize_text_field( $group_name );
-		$query      = "SELECT * FROM $table_name WHERE status = %s";
-	
-		$params = array( $status );
-	
-		if ( ! empty( $group_name ) ) {
-			$query .= " AND group_name = %s";
-			$params[] = $group_name;
+		$table_name = sanitize_term($wpdb->prefix . self::TABLE_NAME, 'string');
+		$status     = sanitize_text_field($status);
+		$group_name = sanitize_text_field($group_name);
+
+		if (!empty($group_name)) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+			$result = $wpdb->get_results($wpdb->prepare(
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				"SELECT * FROM `{$table_name}` WHERE status = %s AND group_name = %s",
+				$status,
+				$group_name
+			));
+		} else {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery 
+			$result = $wpdb->get_results($wpdb->prepare(
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				"SELECT * FROM `{$table_name}` WHERE status = %s",
+				$status
+			));
 		}
-	
-		$prepared_query = $wpdb->prepare( $query, $params ); //phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-	
-		$result = $wpdb->get_results( $prepared_query );//phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-	
-		if ( ! $result ) {
-			return [];
+
+		if (!$result) {
+			return array();
 		}
-	
+
 		return $result;
 	}
-	
 }
