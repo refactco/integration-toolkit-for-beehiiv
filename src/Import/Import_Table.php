@@ -138,8 +138,7 @@ class Import_Table
 		$key_name   = sanitize_text_field($key_name);
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		$wpdb->query($wpdb->prepare(
-			"DELETE FROM %s WHERE key_name = %s",
-			sanitize_text_field($table_name),
+			"DELETE FROM `{$table_name}` WHERE key_name = %s",
 			$key_name
 		));
 	}
@@ -156,8 +155,7 @@ class Import_Table
 		$group_name = sanitize_text_field($group_name);
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		$wpdb->query($wpdb->prepare(
-			"DELETE FROM %s WHERE group_name = %s",
-			sanitize_text_field($table_name),
+			"DELETE FROM `{$table_name}` WHERE group_name = %s",
 			$group_name
 		));
 	}
@@ -173,7 +171,7 @@ class Import_Table
 	public static function get_rows_by_status(string $status, string $group_name = ''): array
 	{
 		global $wpdb;
-		$table_name = sanitize_term($wpdb->prefix . self::TABLE_NAME, 'string');
+		$table_name = $wpdb->prefix . self::TABLE_NAME;
 		$status     = sanitize_text_field($status);
 		$group_name = sanitize_text_field($group_name);
 
