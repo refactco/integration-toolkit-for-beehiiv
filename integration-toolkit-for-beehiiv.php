@@ -4,7 +4,7 @@
  * Plugin Name:       Integration Toolkit for beehiiv
  * Plugin URI:        https://refact.co/
  * Description:       Effortlessly connect content and subscription capabilities with your WordPress site.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            Refact.co
  * Author URI:        https://refact.co
  * License:           GPL2 or later
