@@ -1,4 +1,4 @@
-=== Integration Toolkit for beehiiv: An advanced beehiiv integration ===
+=== beehiiv to WordPress - Publish beehiiv newsletters as posts ===
  
 Contributors:      refact
 Requires at least: 5.2
@@ -9,13 +9,13 @@ License: GPL2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: esp, beehiiv, import, email, importer
  
-Integration Toolkit for beehiiv is a powerful tool between beehiiv and your WordPress site. Import all your content automatically and save time 
+beehiiv to WordPress is a powerful tool between beehiiv and your WordPress site. Import all your content automatically and save time 
  
 == Description ==
  
-Integration Toolkit for beehiiv provides you with the necessary integration to import content automatically between beehiiv and your WordPress site.
+beehiiv to WordPress provides you with the necessary integration to import content automatically between beehiiv and your WordPress site.
 
-This plugin is designed to be simple and ensures your WordPress site is always updated with the latest content. Integration Toolkit for beehiiv allows you to: 
+This plugin is designed to be simple and ensures your WordPress site is always updated with the latest content. "beehiiv to WordPress" allows you to: 
  
 - Select the content type to import from beehiiv (free, premium, etc.)
 - Choose which posts to import from beehiiv (published, archived, draft, etc.)
@@ -27,9 +27,9 @@ This plugin is designed to be simple and ensures your WordPress site is always u
 - Set an import interval to prevent high load on slow servers
 - Configure the import schedule frequency for importing posts from beehiiv
  
-In addition to its importing capabilities, this version of The Integration Toolkit for beehiiv integrates perfectly with Yoast SEO plugin, allowing you to add Canonical tags to all your imported content. This integration helps in improving your SEO ranking by preventing duplicate content issues and directing search engines to the original content.
+In addition to its importing capabilities, this version of The "beehiiv to WordPress" integrates perfectly with Yoast SEO plugin, allowing you to add Canonical tags to all your imported content. This integration helps in improving your SEO ranking by preventing duplicate content issues and directing search engines to the original content.
  
-While “Integration Toolkit for beehiiv” is not officially developed or endorsed by beehiiv, it adheres to all best practices and protocols, ensuring a secure and effective synchronization between your WordPress site and beehiiv.
+While “beehiiv to WordPress” is not officially developed or endorsed by beehiiv, it adheres to all best practices and protocols, ensuring a secure and effective synchronization between your WordPress site and beehiiv.
 
 ### Third-Party Service Information
 
@@ -56,7 +56,7 @@ Our plugin communicates with Beehiiv’s API at the following endpoint:
 
 The secure handling of your data is paramount. We use industry-standard security measures during data transmission to Beehiiv. By using this plugin, you acknowledge and consent to the transfer of data to Beehiiv as described in the Third-Party Service Information section. It is your responsibility to ensure that the use of Beehiiv’s API complies with all relevant legal requirements applicable to your geographical location.
 
-While “Integration Toolkit for beehiiv” is not officially developed or endorsed by Beehiiv, it adheres to all best practices and protocols, ensuring a secure and effective synchronization between your WordPress site and Beehiiv.
+While “beehiiv to WordPress” is not officially developed or endorsed by Beehiiv, it adheres to all best practices and protocols, ensuring a secure and effective synchronization between your WordPress site and Beehiiv.
 
 = We want your input =
  
@@ -64,11 +64,11 @@ If you have any suggestions for improvements, feature updates, etc., or would li
  
 == Frequently Asked Questions ==
  
-= What is Integration Toolkit for beehiiv? =
-Integration Toolkit for beehiiv is a WordPress plugin designed to seamlessly integrate and synchronize your beehiiv content with your WordPress website. It provides a user-friendly interface for manual or auto-import of your beehiiv content directly into your WordPress..
+= What is "beehiiv to WordPress"? =
+"beehiiv to WordPress" is a WordPress plugin designed to seamlessly integrate and synchronize your beehiiv content with your WordPress website. It provides a user-friendly interface for manual or auto-import of your beehiiv content directly into your WordPress..
  
 = How do I connect my beehiiv account to the plugin? =
-Once you’ve installed and activated the Integration Toolkit for beehiiv plugin, navigate to the plugin’s settings in your WordPress dashboard. Here, you’ll be prompted to input your beehiiv API key and Publication ID to establish the connection.
+Once you’ve installed and activated the "beehiiv to WordPress" plugin, navigate to the plugin’s settings in your WordPress dashboard. Here, you’ll be prompted to input your beehiiv API key and Publication ID to establish the connection.
  
  
 = Can I choose which content to import from beehiiv? =
@@ -87,7 +87,7 @@ Yes, when setting up your import preferences, you have the option to assign the 
 We’re here to assist you! Please reach out to us through [support-link], and our team will address your concerns promptly.
  
 = Is my beehiiv data secure during the import process? =
-The Integration Toolkit for beehiiv plugin establishes a secure connection using your beehiiv API key to ensure a safe and trusted data transfer process.
+The "beehiiv to WordPress" plugin establishes a secure connection using your beehiiv API key to ensure a safe and trusted data transfer process.
  
 = Can I disconnect my beehiiv account from the plugin? =
 Yes, at any time you can navigate to the plugin’s settings in your dashboard and click the ‘Disconnect’ button to unlink your beehiiv account. 
@@ -95,17 +95,17 @@ Yes, at any time you can navigate to the plugin’s settings in your dashboard a
 == Installation ==
 = Installation from within WordPress =
 1. Visit **Plugins > Add New**.
-2. Search for **Integration Toolkit for beehiiv**.
-3. Install and activate the 'Integration Toolkit for beehiiv' plugin.
-4. After activation, navigate to the Integration Toolkit for beehiiv section in your WordPress dashboard.
+2. Search for **beehiiv to WordPress**.
+3. Install and activate the 'beehiiv to WordPress' plugin.
+4. After activation, navigate to the beehiiv to WordPress section in your WordPress dashboard.
 5. Follow the on-screen instructions to set up content imports and subscription forms.
  
 = Manual installation =
 1. Download the plugin zip file
 2. Upload it to the `/wp-content/plugins/` directory in your website.
 3. Visit the **Plugins** in your WordPress Dashboard.
-4. Locate 'Integration Toolkit for beehiiv' and activate it.
-5. After activation, navigate to the Integration Toolkit for beehiiv section in your WordPress dashboard.
+4. Locate 'beehiiv to WordPress' and activate it.
+5. After activation, navigate to the beehiiv to WordPress section in your WordPress dashboard.
 6. Follow the on-screen instructions to set up content imports and subscription forms.
  
 == Screenshots ==

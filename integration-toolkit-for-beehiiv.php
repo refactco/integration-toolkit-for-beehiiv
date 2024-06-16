@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Plugin Name:       Integration Toolkit for beehiiv
+ * Plugin Name:       beehiiv to WordPress - Publish beehiiv newsletters as posts
  * Plugin URI:        https://refact.co/
  * Description:       Effortlessly connect content and subscription capabilities with your WordPress site.
- * Version:           1.0.1
+ * Version:           1.1.0
  * Author:            Refact.co
  * Author URI:        https://refact.co
  * License:           GPL2 or later
