@@ -9,6 +9,9 @@
 
 namespace ITFB;
 
+defined( 'ABSPATH' ) || exit;
+
+
 /**
  * The admin menu class
  *

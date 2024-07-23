@@ -37,6 +37,10 @@ if (!defined('INTEGRATION_TOOLKIT_FOR_BEEHIIV_PATH')) {
 	define('INTEGRATION_TOOLKIT_FOR_BEEHIIV_PATH', plugin_dir_path(__FILE__));
 }
 
+if (!defined('INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE_FILE')) {
+	define('INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE_FILE', __FILE__);
+}
+
 
 /**
  * Run the loader to initialize the plugin.

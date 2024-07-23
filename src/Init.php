@@ -8,9 +8,12 @@
 
 namespace ITFB;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+use Integration_Toolkit_For_Beehiiv\Import\Import;
+use ITFB\ImportCampaigns\Endpoints;
+use ITFB\ImportCampaigns\ImportDatabase;
+
+defined( 'ABSPATH' ) || exit;
+
 
 /**
  * The init class.
@@ -76,6 +79,12 @@ class Init {
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		new AdminMenu( $this->get_plugin_name(), $this->get_version() );
+
+		/**
+		 * The class responsible for defining all actions that occur in the admin area.
+		 */
+		new Endpoints();
+		
 	}
 
 	/**
@@ -109,7 +118,6 @@ class Init {
 			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
 		);
 	}
-
 
 	/**
 	 * The name of the plugin used to uniquely identify it within the context of
