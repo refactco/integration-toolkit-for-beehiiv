@@ -100,5 +100,13 @@ class AdminMenu {
             $this->version,
             true
         );
+
+        // Enqueue the React Toastify CSS.
+		wp_enqueue_style(
+			're-esp-campaign-monitor-toastify',
+			INTEGRATION_TOOLKIT_FOR_BEEHIIV_URL . 'lib/assets/css/reactToastify.css',
+			array(),
+			'8.0.3'
+		);
     }
 }

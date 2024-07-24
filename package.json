@@ -5,7 +5,7 @@
   "author": "Refact",
   "license": "GPL-2.0-or-later",
   "main": "lib/index.js",
- "scripts": {
+  "scripts": {
     "build": "wp-scripts build",
     "watch": "wp-scripts start",
     "build:custom": "wp-scripts start ./lib/index.js --output-path=./build",
@@ -27,4 +27,3 @@
     "styled-components": "6.1.6"
   }
 }
-
