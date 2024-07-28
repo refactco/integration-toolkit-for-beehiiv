@@ -11,7 +11,7 @@ namespace ITFB\ImportCampaigns\BackgroundProcessing;
 
 use WP_Background_Process;
 use ITFB\ImportCampaigns\Helper;
-use ITFB\ImportCampaigns\ImportDatabase;
+use ITFB\ImportCampaigns\ImportTable;
 
 /**
  * Processes for importing fetched campaigns into WordPress.
@@ -52,7 +52,7 @@ class ImportCampaignsProcess extends WP_Background_Process {
 	 * @return mixed
 	 */
 	protected function task( $item ) {
-		$this->import_campaign( $item );
+		$this->import_campaign( unserialize($item) );
 		return false;
 	}
 
@@ -63,7 +63,6 @@ class ImportCampaignsProcess extends WP_Background_Process {
 	 * performed, or, call parent::complete().
 	 */
 	protected function complete() {
-		delete_transient( 'itfb_total_queued_campaigns' );
 		parent::complete();
 	}
 
@@ -73,7 +72,10 @@ class ImportCampaignsProcess extends WP_Background_Process {
 	 * @param object $item The campaign object.
 	 */
 	protected function import_campaign( $item ) {
-
+		//get the campaign from import table
+		$item['campaign'] = ImportTable::get_and_decode_campaign_data( trim($item['campaign_id']), trim($item['group_name']) );
+		//delete the campaign from import table
+		ImportTable::delete_custom_table_row ( trim($item['campaign_id']), trim($item['group_name']) );
 		$wp_post_args = array(
 			'post_title'   => sanitize_text_field( $item['campaign']['title']),
 			'post_slug'    => sanitize_title( $item['campaign']['slug'] ),

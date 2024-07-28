@@ -24,12 +24,12 @@ defined( 'ABSPATH' ) || exit;
 class Endpoints {
 
     /**
-	 * Total queued campaigns.
+	 * Total queued campaigns result.
 	 * 
-	 * @var int $total_queued_campaigns
+	 * @var int $total_queued_campaigns_result
 	 * @since 2.0.0
 	 */
-	public $total_queued_campaigns = 0;
+	public $total_queued_campaigns_result = 0;
 
     /**
 	 * The import campaigns process.
@@ -183,14 +183,16 @@ class Endpoints {
 		}
 
 
-		$this->total_queued_campaigns = (new ImportCampaigns($params, $this->import_campaigns_process))->fetch_and_push_campaigns_to_import_queue();
+		$this->total_queued_campaigns_result = (new ImportCampaigns($params, $this->import_campaigns_process,'manual'))->fetch_and_push_campaigns_to_import_queue();
 		
-		if ( is_wp_error( $this->total_queued_campaigns ) ) {
-			return $this->total_queued_campaigns;
+		if ( is_wp_error( $this->total_queued_campaigns_result ) ) {
+			return $this->total_queued_campaigns_result;
 		}
 
 		$output = array(
-			'message' => $this->total_queued_campaigns . ' campaigns are being fetched and pushed to the import queue.',
+			'message' => $this->total_queued_campaigns_result['total_queued_campaigns'] . ' campaigns are being fetched and pushed to the import queue.',
+			'total_queued_campaigns' => $this->total_queued_campaigns_result['total_queued_campaigns'],
+			'group_name' => $this->total_queued_campaigns_result['group_name'],
 		);
 
 		if ( 'on' === $params['schedule_settings']['enabled'] ) {
@@ -214,7 +216,7 @@ class Endpoints {
 	 * @return \WP_Error
 	 */
 	public function handle_scheduled_import( $params ) {
-		$this->total_queued_campaigns = (new ImportCampaigns($params, $this->import_campaigns_process))->fetch_and_push_campaigns_to_import_queue();
+		$this->total_queued_campaigns = (new ImportCampaigns($params, $this->import_campaigns_process,'auto'))->fetch_and_push_campaigns_to_import_queue();
 	}
 
 	/**
@@ -224,6 +226,11 @@ class Endpoints {
 	 * @return \WP_REST_Response
 	 */
 	public function import_status( $request ) {
+		$group_name= $request->get_param( 'group_name' );
+		//check if the group name is set
+		if ( ! $group_name ) {
+			return new \WP_Error( 'no_group_name', 'Group name is required.', array( 'status' => 400 ) );
+		}
 
 		if ( $this->import_campaigns_process->is_active() ) {
 
@@ -233,14 +240,10 @@ class Endpoints {
 				$output['status'] = 'active';
 			}
 			
-			$batches             = $this->import_campaigns_process->get_batches();
-			$remaining_campaigns = 0;
-			foreach ( $batches as $batch ) {
-				$remaining_campaigns += count( $batch->data );
-			}
+			$remaining_campaigns = ImportTable::get_remaining_campaigns_count( $group_name );
+			
 			$output['remaining_campaigns'] = $remaining_campaigns;
-			$output['total_campaigns']     = get_transient( 'itfb_total_queued_campaigns' );
-	
+
 		} else {
 			$output['status'] = 'not_active';
 		}
@@ -264,7 +267,6 @@ class Endpoints {
 		switch ( $job_action ) {
 			case 'cancel':
 				$this->import_campaigns_process->cancel();
-				delete_transient( 'itfb_total_queued_campaigns' );
 				$response = array(
 					'status'  => 'canceled',
 					'message' => 'Import process has been canceled.',

@@ -10,7 +10,6 @@ namespace ITFB;
 
 use Integration_Toolkit_For_Beehiiv\Import\Import;
 use ITFB\ImportCampaigns\Endpoints;
-use ITFB\ImportCampaigns\ImportDatabase;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -66,6 +65,9 @@ class Init {
 		$this->load_dependencies();
 
 		$this->define_admin_hooks();
+
+		// Hook to create table on plugin activation
+		register_activation_hook(INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE_FILE, array(ImportCampaigns\ImportTable::class, 'create_table'));
 	}
 
 	/**
@@ -84,7 +86,6 @@ class Init {
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		new Endpoints();
-		
 	}
 
 	/**
@@ -102,6 +103,7 @@ class Init {
 		 * @return void
 		 */
         add_action( 'plugins_loaded', array( $this, 'load_plugin_textdomain' ) );
+		
 	}
 
 
@@ -154,6 +156,4 @@ class Init {
         }
         return self::$instance;
     }
-
-
 }

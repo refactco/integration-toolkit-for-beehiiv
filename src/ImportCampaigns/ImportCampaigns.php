@@ -51,6 +51,20 @@ class ImportCampaigns {
     protected $params;
 
 	/**
+	 * Group name
+	 * 
+	 * @var string $group_name
+	 */
+	protected $group_name;
+
+	/**
+	 * Import type
+	 * 
+	 * @var string $import_type
+	 */
+	protected $import_type;
+
+	/**
 	 * The import campaigns process.
 	 * 
 	 * @var ImportCampaignsProcess $import_campaigns_process
@@ -63,8 +77,10 @@ class ImportCampaigns {
      * 
      * @param array $params The parameters array.
      */
-    public function __construct ( $params, $import_campaigns_process ) {
+    public function __construct ( $params, $import_campaigns_process, $import_type) {
         $this->params = $params;
+		$this->import_type = $import_type;
+		$this->group_name = 'itfb_' . $import_type.'_'. time();
 		$this->import_campaigns_process = $import_campaigns_process;
         $this->past_imported_campaigns = $this->get_previous_imported_campaigns();
     }
@@ -76,7 +92,6 @@ class ImportCampaigns {
 	 * @return array
 	 */
 	public function fetch_and_push_campaigns_to_import_queue() {
-		
 		foreach (array_keys($this->params['post_status']) as $status) {
 			$result = self::fetch_campaigns_by_status($status);
 	
@@ -87,9 +102,10 @@ class ImportCampaigns {
 		
 		$this->import_campaigns_process->save()->dispatch();
 
-		set_transient('itfb_total_queued_campaigns', $this->total_queued_campaigns, 0);
-
-		return $this->total_queued_campaigns;
+		return array(
+			'total_queued_campaigns' => $this->total_queued_campaigns,
+			'group_name' => $this->group_name,
+		);
 	}
 
 	/**
@@ -273,10 +289,12 @@ class ImportCampaigns {
 	public function push_campaigns_to_import_queue($campaigns) {
 		foreach ($campaigns as $campaign) {
 			$item= [
-				'campaign' => $campaign,
+				'campaign_id' => $campaign['id'],
+				'group_name' => $this->group_name,
 				'params' => $this->params,
 			];
-			$this->import_campaigns_process->push_to_queue($item);
+			$this->import_campaigns_process->push_to_queue(serialize($item));
+			ImportTable::insert_custom_table_row ($campaign['id'], $campaign, $this->group_name);
 		}
 	}
 }
