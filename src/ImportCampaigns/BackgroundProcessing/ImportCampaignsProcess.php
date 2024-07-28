@@ -30,7 +30,7 @@ class ImportCampaignsProcess extends WP_Background_Process {
 	 * 
 	 * @var int Batch size
 	 */
-	protected $batch_size = 20;
+	protected $batch_size = 5;
 
 	/**
 	 * The action name for importing campaigns.

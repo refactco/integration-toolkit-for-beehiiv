@@ -226,7 +226,6 @@ class Endpoints {
 	 * @return \WP_REST_Response
 	 */
 	public function import_status(\WP_REST_Request $request ) {
-		error_log('Test Error Log');
 		$group_name= $request->get_param( 'group_name' );
 		//check if the group name is set
 		if ( ! $group_name ) {
