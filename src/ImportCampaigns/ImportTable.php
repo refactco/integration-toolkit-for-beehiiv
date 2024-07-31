@@ -56,19 +56,21 @@ class ImportTable {
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
 
 		// Check if the table exists.
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching
 		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name ) ) === $table_name ) {
 
 			// Check if the column 'status' exists in the table.
-			$column = $wpdb->get_results( $wpdb->prepare( 'SHOW COLUMNS FROM $table_name LIKE %s', 'status' ) );
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$column = $wpdb->get_results( $wpdb->prepare( "SHOW COLUMNS FROM {$table_name} LIKE %s", 'status' ) );
 
 			if ( ! empty( $column ) ) {
 				// Prepare and execute the query to drop the column 'status'.
-				// phpcs:ignore WordPress.DB.DirectDatabaseQuery
-				$wpdb->query( $wpdb->prepare( 'ALTER TABLE %s DROP COLUMN status', $table_name ) );
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				$wpdb->query( "ALTER TABLE {$table_name} DROP COLUMN status" );
 			}
 		}
 	}
+
 
 
 	/**
@@ -107,16 +109,15 @@ class ImportTable {
 	public static function get_and_decode_campaign_data( string $key_name, string $group_name ) {
 		global $wpdb;
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
-		$result = $wpdb->get_row(
-			$wpdb->prepare(
-				'SELECT * FROM `%s` WHERE key_name = %s AND group_name = %s',
-				sanitize_text_field( $wpdb->prefix . self::TABLE_NAME ),
-				sanitize_text_field( $key_name ),
-				sanitize_text_field( $group_name )
-			),
-			ARRAY_A
-		);
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching
+		$table_name = sanitize_text_field( $wpdb->prefix . self::TABLE_NAME );
+		$key_name   = sanitize_text_field( $key_name );
+		$group_name = sanitize_text_field( $group_name );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$query = $wpdb->prepare( "SELECT * FROM {$table_name} WHERE key_name = %s AND group_name = %s", $key_name, $group_name );
+
+		//phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
+		$result = $wpdb->get_row( $query, ARRAY_A );
 
 		if ( ! $result ) {
 			return false;
@@ -129,6 +130,7 @@ class ImportTable {
 		return $decoded_campaign_data;
 	}
 
+
 	/**
 	 * Get the remaining campaigns count
 	 *
@@ -137,16 +139,16 @@ class ImportTable {
 	 */
 	public static function get_remaining_campaigns_count( string $group_name ) {
 		global $wpdb;
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
-		$result = $wpdb->get_var(
-			$wpdb->prepare(
-				'SELECT COUNT(*) FROM `{%s}` WHERE group_name = %s',
-				sanitize_text_field( $wpdb->prefix . self::TABLE_NAME ),
-				sanitize_text_field( $group_name )
-			)
-		);
+
+		$table_name = sanitize_text_field( $wpdb->prefix . self::TABLE_NAME );
+		$group_name = sanitize_text_field( $group_name );
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+		$result = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$table_name} WHERE group_name = %s", $group_name ) );
+
 		return $result;
 	}
+
 
 	/**
 	 * Remove a row from the custom table
@@ -157,14 +159,12 @@ class ImportTable {
 	 */
 	public static function delete_custom_table_row( string $key_name, string $group_name ): void {
 		global $wpdb;
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
-		$wpdb->query(
-			$wpdb->prepare(
-				'DELETE FROM `{%s}` WHERE key_name = %s AND group_name = %s',
-				sanitize_text_field( $wpdb->prefix . self::TABLE_NAME ),
-				sanitize_text_field( $key_name ),
-				sanitize_text_field( $group_name )
-			)
-		);
+
+		$table_name = sanitize_text_field( $wpdb->prefix . self::TABLE_NAME );
+		$key_name   = sanitize_text_field( $key_name );
+		$group_name = sanitize_text_field( $group_name );
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$wpdb->query( $wpdb->prepare( "DELETE FROM {$table_name} WHERE key_name = %s AND group_name = %s", $key_name, $group_name ) );
 	}
 }
