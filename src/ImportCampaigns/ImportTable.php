@@ -143,7 +143,7 @@ class ImportTable {
 		$table_name = sanitize_text_field( $wpdb->prefix . self::TABLE_NAME );
 		$group_name = sanitize_text_field( $group_name );
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$result = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$table_name} WHERE group_name = %s", $group_name ) );
 
 		return $result;
