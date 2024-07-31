@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Plugin Name:       beehiiv to WordPress - Publish beehiiv newsletters as posts
+ * Plugin Name:       beehiiv to WordPress - Publish beehiiv newsletters as posts v2.0.0
  * Plugin URI:        https://refact.co/
  * Description:       Effortlessly connect content and subscription capabilities with your WordPress site.
  * Version:           2.0.0
@@ -18,36 +17,34 @@
  **/
 
 // If this file is called directly, abort.
-if (!defined('WPINC')) {
+if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-// Load Plugin File autoload
-require_once dirname(__FILE__) . '/vendor/autoload.php';
+// Load Plugin File autoload.
+require_once __DIR__ . '/vendor/autoload.php';
 
-if (!defined('INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE_VERSION')) {
-	define('INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE_VERSION', '2.0.0');
+if ( ! defined( 'ITFB_VERSION' ) ) {
+	define( 'ITFB_VERSION', '2.0.0' );
 }
 
-if (!defined('INTEGRATION_TOOLKIT_FOR_BEEHIIV_URL')) {
-	define('INTEGRATION_TOOLKIT_FOR_BEEHIIV_URL', plugin_dir_url(__FILE__));
+if ( ! defined( 'ITFB_URL' ) ) {
+	define( 'ITFB_URL', plugin_dir_url( __FILE__ ) );
 }
 
-if (!defined('INTEGRATION_TOOLKIT_FOR_BEEHIIV_PATH')) {
-	define('INTEGRATION_TOOLKIT_FOR_BEEHIIV_PATH', plugin_dir_path(__FILE__));
+if ( ! defined( 'ITFB_PATH' ) ) {
+	define( 'ITFB_PATH', plugin_dir_path( __FILE__ ) );
 }
 
-if (!defined('INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE_FILE')) {
-	define('INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE_FILE', __FILE__);
+if ( ! defined( 'ITFB_FILE' ) ) {
+	define( 'ITFB_FILE', __FILE__ );
 }
-
 
 /**
  * Run the loader to initialize the plugin.
  */
-function run_integration_toolkit_for_beehiiv() {
+function itfb_run_integration_toolkit_for_beehiiv() {
 	return ITFB\Init::get_instance();
 }
 
-run_integration_toolkit_for_beehiiv();
-
+itfb_run_integration_toolkit_for_beehiiv();

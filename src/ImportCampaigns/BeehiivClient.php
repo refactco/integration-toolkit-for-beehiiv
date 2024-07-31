@@ -1,4 +1,11 @@
 <?php
+/**
+ * This File Contains the BeehiivClient Class
+ *
+ * @package ITFB\ImportCampaigns;
+ * @since 2.0.0
+ */
+
 namespace ITFB\ImportCampaigns;
 
 defined( 'ABSPATH' ) || exit;
@@ -18,13 +25,13 @@ class BeehiivClient {
 	 *
 	 * @var string
 	 */
-	const BASE_URL      = 'https://api.beehiiv.com/v2';
+	const BASE_URL = 'https://api.beehiiv.com/v2';
 
 	/**
 	 * Send a GET request to the Beehiiv API
 	 *
-	 * @param string|null $api_key
-	 * @param string $endpoint
+	 * @param string|null $api_key The API key.
+	 * @param string      $endpoint The endpoint.
 	 * @return array|/WP_Error
 	 */
 	public static function get( string $api_key = null, string $endpoint ) {
@@ -39,7 +46,6 @@ class BeehiivClient {
 		);
 
 		return $response;
-
 	}
 
 	/**
@@ -47,12 +53,12 @@ class BeehiivClient {
 	 * If the api key is null, return the headers for a public request
 	 * Otherwise, return the headers for an authenticated request
 	 *
-	 * @param string|null $api_key
+	 * @param string|null $api_key The API key.
 	 * @return array
 	 */
 	private static function get_headers( ?string $api_key ): array {
 
-		if ( $api_key === null ) {
+		if ( null === $api_key ) {
 			return array(
 				'Accept'       => 'application/json',
 				'Content-Type' => 'application/json',
@@ -65,16 +71,15 @@ class BeehiivClient {
 		);
 
 		return $headers;
-
 	}
 
 	/**
 	 * Build Route
 	 * Use this method to build a route with params
 	 *
-	 * @param string $route
-	 * @param array $params
-	 * @param array $query_params
+	 * @param string $route The route.
+	 * @param array  $params The params.
+	 * @param array  $query_params The query params.
 	 * @return string
 	 *
 	 * @example $route = Routes::build_route( Routes::POSTS_INDEX, array( 'publicationId' => 1 ) );
@@ -92,6 +97,4 @@ class BeehiivClient {
 
 		return $route;
 	}
-
-
 }

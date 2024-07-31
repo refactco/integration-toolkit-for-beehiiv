@@ -24,7 +24,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class Init {
 
-    /**
+	/**
 	 * The unique identifier of this plugin.
 	 *
 	 * @since    2.0.0
@@ -42,12 +42,14 @@ class Init {
 	 */
 	protected $version;
 
-    /**
+	/**
 	 * Initialize the plugin by defining the properties.
 	 *
 	 * @since     2.0.0
+	 * @var mixed $instance The instance of the class.
 	 */
-	private static $instance = null;
+	public static $instance = null;
+
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -58,7 +60,7 @@ class Init {
 	 */
 	public function __construct() {
 
-        $this->version =  defined( 'INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE_VERSION' ) ? INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE_VERSION : '2.0.0';
+		$this->version = defined( 'ITFB_VERSION' ) ? ITFB_VERSION : '2.0.0';
 
 		$this->plugin_name = 'integration-toolkit-for-beehiiv';
 
@@ -66,8 +68,8 @@ class Init {
 
 		$this->define_admin_hooks();
 
-		// Hook to create table on plugin activation
-		register_activation_hook(INTEGRATION_TOOLKIT_FOR_BEEHIIV_CORE_FILE, array(ImportCampaigns\ImportTable::class, 'create_table'));
+		register_activation_hook( ITFB_FILE, array( $this, 'activation_process' ) );
+		add_action( 'init', array( $this, 'check_plugin_version' ) );
 	}
 
 	/**
@@ -102,8 +104,7 @@ class Init {
 		 * @since    2.0.0
 		 * @return void
 		 */
-        add_action( 'plugins_loaded', array( $this, 'load_plugin_textdomain' ) );
-		
+		add_action( 'plugins_loaded', array( $this, 'load_plugin_textdomain' ) );
 	}
 
 
@@ -122,13 +123,49 @@ class Init {
 	}
 
 	/**
+	 * Activation Process
+	 *
+	 * @since    2.0.0
+	 * @return void
+	 */
+	public function activation_process() {
+		// Check the installed version.
+		$installed_version = get_option( 'itfb_version', '1.0.0' ); // Set default to '1.0.0' if not defined.
+
+		ImportCampaigns\ImportTable::create_table();
+
+		// Compare versions and run the necessary updates.
+		if ( version_compare( $installed_version, '2.0.0', '<' ) ) {
+			ImportCampaigns\ImportTable::update_table_structure();
+		}
+
+		update_option( 'itfb_version', ITFB_VERSION );
+	}
+
+	/**
+	 * Check Plugin Version
+	 *
+	 * @since    2.0.0
+	 * @return void
+	 */
+	public function check_plugin_version() {
+		$installed_version = get_option( 'itfb_version', '1.0.0' ); // Set default to '1.0.0' if not defined.
+
+		if ( ITFB_VERSION !== $installed_version ) {
+			$this->activation_process();
+		}
+	}
+
+
+
+	/**
 	 * The name of the plugin used to uniquely identify it within the context of
 	 * WordPress and to define internationalization functionality.
 	 *
 	 * @since     2.0.0
 	 * @return    string    The name of the plugin.
 	 */
-	public function get_plugin_name () {
+	public function get_plugin_name() {
 		return $this->plugin_name;
 	}
 
@@ -143,17 +180,17 @@ class Init {
 	}
 
 	/**
-     * Main Integration_Toolkit_For_Beehiiv Instance
-     *
-     * Ensures only one instance of Integration_Toolkit_For_Beehiiv is loaded or can be loaded.
-     *
-     * @since 2.0.0
-     * @return Init
-     */
-    public static function get_instance() {
-        if ( null === self::$instance ) {
-            self::$instance = new self();
-        }
-        return self::$instance;
-    }
+	 * Main Integration_Toolkit_For_Beehiiv Instance
+	 *
+	 * Ensures only one instance of Integration_Toolkit_For_Beehiiv is loaded or can be loaded.
+	 *
+	 * @since 2.0.0
+	 * @return Init
+	 */
+	public static function get_instance() {
+		if ( null === self::$instance ) {
+			self::$instance = new self();
+		}
+		return self::$instance;
+	}
 }

@@ -1,7 +1,7 @@
 <?php
 /**
  * Background process for importing fetched campaigns into WordPress.
- * 
+ *
  * @package ITFB_Beehiiv
  * @subpackage Importcampaigns\BackgroundProcessing
  * @since 1.0.0
@@ -20,21 +20,21 @@ class ImportCampaignsProcess extends WP_Background_Process {
 
 	/**
 	 * The prefix for the background process.
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $prefix = 'ITFB_Beehiiv';
 
 	/**
 	 * The batch size for the background process.
-	 * 
+	 *
 	 * @var int Batch size
 	 */
 	protected $batch_size = 5;
 
 	/**
 	 * The action name for importing campaigns.
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $action = 'import_campaigns';
@@ -52,7 +52,7 @@ class ImportCampaignsProcess extends WP_Background_Process {
 	 * @return mixed
 	 */
 	protected function task( $item ) {
-		$this->import_campaign( unserialize($item) );
+		$this->import_campaign( unserialize( $item ) );
 		return false;
 	}
 
@@ -68,28 +68,28 @@ class ImportCampaignsProcess extends WP_Background_Process {
 
 	/**
 	 * Import the campaign.
-	 * 
+	 *
 	 * @param object $item The campaign object.
 	 */
 	protected function import_campaign( $item ) {
-		//get the campaign from import table
-		$item['campaign'] = ImportTable::get_and_decode_campaign_data( trim($item['campaign_id']), trim($item['group_name']) );
-		//delete the campaign from import table
-		ImportTable::delete_custom_table_row ( trim($item['campaign_id']), trim($item['group_name']) );
+		// get the campaign from import table.
+		$item['campaign'] = ImportTable::get_and_decode_campaign_data( trim( $item['campaign_id'] ), trim( $item['group_name'] ) );
+		// delete the campaign from import table.
+		ImportTable::delete_custom_table_row( trim( $item['campaign_id'] ), trim( $item['group_name'] ) );
 		$wp_post_args = array(
-			'post_title'   => sanitize_text_field( $item['campaign']['title']),
+			'post_title'   => sanitize_text_field( $item['campaign']['title'] ),
 			'post_slug'    => sanitize_title( $item['campaign']['slug'] ),
-			'post_content' => Helper::filter_campaign_content($item['campaign']['content'][$item['params']['audience']]['web']),
+			'post_content' => Helper::filter_campaign_content( $item['campaign']['content'][ $item['params']['audience'] ]['web'] ),
 			'post_status'  => sanitize_text_field( $item['params']['post_status'][ $item['campaign']['status'] ] ),
 			'post_type'    => sanitize_text_field( $item['params']['post_type'] ),
 		);
 
 		// Set the post date.
 		if ( ! empty( $item['campaign']['publish_date'] ) ) {
-			// Convert Unix timestamp to GMT date and time
+			// Convert Unix timestamp to GMT date and time.
 			$post_date_gmt = gmdate( 'Y-m-d H:i:s', $item['campaign']['publish_date'] );
 
-			$wp_post_args['post_date'] = get_date_from_gmt( $post_date_gmt );
+			$wp_post_args['post_date']     = get_date_from_gmt( $post_date_gmt );
 			$wp_post_args['post_date_gmt'] = $post_date_gmt;
 		}
 
@@ -140,13 +140,13 @@ class ImportCampaignsProcess extends WP_Background_Process {
 		if ( 'existing' === $item['campaign']['wp_status'] ) {
 			$wp_post_args['ID'] = $item['campaign']['wp_post_id'];
 			// Update the post.
-			$post_id=wp_update_post( $wp_post_args );
+			$post_id = wp_update_post( $wp_post_args );
 		} else {
 			// Insert the post.
-			$post_id=wp_insert_post( $wp_post_args );
+			$post_id = wp_insert_post( $wp_post_args );
 		}
 
-		//Set the post thumbnail using the featured image.
+		// Set the post thumbnail using the featured image.
 		if ( ! empty( $item['campaign']['thumbnail_url'] ) ) {
 			$thumbnail_id = Helper::itfb_set_post_thumbnail( $post_id, $item['campaign']['thumbnail_url'] );
 			if ( $thumbnail_id ) {

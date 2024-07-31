@@ -23,40 +23,40 @@ defined( 'ABSPATH' ) || exit;
  */
 class Endpoints {
 
-    /**
+	/**
 	 * Total queued campaigns result.
-	 * 
+	 *
 	 * @var int $total_queued_campaigns_result
 	 * @since 2.0.0
 	 */
 	public $total_queued_campaigns_result = 0;
 
-    /**
+	/**
 	 * The import campaigns process.
-	 * 
+	 *
 	 * @var ImportCampaignsProcess $import_campaigns_process
 	 */
 	public $import_campaigns_process;
-	
-    /**
+
+	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
 	 *
-     * @since    2.0.0
-     */
-    public function __construct() {
+	 * @since    2.0.0
+	 */
+	public function __construct() {
 		add_action( 'plugins_loaded', array( $this, 'handle_background_processes' ) );
-        add_action( 'rest_api_init', array( $this, 'register_endpoints' ) );
+		add_action( 'rest_api_init', array( $this, 'register_endpoints' ) );
 		add_action( 'itfb_import_campaigns', array( $this, 'handle_scheduled_import' ) );
 		add_action( 'init', Helper::class . '::include_action_scheduler' );
-    }
+	}
 
-    /**
-     * Register the endpoints.
-     * 
-     * @since 2.0.0
-     */
-    public function register_endpoints() {
-        register_rest_route(
+	/**
+	 * Register the endpoints.
+	 *
+	 * @since 2.0.0
+	 */
+	public function register_endpoints() {
+		register_rest_route(
 			'itfb/v1',
 			'/import-defaults-options',
 			array(
@@ -65,10 +65,10 @@ class Endpoints {
 				'permission_callback' => function () {
 					return current_user_can( 'manage_options' );
 				},
-			) 
+			)
 		);
 
-        register_rest_route(
+		register_rest_route(
 			'itfb/v1',
 			'/import-campaigns',
 			array(
@@ -77,7 +77,7 @@ class Endpoints {
 				'permission_callback' => function () {
 					return current_user_can( 'manage_options' );
 				},
-			) 
+			)
 		);
 
 		register_rest_route(
@@ -129,18 +129,18 @@ class Endpoints {
 		);
 	}
 
-    /**
+	/**
 	 * Get import defaults options.
-     * 
+	 *
 	 * @param    \WP_REST_Request $request   The request object.
 	 * @since    1.0.0
 	 */
-    public function import_defaults_options( \WP_REST_Request $request ) {
+	public function import_defaults_options( \WP_REST_Request $request ) {
 		$data = array();
 
 		// All post types and taxonomies and terms.
 		$data = array_merge( $data, Helper::get_all_post_types_tax_term() );
-		
+
 		// Current server time.
 		$data['current_server_time'] = gmdate( '(D) H:i' );
 
@@ -150,11 +150,10 @@ class Endpoints {
 		// All authors users.
 		$data = array_merge( $data, Helper::get_all_authors() );
 
-		
 		return rest_ensure_response( $data );
-    }
+	}
 
-    /**
+	/**
 	 * Import campaigns.
 	 *
 	 * @param \WP_REST_Request $request The request object.
@@ -164,7 +163,7 @@ class Endpoints {
 		// Get all parameters.
 		$params = array(
 			'credentials'       => json_decode( sanitize_text_field( $request->get_param( 'credentials' ) ), true ),
-            'audience'          => sanitize_text_field( $request->get_param( 'audience' ) ),
+			'audience'          => sanitize_text_field( $request->get_param( 'audience' ) ),
 			'post_status'       => json_decode( sanitize_text_field( $request->get_param( 'post_status' ) ), true ),
 			'schedule_settings' => json_decode( sanitize_text_field( $request->get_param( 'schedule_settings' ) ), true ),
 			'post_type'         => sanitize_text_field( $request->get_param( 'post_type' ) ),
@@ -174,7 +173,7 @@ class Endpoints {
 			'import_cm_tags_as' => sanitize_text_field( $request->get_param( 'import_cm_tags_as' ) ),
 			'import_option'     => sanitize_text_field( $request->get_param( 'import_option' ) ),
 		);
-		
+
 		// Validate all parameters.
 
 		$validation = Validator::validate_all_parameters( $params );
@@ -182,17 +181,16 @@ class Endpoints {
 			return $validation;
 		}
 
+		$this->total_queued_campaigns_result = ( new ImportCampaigns( $params, $this->import_campaigns_process, 'manual' ) )->fetch_and_push_campaigns_to_import_queue();
 
-		$this->total_queued_campaigns_result = (new ImportCampaigns($params, $this->import_campaigns_process,'manual'))->fetch_and_push_campaigns_to_import_queue();
-		
 		if ( is_wp_error( $this->total_queued_campaigns_result ) ) {
 			return $this->total_queued_campaigns_result;
 		}
 
 		$output = array(
-			'message' => $this->total_queued_campaigns_result['total_queued_campaigns'] . ' campaigns are being fetched and pushed to the import queue.',
+			'message'                => $this->total_queued_campaigns_result['total_queued_campaigns'] . ' campaigns are being fetched and pushed to the import queue.',
 			'total_queued_campaigns' => $this->total_queued_campaigns_result['total_queued_campaigns'],
-			'group_name' => $this->total_queued_campaigns_result['group_name'],
+			'group_name'             => $this->total_queued_campaigns_result['group_name'],
 		);
 
 		if ( 'on' === $params['schedule_settings']['enabled'] ) {
@@ -211,23 +209,22 @@ class Endpoints {
 
 	/**
 	 * Handle scheduled import.
-	 * 
+	 *
 	 * @param array $params The parameters array.
-	 * @return \WP_Error
 	 */
 	public function handle_scheduled_import( $params ) {
-		$this->total_queued_campaigns = (new ImportCampaigns($params, $this->import_campaigns_process,'auto'))->fetch_and_push_campaigns_to_import_queue();
+		$this->total_queued_campaigns = ( new ImportCampaigns( $params, $this->import_campaigns_process, 'auto' ) )->fetch_and_push_campaigns_to_import_queue();
 	}
 
 	/**
 	 * Get import status.
-	 * 
+	 *
 	 * @param \WP_REST_Request $request The request object.
 	 * @return \WP_REST_Response
 	 */
-	public function import_status(\WP_REST_Request $request ) {
-		$group_name= $request->get_param( 'group_name' );
-		//check if the group name is set
+	public function import_status( \WP_REST_Request $request ) {
+		$group_name = $request->get_param( 'group_name' );
+		// check if the group name is set.
 		if ( ! $group_name ) {
 			return new \WP_Error( 'no_group_name', 'Group name is required.', array( 'status' => 400 ) );
 		}
@@ -239,9 +236,9 @@ class Endpoints {
 			} else {
 				$output['status'] = 'active';
 			}
-			
+
 			$remaining_campaigns = ImportTable::get_remaining_campaigns_count( $group_name );
-			
+
 			$output['remaining_campaigns'] = $remaining_campaigns;
 
 		} else {
@@ -252,11 +249,11 @@ class Endpoints {
 	}
 
 		/**
-	 * Manage the import job (cancel, pause, resume).
-	 *
-	 * @param \WP_REST_Request $request The request object.
-	 * @return \WP_REST_Response|\WP_Error
-	 */
+		 * Manage the import job (cancel, pause, resume).
+		 *
+		 * @param \WP_REST_Request $request The request object.
+		 * @return \WP_REST_Response|\WP_Error
+		 */
 	public function manage_import_job( \WP_REST_Request $request ) {
 		$job_action = sanitize_text_field( $request->get_param( 'job_action' ) );
 
@@ -297,14 +294,14 @@ class Endpoints {
 	}
 
 		/**
-	 * Get all scheduled imports.
-	 *
-	 * @param \WP_REST_Request $request The request object.
-	 * @return \WP_REST_Response
-	 */
+		 * Get all scheduled imports.
+		 *
+		 * @param \WP_REST_Request $request The request object.
+		 * @return \WP_REST_Response
+		 */
 	public function get_scheduled_imports( \WP_REST_Request $request ) {
 		$group_name = 'itfb_import_campaigns_group';
-		
+
 		// Fetch scheduled actions with the specified group name and status.
 		$actions = as_get_scheduled_actions(
 			array(
@@ -313,10 +310,10 @@ class Endpoints {
 			),
 			'ids'
 		);
-	
+
 		// Initialize an array to store formatted actions.
 		$formatted_actions = array();
-	
+
 		// Iterate over each action ID to fetch and format the action details.
 		foreach ( $actions as $action_id ) {
 			$action = \ActionScheduler::store()->fetch_action( $action_id );
@@ -327,7 +324,7 @@ class Endpoints {
 				);
 			}
 		}
-	
+
 		// Ensure the response is properly formatted as a REST response.
 		return rest_ensure_response( $formatted_actions );
 	}
@@ -341,7 +338,7 @@ class Endpoints {
 	public function delete_scheduled_import( \WP_REST_Request $request ) {
 		// Retrieve the schedule ID from the request parameters.
 		$schedule_id = $request->get_param( 'id' );
-		
+
 		// Check if the schedule ID is valid.
 		if ( ! $schedule_id ) {
 			return new \WP_Error(
@@ -350,7 +347,7 @@ class Endpoints {
 				array( 'status' => 400 )
 			);
 		}
-	
+
 		// Fetch the action with the specified ID.
 		$action = \ActionScheduler::store()->fetch_action( intval( $schedule_id ) );
 		if ( is_null( $action ) || $action instanceof \ActionScheduler_NullAction ) {
@@ -360,7 +357,7 @@ class Endpoints {
 				array( 'status' => 400 )
 			);
 		}
-	
+
 		try {
 			// Attempt to delete the action.
 			\ActionScheduler::store()->delete_action( intval( $schedule_id ) );
@@ -371,7 +368,7 @@ class Endpoints {
 				array( 'status' => 500 )
 			);
 		}
-	
+
 		// Return a success response.
 		return rest_ensure_response(
 			array(
@@ -387,7 +384,4 @@ class Endpoints {
 	public function handle_background_processes() {
 		$this->import_campaigns_process = new ImportCampaignsProcess();
 	}
-
-	
-    
 }

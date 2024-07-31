@@ -1,7 +1,7 @@
 <?php
-/** 
+/**
  * This File Contains the Campaign Import Validator Class.
- * 
+ *
  * @package ITFB\ImportCampaigns
  * @subpackage Importcampaigns
  * @since 1.0.0
@@ -10,7 +10,7 @@
 namespace ITFB\ImportCampaigns;
 
 if ( ! defined( 'ABSPATH' ) ) {
-    exit;
+	exit;
 }
 
 /**
@@ -24,12 +24,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Validator {
 	/**
-     * Beehiiv API publications endpoint URL.
-     * 
-     * @var string BEEHIIV_PUBLICATIONS_ENDPOINT
-     */
-	const BEEHIIV_PUBLICATIONS_ENDPOINT   = '/publications/publicationId';
-    
+	 * Beehiiv API publications endpoint URL.
+	 *
+	 * @var string BEEHIIV_PUBLICATIONS_ENDPOINT
+	 */
+	const BEEHIIV_PUBLICATIONS_ENDPOINT = '/publications/publicationId';
+
 	/**
 	 * Validate all parameters.
 	 *
@@ -51,7 +51,7 @@ class Validator {
 		}
 
 		// Validate audience.
-		if(! in_array( $params['audience'], array( 'free', 'premium' ) ) ) {
+		if ( ! in_array( $params['audience'], array( 'free', 'premium' ) ) ) {
 			return new \WP_Error( 'invalid_audience', __( 'Invalid audience.', 'integration-toolkit-for-beehiiv' ), array( 'status' => 400 ) );
 		}
 
@@ -88,7 +88,7 @@ class Validator {
 		if ( is_wp_error( $valid_schedule_settings ) ) {
 			return $valid_schedule_settings;
 		}
-	
+
 		return true;
 	}
 
@@ -100,12 +100,12 @@ class Validator {
 	 */
 	public static function validate_credentials( $credentials ) {
 
-		//check if the credentials are set
+		// check if the credentials are set.
 		if ( ! isset( $credentials['api_key'] ) || ! isset( $credentials['publication_id'] ) ) {
 			return new \WP_Error( 'missing_credentials', __( 'Missing API key or Publication ID.', 'integration-toolkit-for-beehiiv' ), array( 'status' => 400 ) );
 		}
 
-		$api_key   = trim( $credentials['api_key'] );
+		$api_key        = trim( $credentials['api_key'] );
 		$publication_id = trim( $credentials['publication_id'] );
 		if ( 64 !== strlen( $api_key ) ) {
 			return new \WP_Error( 'invalid_api_key', __( 'Invalid API key format', 'integration-toolkit-for-beehiiv' ), array( 'status' => 400 ) );
@@ -117,7 +117,6 @@ class Validator {
 
 		$route = BeehiivClient::build_route( self::BEEHIIV_PUBLICATIONS_ENDPOINT, array( 'publicationId' => $publication_id ) );
 
-
 		$response = BeehiivClient::get( $api_key, $route );
 
 		if ( is_wp_error( $response ) ) {
@@ -127,7 +126,7 @@ class Validator {
 		}
 
 		$response_code = wp_remote_retrieve_response_code( $response );
-		
+
 		if ( 200 !== $response_code ) {
 			return new \WP_Error( 'invalid_credentials', __( 'API key or Publication ID is not correct', 'integration-toolkit-for-beehiiv' ), array( 'status' => 400 ) );
 		}
@@ -144,7 +143,7 @@ class Validator {
 	public static function validate_parameters( $params ) {
 		foreach ( $params as $key => $param ) {
 			if ( empty( $param ) ) {
-				return new \WP_Error( 'missing_parameters', __( 'Missing required parameters.'.$key, 'integration-toolkit-for-beehiiv' ), array( 'status' => 400 ) );
+				return new \WP_Error( 'missing_parameters', __( 'Missing required parameters.', 'integration-toolkit-for-beehiiv' ), array( 'status' => 400 ) );
 			}
 		}
 		return true;
@@ -223,12 +222,12 @@ class Validator {
 		// Define valid schedule settings based on the new structure.
 		$valid_frequencies = array( 'daily', 'weekly', 'monthly', 'hourly' );
 		$valid_days        = array( 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday' );
-	
+
 		// Validate 'enabled' field.
 		if ( ! isset( $schedule_settings['enabled'] ) ) {
 			return new \WP_Error( 'invalid_enabled', __( 'Enabled must be set to "on" or "off".', 'integration-toolkit-for-beehiiv' ), array( 'status' => 400 ) );
 		}
-	
+
 		// If 'enabled' is not 'on', return true without further validation.
 		if ( 'on' !== $schedule_settings['enabled'] ) {
 			return true;
@@ -238,7 +237,7 @@ class Validator {
 		if ( ! isset( $schedule_settings['frequency'] ) || ! in_array( $schedule_settings['frequency'], $valid_frequencies ) ) {
 			return new \WP_Error( 'invalid_frequency', __( 'Frequency must be one of "daily", "weekly", "monthly", or "hourly".', 'integration-toolkit-for-beehiiv' ), array( 'status' => 400 ) );
 		}
-	
+
 		// Validate 'specific_hour' field for hourly schedules.
 		if ( 'hourly' === $schedule_settings['frequency'] ) {
 			if ( ! isset( $schedule_settings['specific_hour'] ) || ! is_numeric( $schedule_settings['specific_hour'] ) || $schedule_settings['specific_hour'] < 0 || $schedule_settings['specific_hour'] > 24 ) {

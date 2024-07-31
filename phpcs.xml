@@ -29,7 +29,7 @@
 
 	<rule ref="WordPress.WP.I18n">
 		<properties>
-			<property name="text_domain" type="array" value="Integration_Toolkit_For_Beehiiv" />
+			<property name="text_domain" type="array" value="integration-toolkit-for-beehiiv" />
 		</properties>
 	</rule>
 
