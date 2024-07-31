@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       beehiiv to WordPress - Publish beehiiv newsletters as posts v2.0.0
+ * Plugin Name:       beehiiv to WordPress - Publish beehiiv newsletters as posts
  * Plugin URI:        https://refact.co/
  * Description:       Effortlessly connect content and subscription capabilities with your WordPress site.
  * Version:           2.0.0
