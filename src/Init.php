@@ -132,13 +132,11 @@ class Init {
 		// Check the installed version.
 		$installed_version = get_option( 'itfb_version', '1.0.0' ); // Set default to '1.0.0' if not defined.
 
-		ImportCampaigns\ImportTable::create_table();
-
 		// Compare versions and run the necessary updates.
 		if ( version_compare( $installed_version, '2.0.0', '<' ) ) {
-			ImportCampaigns\ImportTable::update_table_structure();
+			ImportCampaigns\ImportTable::delete_table();
 		}
-
+		ImportCampaigns\ImportTable::create_table();
 		update_option( 'itfb_version', ITFB_VERSION );
 	}
 

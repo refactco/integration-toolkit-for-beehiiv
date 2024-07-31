@@ -46,34 +46,6 @@ class ImportTable {
 	}
 
 	/**
-	 * Update Table Structure
-	 *
-	 * @since    2.0.0
-	 * @return void
-	 */
-	public static function update_table_structure(): void {
-		global $wpdb;
-		$table_name = $wpdb->prefix . self::TABLE_NAME;
-
-		// Check if the table exists.
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching
-		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name ) ) === $table_name ) {
-
-			// Check if the column 'status' exists in the table.
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$column = $wpdb->get_results( $wpdb->prepare( "SHOW COLUMNS FROM {$table_name} LIKE %s", 'status' ) );
-
-			if ( ! empty( $column ) ) {
-				// Prepare and execute the query to drop the column 'status'.
-				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				$wpdb->query( "ALTER TABLE {$table_name} DROP COLUMN status" );
-			}
-		}
-	}
-
-
-
-	/**
 	 * Insert a row in the custom table
 	 *
 	 * @param string $key_name The key name.
@@ -166,5 +138,16 @@ class ImportTable {
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$wpdb->query( $wpdb->prepare( "DELETE FROM {$table_name} WHERE key_name = %s AND group_name = %s", $key_name, $group_name ) );
+	}
+
+	/**
+	 * Delete the custom table
+	 *
+	 * @return void
+	 */
+	public static function delete_table (): void {
+		global $wpdb;
+		$table_name = $wpdb->prefix . self::TABLE_NAME;
+		$wpdb->query( "DROP TABLE IF EXISTS $table_name" );
 	}
 }
