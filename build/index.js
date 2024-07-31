@@ -11476,7 +11476,7 @@ const Header = () => {
     title: 'Import Campaigns',
     subHeaderItems: [{
       name: 'import_campaigns_title',
-      title: 'Import your campaigns from Campaign Beehive'
+      title: 'Import your campaigns from Beehive'
     }],
     onClick: () => {
       navigate('/import-campaigns');
