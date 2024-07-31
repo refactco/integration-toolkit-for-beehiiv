@@ -35922,17 +35922,19 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _pages_home_home__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pages/home/home */ "./lib/pages/home/home.js");
+/* harmony import */ var _refactco_ui_kit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @refactco/ui-kit */ "./node_modules/@refactco/ui-kit/dist/ui-kit-expose.js");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _pages_home_home__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pages/home/home */ "./lib/pages/home/home.js");
+
 
 
 
 document.addEventListener('DOMContentLoaded', () => {
   const element = document.getElementById('integration-toolkit-for-beehiiv-app');
-  const root = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createRoot)(element);
+  const root = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.createRoot)(element);
   if (element) {
-    root.render((0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_pages_home_home__WEBPACK_IMPORTED_MODULE_2__["default"], null));
+    root.render((0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_refactco_ui_kit__WEBPACK_IMPORTED_MODULE_1__.StyledWordpressComponent, null), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_pages_home_home__WEBPACK_IMPORTED_MODULE_3__["default"], null)));
   }
 });
 })();

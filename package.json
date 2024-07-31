@@ -17,7 +17,7 @@
     "start": "wp-scripts start"
   },
   "dependencies": {
-    "@refactco/ui-kit": "^1.0.18",
+    "@refactco/ui-kit": "^1.2.4",
     "@wordpress/api-fetch": "6.45.0",
     "@wordpress/icons": "9.39.0",
     "@wordpress/scripts": "^26.19.0",
