@@ -148,6 +148,7 @@ class ImportTable {
 	public static function delete_table(): void {
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
+		//phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$wpdb->query( "DROP TABLE IF EXISTS $table_name" );
 	}
 }
