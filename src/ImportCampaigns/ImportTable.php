@@ -145,7 +145,7 @@ class ImportTable {
 	 *
 	 * @return void
 	 */
-	public static function delete_table (): void {
+	public static function delete_table(): void {
 		global $wpdb;
 		$table_name = $wpdb->prefix . self::TABLE_NAME;
 		$wpdb->query( "DROP TABLE IF EXISTS $table_name" );

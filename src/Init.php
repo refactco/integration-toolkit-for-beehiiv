@@ -68,7 +68,11 @@ class Init {
 
 		$this->define_admin_hooks();
 
+		// Register activation and deactivation hooks.
 		register_activation_hook( ITFB_FILE, array( $this, 'activation_process' ) );
+		register_deactivation_hook( ITFB_FILE, array( $this, 'deactivation_process' ) );
+
+		// Check the plugin version.
 		add_action( 'init', array( $this, 'check_plugin_version' ) );
 	}
 
@@ -138,6 +142,16 @@ class Init {
 		}
 		ImportCampaigns\ImportTable::create_table();
 		update_option( 'itfb_version', ITFB_VERSION );
+	}
+
+	/**
+	 * Deactivation Process
+	 *
+	 * @since    2.0.0
+	 * @return void
+	 */
+	public function deactivation_process() {
+		delete_option( 'itfb_version' );
 	}
 
 	/**
