@@ -1,8 +1,8 @@
 === beehiiv to WordPress - Publish beehiiv newsletters as posts ===
  
 Contributors:      refact, saeedja, masoudin
-Requires at least: 5.2
-Tested up to:      6.5.3
+Requires at least: 5.5.0
+Tested up to:      6.6.1
 Requires PHP:      7.4
 Stable tag:        2.0.0
 License: GPL2 or later
