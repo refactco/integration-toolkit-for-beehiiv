@@ -1,0 +1,29 @@
+{
+  "name": "integration-toolkit-for-beehiiv",
+  "version": "0.1.0",
+  "description": "Integration Toolkit for Beehiiv",
+  "author": "Refact",
+  "license": "GPL-2.0-or-later",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "wp-scripts build",
+    "watch": "wp-scripts start",
+    "build:custom": "wp-scripts start ./lib/index.js --output-path=./build",
+    "format": "wp-scripts format",
+    "lint:css": "wp-scripts lint-style",
+    "lint:js": "wp-scripts lint-js",
+    "packages-update": "wp-scripts packages-update",
+    "plugin-zip": "wp-scripts plugin-zip",
+    "start": "wp-scripts start"
+  },
+  "dependencies": {
+    "@refactco/ui-kit": "^1.2.4",
+    "@wordpress/api-fetch": "6.45.0",
+    "@wordpress/icons": "9.39.0",
+    "@wordpress/scripts": "^26.19.0",
+    "react-router-dom": "6.21.1",
+    "react-toastify": "^10.0.5",
+    "react-tooltip": "^5.27.1",
+    "styled-components": "6.1.6"
+  }
+}
