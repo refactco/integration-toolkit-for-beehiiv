@@ -191,7 +191,7 @@ function getBoundingClientRect(element, includeScale, isFixedStrategy, offsetPar
     const win = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(domElement);
     const offsetWin = offsetParent && (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(offsetParent) ? (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(offsetParent) : offsetParent;
     let currentWin = win;
-    let currentIFrame = currentWin.frameElement;
+    let currentIFrame = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getFrameElement)(currentWin);
     while (currentIFrame && offsetParent && offsetWin !== currentWin) {
       const iframeScale = getScale(currentIFrame);
       const iframeRect = currentIFrame.getBoundingClientRect();
@@ -205,7 +205,7 @@ function getBoundingClientRect(element, includeScale, isFixedStrategy, offsetPar
       x += left;
       y += top;
       currentWin = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(currentIFrame);
-      currentIFrame = currentWin.frameElement;
+      currentIFrame = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getFrameElement)(currentWin);
     }
   }
   return (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.rectToClientRect)({
@@ -11781,10 +11781,13 @@ function manaulImportHelper(state, setState, groupName, setGroupName, removeGrou
       if (name === 'selectedPostType') {
         const selectedPostType = state.postTypes.find(pt => pt.post_type === value);
         newState.taxonomies = selectedPostType ? selectedPostType.taxonomies : [];
+        newState.selectedTaxonomy = newState.taxonomies.length > 0 ? newState.taxonomies[0].taxonomy_slug : '';
+        newState.selectedTerm = newState.taxonomies.length > 0 && newState.terms.length > 0 ? newState.terms[0].term_id : '';
       }
       if (name === 'selectedTaxonomy') {
         const selectedTaxonomy = state.taxonomies.find(pt => pt.taxonomy_slug === value);
         newState.terms = selectedTaxonomy ? selectedTaxonomy.terms : [];
+        newState.selectedTerm = newState.terms.length > 0 ? newState.terms[0].term_id : '';
       }
       if ((name === 'publishedCampaigns' || name === 'draftededCampaigns' || name === 'archivedCampaigns') && value) {
         newState.errors = {
@@ -32863,6 +32866,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   getComputedStyle: () => (/* binding */ getComputedStyle),
 /* harmony export */   getContainingBlock: () => (/* binding */ getContainingBlock),
 /* harmony export */   getDocumentElement: () => (/* binding */ getDocumentElement),
+/* harmony export */   getFrameElement: () => (/* binding */ getFrameElement),
 /* harmony export */   getNearestOverflowAncestor: () => (/* binding */ getNearestOverflowAncestor),
 /* harmony export */   getNodeName: () => (/* binding */ getNodeName),
 /* harmony export */   getNodeScroll: () => (/* binding */ getNodeScroll),
@@ -33012,9 +33016,13 @@ function getOverflowAncestors(node, list, traverseIframes) {
   const isBody = scrollableAncestor === ((_node$ownerDocument2 = node.ownerDocument) == null ? void 0 : _node$ownerDocument2.body);
   const win = getWindow(scrollableAncestor);
   if (isBody) {
-    return list.concat(win, win.visualViewport || [], isOverflowElement(scrollableAncestor) ? scrollableAncestor : [], win.frameElement && traverseIframes ? getOverflowAncestors(win.frameElement) : []);
+    const frameElement = getFrameElement(win);
+    return list.concat(win, win.visualViewport || [], isOverflowElement(scrollableAncestor) ? scrollableAncestor : [], frameElement && traverseIframes ? getOverflowAncestors(frameElement) : []);
   }
   return list.concat(scrollableAncestor, getOverflowAncestors(scrollableAncestor, [], traverseIframes));
+}
+function getFrameElement(win) {
+  return win.parent && Object.getPrototypeOf(win.parent) ? win.frameElement : null;
 }
 
 
