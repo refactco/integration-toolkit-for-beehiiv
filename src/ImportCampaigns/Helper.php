@@ -49,7 +49,7 @@ class Helper {
 			$taxonomies = get_object_taxonomies( $post_type->name, 'objects' );
 
 			foreach ( $taxonomies as $taxonomy ) {
-				if ( in_array( $taxonomy->name, array( 'nav_menu', 'link_category', 'post_format' ) ) ) {
+				if ( in_array( $taxonomy->name, array( 'nav_menu', 'link_category', 'post_format', 'author' ) ) ) {
 					continue;
 				}
 
