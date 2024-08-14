@@ -248,33 +248,56 @@ class Endpoints {
 		return rest_ensure_response( $output );
 	}
 
-		/**
-		 * Manage the import job (cancel, pause, resume).
-		 *
-		 * @param \WP_REST_Request $request The request object.
-		 * @return \WP_REST_Response|\WP_Error
-		 */
-	public function manage_import_job( \WP_REST_Request $request ) {
-		$job_action = sanitize_text_field( $request->get_param( 'job_action' ) );
 
-		if ( ! $this->import_campaigns_process->is_active() ) {
-			return new \WP_Error( 'no_active_process', 'There is no active import process to manage.', array( 'status' => 400 ) );
+	/**
+	 * Manage the import job (cancel, pause, resume).
+	 *
+	 * @param \WP_REST_Request $request The request object.
+	 * @return \WP_REST_Response|\WP_Error
+	 */
+	public function manage_import_job( \WP_REST_Request $request ) {
+		// Sanitize and retrieve parameters from the request.
+		$job_action  = sanitize_text_field( $request->get_param( 'job_action' ) );
+		$schedule_id = $request->get_param( 'schedule_id' );
+		$group_name  = $request->get_param( 'group_name' );
+
+		// Validate the job_action parameter.
+		if ( empty( $job_action ) ) {
+			return new \WP_Error(
+				'no_job_action',
+				__( 'Job action is required.', 'integration-toolkit-for-beehiiv' ),
+				array( 'status' => 400 )
+			);
 		}
 
+		// Check if there is an active import process, required for all actions.
+		if ( ! $this->import_campaigns_process->is_active() ) {
+			return new \WP_Error(
+				'no_active_process',
+				__( 'There is no active import process to manage.', 'integration-toolkit-for-beehiiv' ),
+				array( 'status' => 400 )
+			);
+		}
+
+		// Handle different job actions.
 		switch ( $job_action ) {
 			case 'cancel':
-				$this->import_campaigns_process->cancel();
-				$response = array(
-					'status'  => 'canceled',
-					'message' => 'Import process has been canceled.',
-				);
+				// Validate that group_name is provided for the cancel action.
+				if ( empty( $group_name ) ) {
+					return new \WP_Error(
+						'no_group_name',
+						__( 'Group name is required for canceling the job.', 'integration-toolkit-for-beehiiv' ),
+						array( 'status' => 400 )
+					);
+				}
+				$response = $this->handle_cancel_action( $schedule_id, $group_name );
 				break;
 
 			case 'pause':
 				$this->import_campaigns_process->pause();
 				$response = array(
 					'status'  => 'paused',
-					'message' => 'Import process has been paused.',
+					'message' => __( 'Import process has been paused.', 'integration-toolkit-for-beehiiv' ),
 				);
 				break;
 
@@ -282,23 +305,100 @@ class Endpoints {
 				$this->import_campaigns_process->resume();
 				$response = array(
 					'status'  => 'resumed',
-					'message' => 'Import process has been resumed.',
+					'message' => __( 'Import process has been resumed.', 'integration-toolkit-for-beehiiv' ),
 				);
 				break;
 
 			default:
-				return new \WP_Error( 'invalid_job_action', "Invalid job action provided: {$job_action}", array( 'status' => 400 ) );
+				return new \WP_Error(
+					'invalid_job_action',
+					__( 'Invalid job action provided', 'integration-toolkit-for-beehiiv' ),
+					array( 'status' => 400 )
+				);
 		}
 
+		// Return the response.
 		return rest_ensure_response( $response );
 	}
 
-		/**
-		 * Get all scheduled imports.
-		 *
-		 * @param \WP_REST_Request $request The request object.
-		 * @return \WP_REST_Response
-		 */
+
+	/**
+	 * Handle the cancellation of an import job.
+	 *
+	 * @param int    $schedule_id The ID of the schedule.
+	 * @param string $group_name The name of the group.
+	 * @return array|\WP_Error The response array or WP_Error on failure.
+	 */
+	private function handle_cancel_action( $schedule_id, $group_name ) {
+
+		// If schedule_id is provided, attempt to delete the action.
+		if ( ! empty( $schedule_id ) ) {
+			$schedule_id = intval( $schedule_id );
+
+			// Attempt to fetch the action by ID.
+			$action = \ActionScheduler::store()->fetch_action( $schedule_id );
+			if ( is_null( $action ) || $action instanceof \ActionScheduler_NullAction ) {
+				return new \WP_Error(
+					'invalid_schedule_id',
+					__( 'Schedule ID does not exist.', 'integration-toolkit-for-beehiiv' ),
+					array( 'status' => 404 )
+				);
+			}
+
+			// Attempt to delete the action and handle any exceptions.
+			try {
+				\ActionScheduler::store()->delete_action( $schedule_id );
+			} catch ( \Exception $e ) {
+				return new \WP_Error(
+					'failed_delete',
+					__( 'Failed to delete the scheduled import.', 'integration-toolkit-for-beehiiv' ),
+					array(
+						'status'  => 500,
+						'details' => $e->getMessage(),
+					)
+				);
+			}
+		}
+
+		// Attempt to cancel the import process.
+		$this->import_campaigns_process->cancel();
+		if ( ! $this->import_campaigns_process->is_cancelled() ) {
+			return new \WP_Error(
+				'failed_cancel',
+				__( 'Failed to cancel the import process.', 'integration-toolkit-for-beehiiv' ),
+				array( 'status' => 500 )
+			);
+		}
+
+		// Delete remaining campaigns from the import table.
+		try {
+			ImportTable::delete_remaining_campaigns( $group_name );
+		} catch ( \Exception $e ) {
+			return new \WP_Error(
+				'failed_delete_campaigns',
+				__( 'Failed to delete remaining campaigns from the database.', 'integration-toolkit-for-beehiiv' ),
+				array(
+					'status'  => 500,
+					'details' => $e->getMessage(),
+				)
+			);
+		}
+
+		// Return a success response.
+		return array(
+			'status'  => 'canceled',
+			'message' => __( 'Import process has been canceled and remaining campaigns deleted.', 'integration-toolkit-for-beehiiv' ),
+		);
+	}
+
+
+
+	/**
+	 * Get all scheduled imports.
+	 *
+	 * @param \WP_REST_Request $request The request object.
+	 * @return \WP_REST_Response
+	 */
 	public function get_scheduled_imports( \WP_REST_Request $request ) {
 		$group_name = 'itfb_import_campaigns_group';
 

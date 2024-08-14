@@ -72,8 +72,13 @@ class ImportCampaignsProcess extends WP_Background_Process {
 	 * @param object $item The campaign object.
 	 */
 	protected function import_campaign( $item ) {
+
 		// get the campaign from import table.
 		$item['campaign'] = ImportTable::get_and_decode_campaign_data( trim( $item['campaign_id'] ), trim( $item['group_name'] ) );
+
+		if ( empty( $item['campaign'] ) ) {
+			return;
+		}
 		// delete the campaign from import table.
 		ImportTable::delete_custom_table_row( trim( $item['campaign_id'] ), trim( $item['group_name'] ) );
 		$wp_post_args = array(

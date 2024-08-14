@@ -141,6 +141,23 @@ class ImportTable {
 	}
 
 	/**
+	 * Delete all the remaining campaigns based on the group name
+	 *
+	 * @param string $group_name The group name.
+	 * @return void
+	 */
+	public static function delete_remaining_campaigns( string $group_name ): void {
+		global $wpdb;
+
+		$table_name = sanitize_text_field( $wpdb->prefix . self::TABLE_NAME );
+
+		$group_name = sanitize_text_field( $group_name );
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$wpdb->query( $wpdb->prepare( "DELETE FROM {$table_name} WHERE group_name = %s", $group_name ) );
+	}
+
+	/**
 	 * Delete the custom table
 	 *
 	 * @return void

@@ -141,44 +141,45 @@ class Validator {
 	 * @return mixed True if valid, otherwise WP_Error.
 	 */
 	public static function validate_parameters( $params ) {
-		// Retrieve all post types, taxonomies, and terms
+		// Retrieve all post types, taxonomies, and terms.
 		$all_post_type_tax_term = Helper::get_all_post_types_tax_term();
-	
-		// Determine if the specified post type has taxonomies
-        $post_type_has_taxonomies = self::post_type_has_taxonomies($params['post_type'] ?? null, $all_post_type_tax_term);
-	
-		// Validate each parameter
-		foreach ($params as $key => $param) {
-			if (empty($param)) {
-				if (in_array($key, ['taxonomy', 'taxonomy_term']) && !$post_type_has_taxonomies) {
+
+		// Determine if the specified post type has taxonomies.
+		$post_type_has_taxonomies = self::post_type_has_taxonomies( $params['post_type'] ?? null, $all_post_type_tax_term );
+
+		// Validate each parameter.
+		foreach ( $params as $key => $param ) {
+			if ( empty( $param ) ) {
+				if ( in_array( $key, array( 'taxonomy', 'taxonomy_term' ) ) && ! $post_type_has_taxonomies ) {
 					continue;
 				}
-	
+
 				return new \WP_Error(
 					'missing_parameters',
-					__('Missing required parameters.', 'integration-toolkit-for-beehiiv'),
-					array('status' => 400)
+					__( 'Missing required parameters.', 'integration-toolkit-for-beehiiv' ),
+					array( 'status' => 400 )
 				);
 			}
 		}
-	
+
 		return true;
 	}
 
 
-	/* Check if a post type has taxonomies.
-	*
-	* @param string $post_type The post type to check.
-	* @param array  $all_post_type_tax_term Array of all post types with their taxonomies and terms.
-	* @return bool True if the post type has taxonomies, false otherwise.
-	*/
-	private static function post_type_has_taxonomies($post_type, $all_post_type_tax_term) {
+	/**
+	 * Check if a post type has taxonomies.
+	 *
+	 * @param string $post_type The post type to check.
+	 * @param array  $all_post_type_tax_term Array of all post types with their taxonomies and terms.
+	 * @return bool True if the post type has taxonomies, false otherwise.
+	 */
+	private static function post_type_has_taxonomies( $post_type, $all_post_type_tax_term ) {
 
 		$has_taxonomies = true;
 
-		foreach ($all_post_type_tax_term['post_types'] as $post_type_data) {
-			if ($post_type_data['post_type'] == $post_type) {
-				if (empty($post_type_data['taxonomies'])) {
+		foreach ( $all_post_type_tax_term['post_types'] as $post_type_data ) {
+			if ( $post_type_data['post_type'] == $post_type ) {
+				if ( empty( $post_type_data['taxonomies'] ) ) {
 					$has_taxonomies = false;
 					break;
 				}
@@ -187,7 +188,7 @@ class Validator {
 		return $has_taxonomies;
 	}
 
-	
+
 
 	/**
 	 * Validate post status.
@@ -224,11 +225,11 @@ class Validator {
 	 * @return bool|WP_Error Returns true if valid, otherwise WP_Error.
 	 */
 	public static function validate_post_target( $post_type, $taxonomy, $taxonomy_term ) {
-		// Retrieve all post types, taxonomies, and terms
+		// Retrieve all post types, taxonomies, and terms.
 		$all_post_type_tax_term = Helper::get_all_post_types_tax_term();
-	
-		// Determine if the specified post type has taxonomies
-        $post_type_has_taxonomies = self::post_type_has_taxonomies($post_type ?? null, $all_post_type_tax_term);
+
+		// Determine if the specified post type has taxonomies.
+		$post_type_has_taxonomies = self::post_type_has_taxonomies( $post_type ?? null, $all_post_type_tax_term );
 
 		foreach ( $all_post_type_tax_term['post_types'] as $post_type_data ) {
 			if ( $post_type_data['post_type'] === $post_type ) {
