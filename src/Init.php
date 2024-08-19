@@ -10,6 +10,7 @@ namespace ITFB;
 
 use Integration_Toolkit_For_Beehiiv\Import\Import;
 use ITFB\ImportCampaigns\Endpoints;
+use ITFB\ImportCampaigns\Helper;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -50,6 +51,13 @@ class Init {
 	 */
 	public static $instance = null;
 
+	/**
+	 * The table name.
+	 *
+	 * @var string $table_name
+	 */
+	const TABLE_NAME = 'integration_toolkit_for_beehiiv_import';
+
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -60,7 +68,7 @@ class Init {
 	 */
 	public function __construct() {
 
-		$this->version = defined( 'ITFB_VERSION' ) ? ITFB_VERSION : '2.0.0';
+		$this->version = defined( 'ITFB_VERSION' ) ? ITFB_VERSION : '1.0.0';
 
 		$this->plugin_name = 'integration-toolkit-for-beehiiv';
 
@@ -73,7 +81,7 @@ class Init {
 		register_deactivation_hook( ITFB_FILE, array( $this, 'deactivation_process' ) );
 
 		// Check the plugin version.
-		add_action( 'init', array( $this, 'check_plugin_version' ) );
+		add_action( 'init', array( $this, 'old_versions_compatibility' ) );
 	}
 
 	/**
@@ -133,15 +141,7 @@ class Init {
 	 * @return void
 	 */
 	public function activation_process() {
-		// Check the installed version.
-		$installed_version = get_option( 'itfb_version', '1.0.0' ); // Set default to '1.0.0' if not defined.
-
-		// Compare versions and run the necessary updates.
-		if ( version_compare( $installed_version, '2.0.0', '<' ) ) {
-			ImportCampaigns\ImportTable::delete_table();
-		}
 		ImportCampaigns\ImportTable::create_table();
-		update_option( 'itfb_version', ITFB_VERSION );
 	}
 
 	/**
@@ -151,7 +151,8 @@ class Init {
 	 * @return void
 	 */
 	public function deactivation_process() {
-		delete_option( 'itfb_version' );
+		delete_option('itfb_db_compatibility');
+		delete_option('itfb_schedule_compatibility');
 	}
 
 	/**
@@ -160,12 +161,177 @@ class Init {
 	 * @since    2.0.0
 	 * @return void
 	 */
-	public function check_plugin_version() {
-		$installed_version = get_option( 'itfb_version', '1.0.0' ); // Set default to '1.0.0' if not defined.
+	public function old_versions_compatibility() {
 
-		if ( ITFB_VERSION !== $installed_version ) {
-			$this->activation_process();
+		$db_compatibility = get_option('itfb_db_compatibility');
+		$schedule_compatibility = get_option('itfb_schedule_compatibility');
+
+		if ( !in_array($db_compatibility, ['done', 'not_needed']) ) {
+			$this->db_compatibility();
 		}
+
+		if ( !in_array($schedule_compatibility, ['done', 'not_needed']) ) {
+			$this->schedule_compatibility();
+		}
+	}
+
+	/**
+	 * Check the database compatibility.
+	 *
+	 * @since    2.0.0
+	 * @return void
+	 */
+	public function db_compatibility() {
+		global $wpdb;
+
+		// Define your table name
+		$table_name = $wpdb->prefix . $this::TABLE_NAME;
+
+		$column_exists = $wpdb->get_results(
+			$wpdb->prepare(
+				"SHOW COLUMNS FROM $table_name LIKE %s",
+				'status'
+			)
+		);
+
+		if (!empty($column_exists)) {
+			ImportCampaigns\ImportTable::delete_table();
+			ImportCampaigns\ImportTable::create_table();			
+			update_option('itfb_db_compatibility', 'done');
+		} else {
+			update_option('itfb_db_compatibility', 'not_needed');
+		}
+		
+	}
+
+	/**
+	 * Check the schedule compatibility.
+	 *
+	 * @since    2.0.0
+	 * @return void
+	 */
+	public function schedule_compatibility() {
+		$params = array(
+			'hook'    => 'integration_toolkit_for_beehiiv_bulk_import',
+			'status'  => \ActionScheduler_Store::STATUS_PENDING,
+			'orderby' => 'date',
+			'order'   => 'ASC',
+			'group'   => 'auto_recurring_import'
+		);
+	
+		$old_action_id=\ActionScheduler::store()->query_action( $params );
+		if ( $old_action_id ) {
+			//get the action by id
+			$action = \ActionScheduler::store()->fetch_action( $old_action_id );
+
+			//get the action args
+			$new_action_args = $this ->map_old_schedule_args_to_new_schedule_args($action->get_args());
+			$action_id = Helper::schedule_import_campaigns( $new_action_args );
+			try {
+				\ActionScheduler::store()->cancel_action( $old_action_id );
+			} catch ( Exception $exception ) {
+				\ActionScheduler::logger()->log(
+					$action_id,
+					sprintf(
+						/* translators: %1$s is the name of the hook to be cancelled, %2$s is the exception message. */
+						__( 'Caught exception while cancelling action "%1$s": %2$s', 'action-scheduler' ),
+						$hook,
+						$exception->getMessage()
+					)
+				);
+	
+				$action_id = null;
+			}
+			update_option('itfb_schedule_compatibility', 'done');
+		} else {
+			update_option('itfb_schedule_compatibility', 'not_needed');
+		}
+	}
+
+
+	public function convert_old_schedule_to_new_schedule() {
+		$params = array(
+			'hook'    => 'integration_toolkit_for_beehiiv_bulk_import',
+			'status'  => \ActionScheduler_Store::STATUS_PENDING,
+			'orderby' => 'date',
+			'order'   => 'ASC',
+			'group'   => 'auto_recurring_import'
+		);
+	
+		$old_action_id=\ActionScheduler::store()->query_action( $params );
+		if ( $old_action_id ) {
+			//get the action by id
+			$action = \ActionScheduler::store()->fetch_action( $old_action_id );
+
+			//get the action args
+			$new_action_args = $this ->map_old_schedule_args_to_new_schedule_args($action->get_args());
+			$action_id = Helper::schedule_import_campaigns( $new_action_args );
+			try {
+				\ActionScheduler::store()->cancel_action( $old_action_id );
+			} catch ( Exception $exception ) {
+				\ActionScheduler::logger()->log(
+					$action_id,
+					sprintf(
+						/* translators: %1$s is the name of the hook to be cancelled, %2$s is the exception message. */
+						__( 'Caught exception while cancelling action "%1$s": %2$s', 'action-scheduler' ),
+						$hook,
+						$exception->getMessage()
+					)
+				);
+	
+				$action_id = null;
+			}
+		}
+	}
+	
+	/**
+	 * Map the old schedule arguments to the new schedule arguments.
+	 *
+	 * @param array $inputArray The input array.
+	 *
+	 * @return array The mapped array.
+	 */
+	public function map_old_schedule_args_to_new_schedule_args($inputArray) {
+		// Extract the relevant data from the input array
+		$apiKey = $inputArray['args']['api_key'] ?? '';
+		$publicationId = $inputArray['args']['publication_id'] ?? '';
+		$postStatus = $inputArray['args']['post_status'] ?? [];
+		$cronTime = $inputArray['args']['cron_time'] ?? 24;
+		$postType = $inputArray['args']['post_type'] ?? 'post';
+		$taxonomy = $inputArray['args']['taxonomy'] ?? 'category';
+		$taxonomyTerm = $inputArray['args']['taxonomy_term'] ?? '1';
+		$author = $inputArray['args']['post_author'] ?? '2';
+		$importOption = $inputArray['args']['import_method'] ?? 'new';
+	
+		// Determine the audience based on content_type
+		$contentType = $inputArray['args']['content_type'][0] ?? 'free_web_content';
+		$audience = ($contentType === 'free_web_content') ? 'free' : 'paid';
+	
+		// Schedule settings (assuming cron_time in hours)
+		$scheduleSettings = [
+			'enabled' => 'on',
+			'frequency' => 'hourly',
+			'specific_hour' => $cronTime > 0 ? $cronTime : 1,
+		];
+	
+		// Map the data to the desired structure
+		$mappedArray = [
+			'credentials' => [
+				'api_key' => $apiKey,
+				'publication_id' => $publicationId,
+			],
+			'audience' => $audience,
+			'post_status' => $postStatus,
+			'schedule_settings' => $scheduleSettings,
+			'post_type' => $postType,
+			'taxonomy' => $taxonomy,
+			'taxonomy_term' => $taxonomyTerm,
+			'author' => $author,
+			'import_cm_tags_as' => 'post_tag', // Assuming this is fixed
+			'import_option' => $importOption,
+		];
+	
+		return $mappedArray;
 	}
 
 
