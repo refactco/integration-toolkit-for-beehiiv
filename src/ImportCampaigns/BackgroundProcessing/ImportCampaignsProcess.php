@@ -75,10 +75,6 @@ class ImportCampaignsProcess extends WP_Background_Process {
 
 		// get the campaign from import table.
 		$item['campaign'] = ImportTable::get_and_decode_campaign_data( trim( $item['campaign_id'] ), trim( $item['group_name'] ) );
-
-		if ( empty( $item['campaign'] ) ) {
-			return;
-		}
 		// delete the campaign from import table.
 		ImportTable::delete_custom_table_row( trim( $item['campaign_id'] ), trim( $item['group_name'] ) );
 
@@ -141,6 +137,7 @@ class ImportCampaignsProcess extends WP_Background_Process {
 			'beehiiv_web_version_url' => $item['campaign']['web_url'],
 			'beehiiv_authors'         => serialize( $item['campaign']['authors'] ),
 			'beehiiv_audience'        => serialize( $item['campaign']['audience'] ),
+			'write_description'       => $item['campaign']['subtitle'],
 		);
 
 		// Base on the campaign wp_status we will decide to update or insert the post.
