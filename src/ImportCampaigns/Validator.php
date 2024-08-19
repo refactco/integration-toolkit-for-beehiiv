@@ -51,7 +51,7 @@ class Validator {
 		}
 
 		// Validate audience.
-		if ( ! in_array( $params['audience'], array( 'free', 'premium' ) ) ) {
+		if ( ! in_array( $params['audience'], array( 'free', 'premium', 'all' ) ) ) {
 			return new \WP_Error( 'invalid_audience', __( 'Invalid audience.', 'integration-toolkit-for-beehiiv' ), array( 'status' => 400 ) );
 		}
 

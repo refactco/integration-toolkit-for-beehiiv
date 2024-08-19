@@ -121,7 +121,7 @@ class ImportCampaigns {
 			return new \WP_Error( 'unknown_status', __( 'Unknown status.', 'integration-toolkit-for-beehiiv' ), array( 'status' => 400 ) );
 		}
 
-		$expand = 'free' === $this->params['audience'] ? 'free_web_content' : 'premium_web_content';
+		$expand = ( 'free' === $this->params['audience'] || 'all' === $this->params['audience'] ) ? 'free_web_content' : 'premium_web_content';
 
 		$page = 1;
 

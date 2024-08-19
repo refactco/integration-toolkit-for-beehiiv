@@ -81,10 +81,12 @@ class ImportCampaignsProcess extends WP_Background_Process {
 		}
 		// delete the campaign from import table.
 		ImportTable::delete_custom_table_row( trim( $item['campaign_id'] ), trim( $item['group_name'] ) );
+
+		$content_type = ( 'free' === $item['params']['audience'] || 'all' === $item['params']['audience'] ) ? 'free' : 'premium';
 		$wp_post_args = array(
 			'post_title'   => sanitize_text_field( $item['campaign']['title'] ),
 			'post_slug'    => sanitize_title( $item['campaign']['slug'] ),
-			'post_content' => Helper::filter_campaign_content( $item['campaign']['content'][ $item['params']['audience'] ]['web'] ),
+			'post_content' => Helper::filter_campaign_content( $item['campaign']['content'][ $content_type ]['web'] ),
 			'post_status'  => sanitize_text_field( $item['params']['post_status'][ $item['campaign']['status'] ] ),
 			'post_type'    => sanitize_text_field( $item['params']['post_type'] ),
 		);
