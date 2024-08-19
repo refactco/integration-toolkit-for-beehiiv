@@ -49,7 +49,7 @@ class Helper {
 			$taxonomies = get_object_taxonomies( $post_type->name, 'objects' );
 
 			foreach ( $taxonomies as $taxonomy ) {
-				if ( in_array( $taxonomy->name, array( 'nav_menu', 'link_category', 'post_format' ) ) ) {
+				if ( in_array( $taxonomy->name, array( 'nav_menu', 'link_category', 'post_format', 'author' ) ) ) {
 					continue;
 				}
 
@@ -118,29 +118,13 @@ class Helper {
 	 * @return int The thumbnail ID.
 	 */
 	public static function itfb_set_post_thumbnail( $post_id, $thumbnail_url ) {
-		$upload_dir = wp_upload_dir();
-		$image_data = file_get_contents( $thumbnail_url );
-		$filename   = basename( $thumbnail_url );
-		if ( wp_mkdir_p( $upload_dir['path'] ) ) {
-			$file = $upload_dir['path'] . '/' . $filename;
-		} else {
-			$file = $upload_dir['basedir'] . '/' . $filename;
-		}
-		file_put_contents( $file, $image_data );
-
-		$wp_filetype = wp_check_filetype( $filename, null );
-		$attachment  = array(
-			'post_mime_type' => $wp_filetype['type'],
-			'post_title'     => sanitize_file_name( $filename ),
-			'post_content'   => '',
-			'post_status'    => 'inherit',
-		);
-		$attach_id   = wp_insert_attachment( $attachment, $file, $post_id );
+		require_once ABSPATH . 'wp-admin/includes/media.php';
+		require_once ABSPATH . 'wp-admin/includes/file.php';
 		require_once ABSPATH . 'wp-admin/includes/image.php';
-		$attach_data = wp_generate_attachment_metadata( $attach_id, $file );
-		wp_update_attachment_metadata( $attach_id, $attach_data );
 
-		return $attach_id;
+		$image_id = media_sideload_image( $thumbnail_url, $post_id, null, 'id' );
+
+		return $image_id;
 	}
 
 	/**

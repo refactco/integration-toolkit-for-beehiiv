@@ -72,14 +72,17 @@ class ImportCampaignsProcess extends WP_Background_Process {
 	 * @param object $item The campaign object.
 	 */
 	protected function import_campaign( $item ) {
+
 		// get the campaign from import table.
 		$item['campaign'] = ImportTable::get_and_decode_campaign_data( trim( $item['campaign_id'] ), trim( $item['group_name'] ) );
 		// delete the campaign from import table.
 		ImportTable::delete_custom_table_row( trim( $item['campaign_id'] ), trim( $item['group_name'] ) );
+
+		$content_type = ( 'free' === $item['params']['audience'] || 'all' === $item['params']['audience'] ) ? 'free' : 'premium';
 		$wp_post_args = array(
 			'post_title'   => sanitize_text_field( $item['campaign']['title'] ),
 			'post_slug'    => sanitize_title( $item['campaign']['slug'] ),
-			'post_content' => Helper::filter_campaign_content( $item['campaign']['content'][ $item['params']['audience'] ]['web'] ),
+			'post_content' => Helper::filter_campaign_content( $item['campaign']['content'][ $content_type ]['web'] ),
 			'post_status'  => sanitize_text_field( $item['params']['post_status'][ $item['campaign']['status'] ] ),
 			'post_type'    => sanitize_text_field( $item['params']['post_type'] ),
 		);
@@ -134,6 +137,7 @@ class ImportCampaignsProcess extends WP_Background_Process {
 			'beehiiv_web_version_url' => $item['campaign']['web_url'],
 			'beehiiv_authors'         => serialize( $item['campaign']['authors'] ),
 			'beehiiv_audience'        => serialize( $item['campaign']['audience'] ),
+			'write_description'       => $item['campaign']['subtitle'],
 		);
 
 		// Base on the campaign wp_status we will decide to update or insert the post.
