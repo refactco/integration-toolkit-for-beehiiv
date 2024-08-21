@@ -4,7 +4,7 @@ Contributors:      refact, saeedja, masoudin
 Requires at least: 5.5.0
 Tested up to:      6.6.1
 Requires PHP:      7.4
-Stable tag:        2.0.0
+Stable tag:        2.0.1
 License: GPL2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: esp, beehiiv, import, email, importer
@@ -127,5 +127,9 @@ Fix: Minor bug fixes
 
 = v2.0.0 =
 improvements: Added new features
+
+= v2.0.1 =
+Fix: Resolved bugs and improved stability
+Compatibility: Added backward compatibility with versions earlier than v2.0.0
 
 
