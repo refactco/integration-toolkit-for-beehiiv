@@ -151,8 +151,8 @@ class Init {
 	 * @return void
 	 */
 	public function deactivation_process() {
-		delete_option('itfb_db_compatibility');
-		delete_option('itfb_schedule_compatibility');
+		delete_option( 'itfb_db_compatibility' );
+		delete_option( 'itfb_schedule_compatibility' );
 	}
 
 	/**
@@ -163,14 +163,14 @@ class Init {
 	 */
 	public function old_versions_compatibility() {
 
-		$db_compatibility = get_option('itfb_db_compatibility');
-		$schedule_compatibility = get_option('itfb_schedule_compatibility');
+		$db_compatibility       = get_option( 'itfb_db_compatibility' );
+		$schedule_compatibility = get_option( 'itfb_schedule_compatibility' );
 
-		if ( !in_array($db_compatibility, ['done', 'not_needed']) ) {
+		if ( ! in_array( $db_compatibility, array( 'done', 'not_needed' ) ) ) {
 			$this->db_compatibility();
 		}
 
-		if ( !in_array($schedule_compatibility, ['done', 'not_needed']) ) {
+		if ( ! in_array( $schedule_compatibility, array( 'done', 'not_needed' ) ) ) {
 			$this->schedule_compatibility();
 		}
 	}
@@ -184,24 +184,24 @@ class Init {
 	public function db_compatibility() {
 		global $wpdb;
 
-		// Define your table name
+		// Define your table name.
 		$table_name = $wpdb->prefix . $this::TABLE_NAME;
 
 		$column_exists = $wpdb->get_results(
 			$wpdb->prepare(
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				"SHOW COLUMNS FROM $table_name LIKE %s",
 				'status'
 			)
 		);
 
-		if (!empty($column_exists)) {
+		if ( ! empty( $column_exists ) ) {
 			ImportCampaigns\ImportTable::delete_table();
-			ImportCampaigns\ImportTable::create_table();			
-			update_option('itfb_db_compatibility', 'done');
+			ImportCampaigns\ImportTable::create_table();
+			update_option( 'itfb_db_compatibility', 'done' );
 		} else {
-			update_option('itfb_db_compatibility', 'not_needed');
+			update_option( 'itfb_db_compatibility', 'not_needed' );
 		}
-		
 	}
 
 	/**
@@ -216,17 +216,17 @@ class Init {
 			'status'  => \ActionScheduler_Store::STATUS_PENDING,
 			'orderby' => 'date',
 			'order'   => 'ASC',
-			'group'   => 'auto_recurring_import'
+			'group'   => 'auto_recurring_import',
 		);
-	
-		$old_action_id=\ActionScheduler::store()->query_action( $params );
+
+		$old_action_id = \ActionScheduler::store()->query_action( $params );
 		if ( $old_action_id ) {
-			//get the action by id
+			// get the action by id.
 			$action = \ActionScheduler::store()->fetch_action( $old_action_id );
 
-			//get the action args
-			$new_action_args = $this ->map_old_schedule_args_to_new_schedule_args($action->get_args());
-			$action_id = Helper::schedule_import_campaigns( $new_action_args );
+			// get the action args.
+			$new_action_args = $this->map_old_schedule_args_to_new_schedule_args( $action->get_args() );
+			$action_id       = Helper::schedule_import_campaigns( $new_action_args );
 			try {
 				\ActionScheduler::store()->cancel_action( $old_action_id );
 			} catch ( Exception $exception ) {
@@ -234,38 +234,44 @@ class Init {
 					$action_id,
 					sprintf(
 						/* translators: %1$s is the name of the hook to be cancelled, %2$s is the exception message. */
-						__( 'Caught exception while cancelling action "%1$s": %2$s', 'action-scheduler' ),
+						__( 'Caught exception while cancelling action "%1$s": %2$s', 'integration-toolkit-for-beehiiv' ),
 						$hook,
 						$exception->getMessage()
 					)
 				);
-	
+
 				$action_id = null;
 			}
-			update_option('itfb_schedule_compatibility', 'done');
+			update_option( 'itfb_schedule_compatibility', 'done' );
 		} else {
-			update_option('itfb_schedule_compatibility', 'not_needed');
+			update_option( 'itfb_schedule_compatibility', 'not_needed' );
 		}
 	}
 
 
+	/**
+	 * Convert the old schedule to the new schedule.
+	 *
+	 * @since    2.0.0
+	 * @return void
+	 */
 	public function convert_old_schedule_to_new_schedule() {
 		$params = array(
 			'hook'    => 'integration_toolkit_for_beehiiv_bulk_import',
 			'status'  => \ActionScheduler_Store::STATUS_PENDING,
 			'orderby' => 'date',
 			'order'   => 'ASC',
-			'group'   => 'auto_recurring_import'
+			'group'   => 'auto_recurring_import',
 		);
-	
-		$old_action_id=\ActionScheduler::store()->query_action( $params );
+
+		$old_action_id = \ActionScheduler::store()->query_action( $params );
 		if ( $old_action_id ) {
-			//get the action by id
+			// get the action by id.
 			$action = \ActionScheduler::store()->fetch_action( $old_action_id );
 
-			//get the action args
-			$new_action_args = $this ->map_old_schedule_args_to_new_schedule_args($action->get_args());
-			$action_id = Helper::schedule_import_campaigns( $new_action_args );
+			// get the action args.
+			$new_action_args = $this->map_old_schedule_args_to_new_schedule_args( $action->get_args() );
+			$action_id       = Helper::schedule_import_campaigns( $new_action_args );
 			try {
 				\ActionScheduler::store()->cancel_action( $old_action_id );
 			} catch ( Exception $exception ) {
@@ -273,67 +279,63 @@ class Init {
 					$action_id,
 					sprintf(
 						/* translators: %1$s is the name of the hook to be cancelled, %2$s is the exception message. */
-						__( 'Caught exception while cancelling action "%1$s": %2$s', 'action-scheduler' ),
+						__( 'Caught exception while cancelling action "%1$s": %2$s', 'integration-toolkit-for-beehiiv' ),
 						$hook,
 						$exception->getMessage()
 					)
 				);
-	
+
 				$action_id = null;
 			}
 		}
 	}
-	
+
 	/**
 	 * Map the old schedule arguments to the new schedule arguments.
 	 *
-	 * @param array $inputArray The input array.
+	 * @param array $input_array The input array.
 	 *
 	 * @return array The mapped array.
 	 */
-	public function map_old_schedule_args_to_new_schedule_args($inputArray) {
-		// Extract the relevant data from the input array
-		$apiKey = $inputArray['args']['api_key'] ?? '';
-		$publicationId = $inputArray['args']['publication_id'] ?? '';
-		$postStatus = $inputArray['args']['post_status'] ?? [];
-		$cronTime = $inputArray['args']['cron_time'] ?? 24;
-		$postType = $inputArray['args']['post_type'] ?? 'post';
-		$taxonomy = $inputArray['args']['taxonomy'] ?? 'category';
-		$taxonomyTerm = $inputArray['args']['taxonomy_term'] ?? '1';
-		$author = $inputArray['args']['post_author'] ?? '2';
-		$importOption = $inputArray['args']['import_method'] ?? 'new';
-	
-		// Determine the audience based on content_type
-		$contentType = $inputArray['args']['content_type'][0] ?? 'free_web_content';
-		$audience = ($contentType === 'free_web_content') ? 'free' : 'paid';
-	
-		// Schedule settings (assuming cron_time in hours)
-		$scheduleSettings = [
-			'enabled' => 'on',
-			'frequency' => 'hourly',
-			'specific_hour' => $cronTime > 0 ? $cronTime : 1,
-		];
-	
-		// Map the data to the desired structure
-		$mappedArray = [
-			'credentials' => [
-				'api_key' => $apiKey,
-				'publication_id' => $publicationId,
-			],
-			'audience' => $audience,
-			'post_status' => $postStatus,
-			'schedule_settings' => $scheduleSettings,
-			'post_type' => $postType,
-			'taxonomy' => $taxonomy,
-			'taxonomy_term' => $taxonomyTerm,
-			'author' => $author,
-			'import_cm_tags_as' => 'post_tag', // Assuming this is fixed
-			'import_option' => $importOption,
-		];
-	
-		return $mappedArray;
+	public function map_old_schedule_args_to_new_schedule_args( $input_array ) {
+		// Extract the relevant data from the input array.
+		$api_key        = isset( $input_array['args']['api_key'] ) ? $input_array['args']['api_key'] : '';
+		$publication_id = isset( $input_array['args']['publication_id'] ) ? $input_array['args']['publication_id'] : '';
+		$post_status    = isset( $input_array['args']['post_status'] ) ? $input_array['args']['post_status'] : array();
+		$cron_time      = isset( $input_array['args']['cron_time'] ) ? $input_array['args']['cron_time'] : 24;
+		$post_type      = isset( $input_array['args']['post_type'] ) ? $input_array['args']['post_type'] : 'post';
+		$taxonomy       = isset( $input_array['args']['taxonomy'] ) ? $input_array['args']['taxonomy'] : 'category';
+		$taxonomy_term  = isset( $input_array['args']['taxonomy_term'] ) ? $input_array['args']['taxonomy_term'] : '1';
+		$author         = isset( $input_array['args']['post_author'] ) ? $input_array['args']['post_author'] : '2';
+		$import_option  = isset( $input_array['args']['import_method'] ) ? $input_array['args']['import_method'] : 'new';
+		$import_cm_tags_as = isset( $input_array['args']['import_cm_tags_as'] ) ? $input_array['args']['import_cm_tags_as'] : 'post_tag';
+		// Determine the audience based on content_type.
+		$content_type = isset( $input_array['args']['content_type'][0] ) ? $input_array['args']['content_type'][0] : 'free_web_content';
+		$audience     = ( 'free_web_content' === $content_type ) ? 'free' : 'paid';
+		// Schedule settings (assuming cron_time in hours).
+		$schedule_settings = array(
+			'enabled'       => 'on',
+			'frequency'     => 'hourly',
+			'specific_hour' => $cron_time > 0 ? $cron_time : 1,
+		);
+		// Map the data to the desired structure.
+		$mapped_array = array(
+			'credentials'       => array(
+				'api_key'        => $api_key,
+				'publication_id' => $publication_id,
+			),
+			'audience'          => $audience,
+			'post_status'       => $post_status,
+			'schedule_settings' => $schedule_settings,
+			'post_type'         => $post_type,
+			'taxonomy'          => $taxonomy,
+			'taxonomy_term'     => $taxonomy_term,
+			'author'            => $author,
+			'import_cm_tags_as' => $import_cm_tags_as,
+			'import_option'     => $import_option,
+		);
+		return $mapped_array;
 	}
-
 
 
 	/**
