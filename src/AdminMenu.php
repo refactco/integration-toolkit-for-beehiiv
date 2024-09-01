@@ -119,7 +119,7 @@ class AdminMenu {
 
 	/**
 	 * Register the importer
-	 * 
+	 *
 	 * @return void
 	 */
 	public function register_beehiiv_importer() {
@@ -133,17 +133,17 @@ class AdminMenu {
 
 	/**
 	 * Importer Callback
-	 * 
+	 *
 	 * @return void
 	 */
 	public function beehiiv_importer_callback() {}
-	
+
 	/**
 	 * Register the importer.
-	 * 
+	 *
 	 * @return void
 	 */
-	public function redirect_importer_to_plugin_settings_page(){
+	public function redirect_importer_to_plugin_settings_page() {
 		wp_redirect( admin_url( 'options-general.php?page=integration-toolkit-for-beehiiv' ) );
 	}
 }
