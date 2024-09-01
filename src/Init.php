@@ -299,15 +299,15 @@ class Init {
 	 */
 	public function map_old_schedule_args_to_new_schedule_args( $input_array ) {
 		// Extract the relevant data from the input array.
-		$api_key        = isset( $input_array['args']['api_key'] ) ? $input_array['args']['api_key'] : '';
-		$publication_id = isset( $input_array['args']['publication_id'] ) ? $input_array['args']['publication_id'] : '';
-		$post_status    = isset( $input_array['args']['post_status'] ) ? $input_array['args']['post_status'] : array();
-		$cron_time      = isset( $input_array['args']['cron_time'] ) ? $input_array['args']['cron_time'] : 24;
-		$post_type      = isset( $input_array['args']['post_type'] ) ? $input_array['args']['post_type'] : 'post';
-		$taxonomy       = isset( $input_array['args']['taxonomy'] ) ? $input_array['args']['taxonomy'] : 'category';
-		$taxonomy_term  = isset( $input_array['args']['taxonomy_term'] ) ? $input_array['args']['taxonomy_term'] : '1';
-		$author         = isset( $input_array['args']['post_author'] ) ? $input_array['args']['post_author'] : '2';
-		$import_option  = isset( $input_array['args']['import_method'] ) ? $input_array['args']['import_method'] : 'new';
+		$api_key           = isset( $input_array['args']['api_key'] ) ? $input_array['args']['api_key'] : '';
+		$publication_id    = isset( $input_array['args']['publication_id'] ) ? $input_array['args']['publication_id'] : '';
+		$post_status       = isset( $input_array['args']['post_status'] ) ? $input_array['args']['post_status'] : array();
+		$cron_time         = isset( $input_array['args']['cron_time'] ) ? $input_array['args']['cron_time'] : 24;
+		$post_type         = isset( $input_array['args']['post_type'] ) ? $input_array['args']['post_type'] : 'post';
+		$taxonomy          = isset( $input_array['args']['taxonomy'] ) ? $input_array['args']['taxonomy'] : 'category';
+		$taxonomy_term     = isset( $input_array['args']['taxonomy_term'] ) ? $input_array['args']['taxonomy_term'] : '1';
+		$author            = isset( $input_array['args']['post_author'] ) ? $input_array['args']['post_author'] : '2';
+		$import_option     = isset( $input_array['args']['import_method'] ) ? $input_array['args']['import_method'] : 'new';
 		$import_cm_tags_as = isset( $input_array['args']['import_cm_tags_as'] ) ? $input_array['args']['import_cm_tags_as'] : 'post_tag';
 		// Determine the audience based on content_type.
 		$content_type = isset( $input_array['args']['content_type'][0] ) ? $input_array['args']['content_type'][0] : 'free_web_content';

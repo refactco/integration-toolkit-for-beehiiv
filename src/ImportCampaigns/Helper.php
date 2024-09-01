@@ -197,34 +197,38 @@ class Helper {
 	/**
 	 * Filter the campaign content.
 	 *
-	 * @param string $campaign_content The campaign content.
+	 * @param string $content The campaign content.
 	 * @return string
 	 */
-	public static function filter_campaign_content( $campaign_content ) {
+	public static function filter_campaign_content( $content ) {
+		$content = preg_replace_callback(
+			'/<div([^>]*id\s*=\s*[\'"]?web-header[\'"]?[^>]*)>/i',
+			function ( $matches ) {
+				// Check if style attribute is already present.
+				if ( strpos( $matches[1], 'style' ) === false ) {
+					return '<div' . $matches[1] . ' style="display: none;">';
+				}
+				// If style is already present, append the display:none; to it.
+				return preg_replace( '/style\s*=\s*[\'"]([^\'"]*)[\'"]/', 'style="display: none; $1"', $matches[0] );
+			},
+			$content
+		);
 
-		if ( empty( $campaign_content ) ) {
-			return '';
-		}
+		// Ensure img tags are well-formatted, setting width to 100%.
+		// This will add a style attribute to img tags if not already present.
+		$content = preg_replace_callback(
+			'/<img((?:(?!style).)+)>/i',
+			function ( $matches ) {
+				// Check if style attribute is already present.
+				if ( strpos( $matches[1], 'style' ) === false ) {
+					return '<img' . $matches[1] . ' style="width: 100%;">';
+				}
+				// If style is already present, do nothing.
+				return '<img' . $matches[1] . '>';
+			},
+			$content
+		);
 
-		// Load the HTML content into a DOMDocument object.
-		$dom = new \DOMDocument();
-
-		// Suppress errors due to invalid HTML structure.
-		@$dom->loadHTML( $campaign_content );
-
-		// Find the element with the id "web-header".
-		$header_div = $dom->getElementById( 'web-header' );
-
-		if ( $header_div ) {
-			// Remove the element from its parent.
-			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-			$header_div->parentNode->removeChild( $header_div );
-		}
-
-		// Save the modified HTML.
-		$modified_html = $dom->saveHTML();
-
-		// Apply any filters.
-		return apply_filters( 'itfb_filter_campaign_content', $modified_html );
+		return $content;
 	}
 }
