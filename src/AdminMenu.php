@@ -57,6 +57,10 @@ class AdminMenu {
 
 		// Register the admin menu.
 		add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
+
+		// Register the importer.
+		add_action( 'admin_init', array( $this, 'register_beehiiv_importer' ) );
+		add_action( 'load-importer-integration_toolkit_for_beehiiv', array( $this, 'redirect_importer_to_plugin_settings_page' ) );
 	}
 
 	/**
@@ -111,5 +115,35 @@ class AdminMenu {
 			array(),
 			'8.0.3'
 		);
+	}
+
+	/**
+	 * Register the importer
+	 * 
+	 * @return void
+	 */
+	public function register_beehiiv_importer() {
+		register_importer(
+			'integration_toolkit_for_beehiiv',
+			__( 'Integration Toolkit for beehiiv', 'integration-toolkit-for-beehiiv' ),
+			__( 'Import posts from beehiiv to your site with ease.', 'integration-toolkit-for-beehiiv' ),
+			array( $this, 'beehiiv_importer_callback' )
+		);
+	}
+
+	/**
+	 * Importer Callback
+	 * 
+	 * @return void
+	 */
+	public function beehiiv_importer_callback() {}
+	
+	/**
+	 * Register the importer.
+	 * 
+	 * @return void
+	 */
+	public function redirect_importer_to_plugin_settings_page(){
+		wp_redirect( admin_url( 'options-general.php?page=integration-toolkit-for-beehiiv' ) );
 	}
 }
