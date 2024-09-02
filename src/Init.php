@@ -318,6 +318,11 @@ class Init {
 			'frequency'     => 'hourly',
 			'specific_hour' => $cron_time > 0 ? $cron_time : 1,
 		);
+
+		if ( $import_option === 'new_and_update' ) {
+			$import_option = 'both';
+		}
+		
 		// Map the data to the desired structure.
 		$mapped_array = array(
 			'credentials'       => array(
