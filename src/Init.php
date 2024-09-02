@@ -319,10 +319,10 @@ class Init {
 			'specific_hour' => $cron_time > 0 ? $cron_time : 1,
 		);
 
-		if ( $import_option === 'new_and_update' ) {
+		if ( 'new_and_update' === $import_option ) {
 			$import_option = 'both';
 		}
-		
+
 		// Map the data to the desired structure.
 		$mapped_array = array(
 			'credentials'       => array(
