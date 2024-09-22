@@ -113,23 +113,26 @@ Yes, at any time you can navigate to the plugin’s settings in your dashboard a
 2. Manual Import
 3. Automatic Import
 
-== Upgrade Notice ==
-= v1.0.0 =
-New: Initial release
  
 == Changelog ==
- 
-= v1.0.0 =
-New: Initial release
 
-= v1.0.1 =
-Fix: Minor bug fixes
+= 2.0.1 =
+Enhancement: Resolved bugs and improved overall stability.
+Enhancement: Added backward compatibility with versions earlier than v2.0.0.
 
-= v2.0.0 =
-improvements: Added new features
+= 2.0.0 =
+New: Introduced new features and improvements.
+Enhancement: Changed the backend structure of the plugin to use background processing, significantly improving the import process speed.
+Enhancement: Enhanced the user interface and user experience of the plugin
 
-= v2.0.1 =
-Fix: Resolved bugs and improved stability
-Compatibility: Added backward compatibility with versions earlier than v2.0.0
+= 1.0.1 =
+Rename: Changed the plugin name to "WP to beehiiv Integration."
+New: Added beehiiv import option to the WordPress importer.
+Fix: Addressed various plugin bugs based on WordPress reports.
+
+= 1.0.0 =
+New: Added a global settings page.
+New: Imported posts from beehiiv using the API.
+New: Added support for multiple accounts and publications.
 
 
