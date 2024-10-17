@@ -201,34 +201,49 @@ class Helper {
 	 * @return string
 	 */
 	public static function filter_campaign_content( $content ) {
-		$content = preg_replace_callback(
-			'/<div([^>]*id\s*=\s*[\'"]?web-header[\'"]?[^>]*)>/i',
-			function ( $matches ) {
-				// Check if style attribute is already present.
-				if ( strpos( $matches[1], 'style' ) === false ) {
-					return '<div' . $matches[1] . ' style="display: none;">';
-				}
-				// If style is already present, append the display:none; to it.
-				return preg_replace( '/style\s*=\s*[\'"]([^\'"]*)[\'"]/', 'style="display: none; $1"', $matches[0] );
-			},
-			$content
-		);
 
-		// Ensure img tags are well-formatted, setting width to 100%.
-		// This will add a style attribute to img tags if not already present.
-		$content = preg_replace_callback(
-			'/<img((?:(?!style).)+)>/i',
-			function ( $matches ) {
-				// Check if style attribute is already present.
-				if ( strpos( $matches[1], 'style' ) === false ) {
-					return '<img' . $matches[1] . ' style="width: 100%;">';
-				}
-				// If style is already present, do nothing.
-				return '<img' . $matches[1] . '>';
-			},
-			$content
-		);
+		// Create a new DOMDocument instance.
+		$doc = new \DOMDocument();
 
-		return $content;
+		// Load the content as HTML and handle encoding issues.
+		libxml_use_internal_errors( true ); // Suppress HTML warnings/errors.
+		$doc->loadHTML( mb_convert_encoding( $content, 'HTML-ENTITIES', 'UTF-8' ), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+		libxml_clear_errors();
+
+		// Get the web-header div and remove it from the DOM if it exists.
+		$web_header_tag = $doc->getElementById( 'web-header' );
+		if ( $web_header_tag ) {
+			//phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+			$web_header_tag->parentNode->removeChild( $web_header_tag );
+		}
+
+		// Get the content inside the head tag.
+		$head_tag     = $doc->getElementsByTagName( 'head' )->item( 0 );
+		$head_content = '';
+		if ( $head_tag ) {
+			// Loop through the head tag's children and append them to head_content.
+			//phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+			foreach ( $head_tag->childNodes as $child ) {
+				//phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+				$head_content .= $doc->saveHTML( $child );
+			}
+		}
+
+		// Get the content inside the body tag.
+		$body_tag     = $doc->getElementsByTagName( 'body' )->item( 0 );
+		$body_content = '';
+		if ( $body_tag ) {
+			// Loop through the body tag's children and append them to body_content.
+			//phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+			foreach ( $body_tag->childNodes as $child ) {
+				//phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+				$body_content .= $doc->saveHTML( $child );
+			}
+		}
+
+		// Combine head content with separator and body content.
+		$final_content = $head_content . $body_content;
+
+		return $final_content;
 	}
 }
