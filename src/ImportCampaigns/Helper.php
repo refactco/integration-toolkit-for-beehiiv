@@ -131,9 +131,24 @@ class Helper {
 	 * Set scheduled import.
 	 *
 	 * @param array $params The parameters array.
+	 * @param bool  $update Whether to update the schedule.
 	 * @return int|\WP_Error
 	 */
-	public static function schedule_import_campaigns( $params ) {
+	public static function schedule_import_campaigns( $params, $update = false ) {
+
+		if ( $update ) {
+			try {
+				// Attempt to delete the action.
+				\ActionScheduler::store()->delete_action( intval( $params['id'] ) );
+			} catch ( \Exception $e ) {
+				return new \WP_Error(
+					'failed_delete',
+					'Failed to delete the scheduled import.',
+					array( 'status' => 500 )
+				);
+			}
+		}
+
 		$frequency = $params['schedule_settings']['frequency'];
 		$timestamp = strtotime( 'now' );
 
@@ -178,7 +193,6 @@ class Helper {
 			return $schedule_id;
 		}
 	}
-
 	/**
 	 * Include the WooCommerce action scheduler.
 	 *
@@ -243,6 +257,8 @@ class Helper {
 
 		// Combine head content with separator and body content.
 		$final_content = $head_content . $body_content;
+
+		$final_content = preg_replace( "/^\s*[\r\n]/m", '', $final_content ); // Remove empty lines.
 
 		return $final_content;
 	}

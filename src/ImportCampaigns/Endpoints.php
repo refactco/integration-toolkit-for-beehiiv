@@ -127,6 +127,31 @@ class Endpoints {
 				},
 			)
 		);
+
+		register_rest_route(
+			'itfb/v1',
+			'/add-scheduled-import',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'add_scheduled_import' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+
+		// add a put method to edit the scheduled import.
+		register_rest_route(
+			'itfb/v1',
+			'/edit-scheduled-import',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'edit_scheduled_import' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
 	}
 
 	/**
@@ -474,6 +499,111 @@ class Endpoints {
 			array(
 				'message' => 'Scheduled import has been deleted.',
 				'id'      => $schedule_id,
+			)
+		);
+	}
+
+	/**
+	 * Add a scheduled import.
+	 *
+	 * @param \WP_REST_Request $request The request object.
+	 * @return \WP_REST_Response | \WP_Error
+	 */
+	public function add_scheduled_import( \WP_REST_Request $request ) {
+		// Retrieve the parameters from the request.
+		$params = array(
+			'credentials'       => json_decode( sanitize_text_field( $request->get_param( 'credentials' ) ), true ),
+			'audience'          => sanitize_text_field( $request->get_param( 'audience' ) ),
+			'post_status'       => json_decode( sanitize_text_field( $request->get_param( 'post_status' ) ), true ),
+			'schedule_settings' => json_decode( sanitize_text_field( $request->get_param( 'schedule_settings' ) ), true ),
+			'post_type'         => sanitize_text_field( $request->get_param( 'post_type' ) ),
+			'taxonomy'          => sanitize_text_field( $request->get_param( 'taxonomy' ) ),
+			'taxonomy_term'     => sanitize_text_field( $request->get_param( 'taxonomy_term' ) ),
+			'author'            => sanitize_text_field( $request->get_param( 'author' ) ),
+			'import_cm_tags_as' => sanitize_text_field( $request->get_param( 'import_cm_tags_as' ) ),
+			'import_option'     => sanitize_text_field( $request->get_param( 'import_option' ) ),
+		);
+
+		// Validate all parameters.
+		$validation = Validator::validate_all_parameters( $params );
+		if ( is_wp_error( $validation ) ) {
+			return $validation;
+		}
+
+		// Schedule the import.
+		$schedule_import_result = Helper::schedule_import_campaigns( $params );
+		if ( is_wp_error( $schedule_import_result ) ) {
+			return $schedule_import_result;
+		}
+
+		// Return the response.
+		return rest_ensure_response(
+			array(
+				'message' => 'Scheduled import has been added.',
+				'id'      => $schedule_import_result,
+			)
+		);
+	}
+
+	/**
+	 * Edit a scheduled import.
+	 *
+	 * @param \WP_REST_Request $request The request object.
+	 * @return \WP_REST_Response | \WP_Error
+	 */
+	public function edit_scheduled_import( \WP_REST_Request $request ) {
+
+		// retrieve the parameters from the request.
+		$params = array(
+			'credentials'       => json_decode( sanitize_text_field( $request->get_param( 'credentials' ) ), true ),
+			'audience'          => sanitize_text_field( $request->get_param( 'audience' ) ),
+			'post_status'       => json_decode( sanitize_text_field( $request->get_param( 'post_status' ) ), true ),
+			'schedule_settings' => json_decode( sanitize_text_field( $request->get_param( 'schedule_settings' ) ), true ),
+			'post_type'         => sanitize_text_field( $request->get_param( 'post_type' ) ),
+			'taxonomy'          => sanitize_text_field( $request->get_param( 'taxonomy' ) ),
+			'taxonomy_term'     => sanitize_text_field( $request->get_param( 'taxonomy_term' ) ),
+			'author'            => sanitize_text_field( $request->get_param( 'author' ) ),
+			'import_cm_tags_as' => sanitize_text_field( $request->get_param( 'import_cm_tags_as' ) ),
+			'import_option'     => sanitize_text_field( $request->get_param( 'import_option' ) ),
+			'id'                => sanitize_text_field( $request->get_param( 'id' ) ),
+		);
+
+		// Check if the schedule ID is valid.
+		if ( ! $params['id'] ) {
+			return new \WP_Error(
+				'invalid_schedule_id',
+				'Schedule ID is required.',
+				array( 'status' => 400 )
+			);
+		}
+
+		// Fetch the action with the specified ID.
+		$action = \ActionScheduler::store()->fetch_action( intval( $params['id'] ) );
+		if ( is_null( $action ) || $action instanceof \ActionScheduler_NullAction ) {
+			return new \WP_Error(
+				'invalid_schedule_id',
+				'Schedule ID does not exist.',
+				array( 'status' => 400 )
+			);
+		}
+
+		// Validate all parameters.
+		$validation = Validator::validate_all_parameters( $params );
+		if ( is_wp_error( $validation ) ) {
+			return $validation;
+		}
+
+		// edit the scheduled import.
+		$schedule_import_result = Helper::schedule_import_campaigns( $params, true );
+		if ( is_wp_error( $schedule_import_result ) ) {
+			return $schedule_import_result;
+		}
+
+		// Return the response.
+		return rest_ensure_response(
+			array(
+				'message' => 'Scheduled import has been edited successfully.',
+				'id'      => $schedule_import_result,
 			)
 		);
 	}
