@@ -275,30 +275,26 @@ class Helper {
 		// Retrieve and validate option data from WordPress options.
 		$connections = get_option( 'itfb_beehiiv_connections' );
 
-		// Ensure connections is a valid array, otherwise return an empty array.
+		// Return an empty array if connections are not valid.
 		if ( ! is_array( $connections ) ) {
 			return array();
 		}
 
-		// Transform connections into an associative array by connection_name.
-		return array_reduce(
-			$connections,
-			function ( $formatted_connections, $connection ) use ( $include_api_key ) {
-				if ( isset( $connection['api_key'], $connection['publication_id'], $connection['connection_name'] ) ) {
-					$formatted_connections[ $connection['connection_name'] ] = array(
-						'publication_id' => $connection['publication_id'],
-					);
-
-					// Conditionally add api_key if $include_api_key is true.
-					if ( $include_api_key ) {
-						$formatted_connections[ $connection['connection_name'] ]['api_key'] = $connection['api_key'];
-					}
+		// Iterate over each connection and modify the API key if needed.
+		foreach ( $connections as &$connection ) {
+			if ( isset( $connection['api_key'] ) && is_string( $connection['api_key'] ) ) {
+				if ( ! $include_api_key ) {
+					$masked_length         = strlen( $connection['api_key'] );
+					$connection['api_key'] = str_repeat( '*', max( 0, $masked_length - 10 ) ) . substr( $connection['api_key'], -10 );
 				}
-				return $formatted_connections;
-			},
-			array()
-		);
+			}
+		}
+
+		return $connections;
 	}
+
+
+
 
 	/**
 	 * Add a new Beehiiv connection.
@@ -318,10 +314,9 @@ class Helper {
 		}
 
 		// Add the new connection data to the connections array.
-		$connections[] = array(
-			'connection_name' => $connection_name,
-			'api_key'         => $api_key,
-			'publication_id'  => $publication_id,
+		$connections[ $connection_name ] = array(
+			'api_key'        => $api_key,
+			'publication_id' => $publication_id,
 		);
 
 		// Attempt to save the updated connections array back to WordPress options.

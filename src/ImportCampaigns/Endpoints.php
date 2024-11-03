@@ -118,7 +118,7 @@ class Endpoints {
 
 		register_rest_route(
 			'itfb/v1',
-			'/delete-scheduled-import/',
+			'/delete-scheduled-import',
 			array(
 				'methods'             => 'DELETE',
 				'callback'            => array( $this, 'delete_scheduled_import' ),
@@ -172,6 +172,19 @@ class Endpoints {
 			array(
 				'methods'             => 'GET',
 				'callback'            => array( $this, 'get_all_connections' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+
+		// delete connection by name.
+		register_rest_route(
+			'itfb/v1',
+			'/delete-connection',
+			array(
+				'methods'             => 'DELETE',
+				'callback'            => array( $this, 'delete_connection' ),
 				'permission_callback' => function () {
 					return current_user_can( 'manage_options' );
 				},
@@ -698,6 +711,62 @@ class Endpoints {
 	public function get_all_connections( \WP_REST_Request $request ) {
 		return rest_ensure_response( Helper::get_all_beehiiv_connections() );
 	}
+
+	/**
+	 * Delete a connection.
+	 *
+	 * @param \WP_REST_Request $request The request object.
+	 * @return \WP_REST_Response | \WP_Error
+	 */
+	public function delete_connection( \WP_REST_Request $request ) {
+		$connection_name = sanitize_text_field( $request->get_param( 'connection_name' ) );
+
+		if ( empty( $connection_name ) ) {
+			return new \WP_Error(
+				'invalid_connection_details',
+				__( 'Connection name is required.', 'integration-toolkit-for-beehiiv' ),
+				array( 'status' => 404 )
+			);
+		}
+
+		// Normalize the connection name.
+		$connection_name = strtolower( trim( str_replace( ' ', '_', $connection_name ) ) );
+
+		// Retrieve all connections.
+		$all_connections = Helper::get_all_beehiiv_connections();
+
+		// Check if the connection name exists in the array.
+		if ( ! array_key_exists( $connection_name, $all_connections ) ) {
+			return new \WP_Error(
+				'connection_not_found',
+				__( 'Connection name does not exist.', 'integration-toolkit-for-beehiiv' ),
+				array( 'status' => 404 )
+			);
+		}
+		// Remove the specific connection.
+		unset( $all_connections[ $connection_name ] );
+
+		// Update the option and handle potential failure.
+		$update_successful = update_option( 'itfb_beehiiv_connections', $all_connections );
+
+		if ( ! $update_successful ) {
+			return new \WP_Error(
+				'failed_delete',
+				__( 'Failed to delete the connection.', 'integration-toolkit-for-beehiiv' ),
+				array( 'status' => 500 )
+			);
+		}
+
+		// Return success response.
+		return rest_ensure_response(
+			array(
+				'message' => __( 'Connection deleted successfully.', 'integration-toolkit-for-beehiiv' ),
+			)
+		);
+	}
+
+
+
 
 	/**
 	 * Handle the background processes.
