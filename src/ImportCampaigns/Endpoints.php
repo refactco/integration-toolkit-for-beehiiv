@@ -118,10 +118,73 @@ class Endpoints {
 
 		register_rest_route(
 			'itfb/v1',
-			'/delete-scheduled-import/',
+			'/delete-scheduled-import',
 			array(
 				'methods'             => 'DELETE',
 				'callback'            => array( $this, 'delete_scheduled_import' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+
+		register_rest_route(
+			'itfb/v1',
+			'/add-scheduled-import',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'add_scheduled_import' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+
+		// Edit scheduled import.
+		register_rest_route(
+			'itfb/v1',
+			'/edit-scheduled-import',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'edit_scheduled_import' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+
+		register_rest_route(
+			'itfb/v1',
+			'/add-connection',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'add_connection' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+
+		// get all connections.
+		register_rest_route(
+			'itfb/v1',
+			'/get-all-connections',
+			array(
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'get_all_connections' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+
+		// delete connection by name.
+		register_rest_route(
+			'itfb/v1',
+			'/delete-connection',
+			array(
+				'methods'             => 'DELETE',
+				'callback'            => array( $this, 'delete_connection' ),
 				'permission_callback' => function () {
 					return current_user_can( 'manage_options' );
 				},
@@ -220,7 +283,7 @@ class Endpoints {
 	 * Get import status.
 	 *
 	 * @param \WP_REST_Request $request The request object.
-	 * @return \WP_REST_Response
+	 * @return \WP_REST_Response.
 	 */
 	public function import_status( \WP_REST_Request $request ) {
 		$group_name = $request->get_param( 'group_name' );
@@ -477,6 +540,233 @@ class Endpoints {
 			)
 		);
 	}
+
+	/**
+	 * Add a scheduled import.
+	 *
+	 * @param \WP_REST_Request $request The request object.
+	 * @return \WP_REST_Response | \WP_Error
+	 */
+	public function add_scheduled_import( \WP_REST_Request $request ) {
+		// Retrieve the parameters from the request.
+		$params = array(
+			'credentials'       => json_decode( sanitize_text_field( $request->get_param( 'credentials' ) ), true ),
+			'audience'          => sanitize_text_field( $request->get_param( 'audience' ) ),
+			'post_status'       => json_decode( sanitize_text_field( $request->get_param( 'post_status' ) ), true ),
+			'schedule_settings' => json_decode( sanitize_text_field( $request->get_param( 'schedule_settings' ) ), true ),
+			'post_type'         => sanitize_text_field( $request->get_param( 'post_type' ) ),
+			'taxonomy'          => sanitize_text_field( $request->get_param( 'taxonomy' ) ),
+			'taxonomy_term'     => sanitize_text_field( $request->get_param( 'taxonomy_term' ) ),
+			'author'            => sanitize_text_field( $request->get_param( 'author' ) ),
+			'import_cm_tags_as' => sanitize_text_field( $request->get_param( 'import_cm_tags_as' ) ),
+			'import_option'     => sanitize_text_field( $request->get_param( 'import_option' ) ),
+		);
+
+		// Validate all parameters.
+		$validation = Validator::validate_all_parameters( $params );
+		if ( is_wp_error( $validation ) ) {
+			return $validation;
+		}
+
+		// Schedule the import.
+		$schedule_import_result = Helper::schedule_import_campaigns( $params );
+		if ( is_wp_error( $schedule_import_result ) ) {
+			return $schedule_import_result;
+		}
+
+		// Return the response.
+		return rest_ensure_response(
+			array(
+				'message' => 'Scheduled import has been added.',
+				'id'      => $schedule_import_result,
+			)
+		);
+	}
+
+	/**
+	 * Edit a scheduled import.
+	 *
+	 * @param \WP_REST_Request $request The request object.
+	 * @return \WP_REST_Response | \WP_Error
+	 */
+	public function edit_scheduled_import( \WP_REST_Request $request ) {
+
+		// retrieve the parameters from the request.
+		$params = array(
+			'credentials'       => json_decode( sanitize_text_field( $request->get_param( 'credentials' ) ), true ),
+			'audience'          => sanitize_text_field( $request->get_param( 'audience' ) ),
+			'post_status'       => json_decode( sanitize_text_field( $request->get_param( 'post_status' ) ), true ),
+			'schedule_settings' => json_decode( sanitize_text_field( $request->get_param( 'schedule_settings' ) ), true ),
+			'post_type'         => sanitize_text_field( $request->get_param( 'post_type' ) ),
+			'taxonomy'          => sanitize_text_field( $request->get_param( 'taxonomy' ) ),
+			'taxonomy_term'     => sanitize_text_field( $request->get_param( 'taxonomy_term' ) ),
+			'author'            => sanitize_text_field( $request->get_param( 'author' ) ),
+			'import_cm_tags_as' => sanitize_text_field( $request->get_param( 'import_cm_tags_as' ) ),
+			'import_option'     => sanitize_text_field( $request->get_param( 'import_option' ) ),
+			'id'                => sanitize_text_field( $request->get_param( 'id' ) ),
+		);
+
+		// Check if the schedule ID is valid.
+		if ( ! $params['id'] ) {
+			return new \WP_Error(
+				'invalid_schedule_id',
+				'Schedule ID is required.',
+				array( 'status' => 400 )
+			);
+		}
+
+		// Fetch the action with the specified ID.
+		$action = \ActionScheduler::store()->fetch_action( intval( $params['id'] ) );
+		if ( is_null( $action ) || $action instanceof \ActionScheduler_NullAction ) {
+			return new \WP_Error(
+				'invalid_schedule_id',
+				'Schedule ID does not exist.',
+				array( 'status' => 400 )
+			);
+		}
+
+		// Validate all parameters.
+		$validation = Validator::validate_all_parameters( $params );
+		if ( is_wp_error( $validation ) ) {
+			return $validation;
+		}
+
+		// edit the scheduled import.
+		$schedule_import_result = Helper::schedule_import_campaigns( $params, true );
+		if ( is_wp_error( $schedule_import_result ) ) {
+			return $schedule_import_result;
+		}
+
+		// Return the response.
+		return rest_ensure_response(
+			array(
+				'message' => 'Scheduled import has been edited successfully.',
+				'id'      => $schedule_import_result,
+			)
+		);
+	}
+
+	/**
+	 * Add a connection.
+	 *
+	 * @param \WP_REST_Request $request The request object.
+	 * @return \WP_REST_Response | \WP_Error
+	 */
+	public function add_connection( \WP_REST_Request $request ) {
+
+		$api_key         = sanitize_text_field( $request->get_param( 'api_key' ) );
+		$publication_id  = sanitize_text_field( $request->get_param( 'publication_id' ) );
+		$connection_name = sanitize_text_field( $request->get_param( 'connection_name' ) );
+
+		if ( empty( $connection_name ) || empty( $publication_id ) || empty( $api_key ) ) {
+			return new \WP_Error(
+				'invalid_connection_details',
+				'Connection name, publication id, and API key are required.',
+				array( 'status' => 404 )
+			);
+		}
+
+		// Validate API key and publication ID.
+		$valid_credentials = Validator::validate_credentials(
+			array(
+				'api_key'        => $api_key,
+				'publication_id' => $publication_id,
+			)
+		);
+
+		if ( is_wp_error( $valid_credentials ) ) {
+			return $valid_credentials;
+		}
+
+		// Normalize connection name.
+		$connection_name = strtolower( trim( str_replace( ' ', '_', $connection_name ) ) );
+
+		// Check if the connection name already exists.
+		$all_connections = Helper::get_all_beehiiv_connections();
+
+		if ( ! array_key_exists( $connection_name, $all_connections ) ) {
+			$result = Helper::add_beehiiv_connection( $connection_name, $api_key, $publication_id );
+
+			if ( is_wp_error( $result ) ) {
+				return $result;
+			}
+
+			return rest_ensure_response( array( 'message' => 'Connection added successfully.' ) );
+		} else {
+			return new \WP_Error(
+				'connection_exists',
+				'Connection name already exists.',
+				array( 'status' => 404 )
+			);
+		}
+	}
+
+
+	/**
+	 * Get all connections.
+	 *
+	 * @param \WP_REST_Request $request The request object.
+	 * @return \WP_REST_Response | \WP_Error
+	 */
+	public function get_all_connections( \WP_REST_Request $request ) {
+		return rest_ensure_response( Helper::get_all_beehiiv_connections() );
+	}
+
+	/**
+	 * Delete a connection.
+	 *
+	 * @param \WP_REST_Request $request The request object.
+	 * @return \WP_REST_Response | \WP_Error
+	 */
+	public function delete_connection( \WP_REST_Request $request ) {
+		$connection_name = sanitize_text_field( $request->get_param( 'connection_name' ) );
+
+		if ( empty( $connection_name ) ) {
+			return new \WP_Error(
+				'invalid_connection_details',
+				__( 'Connection name is required.', 'integration-toolkit-for-beehiiv' ),
+				array( 'status' => 404 )
+			);
+		}
+
+		// Normalize the connection name.
+		$connection_name = strtolower( trim( str_replace( ' ', '_', $connection_name ) ) );
+
+		// Retrieve all connections.
+		$all_connections = Helper::get_all_beehiiv_connections();
+
+		// Check if the connection name exists in the array.
+		if ( ! array_key_exists( $connection_name, $all_connections ) ) {
+			return new \WP_Error(
+				'connection_not_found',
+				__( 'Connection name does not exist.', 'integration-toolkit-for-beehiiv' ),
+				array( 'status' => 404 )
+			);
+		}
+		// Remove the specific connection.
+		unset( $all_connections[ $connection_name ] );
+
+		// Update the option and handle potential failure.
+		$update_successful = update_option( 'itfb_beehiiv_connections', $all_connections );
+
+		if ( ! $update_successful ) {
+			return new \WP_Error(
+				'failed_delete',
+				__( 'Failed to delete the connection.', 'integration-toolkit-for-beehiiv' ),
+				array( 'status' => 500 )
+			);
+		}
+
+		// Return success response.
+		return rest_ensure_response(
+			array(
+				'message' => __( 'Connection deleted successfully.', 'integration-toolkit-for-beehiiv' ),
+			)
+		);
+	}
+
+
+
 
 	/**
 	 * Handle the background processes.
