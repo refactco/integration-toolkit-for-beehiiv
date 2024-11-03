@@ -140,13 +140,38 @@ class Endpoints {
 			)
 		);
 
-		// add a put method to edit the scheduled import.
+		// Edit scheduled import.
 		register_rest_route(
 			'itfb/v1',
 			'/edit-scheduled-import',
 			array(
 				'methods'             => 'POST',
 				'callback'            => array( $this, 'edit_scheduled_import' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+
+		register_rest_route(
+			'itfb/v1',
+			'/add-connection',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'add_connection' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+
+		// get all connections.
+		register_rest_route(
+			'itfb/v1',
+			'/get-all-connections',
+			array(
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'get_all_connections' ),
 				'permission_callback' => function () {
 					return current_user_can( 'manage_options' );
 				},
@@ -245,7 +270,7 @@ class Endpoints {
 	 * Get import status.
 	 *
 	 * @param \WP_REST_Request $request The request object.
-	 * @return \WP_REST_Response
+	 * @return \WP_REST_Response.
 	 */
 	public function import_status( \WP_REST_Request $request ) {
 		$group_name = $request->get_param( 'group_name' );
@@ -606,6 +631,72 @@ class Endpoints {
 				'id'      => $schedule_import_result,
 			)
 		);
+	}
+
+	/**
+	 * Add a connection.
+	 *
+	 * @param \WP_REST_Request $request The request object.
+	 * @return \WP_REST_Response | \WP_Error
+	 */
+	public function add_connection( \WP_REST_Request $request ) {
+
+		$api_key         = sanitize_text_field( $request->get_param( 'api_key' ) );
+		$publication_id  = sanitize_text_field( $request->get_param( 'publication_id' ) );
+		$connection_name = sanitize_text_field( $request->get_param( 'connection_name' ) );
+
+		if ( empty( $connection_name ) || empty( $publication_id ) || empty( $api_key ) ) {
+			return new \WP_Error(
+				'invalid_connection_details',
+				'Connection name, publication id, and API key are required.',
+				array( 'status' => 404 )
+			);
+		}
+
+		// Validate API key and publication ID.
+		$valid_credentials = Validator::validate_credentials(
+			array(
+				'api_key'        => $api_key,
+				'publication_id' => $publication_id,
+			)
+		);
+
+		if ( is_wp_error( $valid_credentials ) ) {
+			return $valid_credentials;
+		}
+
+		// Normalize connection name.
+		$connection_name = strtolower( trim( str_replace( ' ', '_', $connection_name ) ) );
+
+		// Check if the connection name already exists.
+		$all_connections = Helper::get_all_beehiiv_connections();
+
+		if ( ! array_key_exists( $connection_name, $all_connections ) ) {
+			$result = Helper::add_beehiiv_connection( $connection_name, $api_key, $publication_id );
+
+			if ( is_wp_error( $result ) ) {
+				return $result;
+			}
+
+			return rest_ensure_response( array( 'message' => 'Connection added successfully.' ) );
+		} else {
+			return new \WP_Error(
+				'connection_exists',
+				'Connection name already exists.',
+				array( 'status' => 404 )
+			);
+		}
+	}
+
+
+	/**
+	 * Get all connections.
+	 *
+	 * @param \WP_REST_Request $request The request object.
+	 * @return \WP_REST_Response | \WP_Error
+	 */
+	public function get_all_connections( \WP_REST_Request $request ) {
+		return rest_ensure_response( Helper::get_all_beehiiv_connections() );
 	}
 
 	/**

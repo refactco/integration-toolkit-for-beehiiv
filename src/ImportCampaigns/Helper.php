@@ -262,4 +262,76 @@ class Helper {
 
 		return $final_content;
 	}
+
+	/**
+	 * Get all Beehiiv connections.
+	 *
+	 * Retrieves all Beehiiv connections stored in the options table.
+	 *
+	 * @param bool $include_api_key Whether to include the API key in the returned array.
+	 * @return array The array of Beehiiv connections.
+	 */
+	public static function get_all_beehiiv_connections( bool $include_api_key = false ): array {
+		// Retrieve and validate option data from WordPress options.
+		$connections = get_option( 'itfb_beehiiv_connections' );
+
+		// Ensure connections is a valid array, otherwise return an empty array.
+		if ( ! is_array( $connections ) ) {
+			return array();
+		}
+
+		// Transform connections into an associative array by connection_name.
+		return array_reduce(
+			$connections,
+			function ( $formatted_connections, $connection ) use ( $include_api_key ) {
+				if ( isset( $connection['api_key'], $connection['publication_id'], $connection['connection_name'] ) ) {
+					$formatted_connections[ $connection['connection_name'] ] = array(
+						'publication_id' => $connection['publication_id'],
+					);
+
+					// Conditionally add api_key if $include_api_key is true.
+					if ( $include_api_key ) {
+						$formatted_connections[ $connection['connection_name'] ]['api_key'] = $connection['api_key'];
+					}
+				}
+				return $formatted_connections;
+			},
+			array()
+		);
+	}
+
+	/**
+	 * Add a new Beehiiv connection.
+	 *
+	 * @param string $connection_name The name of the connection.
+	 * @param string $api_key The Beehiiv API key.
+	 * @param string $publication_id The Beehiiv publication ID.
+	 * @return bool|\WP_Error True if the connection was added successfully, otherwise a WP_Error object.
+	 */
+	public static function add_beehiiv_connection( string $connection_name, string $api_key, string $publication_id ) {
+		// Retrieve existing connections from WordPress options.
+		$connections = get_option( 'itfb_beehiiv_connections', array() );
+
+		// Ensure connections is a valid array.
+		if ( ! is_array( $connections ) ) {
+			$connections = array();
+		}
+
+		// Add the new connection data to the connections array.
+		$connections[] = array(
+			'connection_name' => $connection_name,
+			'api_key'         => $api_key,
+			'publication_id'  => $publication_id,
+		);
+
+		// Attempt to save the updated connections array back to WordPress options.
+		$updated = update_option( 'itfb_beehiiv_connections', $connections );
+
+		// Return WP_Error if the update fails, otherwise return true.
+		if ( ! $updated ) {
+			return new \WP_Error( 'save_failed', 'Failed to save the connection to WordPress options.' );
+		}
+
+		return true;
+	}
 }
