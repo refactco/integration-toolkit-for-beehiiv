@@ -202,48 +202,53 @@ class Helper {
 	 */
 	public static function filter_campaign_content( $content ) {
 
-		// Remove extra empty lines and spaces from the content before saving
-		$content = preg_replace('/^\s+|\n|\r|\s+$/m', '', $content);
-	
+		// Remove extra empty lines and spaces from the content before saving.
+		$content = preg_replace( '/^\s+|\n|\r|\s+$/m', '', $content );
+
 		// Create a new DOMDocument instance.
 		$doc = new \DOMDocument();
-	
+
 		// Load the content as HTML and handle encoding issues.
 		libxml_use_internal_errors( true ); // Suppress HTML warnings/errors.
 		$doc->loadHTML( mb_convert_encoding( $content, 'HTML-ENTITIES', 'UTF-8' ), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
 		libxml_clear_errors();
-	
+
 		// Get the web-header div and remove it from the DOM if it exists.
 		$web_header_tag = $doc->getElementById( 'web-header' );
 		if ( $web_header_tag ) {
+			//phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			$web_header_tag->parentNode->removeChild( $web_header_tag );
 		}
-	
+
 		// Get the content inside the head tag.
 		$head_tag     = $doc->getElementsByTagName( 'head' )->item( 0 );
 		$head_content = '';
 		if ( $head_tag ) {
+			//phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			foreach ( $head_tag->childNodes as $child ) {
+				//phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 				$head_content .= $doc->saveHTML( $child );
 			}
 		}
-	
+
 		// Get the content inside the body tag.
 		$body_tag     = $doc->getElementsByTagName( 'body' )->item( 0 );
 		$body_content = '';
 		if ( $body_tag ) {
+			//phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			foreach ( $body_tag->childNodes as $child ) {
+				//phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 				$body_content .= $doc->saveHTML( $child );
 			}
 		}
-	
+
 		// Combine head content with separator and body content.
 		$final_content = $head_content . $body_content;
-	
-		// Strip empty lines and extra spaces from the final content
-		$final_content = preg_replace('/^\s*[\r\n]/m', '', $final_content); // Remove empty lines
-		$final_content = preg_replace('/\s+/', ' ', $final_content); // Normalize excessive spaces
-	
+
+		// Strip empty lines and extra spaces from the final content.
+		$final_content = preg_replace( '/^\s*[\r\n]/m', '', $final_content ); // Remove empty lines.
+		$final_content = preg_replace( '/\s+/', ' ', $final_content ); // Normalize excessive spaces.
+
 		return $final_content;
 	}
 }
